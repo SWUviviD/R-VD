@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using Defines.ParsingDefines;
+using Defines;
 using UnityEditor;
 using static UnityEditor.LightingExplorerTableColumn;
 using System.Xml.Serialization;
@@ -18,8 +18,9 @@ public class CSVToJson : AssetPostprocessor
     void OnPreprocessAsset()
     {
         // 인포트 되는 대상이 csv 파일임
-        if (this.assetPath.Split('.')[1].Equals("csv"))
+        if (this.assetPath.Split('.').Length > 2 && assetPath.Split('.')[1].Equals("csv"))
         {
+            // 헤더 및 내용 검출
             var csvLines = File.ReadAllLines(assetPath);
             if (csvLines.Length == 0)
             {
@@ -29,9 +30,11 @@ public class CSVToJson : AssetPostprocessor
             
             var headers = csvLines[0].Split(',');
 
+            // 파일 이름을 통해 해당 클래스 인스턴스 생성
             string fileName = (assetPath.Split('/')[^1]).Split('.')[0];
             var inst = Activator.CreateInstance(Type.GetType($"StaticData.{fileName}"));
 
+            // 클래스의 프로퍼티 타입 가져오기
             List<Type> types = new List<Type>();
             foreach (var _ in headers)
             {
@@ -45,6 +48,7 @@ public class CSVToJson : AssetPostprocessor
                 types.Add(propertyInfo.PropertyType);
             }
 
+            // 타입 기준으로 세팅
             var listType = typeof(List<>);
             var concreteType = listType.MakeGenericType(Type.GetType($"StaticData.{fileName}"));
             var jsonList = (IList)Activator.CreateInstance(concreteType);

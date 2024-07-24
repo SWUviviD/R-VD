@@ -1,6 +1,6 @@
 namespace Defines
 {
-    namespace FSMDefines
+    public static class FSMDefines
     {
         public enum FSMState
         {

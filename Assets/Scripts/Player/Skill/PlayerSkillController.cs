@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Defines.SkillDefines;
+using Defines;
 
 [RequireComponent(typeof(SkillController))]
 public class PlayerSkillController : MonoBehaviour
@@ -10,8 +10,8 @@ public class PlayerSkillController : MonoBehaviour
     [Serializable]
     private struct PlayerSkillSet
     {
-        public SkillIndex Index { get { return index; } }
-        [SerializeField] private SkillIndex index;
+        public SkillDefines.SkillIndex Index { get { return index; } }
+        [SerializeField] private SkillDefines.SkillIndex index;
 
         public SkillBase Skill { get { return skill; } }
         [SerializeField] private SkillBase skill;
@@ -26,7 +26,7 @@ public class PlayerSkillController : MonoBehaviour
         skillController = GetComponent<SkillController>();
     }
 
-    private void SkillAchieve(SkillIndex _index)
+    private void SkillAchieve(SkillDefines.SkillIndex _index)
     {
         PlayerSkillSet playerSkillSet = playerSkillSets.Find(_ => _.Index == _index);
         skillController.AddSkillBase(playerSkillSet.Index, playerSkillSet.Skill);

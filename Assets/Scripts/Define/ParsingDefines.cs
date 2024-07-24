@@ -1,6 +1,6 @@
 namespace Defines
 {
-    namespace ParsingDefines
+    public static class ParsingDefines
     {
         public enum ParsingDataType
         {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
-using Defines.PoolDefines;
+using Defines;
 using System.Timers;
 
 public class WaterMill : MonoBehaviour
@@ -23,20 +23,20 @@ public class WaterMill : MonoBehaviour
     {
         GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage2", "watermillPlatform.prefab"), 
-            PoolType.WaterMillPlatform.ToString())) as GameObject;
+            PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
 
         if (platform == null)
             return;
         var platformPrefab = Instantiate(platform);
 
-        PoolManager.Instance.CreatePool(PoolType.WaterMillPlatform, platformPrefab.GetComponent<IPoolable>(), platformCount);
+        PoolManager.Instance.CreatePool(PoolDefines.PoolType.WaterMillPlatform, platformPrefab.GetComponent<IPoolable>(), platformCount);
 
         // 처음 위치 정하기
         float delataDegree = 360.0f / platformCount;
         float currentDegree = 0.0f;
         for(int i = 0; i < platformCount; ++i)
         {
-            WaterMillPlatform p = PoolManager.Instance.GetPoolObject(PoolType.WaterMillPlatform) as WaterMillPlatform;
+            WaterMillPlatform p = PoolManager.Instance.GetPoolObject(PoolDefines.PoolType.WaterMillPlatform) as WaterMillPlatform;
             waterMillPlatforms.Add(p);
             p.SetWaterMill(this);
 

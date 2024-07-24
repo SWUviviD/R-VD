@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Defines.PoolDefines;
+using Defines;
 using UnityEngine.Pool;
 
 public class PoolManager : MonoSingleton<PoolManager>
 {
-    private Dictionary<PoolType, IPoolable> poolOrigin;
-    private Dictionary<PoolType, Queue<IPoolable>> pools;
+    private Dictionary<PoolDefines.PoolType, IPoolable> poolOrigin;
+    private Dictionary<PoolDefines.PoolType, Queue<IPoolable>> pools;
 
     protected override void Init()
     {
-        poolOrigin = new Dictionary<PoolType, IPoolable>();
-        pools = new Dictionary<PoolType, Queue<IPoolable>>();
+        poolOrigin = new Dictionary<PoolDefines.PoolType, IPoolable>();
+        pools = new Dictionary<PoolDefines.PoolType, Queue<IPoolable>>();
     }
 
-    public bool CreatePool(PoolType poolType, IPoolable poolObject, int capacity = 10)
+    public bool CreatePool(PoolDefines.PoolType poolType, IPoolable poolObject, int capacity = 10)
     {
         // 이미 풀이 있음
         if (poolOrigin.ContainsKey(poolType))
@@ -32,7 +32,7 @@ public class PoolManager : MonoSingleton<PoolManager>
         return true;
     }
 
-    public IPoolable GetPoolObject(PoolType poolType)
+    public IPoolable GetPoolObject(PoolDefines.PoolType poolType)
     {
         if (pools.ContainsKey(poolType) == false)
             return null;
@@ -48,13 +48,13 @@ public class PoolManager : MonoSingleton<PoolManager>
         return clone;
     }
 
-    private void EnqueuePoolObject(PoolType poolType)
+    private void EnqueuePoolObject(PoolDefines.PoolType poolType)
     {
         IPoolable clone = poolOrigin[poolType].Create(ReturnToPool);
         pools[poolType].Enqueue(clone);
     }
 
-    private void ReturnToPool(PoolType type, IPoolable obj)
+    private void ReturnToPool(PoolDefines.PoolType type, IPoolable obj)
     {
         obj.Enqueue();
         pools[type].Enqueue(obj);

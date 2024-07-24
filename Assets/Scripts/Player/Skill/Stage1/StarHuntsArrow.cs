@@ -1,4 +1,4 @@
-using Defines.PoolDefines;
+using Defines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +17,7 @@ public partial class StarHuntsArrow : MonoBehaviour, IPoolable
     {
         GameObject arrow = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage1/", "StarHuntsArrow.prefab"),
-            PoolType.StarHunts.ToString())) as GameObject;
+            PoolDefines.PoolType.StarHunts.ToString())) as GameObject;
         if (arrow == null)
             return null;
 
@@ -34,6 +34,6 @@ public partial class StarHuntsArrow : MonoBehaviour, IPoolable
     void IPoolable.Enqueue()
     {
         gameObject.SetActive(false);
-        _returnToPool.Invoke(PoolType.StarHunts, this);
+        _returnToPool.Invoke(PoolDefines.PoolType.StarHunts, this);
     }
 }

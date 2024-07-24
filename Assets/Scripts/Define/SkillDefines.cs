@@ -1,6 +1,6 @@
 namespace Defines
 {
-    namespace SkillDefines
+    public static class SkillDefines
     {
         public enum SkillIndex : byte
         {

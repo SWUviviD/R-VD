@@ -1,7 +1,7 @@
 
 namespace Defines
 {
-    namespace PoolDefines
+    public static class PoolDefines
     {
         public enum PoolType
         {

@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Defines.PoolDefines;
+using Defines;
 
 public interface IPoolable
 {
-    public delegate void ReturnToPool(PoolType type, IPoolable obj);
+    public delegate void ReturnToPool(PoolDefines.PoolType type, IPoolable obj);
     protected ReturnToPool returnToPool { get; set; }
     IPoolable Create(ReturnToPool returnToPool);
     void Enqueue();

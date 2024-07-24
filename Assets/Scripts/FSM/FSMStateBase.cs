@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Defines.FSMDefines;
+using Defines;
 
 public abstract class FSMStateBase
 {
-    public FSMState MyState { get; set; }
+    public FSMDefines.FSMState MyState { get; set; }
 
     public virtual void Init() { }
 

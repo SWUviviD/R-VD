@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Defines.SkillDefines;
 using UnityEditor;
+using Defines;
 
 public class SkillController : MonoBehaviour
 {
     // 스킬 딕셔너리
-    private Dictionary<SkillIndex, SkillBase> skillDictionary = new Dictionary<SkillIndex, SkillBase>();
+    private Dictionary<SkillDefines.SkillIndex, SkillBase> skillDictionary = new Dictionary<SkillDefines.SkillIndex, SkillBase>();
 
     // 스킬 관련
     public SkillBase CurrentSkill { get; private set; }
@@ -27,7 +27,7 @@ public class SkillController : MonoBehaviour
     /// 스킬을 등록한다.
     /// </summary>
     /// <returns>등록을 성공했으면 true, 아니면 false</returns>
-    public bool AddSkillBase(SkillIndex _index, SkillBase _skillBase)
+    public bool AddSkillBase(SkillDefines.SkillIndex _index, SkillBase _skillBase)
     {
         if (skillDictionary.ContainsKey(_index) == true)
             return false;
@@ -41,7 +41,7 @@ public class SkillController : MonoBehaviour
     /// <summary>
     /// 스킬을 등록 해제 한다.
     /// </summary>
-    public void RemoveSkillBase(SkillIndex _index)
+    public void RemoveSkillBase(SkillDefines.SkillIndex _index)
     {
         if (skillDictionary.ContainsKey(_index) == false)
             return;
@@ -51,7 +51,7 @@ public class SkillController : MonoBehaviour
         return;
     }
 
-    public bool SelectSkill(SkillIndex skillindex)
+    public bool SelectSkill(SkillDefines.SkillIndex skillindex)
     {
         if(isThereSkill)
         {

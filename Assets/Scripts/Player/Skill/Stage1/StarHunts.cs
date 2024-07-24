@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Defines.PoolDefines;
+using Defines;
 
 public class StarHunts : SkillBase
 {
@@ -11,7 +11,7 @@ public class StarHunts : SkillBase
     {
         GameObject arrowPrefab = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage1", "StarHuntsArrow.prefab"),
-            PoolType.WaterMillPlatform.ToString())) as GameObject;
+            PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
         if (arrowPrefab == null)
             return;
 
@@ -21,7 +21,7 @@ public class StarHunts : SkillBase
             return;
         }
 
-        PoolManager.Instance.CreatePool(PoolType.StarHunts, arrow, arrowInitCount);
+        PoolManager.Instance.CreatePool(PoolDefines.PoolType.StarHunts, arrow, arrowInitCount);
     }
 
     public override bool UseSkill(Status status)

@@ -1,4 +1,4 @@
-using Defines.PoolDefines;
+using Defines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,7 +40,7 @@ public partial class  WaterMillPlatform : MonoBehaviour, IPoolable
 
 public partial class WaterMillPlatform : MonoBehaviour, IPoolable
 {
-    [SerializeField] private PoolType type;
+    [SerializeField] private PoolDefines.PoolType type;
     IPoolable.ReturnToPool _returnToPool;
     IPoolable.ReturnToPool IPoolable.returnToPool { get => _returnToPool; set => _returnToPool = value; }
 
@@ -48,7 +48,7 @@ public partial class WaterMillPlatform : MonoBehaviour, IPoolable
     {
         GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage2/", "watermillPlatform.prefab"),
-            PoolType.WaterMillPlatform.ToString())) as GameObject;
+            PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
         if (platform == null)
             return null;
 

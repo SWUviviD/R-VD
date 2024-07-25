@@ -1,26 +1,35 @@
+using Defines;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    private Actions actions;
-
-    private Rigidbody rb;
 
     private void OnEnable()
     {
-        actions = InputManager.actions;
+        InputManager.Instance.AddInputEventFunction(
+            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, InputDefines.Jump),
+            InputDefines.ActionPoint.IsStarted,
+            DoJump
+            );
 
-        actions.PlayerActions.Jump.started += DoJump;
-        actions.PlayerActions.Enable();
-
-        rb = this.GetComponent<Rigidbody>();
     }
 
     private void DoJump(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        rb.AddForce(Vector3.up * 5, ForceMode.Impulse);
+
     }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.RemoveInputEventFunction(
+            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, InputDefines.Jump),
+            InputDefines.ActionPoint.IsStarted,
+            DoJump
+            );
+    }
+
 }

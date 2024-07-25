@@ -1,136 +1,115 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Defines;
+using System;
+using static Defines.InputDefines;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoSingleton<InputManager>
 {
-    public static Actions actions;
+    [SerializeField] PlayerInput playerInput;
 
-    private void Awake()
+    protected override void Init()
     {
-        if (actions == null)
-            actions = new Actions();
+        base.Init();
+        DontDestroyOnLoad(gameObject);
     }
 
-    public static void ChangeInputEventOption(string actionName, int bindingIndex)
+    public bool AddInputEventFunction(InputDefines.InputActionName actionName, InputDefines.ActionPoint actionPoint, Action<InputAction.CallbackContext> instance)
     {
-        Debug.Log("ChangeInputEventOption : " + actionName);
-        InputAction inputAction = actions.asset.FindAction(actionName);
-        if (inputAction == null || inputAction.bindings.Count <= bindingIndex)
+        InputAction inputAction = GetInputActionMapByType(actionName);
+        if (inputAction == null)
+            return false;
+
+        switch (actionPoint)
         {
-            Debug.Log("Couldn't find action or binding");
-            return;
+            case InputDefines.ActionPoint.IsStarted:
+                inputAction.started += instance;
+                break;
+            case InputDefines.ActionPoint.IsPerformed:
+                inputAction.performed += instance;
+                break;
+            case InputDefines.ActionPoint.IsCanceled:
+                inputAction.canceled += instance;
+                break;
+            case InputDefines.ActionPoint.All:
+                inputAction.started += instance;
+                inputAction.performed += instance;
+                inputAction.canceled += instance;
+                break;
         }
 
-        if (inputAction.bindings[bindingIndex].isComposite)
+        return true;
+    }
+
+    public bool RemoveInputEventFunction(InputDefines.InputActionName actionName, InputDefines.ActionPoint actionPoint, Action<InputAction.CallbackContext> instance)
+    {
+        //ÌäπÏ†ï Ïù¥Î≤§Ìä∏Ïóê Î∂ôÏñ¥ÏûàÎäî ÌäπÏ†ï Ìï®ÏàòÎßå Îì±Î°ù Ìï¥Ï†ú
+        InputAction inputAction = GetInputActionMapByType(actionName);
+        if (inputAction == null)
+            return false;
+
+        switch (actionPoint)
         {
-            Debug.Log("isComposite");
-            var firstPartIndex = bindingIndex + 1;
-            if (firstPartIndex < inputAction.bindings.Count && inputAction.bindings[firstPartIndex].isPartOfComposite)
-            {
-                Debug.Log("DoChange for Composite");
-                DoChange(inputAction, firstPartIndex, true);
-            }
+            case InputDefines.ActionPoint.IsStarted:
+                inputAction.started -= instance;    
+                break;
+            case InputDefines.ActionPoint.IsPerformed:
+                inputAction.performed -= instance;
+                break;
+            case InputDefines.ActionPoint.IsCanceled:
+                inputAction.canceled -= instance;
+                break;
+            case InputDefines.ActionPoint.All:
+                inputAction.started -= instance;
+                inputAction.performed -= instance;
+                inputAction.canceled -= instance;
+                break;
+        }
+
+        return true;
+    }
+
+    public void RemoveAllEventFunction(InputDefines.InputActionName inputPoint)
+    {
+        //Î™®Îì† Ïï°ÏÖò ÎÑ§ÏûÑ ÏïÑÎãàÍ≥† ÌäπÏ†ï Ïï°ÏÖò ÎÑ§ÏûÑ Î∞õÏïÑÏò§Î©¥
+        //Í±∞Í∏∞Ïóê Î∂ôÏñ¥ÏûàÎäî Ìï®Ïàò Îã§ Ï†úÍ±∞
+        InputAction inputAction = GetInputActionMapByType(inputPoint);
+        if (inputAction == null)
+            return;
+
+        inputAction.Reset();
+    }
+
+    public void EnableAction(InputDefines.InputActionName actionPoint, bool isEnable)
+    {
+        InputAction inputAction = GetInputActionMapByType(actionPoint);
+        if (isEnable)
+        {
+            inputAction.Enable();
         }
         else
         {
-            Debug.Log("DoChange");
-            DoChange(inputAction, bindingIndex, false);
-        }
-            
-    }
-
-    public static void DoChange(InputAction actionToChange, int bindingIndex, bool allCompositeParts)
-    {
-        if (actionToChange == null)
-            return;
-
-        string statusText;
-        statusText = $"Press a {actionToChange.expectedControlType} for {actionToChange.bindings[bindingIndex].name}";
-        Debug.Log(statusText);
-
-        actionToChange.Disable();
-
-        var change = actionToChange.PerformInteractiveRebinding(bindingIndex);
-
-        change.OnComplete(operation =>
-        {
-            actionToChange.Enable();
-            operation.Dispose();
-
-            if(allCompositeParts)
-            {
-                var nextBindingIndex = bindingIndex + 1;
-                if (nextBindingIndex < actionToChange.bindings.Count && actionToChange.bindings[nextBindingIndex].isPartOfComposite)
-                    DoChange(actionToChange, nextBindingIndex, allCompositeParts);
-            }
-
-            SaveBindingOverride(actionToChange);
-        });
-
-        change.OnCancel(operation =>
-        {
-            actionToChange.Enable();
-            operation.Dispose();
-        });
-
-        change.Start();
-    }
-
-    private static void SaveBindingOverride(InputAction action)
-    {
-        for(int i=0; i<action.bindings.Count;i++)
-        {
-            PlayerPrefs.SetString(action.actionMap + action.name + i, action.bindings[i].overridePath);
+            inputAction.Disable();
         }
     }
 
-    public static void LoadBindingOverride(string actionName)
+    public void EnableActionMap(InputDefines.ActionMapType mapName, bool isEnable)
     {
-        if (actions == null)
-            actions = new Actions();
-
-        InputAction inputAction = actions.asset.FindAction(actionName);
-
-        for(int i =0; i< inputAction.bindings.Count;i++)
+        InputActionMap map = playerInput.actions.FindActionMap(mapName.ToString());
+        if (isEnable)
         {
-            if (!string.IsNullOrEmpty(PlayerPrefs.GetString(inputAction.actionMap + inputAction.name + i)))
-                inputAction.ApplyBindingOverride(i, PlayerPrefs.GetString(inputAction.actionMap + inputAction.name + i));
+            map.Enable();
+        }
+        else
+        {
+            map.Disable();
         }
     }
 
-    public delegate void delegateFunc(InputAction.CallbackContext obj);
-
-    public static void AddInputEventFunction(string actionName, IPlayerActions instance, bool isCanceled = false, bool isPerformed = false, bool isStarted = true)
+    private InputAction GetInputActionMapByType(InputDefines.InputActionName actionPoint)
     {
-        InputAction inputAction = actions.asset.FindAction(actionName);
-        if (isStarted)
-            inputAction.started += instance.DoMove;
-        if (isPerformed)
-            //inputAction.performed +=func;
-        if(isCanceled)
-            //inputAction.canceled += func;
-        inputAction.Enable();
+        return playerInput.actions.FindActionMap(actionPoint.MapType.ToString()).FindAction(actionPoint.ActionName);
     }
 
-    public void RemoveInputEventFunction(string actionName, delegateFunc func, bool isCanceled = false, bool isPerformed = false, bool isStarted = true)
-    {
-        //∆Ø¡§ ¿Ã∫•∆Æø° ∫ŸæÓ¿÷¥¬ ∆Ø¡§ «‘ºˆ∏∏ µÓ∑œ «ÿ¡¶
-        InputAction inputAction = actions.asset.FindAction(actionName);
-        if (isStarted)
-            //inputAction.started -= func;
-        if (isPerformed)
-            //inputAction.performed -=func;
-        if (isCanceled)
-            //inputAction.canceled -= func;
-        inputAction.Disable();
-    }
-
-    private void RemoveAllEventFunction(string actionName)
-    {
-        //∏µÁ æ◊º« ≥◊¿” æ∆¥œ∞Ì ∆Ø¡§ æ◊º« ≥◊¿” πﬁæ∆ø¿∏È
-        //∞≈±‚ø° ∫ŸæÓ¿÷¥¬ «‘ºˆ ¥Ÿ ¡¶∞≈
-        InputAction inputAction = actions.asset.FindAction(actionName);
-        inputAction.Reset();
-        //RemoveInputEventFunction(actionName, );
-    }
+    // * ÌÇ§ Î≥ÄÍ≤ΩÏùÑ ÏúÑÌïú Ìï®Ïàò Ï∂îÍ∞ÄÎê† Í∞ÄÎä•ÏÑ± ÏûàÏùå
 }

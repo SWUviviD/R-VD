@@ -1,27 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Defines;
 
 public class PlayerMove : MonoBehaviour
 {
-    private Actions actions;
-
     private Vector3 moveDirection;
     public float moveSpeed = 4f;
 
     private void OnEnable()
     {
-        actions = InputManager.actions;
-        
-        //InputManager.AddInputEventFunction("Move", this, true);
-
-        actions.PlayerActions.Move.started += DoMove;
-        actions.PlayerActions.Move.performed += DoMove;
-        actions.PlayerActions.Move.canceled += DoMove;
-        actions.PlayerActions.Enable();
+        InputManager.Instance.AddInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Move),
+            InputDefines.ActionPoint.All,
+            DoMove
+            );
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         bool hasControl = (moveDirection != Vector3.zero);
         //Debug.Log("moveDirection : " + moveDirection);
@@ -32,7 +28,17 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void DoMove(InputAction.CallbackContext obj)
+    private void OnDisable()
+    {
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Move),
+            InputDefines.ActionPoint.All,
+            DoMove
+            );
+    }
+
+    private void DoMove(InputAction.CallbackContext obj)
     {
         Vector2 input = obj.ReadValue<Vector2>();
         if (input != null)

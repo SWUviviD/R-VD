@@ -108,7 +108,7 @@ public class InputManager : MonoSingleton<InputManager>
 
     private InputAction GetInputActionMapByType(InputDefines.InputActionName actionPoint)
     {
-        return playerInput.actions.FindActionMap(actionPoint.MapType.ToString()).FindAction(actionPoint.ActionName);
+        return playerInput?.actions.FindActionMap(actionPoint.MapType.ToString())?.FindAction(actionPoint.ActionName);
     }
 
     // * 키 변경을 위한 함수 추가될 가능성 있음

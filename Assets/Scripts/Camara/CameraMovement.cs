@@ -11,9 +11,9 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Transform targetTransfrom;
 
-    [SerializeField] private float radios = 5f;
+    [SerializeField] private float radius = 5f;
     [Range(0f, 180f)]
-    [SerializeField] private float verticalRotation = 70f;
+    [SerializeField] private const float verticalRotation = 70f;
     [Range(-180, 180f)]
     [SerializeField] private float horizentalRotation = 0f;
 
@@ -21,11 +21,13 @@ public class CameraMovement : MonoBehaviour
     private float prevValue;
     private float elapsedRotation;
 
+    private readonly float sinVertical = Mathf.Sin(Mathf.Deg2Rad * verticalRotation);
+    private readonly float cosVertical = Mathf.Cos(Mathf.Deg2Rad * verticalRotation);
+
     private void Start()
     {
         if (targetTransfrom == null)
             this.enabled = false;
-        transform.parent = targetTransfrom;
         RepositionCamera();
 
     }
@@ -43,16 +45,17 @@ public class CameraMovement : MonoBehaviour
         if(prevValue != 0f)
         {
             elapsedRotation += prevValue * rotationSpeed;
-            if (elapsedRotation > 180f || elapsedRotation < -180f)
-                return;
-
-            horizentalRotation += prevValue * rotationSpeed;
-            RepositionCamera();
+            if ((elapsedRotation > 180f || elapsedRotation < -180f) == false)
+            {
+                horizentalRotation += prevValue * rotationSpeed;
+            }
         }
         else
         {
             elapsedRotation = 0f;
         }
+
+        RepositionCamera();
     }
 
     private void OnDisable()
@@ -66,10 +69,12 @@ public class CameraMovement : MonoBehaviour
 
     private void RepositionCamera()
     {
-        transform.position = new Vector3(
-            radios * Mathf.Sin(Mathf.Deg2Rad * verticalRotation) * Mathf.Sin(horizentalRotation * Mathf.Deg2Rad),
-            radios * Mathf.Cos(Mathf.Deg2Rad * verticalRotation),
-            radios * Mathf.Sin(Mathf.Deg2Rad * verticalRotation) * Mathf.Cos(horizentalRotation * Mathf.Deg2Rad));
+        Debug.Log(targetTransfrom.position);
+
+        transform.position = targetTransfrom.position + new Vector3(
+            radius * sinVertical * Mathf.Sin(horizentalRotation * Mathf.Deg2Rad),
+            radius * cosVertical,
+            radius * sinVertical * Mathf.Cos(horizentalRotation * Mathf.Deg2Rad));
         transform.LookAt(targetTransfrom);
     }
 

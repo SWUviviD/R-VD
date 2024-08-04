@@ -29,7 +29,7 @@ public class UIBase : MonoBehaviour
     /// <summary>
     /// 자식 팝업이 삭제된경우 호출
     /// </summary>
-    public virtual void OnCloseChildPopup()
+    public virtual void OnChildPopupClose()
     {
         
     }

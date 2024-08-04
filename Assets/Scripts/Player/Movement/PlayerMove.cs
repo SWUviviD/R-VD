@@ -5,9 +5,9 @@ using Defines;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField] Rigidbody rigidbody;
+    [SerializeField] PlayerStatus status;
     
     private Vector3 moveDirection;
-    public float moveSpeed = 4f;
 
     private void OnEnable()
     {
@@ -26,7 +26,7 @@ public class PlayerMove : MonoBehaviour
         if (hasControl)
         {
             transform.rotation = Quaternion.LookRotation(moveDirection);
-            rigidbody.MovePosition(transform.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+            rigidbody.MovePosition(transform.position + moveDirection * status.GetMoveSpeed() * Time.fixedDeltaTime);
         }
     }
 

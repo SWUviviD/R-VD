@@ -7,6 +7,8 @@ namespace Defines
             StarHunt,
             MagicOfAttunement,
             MagicArrow,
+            TestArrow1,
+            TestArrow2
         }
     }
 }

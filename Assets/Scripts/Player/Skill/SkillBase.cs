@@ -23,21 +23,21 @@ public abstract class SkillBase
     /// <summary>
     /// 스킬 키가 눌렸을 때
     /// </summary>
-    /// <param name="status"></param>
+    /// <param name="_playerStatus"></param>
     /// <returns></returns>
-    public abstract void OnSkillStart(Status status);
+    public abstract void OnSkillStart(PlayerStatus _playerStatus);
     /// <summary>
     /// 스킬 키가 눌리고 있을 때
     /// </summary>
-    /// <param name="status"></param>
+    /// <param name="_playerStatus"></param>
     /// <returns></returns>
-    public abstract void OnSkill(Status status);
+    public abstract void OnSkill(PlayerStatus _playerStatus);
     /// <summary>
     /// 스킬 키가 떼였을 때
     /// </summary>
-    /// <param name="status"></param>
+    /// <param name="_playerStatus"></param>
     /// <returns></returns>
-    public abstract void OnSkillStop(Status status);
+    public abstract void OnSkillStop(PlayerStatus _playerStatus);
     
     public virtual void OnFixedUpdate() { }
     public virtual void OnUpdate() { }

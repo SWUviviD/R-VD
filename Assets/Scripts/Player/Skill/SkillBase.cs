@@ -19,9 +19,29 @@ public abstract class SkillBase
     public virtual void OnInit() { }
 
     public virtual void OnAttach() { }
-    public abstract bool UseSkill(Status status);
+
+    /// <summary>
+    /// 스킬 키가 눌렸을 때
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    public abstract void OnSkillStart(Status status);
+    /// <summary>
+    /// 스킬 키가 눌리고 있을 때
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    public abstract void OnSkill(Status status);
+    /// <summary>
+    /// 스킬 키가 떼였을 때
+    /// </summary>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    public abstract void OnSkillStop(Status status);
+    
     public virtual void OnFixedUpdate() { }
     public virtual void OnUpdate() { }
     public virtual void OnLateUpdate() { }
+    
     public virtual void OnDetach() { }
 }

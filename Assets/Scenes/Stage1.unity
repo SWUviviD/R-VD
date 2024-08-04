@@ -364,8 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097636d282a7d8b46b71beade931971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 10
-  jumpSpeed: 3
+  jumpHeight: 8
+  jumpSpeed: 5
   rigid: {fileID: 1083133475}
 --- !u!114 &1083133477
 MonoBehaviour:
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb567062b93d9f4abda7cd0229c01da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 6
 --- !u!4 &1083133478
 Transform:
   m_ObjectHideFlags: 0
@@ -394,6 +394,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1345137641}
+  - {fileID: 1146953147}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128955670
@@ -438,6 +439,7 @@ GameObject:
   - component: {fileID: 1146953147}
   - component: {fileID: 1146953146}
   - component: {fileID: 1146953145}
+  - component: {fileID: 1146953148}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -513,12 +515,29 @@ Transform:
   m_GameObject: {fileID: 1146953144}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 4.1, z: -10.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1083133478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1146953148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146953144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83ccf1289778a8b49bd51823af430f2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransfrom: {fileID: 1083133478}
+  radios: 10
+  verticalRotation: 70
+  horizentalRotation: 0
+  rotationSpeed: 1
 --- !u!1 &1230941883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,7 +1024,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1146953147}
   - {fileID: 886459412}
   - {fileID: 1083133478}
   - {fileID: 2090339458}

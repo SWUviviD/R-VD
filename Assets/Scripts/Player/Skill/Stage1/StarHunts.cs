@@ -5,7 +5,7 @@ using Defines;
 
 public class StarHunts : SkillBase
 {
-    const int arrowInitCount = 10;
+    private const int arrowInitCount = 10;
 
     public override void OnInit()
     {
@@ -24,8 +24,15 @@ public class StarHunts : SkillBase
         PoolManager.Instance.CreatePool(PoolDefines.PoolType.StarHunts, arrow, arrowInitCount);
     }
 
-    public override bool UseSkill(Status status)
+    public override void OnSkill(Status status)
     {
-        return true;
+    }
+
+    public override void OnSkillStart(Status status)
+    {
+    }
+
+    public override void OnSkillStop(Status status)
+    {
     }
 }

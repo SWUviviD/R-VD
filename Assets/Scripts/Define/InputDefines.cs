@@ -33,5 +33,7 @@ namespace Defines
         public readonly static string Jump = "Jump";
         public readonly static string Dash = "Dash";
         public readonly static string Magic = "Magic";
+
+        public readonly static string CameraRotation = "CameraRotation";
     }
 }

@@ -106,7 +106,7 @@ public class InputManager : MonoSingleton<InputManager>
         }
     }
 
-    private InputAction GetInputActionMapByType(InputDefines.InputActionName actionPoint)
+    public InputAction GetInputActionMapByType(InputDefines.InputActionName actionPoint)
     {
         return playerInput?.actions.FindActionMap(actionPoint.MapType.ToString())?.FindAction(actionPoint.ActionName);
     }

@@ -69,7 +69,7 @@ public class CameraMovement : MonoBehaviour
 
     private void RepositionCamera()
     {
-        Debug.Log(targetTransfrom.position);
+        //Debug.Log(targetTransfrom.position);
 
         transform.position = targetTransfrom.position + new Vector3(
             radius * sinVertical * Mathf.Sin(horizentalRotation * Mathf.Deg2Rad),

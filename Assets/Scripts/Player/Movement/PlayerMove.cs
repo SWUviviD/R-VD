@@ -4,6 +4,8 @@ using Defines;
 
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] Rigidbody rigidbody;
+    
     private Vector3 moveDirection;
     public float moveSpeed = 4f;
 
@@ -17,14 +19,14 @@ public class PlayerMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         bool hasControl = (moveDirection != Vector3.zero);
         //Debug.Log("moveDirection : " + moveDirection);
         if (hasControl)
         {
             transform.rotation = Quaternion.LookRotation(moveDirection);
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            rigidbody.MovePosition(transform.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
         }
     }
 

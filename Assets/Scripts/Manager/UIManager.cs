@@ -89,8 +89,6 @@ public class UIManager : MonoSingleton<UIManager>
             Debug.LogError($"최상위 UI가 아닙니다. ( {ui.name} )");
             return;
         }
-
-        if (ui.OnClose() == false) return;
         
         cachedUIList.Add(ui);
         uiList.RemoveAt(uiList.Count - 1);

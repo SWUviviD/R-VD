@@ -53,7 +53,7 @@ public class UIManager : MonoSingleton<UIManager>
         }
         else
         {
-            AddressableAssetsManager.Instance.LoadAsyncAssets(uiAddress, string.Empty, (obj) =>
+            AddressableAssetsManager.Instance.LoadAsyncAssets(uiAddress, uiAddress, (obj) =>
             {
                 var instance = Instantiate((GameObject)obj);
                 var uiBase = instance.GetComponent<UIBase>();
@@ -106,6 +106,6 @@ public class UIManager : MonoSingleton<UIManager>
         }
         
         // 자식이 닫혔음을 알림.
-        lastUI.OnCloseChildPopup();
+        lastUI.OnChildPopupClose();
     }
 }

@@ -24,15 +24,15 @@ public class StarHunts : SkillBase
         PoolManager.Instance.CreatePool(PoolDefines.PoolType.StarHunts, arrow, arrowInitCount);
     }
 
-    public override void OnSkill(Status status)
+    public override void OnSkill(PlayerStatus _playerStatus)
     {
     }
 
-    public override void OnSkillStart(Status status)
+    public override void OnSkillStart(PlayerStatus _playerStatus)
     {
     }
 
-    public override void OnSkillStop(Status status)
+    public override void OnSkillStop(PlayerStatus _playerStatus)
     {
     }
 }

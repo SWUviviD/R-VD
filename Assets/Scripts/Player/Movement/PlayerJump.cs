@@ -11,8 +11,14 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float jumpSpeed;
     [SerializeField] private Rigidbody rigid;
 
-    private bool isJumping;
+    private bool isJumping = false;
+    private bool isFalling = false;
+
+    private float startPos;
+    private float endPos;
+    private float currentPos;
     private Vector3 jumpPos;
+    private float elapsedTime = 0f;
 
     private void Start()
     {
@@ -30,61 +36,62 @@ public class PlayerJump : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        // 점프중 아님
+        if (isJumping == false && isFalling == false)
+            return;
+
+        if(isFalling == true)
+        {
+            elapsedTime += Time.deltaTime;
+
+            currentPos -= elapsedTime / jumpSpeed;
+
+            jumpPos.Set(0f, currentPos, 0f);
+            rigid.MovePosition(transform.position + jumpPos);
+            return;
+        }
+
+        if(isJumping == true)
+        {
+            elapsedTime += Time.deltaTime;
+
+            if (Mathf.Abs(currentPos - endPos) <= 0.5f)
+            {
+                isJumping = false;
+                isFalling = true;
+                elapsedTime = 0f;
+                return;
+            }
+
+            currentPos = Mathf.Lerp(currentPos, endPos, elapsedTime / jumpSpeed);
+            jumpPos.Set(0f, currentPos, 0f);
+            rigid.MovePosition(transform.position + jumpPos);
+            return;
+        }
+    }
+
     private void DoJump(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (isJumping == true)
             return;
 
         isJumping = true;
-        StartCoroutine(Jump());
-    }
+        isFalling = false;
 
-    private IEnumerator Jump()
-    {
-        float elapedTime = 0.0f;
-
-        float startYPos = transform.position.y;
-        float endYPos = startYPos + jumpHeight;
-        float currentYPos = startYPos;
-        bool isGoingUp = true;
-
-        while(isJumping)
-        {
-            elapedTime += Time.deltaTime;
-
-            if (Mathf.Abs(endYPos - currentYPos) <= 0.5f)
-            {
-                break;
-            }
-
-            currentYPos = Mathf.Lerp(currentYPos, endYPos, elapedTime / jumpSpeed);
-            jumpPos.Set(transform.position.x, currentYPos, transform.position.z);
-            transform.position = jumpPos;
-
-            yield return null;
-        }
-
-        elapedTime = 0.0f;
-
-        while(isJumping)
-        {
-            elapedTime += Time.deltaTime;
-
-            currentYPos -= elapedTime / jumpSpeed;
-
-            jumpPos.Set(transform.position.x, currentYPos, transform.position.z);
-            transform.position = jumpPos;
-
-            yield return null;
-        }
-
-        yield break;
+        currentPos = transform.position.y;
+        endPos = currentPos + jumpHeight;
+        Debug.Log(currentPos + " " + endPos);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        {
             isJumping = false;
+            isFalling = false;
+        }
     }
 
     private void OnDisable()

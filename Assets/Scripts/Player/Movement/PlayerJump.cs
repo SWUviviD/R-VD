@@ -3,13 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    [SerializeField] private float jumpHeight;
-    [SerializeField] private float jumpSpeed;
     [SerializeField] private Rigidbody rigid;
+    [SerializeField] private PlayerStatus status;
+    [SerializeField] AnimationCurve curveY = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
     private bool isJumping = false;
     private bool isFalling = false;
@@ -36,20 +37,26 @@ public class PlayerJump : MonoBehaviour
 
     }
 
+    private void OnGUI()
+    {
+        curveY = EditorGUILayout.CurveField(" ", curveY);
+    }
+
     private void FixedUpdate()
     {
         // 점프중 아님
         if (isJumping == false && isFalling == false)
+        {
+            elapsedTime = 0f;
             return;
+        }
 
         if(isFalling == true)
         {
-            elapsedTime += Time.deltaTime;
+            currentPos -= Time.deltaTime * status.FallingSpeed;
 
-            currentPos -= elapsedTime / jumpSpeed;
-
-            jumpPos.Set(0f, currentPos, 0f);
-            rigid.MovePosition(transform.position + jumpPos);
+            jumpPos.Set(rigid.position.x, currentPos, rigid.position.z);
+            rigid.position = jumpPos;
             return;
         }
 
@@ -57,17 +64,18 @@ public class PlayerJump : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
 
-            if (Mathf.Abs(currentPos - endPos) <= 0.5f)
+            if (elapsedTime >= status.JumpSpeed)
             {
                 isJumping = false;
                 isFalling = true;
                 elapsedTime = 0f;
+                Debug.Log("JumpEnd");
                 return;
             }
 
-            currentPos = Mathf.Lerp(currentPos, endPos, elapsedTime / jumpSpeed);
-            jumpPos.Set(0f, currentPos, 0f);
-            rigid.MovePosition(transform.position + jumpPos);
+            currentPos = Mathf.Lerp(startPos, endPos, curveY.Evaluate(elapsedTime / status.JumpSpeed));
+            jumpPos.Set(rigid.position.x, currentPos, rigid.position.z);
+            rigid.position = jumpPos;
             return;
         }
     }
@@ -79,14 +87,15 @@ public class PlayerJump : MonoBehaviour
 
     public void Jump()
     {
-        if (isJumping == true)
+        if (isJumping == true || isFalling == true)
             return;
 
         isJumping = true;
         isFalling = false;
 
         currentPos = transform.position.y;
-        endPos = currentPos + jumpHeight;
+        startPos = transform.position.y;
+        endPos = currentPos + status.JumpHeight;
         Debug.Log(currentPos + " " + endPos);
     }
 
@@ -101,7 +110,7 @@ public class PlayerJump : MonoBehaviour
 
     private void OnDisable()
     {
-        InputManager.Instance.RemoveInputEventFunction(
+        InputManager.Instance?.RemoveInputEventFunction(
             new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, InputDefines.Jump),
             InputDefines.ActionPoint.IsStarted,
             DoJump

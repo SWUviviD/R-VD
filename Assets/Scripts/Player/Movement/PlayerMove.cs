@@ -26,14 +26,14 @@ public class PlayerMove : MonoBehaviour
         if (hasControl)
         {
             transform.rotation = Quaternion.LookRotation(moveDirection);
-            rigidbody.MovePosition(transform.position + moveDirection * status.GetMoveSpeed() * Time.fixedDeltaTime);
+            rigidbody.MovePosition(rigidbody.position + moveDirection * status.GetMoveSpeed() * Time.fixedDeltaTime);
         }
     }
 
     private void OnDisable()
     {
 
-        InputManager.Instance.RemoveInputEventFunction(
+        InputManager.Instance?.RemoveInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Move),
             InputDefines.ActionPoint.All,
             DoMove

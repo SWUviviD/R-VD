@@ -13,6 +13,12 @@ public class PlayerStatus : MonoBehaviour
     public float AttackRange { get; private set; }
     [field: SerializeField]
     public float ProjectileSpeed { get; private set; }
+    [field: SerializeField]
+    public float JumpHeight { get; private set; }
+    [field: SerializeField]
+    public float JumpSpeed { get; private set; }
+    [field: SerializeField]
+    public float FallingSpeed { get; private set; }
     
     public float GetMoveSpeed()
     {

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    [SerializeField] GameObject bubbleObject;
+    [SerializeField] Collider bubbleCollider;
     [SerializeField] float popOffsetTime;
     [SerializeField] float resetOffsetTime;
 
@@ -16,15 +19,25 @@ public class Bubble : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        StartCoroutine(BubblePop());
+        PlayerJump jump = null;
+        if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
+        {
+            jump.Jump();
+            StartCoroutine(BubblePop());
+        }
+
     }
 
     private IEnumerator BubblePop()
     {
-        // ¿©±â¿¡ ÅÍÁö´Â ¾Ö´Ï¸ŞÀÌ¼Ç ¼¼ÆÃ
+        // ì—¬ê¸°ì— í„°ì§€ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì„¸íŒ…
+        bubbleObject.SetActive(false);
+        bubbleCollider.enabled = false;
 
         yield return resetSeconds;
 
-        // ¿©±â¿¡ ´Ù½Ã Á¦»ıµÇ´Â ¾Ö´Ï¸ŞÀÌ¼Ç ¼¼ÆÃ
+        // ì—¬ê¸°ì— ë‹¤ì‹œ ì œìƒë˜ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì„¸íŒ…
+        bubbleObject.SetActive(true);
+        bubbleCollider.enabled = true;
     }
 }

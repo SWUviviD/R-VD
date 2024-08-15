@@ -74,6 +74,11 @@ public class PlayerJump : MonoBehaviour
 
     private void DoJump(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        Jump();
+    }
+
+    public void Jump()
+    {
         if (isJumping == true)
             return;
 

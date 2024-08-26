@@ -8,6 +8,8 @@ namespace StaticData
     [Serializable]
     public class sample : DataBase
     {
+        public Type TYPE { get => type; set => type = value; }
+        [SerializeField] private Type type;
         public int YEAR { get => year; set => year = value; }
         [SerializeField] private int year;
         public int MONTH { get => month; set => month = value; }
@@ -33,5 +35,11 @@ namespace StaticData
         [SerializeField] private int getOn_cnt;
         public int GETOFF_CNT { get => getOff_cnt; set => getOff_cnt = value; }
         [SerializeField] private int getOff_cnt;
+
+        public enum Type
+        {
+            Type1,
+            Type2,
+        }
     }
 }

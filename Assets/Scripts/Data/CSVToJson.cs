@@ -17,10 +17,10 @@ public class CSVToJson : AssetPostprocessor
 
     void OnPreprocessAsset()
     {
-        // ÀÎÆ÷Æ® µÇ´Â ´ë»óÀÌ csv ÆÄÀÏÀÓ
-        if (this.assetPath.Split('.').Length > 2 && assetPath.Split('.')[1].Equals("csv"))
+        // ì¸í¬íŠ¸ ë˜ëŠ” ëŒ€ìƒì´ csv íŒŒì¼ì„
+        if (this.assetPath.Split('.').Length >= 2 && assetPath.Split('.')[1].Equals("csv"))
         {
-            // Çì´õ ¹× ³»¿ë °ËÃâ
+            // í—¤ë” ë° ë‚´ìš© ê²€ì¶œ
             var csvLines = File.ReadAllLines(assetPath);
             if (csvLines.Length == 0)
             {
@@ -30,15 +30,15 @@ public class CSVToJson : AssetPostprocessor
             
             var headers = csvLines[0].Split(',');
 
-            // ÆÄÀÏ ÀÌ¸§À» ÅëÇØ ÇØ´ç Å¬·¡½º ÀÎ½ºÅÏ½º »ı¼º
+            // íŒŒì¼ ì´ë¦„ì„ í†µí•´ í•´ë‹¹ í´ë˜ìŠ¤ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
             string fileName = (assetPath.Split('/')[^1]).Split('.')[0];
             var inst = Activator.CreateInstance(Type.GetType($"StaticData.{fileName}"));
 
-            // Å¬·¡½ºÀÇ ÇÁ·ÎÆÛÆ¼ Å¸ÀÔ °¡Á®¿À±â
+            // í´ë˜ìŠ¤ì˜ í”„ë¡œí¼í‹° íƒ€ì… ê°€ì ¸ì˜¤ê¸°
             List<Type> types = new List<Type>();
             foreach (var _ in headers)
             {
-                // ÇØ´ç ÇÁ·ÎÆÛÆ¼ ¾øÀ½
+                // í•´ë‹¹ í”„ë¡œí¼í‹° ì—†ìŒ
                 var propertyInfo = Type.GetType($"StaticData.{fileName}").GetProperty(_);
                 if (propertyInfo == null)
                 {
@@ -48,7 +48,7 @@ public class CSVToJson : AssetPostprocessor
                 types.Add(propertyInfo.PropertyType);
             }
 
-            // Å¸ÀÔ ±âÁØÀ¸·Î ¼¼ÆÃ
+            // íƒ€ì… ê¸°ì¤€ìœ¼ë¡œ ì„¸íŒ…
             var listType = typeof(List<>);
             var concreteType = listType.MakeGenericType(Type.GetType($"StaticData.{fileName}"));
             var jsonList = (IList)Activator.CreateInstance(concreteType);

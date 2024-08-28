@@ -93,7 +93,7 @@ public class UIManager : MonoSingleton<UIManager>
         cachedUIList.Add(ui);
         uiList.RemoveAt(uiList.Count - 1);
         ui.gameObject.SetActive(false);
-        ui.transform.SetParent(cachedUIRoot);
+        ui.transform.SetParent(cachedUIRoot, false);
         
         if (ui.UIType == UIDefines.UIType.FullScreen)
         {

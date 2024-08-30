@@ -9,5 +9,6 @@ namespace StaticData
     public class DataBase
     {
         public int ID { get; set; }
+        public string ID_str { get; set; }
     }
 }

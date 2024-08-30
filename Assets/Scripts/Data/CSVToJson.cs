@@ -77,7 +77,7 @@ public class CSVToJson : AssetPostprocessor
             serializedJsonList.GetType().GetProperty("list")?.SetValue(serializedJsonList, jsonList);
 
             var data = JsonUtility.ToJson(serializedJsonList, true);
-            File.WriteAllText(basePath + fileName + ".json", data);
+            File.WriteAllText(basePath + "Json/" + fileName + ".json", data);
         }
 
 

@@ -12,25 +12,28 @@ public class UIManager : MonoSingleton<UIManager>
 {
     /// <summary> UI의 최상위 부모 </summary>
     [SerializeField] private RectTransform commonUIRoot;
+    /// <summary> 토스트 팝업 UI의 최상위 부모 </summary>
+    [SerializeField] private RectTransform popupUIRoot;
     /// <summary> 저장된 UI의 최상위 부모 </summary>
     [SerializeField] private RectTransform cachedUIRoot;
-    
+
     /// <summary> 화면에 표시되고 있는 UI 리스트 </summary>
     private List<UIBase> uiList;
     /// <summary> 캐싱한 UI 리스트 </summary>
     private List<UIBase> cachedUIList;
-    
+
     /// <summary> 저장된 UI를 경로와 UI로 매칭하여 가지고 있는 테이블 </summary>
     private Dictionary<string, UIBase> cachedUITable;
 
     private UIBase lastUI => uiList[uiList.Count - 1];
-    
+    private UISampleToastPopup toastPopupUI;
+
     protected override void Init()
     {
         uiList = new List<UIBase>();
         cachedUIList = new List<UIBase>();
         cachedUITable = new Dictionary<string, UIBase>();
-        
+
         // 임시 UI. 가장 기본이 될 UI를 띄운다.
         // TODO : 최상위 UI는 닫히면 안되니까, 닫지 못하도록 하는 처리가 필요할듯.
         Show(Defines.UIDefines.UISampleFull, (_) =>
@@ -74,7 +77,7 @@ public class UIManager : MonoSingleton<UIManager>
             // 화면을 덮는 ui가 로드된 경우, 기존에 보이던 ui를 닫는다.
             uiList.ForEach(_ => _.gameObject.SetActive(false));
         }
-        
+
         uiList.Add(ui);
     }
 
@@ -89,12 +92,12 @@ public class UIManager : MonoSingleton<UIManager>
             Debug.LogError($"최상위 UI가 아닙니다. ( {ui.name} )");
             return;
         }
-        
+
         cachedUIList.Add(ui);
         uiList.RemoveAt(uiList.Count - 1);
         ui.gameObject.SetActive(false);
         ui.transform.SetParent(cachedUIRoot, false);
-        
+
         if (ui.UIType == UIDefines.UIType.FullScreen)
         {
             // 화면을 덮는 UI가 보여질때까지 uiList의 뒷부분부터 하나씩 띄운다.
@@ -104,8 +107,32 @@ public class UIManager : MonoSingleton<UIManager>
                 if (uiList[i].UIType == UIDefines.UIType.FullScreen) break;
             }
         }
-        
+
         // 자식이 닫혔음을 알림.
         lastUI.OnChildPopupClose();
+    }
+
+    /// <summary> 토스트 팝업창 생성 </summary>
+    public void ToastPopup(string content)
+    {
+        string uiAddress = UIDefines.UISampleToastPopup;
+
+        if (toastPopupUI)
+        {
+            toastPopupUI.SetToastPopupText(content);
+            toastPopupUI.OnLoad();
+            return;
+        }
+
+        AddressableAssetsManager.Instance.LoadAsyncAssets(uiAddress, uiAddress, (obj) =>
+        {
+            GameObject instance = Instantiate((GameObject)obj);
+            if (instance.TryGetComponent(out toastPopupUI))
+            {
+                toastPopupUI.transform.SetParent(popupUIRoot, false);
+                toastPopupUI.SetToastPopupText(content);
+                toastPopupUI.OnLoad();
+            }
+        });
     }
 }

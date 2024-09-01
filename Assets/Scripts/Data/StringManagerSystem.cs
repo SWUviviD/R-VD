@@ -3,27 +3,15 @@ using System.Xml; // xml 파싱용
 using System.IO;  // 파일 읽기용
 using UnityEngine;
 
-public class StringManagerSystem
+public class StringManagerSystem : Singleton<StringManagerSystem>
 {
     // 데이터를 저장할 Dictionary
     private Dictionary<string, string> stringData = new Dictionary<string, string>();
 
-    // 싱글톤 패턴
-    private static StringManagerSystem _instance;
-
-    public static StringManagerSystem Instance
+    public StringManagerSystem()
     {
-        get
-        {
-            // 초기화
-            if (_instance == null)
-            {
-                _instance = new StringManagerSystem();
-                // plist 파일 경로 확인, 파일 Load
-                _instance.LoadStringsFromPlist("Assets/Scripts/Data/StringData/StringData.xml");
-            }
-            return _instance;
-        }
+        // 싱글톤 패턴으로 plist 파일 경로 확인, 파일 Load
+        LoadStringsFromPlist("Assets/Scripts/Data/StringData/StringData.xml");
     }
 
     // plist 파일에서 데이터 읽어오기
@@ -58,18 +46,20 @@ public class StringManagerSystem
         }
     }
 
-    // 특정 키로부터 문자열을 가져오는 메소드
-    // 프로퍼티로 교체할 예정입니다...
-    public string GetString(string key)
+    // 프로퍼티
+    public string this[string key]
     {
-        if (stringData.TryGetValue(key, out string value))
+        get
         {
-            return value;
-        }
-        else
-        {
-            Debug.LogWarning("Key not found: " + key);
-            return null;
+            if (stringData.TryGetValue(key, out string value))
+            {
+                return value;
+            }
+            else
+            {
+                Debug.LogWarning("Key not found: " + key);
+                return null;
+            }
         }
     }
 }

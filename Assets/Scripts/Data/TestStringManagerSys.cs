@@ -9,7 +9,7 @@ public class TestStringManagerSys : MonoBehaviour
     {
         if (StringManagerSystem.Instance != null)
         {
-            string title = StringManagerSystem.Instance.GetString("UI.Title");
+            string title = StringManagerSystem.Instance["UI.Title"];
             Debug.Log(title);
         }
         else

@@ -41,7 +41,7 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
     public object SyncLoadObject(string _path, string _key)
     {
-        // ÀÌ¹Ì ·ÎµåµÇ¾î ÀÖ´ÂÁö È®ÀÎ
+        // ì´ë¯¸ ë¡œë“œë˜ì–´ ìžˆëŠ”ì§€ í™•ì¸
         var pack = packList.Find(_ => _.Key == _key);
         if(pack != null)
         {
@@ -94,6 +94,6 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
     public string GetPrefabPath(string _folder, string _assetName)
     {
-        return $"Assets/Prefabs/{_folder}/{_assetName}";
+        return $"Assets/Resource/{_folder}/{_assetName}";
     }
 }

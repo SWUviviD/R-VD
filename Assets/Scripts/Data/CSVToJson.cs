@@ -13,7 +13,7 @@ using System.ComponentModel;
 
 public class CSVToJson : AssetPostprocessor
 {
-    const string basePath = "Assets/Resource/Data/";
+    const string basePath = "Assets/Resource/RawData/";
 
     void OnPreprocessAsset()
     {
@@ -77,7 +77,7 @@ public class CSVToJson : AssetPostprocessor
             serializedJsonList.GetType().GetProperty("list")?.SetValue(serializedJsonList, jsonList);
 
             var data = JsonUtility.ToJson(serializedJsonList, true);
-            File.WriteAllText(basePath + "Json/" + fileName + ".json", data);
+            File.WriteAllText(basePath + "/Json/" + fileName + ".json", data);
         }
 
 

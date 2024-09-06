@@ -23,7 +23,7 @@ public class StringManagerSystem : Singleton<StringManagerSystem>
         // 파일 경로 유효성 검사
         if (!File.Exists(path))
         {
-            Debug.LogError("Text file not found at path: " + path);
+            LogManager.Instance.LogError("Text file not found at path: " + path);
             return;
         }
 
@@ -40,7 +40,7 @@ public class StringManagerSystem : Singleton<StringManagerSystem>
             var parts = line.Split(new[] { ':' }, 2);
             if (parts.Length != 2)
             {
-                Debug.LogWarning("Invalid line format: " + line);
+                LogManager.Instance.LogWarning("Invalid line format: " + line);
                 continue;
             }
 
@@ -54,7 +54,7 @@ public class StringManagerSystem : Singleton<StringManagerSystem>
             }
             else
             {
-                Debug.LogWarning("Duplicate key found: " + key);
+                LogManager.Instance.LogWarning("Duplicate key found: " + key);
             }
         }
     }
@@ -72,7 +72,7 @@ public class StringManagerSystem : Singleton<StringManagerSystem>
             }
             else
             {
-                Debug.LogWarning("Key not found: " + key);
+                LogManager.Instance.LogWarning("Key not found: " + key);
                 return null;
             }
         }

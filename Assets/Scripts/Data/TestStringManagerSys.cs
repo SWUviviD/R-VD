@@ -10,11 +10,11 @@ public class TestStringManagerSys : MonoBehaviour
         if (StringManagerSystem.Instance != null)
         {
             string title = StringManagerSystem.Instance["UI.Title"];
-            Debug.Log(title);
+            LogManager.Instance.Log(title);
         }
         else
         {
-            Debug.LogError("StringManager instance is not initialized.");
+            LogManager.Instance.LogError("StringManager instance is not initialized.");
         }
     }
 

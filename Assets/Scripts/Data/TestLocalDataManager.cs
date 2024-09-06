@@ -21,7 +21,7 @@ public class TestLocalDataManager : MonoBehaviour
         var insertedData = LocalDataManager.Instance.GetData<sample>("sample");
         foreach(var item in insertedData)
         {
-            UnityEngine.Debug.Log(item.LINE_NM);
+            LogManager.Instance.Log(item.STATION_NM);
         }
     }
 }

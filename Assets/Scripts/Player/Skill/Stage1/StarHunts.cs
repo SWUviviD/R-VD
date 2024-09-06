@@ -15,7 +15,7 @@ public class StarHunts : SkillBase
         if (arrowPrefab == null)
             return;
 
-        IPoolable arrow = arrowPrefab.GetComponent<IPoolable>();
+        Poolable arrow = arrowPrefab.GetComponent<Poolable>();
         if (arrow != null)
         {
             return;

@@ -29,9 +29,9 @@ public class WaterMill : MonoBehaviour
             return;
         var platformPrefab = Instantiate(platform);
 
-        PoolManager.Instance.CreatePool(PoolDefines.PoolType.WaterMillPlatform, platformPrefab.GetComponent<IPoolable>(), platformCount);
+        PoolManager.Instance.CreatePool(PoolDefines.PoolType.WaterMillPlatform, platformPrefab.GetComponent<Poolable>(), platformCount);
 
-        // Ã³À½ À§Ä¡ Á¤ÇÏ±â
+        // ì²˜ìŒ ìœ„ì¹˜ ì •í•˜ê¸°
         float delataDegree = 360.0f / platformCount;
         float currentDegree = 0.0f;
         for(int i = 0; i < platformCount; ++i)
@@ -49,7 +49,7 @@ public class WaterMill : MonoBehaviour
 
     private void Update()
     {
-        // ¹ßÆÇ ¿òÁ÷ÀÌ±â
+        // ë°œíŒ ì›€ì§ì´ê¸°
         elapsedDegree += Time.deltaTime * platformSpeed;
         if (elapsedDegree >= 360.0f) elapsedDegree -= 360.0f;
 

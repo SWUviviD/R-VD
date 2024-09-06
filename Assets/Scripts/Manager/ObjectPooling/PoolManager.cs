@@ -6,24 +6,24 @@ using UnityEngine.Pool;
 
 public class PoolManager : MonoSingleton<PoolManager>
 {
-    private Dictionary<PoolDefines.PoolType, IPoolable> poolOrigin;
-    private Dictionary<PoolDefines.PoolType, Queue<IPoolable>> pools;
+    private Dictionary<PoolDefines.PoolType, Poolable> poolOrigin;
+    private Dictionary<PoolDefines.PoolType, Queue<Poolable>> pools;
 
     protected override void Init()
     {
-        poolOrigin = new Dictionary<PoolDefines.PoolType, IPoolable>();
-        pools = new Dictionary<PoolDefines.PoolType, Queue<IPoolable>>();
+        poolOrigin = new Dictionary<PoolDefines.PoolType, Poolable>();
+        pools = new Dictionary<PoolDefines.PoolType, Queue<Poolable>>();
     }
 
-    public bool CreatePool(PoolDefines.PoolType poolType, IPoolable poolObject, int capacity = 10)
+    public bool CreatePool(PoolDefines.PoolType poolType, Poolable poolObject, int capacity = 10)
     {
-        // ¿ÃπÃ «Æ¿Ã ¿÷¿Ω
+        // Ïù¥ÎØ∏ ÌíÄÏù¥ ÏûàÏùå
         if (poolOrigin.ContainsKey(poolType))
             return true;
 
-        // «Æ ∏∏µÈ±‚
+        // ÌíÄ ÎßåÎì§Í∏∞
         poolOrigin[poolType] = poolObject;
-        pools[poolType] = new Queue<IPoolable>();
+        pools[poolType] = new Queue<Poolable>();
         for(int i = 0; i < capacity; i++)
         {
             EnqueuePoolObject(poolType);
@@ -32,12 +32,12 @@ public class PoolManager : MonoSingleton<PoolManager>
         return true;
     }
 
-    public IPoolable GetPoolObject(PoolDefines.PoolType poolType)
+    public Poolable GetPoolObject(PoolDefines.PoolType poolType)
     {
         if (pools.ContainsKey(poolType) == false)
             return null;
 
-        IPoolable clone;
+        Poolable clone;
         if(pools[poolType].TryDequeue(out clone) == false)
         {
             EnqueuePoolObject(poolType);
@@ -50,11 +50,12 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     private void EnqueuePoolObject(PoolDefines.PoolType poolType)
     {
-        IPoolable clone = poolOrigin[poolType].Create(ReturnToPool);
+        Poolable clone = poolOrigin[poolType].Create(ReturnToPool);
+        clone.gameObject.SetActive(false);
         pools[poolType].Enqueue(clone);
     }
 
-    private void ReturnToPool(PoolDefines.PoolType type, IPoolable obj)
+    private void ReturnToPool(PoolDefines.PoolType type, Poolable obj)
     {
         obj.Enqueue();
         pools[type].Enqueue(obj);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-public partial class  WaterMillPlatform : MonoBehaviour, IPoolable
+public partial class  WaterMillPlatform : Poolable
 {
     private Vector3 position;
     public Vector3 Position
@@ -14,7 +14,7 @@ public partial class  WaterMillPlatform : MonoBehaviour, IPoolable
         set
         {
             position = value;
-            transform.localPosition = value;
+            RigidBody.position = value;
         }
     }
     private WaterMill parent;
@@ -38,13 +38,12 @@ public partial class  WaterMillPlatform : MonoBehaviour, IPoolable
     }
 }
 
-public partial class WaterMillPlatform : MonoBehaviour, IPoolable
+public partial class WaterMillPlatform : Poolable
 {
+    [SerializeField] private Rigidbody rigidBody;
+    public Rigidbody RigidBody => rigidBody;
     [SerializeField] private PoolDefines.PoolType type;
-    IPoolable.ReturnToPool _returnToPool;
-    IPoolable.ReturnToPool IPoolable.returnToPool { get => _returnToPool; set => _returnToPool = value; }
-
-    IPoolable IPoolable.Create(IPoolable.ReturnToPool returnToPool)
+    public override Poolable Create(Poolable.ReturnToPool returnToPool)
     {
         GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage2/", "watermillPlatform.prefab"),
@@ -52,19 +51,19 @@ public partial class WaterMillPlatform : MonoBehaviour, IPoolable
         if (platform == null)
             return null;
 
-        IPoolable clone = Instantiate(platform).GetComponent<IPoolable>();
-        this._returnToPool = returnToPool;
+        Poolable clone = Instantiate(platform).GetComponent<Poolable>();
+        this.returnToPool = returnToPool;
         return clone;
     }
 
-    void IPoolable.Dequeue()
+    public override void Dequeue()
     {
         gameObject.SetActive(true);
     }
 
-    void IPoolable.Enqueue()
+    public override void Enqueue()
     {
         gameObject.SetActive(false);
-        _returnToPool.Invoke(type, this);
+        returnToPool.Invoke(type, this);
     }
 }

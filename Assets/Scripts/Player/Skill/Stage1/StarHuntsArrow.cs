@@ -3,17 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class StarHuntsArrow : MonoBehaviour, IPoolable
+public partial class StarHuntsArrow : Poolable
 {
-    IPoolable.ReturnToPool _returnToPool;
-
-    IPoolable.ReturnToPool IPoolable.returnToPool 
-    { 
-        get => _returnToPool; 
-        set => _returnToPool = value; 
-    }
-
-    IPoolable IPoolable.Create(IPoolable.ReturnToPool returnToPool)
+    public override Poolable Create(Poolable.ReturnToPool returnToPool)
     {
         GameObject arrow = (AddressableAssetsManager.Instance.SyncLoadObject(
             AddressableAssetsManager.Instance.GetPrefabPath("Stage1/", "StarHuntsArrow.prefab"),
@@ -21,19 +13,19 @@ public partial class StarHuntsArrow : MonoBehaviour, IPoolable
         if (arrow == null)
             return null;
 
-        IPoolable clone = Instantiate(arrow).GetComponent<IPoolable>();
-        this._returnToPool = returnToPool;
+        Poolable clone = Instantiate(arrow).GetComponent<Poolable>();
+        this.returnToPool = returnToPool;
         return clone;
     }
 
-    void IPoolable.Dequeue()
+    public override void Dequeue()
     {
         gameObject.SetActive(true);
     }
 
-    void IPoolable.Enqueue()
+    public override void Enqueue()
     {
         gameObject.SetActive(false);
-        _returnToPool.Invoke(PoolDefines.PoolType.StarHunts, this);
+        returnToPool.Invoke(PoolDefines.PoolType.StarHunts, this);
     }
 }

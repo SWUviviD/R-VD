@@ -7,10 +7,33 @@ using UnityEngine;
 public class LocalDataManager : Singleton<LocalDataManager>
 {
     private Dictionary<string, List<DataBase>> datas;
+    private const string ASSET_PATH = "Assets/Data/";
 
     public LocalDataManager()
     {
         datas = new Dictionary<string, List<DataBase>> ();
+    }
+
+    public string SetDataFromFile(string _folderPath, string _fileName)
+    {
+        string key = string.Empty;
+        try
+        {
+            object obj = AddressableAssetsManager.Instance.SyncLoadObject(ASSET_PATH + _folderPath + "/" + _fileName, _fileName);
+            TextAsset list = obj as TextAsset;
+
+            var data = JsonUtility.FromJson<CSVToJson.SerializableList<StaticData.sample>>(list.text);
+            foreach (var item in data.list)
+            {
+                AddData(_fileName, item);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogManager.Instance.LogError("SetDataFromFile error: " + ex.Message);
+        }
+
+        return _fileName;
     }
 
     public void AddData(string key, DataBase data)

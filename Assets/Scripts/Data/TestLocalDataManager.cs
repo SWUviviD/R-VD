@@ -9,19 +9,12 @@ public class TestLocalDataManager : MonoBehaviour
 {
     void Start()
     {
-        object obj = AddressableAssetsManager.Instance.SyncLoadObject("Assets/Prefabs/Data/Json/sample.json", "sample");
-        TextAsset list = obj as TextAsset;
+        string key = LocalDataManager.Instance.SetDataFromFile("RawData/Json/", "sample.json");
 
-        var data = JsonUtility.FromJson<CSVToJson.SerializableList<StaticData.sample>>(list.text);
-        foreach(var item in data.list)
+        var datas = LocalDataManager.Instance.GetData<sample>(key);
+        foreach (var data in datas)
         {
-            LocalDataManager.Instance.AddData("sample", item);
-        }
-
-        var insertedData = LocalDataManager.Instance.GetData<sample>("sample");
-        foreach(var item in insertedData)
-        {
-            LogManager.Instance.Log(item.STATION_NM);
+            LogManager.Instance.Log(data.LINE_NM);
         }
     }
 }

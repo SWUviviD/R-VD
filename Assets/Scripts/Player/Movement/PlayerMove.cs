@@ -13,9 +13,10 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private LayerMask groundLayerMask;
 
     [SerializeField] private float moveDrag = 0.9f;
-
     
     private Vector3 moveDirection;
+
+    public bool IsGrounded { get; private set; }
 
     private void OnEnable()
     {
@@ -33,13 +34,16 @@ public class PlayerMove : MonoBehaviour
         if (move.sqrMagnitude > 0)
         {
             transform.rotation = Quaternion.LookRotation(move);
-            rigid.velocity = move.normalized * status.MoveSpeed;
+            Vector3 realMovement = move.normalized * status.MoveSpeed;
+            realMovement.y = rigid.velocity.y;
+            rigid.velocity = realMovement;
+            LogManager.Instance.Log(rigid.velocity.ToString() );
         }
         rigid.velocity *= 0.9f;
 
         RaycastHit hit;
-        bool result = ShootRay(out hit);
-        if(result)
+        IsGrounded = ShootRay(out hit);
+        if(IsGrounded)
         {
             Rebound(ref hit);
         }
@@ -55,10 +59,7 @@ public class PlayerMove : MonoBehaviour
     private void Rebound(ref RaycastHit _hit)
     {
         float deep = _hit.distance - heightLength;
-        if (deep < 0)
-        {
-            rigid.MovePosition(transform.position - new Vector3(0f, deep, 0f));
-        }
+        rigid.MovePosition(rigid.transform.position - new Vector3(0f, deep, 0f));
     }
 
     private void OnDisable()

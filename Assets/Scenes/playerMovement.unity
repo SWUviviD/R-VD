@@ -437,10 +437,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 512464082732337944, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: move
+      value: 
+      objectReference: {fileID: 1204498044}
+    - target: {fileID: 3010588022041336495, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: <MoveSpeed>k__BackingField
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010588022041336495, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: <JumpHeight>k__BackingField
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010588022041336495, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: <FallingSpeed>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4350681127592723824, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
         type: 3}
       propertyPath: m_Drag
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4350681127592723824, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
         type: 3}
@@ -711,6 +731,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1204498044 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8199604404254181693, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+    type: 3}
+  m_PrefabInstance: {fileID: 316271373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb567062b93d9f4abda7cd0229c01da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1346883485
 GameObject:
   m_ObjectHideFlags: 0

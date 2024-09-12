@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb567062b93d9f4abda7cd0229c01da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 4350681127592723824}
+  rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
 --- !u!114 &512464082732337944
 MonoBehaviour:
@@ -279,9 +279,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 097636d282a7d8b46b71beade931971c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 8
-  jumpSpeed: 5
   rigid: {fileID: 4350681127592723824}
+  status: {fileID: 3010588022041336495}
+  curveY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2036612702373472162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +333,9 @@ MonoBehaviour:
   <AdditionalMoveSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <ProjectileSpeed>k__BackingField: 0
+  <JumpHeight>k__BackingField: 0
+  <JumpSpeed>k__BackingField: 0
+  <FallingSpeed>k__BackingField: 0
 --- !u!114 &4011922343640468828
 MonoBehaviour:
   m_ObjectHideFlags: 0

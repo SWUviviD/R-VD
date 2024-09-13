@@ -14,8 +14,13 @@ public class UIManager : MonoSingleton<UIManager>
     [SerializeField] private RectTransform commonUIRoot;
     /// <summary> 토스트 팝업 UI의 최상위 부모 </summary>
     [SerializeField] private RectTransform popupUIRoot;
+    /// <summary> 툴팁창 및 대화창 UI의 최상위 부모 </summary>
+    [SerializeField] private RectTransform tooltipUIRoot;
     /// <summary> 저장된 UI의 최상위 부모 </summary>
     [SerializeField] private RectTransform cachedUIRoot;
+
+    /// <summary> 토스트 팝업창 </summary>
+    [SerializeField] private UISampleToastPopup toastPopupUI;
 
     /// <summary> 화면에 표시되고 있는 UI 리스트 </summary>
     private List<UIBase> uiList;
@@ -26,7 +31,6 @@ public class UIManager : MonoSingleton<UIManager>
     private Dictionary<string, UIBase> cachedUITable;
 
     private UIBase lastUI => uiList[uiList.Count - 1];
-    private UISampleToastPopup toastPopupUI;
 
     protected override void Init()
     {
@@ -40,6 +44,16 @@ public class UIManager : MonoSingleton<UIManager>
         {
             (_ as UISampleFull).Set(false);
         });
+
+        // 툴팁창 오브젝트 풀 생성
+        GameObject tooltip = AddressableAssetsManager.Instance.SyncLoadObject(
+            AddressableAssetsManager.Instance.GetPrefabPath("UI/Sample", "UISampleTooltip.prefab"),
+            PoolDefines.PoolType.UITooltip.ToString()) as GameObject;
+
+        if (tooltip == null)
+            return;
+
+        PoolManager.Instance.CreatePool(PoolDefines.PoolType.UITooltip, tooltip.GetComponent<Poolable>());
     }
 
     /// <summary>
@@ -112,27 +126,35 @@ public class UIManager : MonoSingleton<UIManager>
         lastUI.OnChildPopupClose();
     }
 
-    /// <summary> 토스트 팝업창 생성 </summary>
+    /// <summary> 토스트 팝업창 생성 및 내용 출력 </summary>
     public void ToastPopup(string content)
     {
-        string uiAddress = UIDefines.UISampleToastPopup;
-
-        if (toastPopupUI)
+        if (!toastPopupUI)
         {
-            toastPopupUI.SetToastPopupText(content);
-            toastPopupUI.OnLoad();
             return;
         }
 
-        AddressableAssetsManager.Instance.LoadAsyncAssets(uiAddress, uiAddress, (obj) =>
+        if (!toastPopupUI.gameObject.activeInHierarchy)
         {
-            GameObject instance = Instantiate((GameObject)obj);
-            if (instance.TryGetComponent(out toastPopupUI))
-            {
-                toastPopupUI.transform.SetParent(popupUIRoot, false);
-                toastPopupUI.SetToastPopupText(content);
-                toastPopupUI.OnLoad();
-            }
-        });
+            toastPopupUI.gameObject.SetActive(true);
+        }
+        toastPopupUI.SetToastPopupText(content);
+        toastPopupUI.OnLoad();
+    }
+
+    /// <summary> 툴팁창 생성 및 내용 출력 </summary>
+    public void Tooltip(Transform target, string content)
+    {
+        UISampleTooltip tooltip = PoolManager.Instance.GetPoolObject(PoolDefines.PoolType.UITooltip) as UISampleTooltip;
+        tooltip.transform.SetParent(tooltipUIRoot);
+        tooltip.SetContent(content);
+        tooltip.SetTarget(target);
+    }
+
+    /// <summary> 디버깅을 위한 임시 함수 </summary>
+    public void TestTooltip(Transform target)
+    {
+        // TODO : 툴팁창 기능 검토를 마친 후, 해당 함수 삭제
+        Tooltip(target, "Hello Unity!");
     }
 }

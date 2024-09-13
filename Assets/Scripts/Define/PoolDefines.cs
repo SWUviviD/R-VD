@@ -7,6 +7,7 @@ namespace Defines
         {
             WaterMillPlatform,
             StarHunts,
+            UITooltip,
         }
     }
 }

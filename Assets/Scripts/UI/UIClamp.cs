@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class UIClamp : MonoBehaviour
+public partial class UIClamp : Poolable
 {
+    [Header("UI Clamp")]
     /// <summary> 위치가 보정되는 UI의 최상위 부모 </summary>
-    [SerializeField] private Canvas clampCanvas;
+    [SerializeField] private Canvas tooltipCanvas;
     /// <summary> UI가 따라가는 target의 Transform </summary>
     [SerializeField] private Transform targetTR;
     /// <summary> 보정 길이: UI가 Offset만큼 벗어나면 사라진다. </summary>
@@ -21,8 +22,6 @@ public class UIClamp : MonoBehaviour
 
     private void Awake()
     {
-        transform.parent = clampCanvas.transform;
-
         rectTR = GetComponent<RectTransform>();
         rectWidth = rectTR.rect.width;
         rectHeight = rectTR.rect.height;
@@ -77,5 +76,29 @@ public class UIClamp : MonoBehaviour
 
         // 위치 갱신
         rectTR.position = targetPoint;
+    }
+
+    /// <summary> UI가 나타날 위치를 설정하기 위한 타겟 설정 </summary>
+    public void SetTarget(Transform target)
+    {
+        targetTR = target;
+    }
+}
+
+public partial class UIClamp : Poolable
+{
+    public override Poolable Create(ReturnToPool returnToPool)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Dequeue()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void Enqueue()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -10,7 +10,7 @@ public class StarHunts : SkillBase
     public override void OnInit()
     {
         GameObject arrowPrefab = (AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("Stage1", "StarHuntsArrow.prefab"),
+            AddressableAssetsManager.Instance.GetPrefabPath("Prefabs/Temp/Stage1", "StarHuntsArrow.prefab"),
             PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
         if (arrowPrefab == null)
             return;

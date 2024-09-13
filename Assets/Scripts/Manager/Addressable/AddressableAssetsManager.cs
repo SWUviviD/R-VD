@@ -94,6 +94,6 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
     public string GetPrefabPath(string _folder, string _assetName)
     {
-        return $"Assets/Resource/{_folder}/{_assetName}";
+        return $"Assets/Data/{_folder}/{_assetName}";
     }
 }

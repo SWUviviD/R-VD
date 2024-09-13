@@ -8,7 +8,7 @@ public partial class StarHuntsArrow : Poolable
     public override Poolable Create(Poolable.ReturnToPool returnToPool)
     {
         GameObject arrow = (AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("Stage1/", "StarHuntsArrow.prefab"),
+            AddressableAssetsManager.Instance.GetPrefabPath("Prefabs/TempStage1", "StarHuntsArrow.prefab"),
             PoolDefines.PoolType.StarHunts.ToString())) as GameObject;
         if (arrow == null)
             return null;

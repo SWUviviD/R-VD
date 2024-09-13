@@ -13,8 +13,8 @@ namespace Defines
             ToastPopup, // 이벤트 발생시 나타나는 알림 UI
         }
 
-        public const string UISampleFull = "Assets/Prefabs/UI/Sample/UISampleFull.prefab";
-        public const string UISampleWindow = "Assets/Prefabs/UI/Sample/UISampleWindow.prefab";
-        public const string UISampleToastPopup = "Assets/Prefabs/UI/Sample/UISampleToastPopup.prefab";
+        public const string UISampleFull = "Assets/Data/UI/Sample/UISampleFull.prefab";
+        public const string UISampleWindow = "Assets/Data/UI/Sample/UISampleWindow.prefab";
+        public const string UISampleToastPopup = "Assets/Data/UI/Sample/UISampleToastPopup.prefab";
     }
 }

@@ -347,7 +347,7 @@ MonoBehaviour:
   <FallingSpeed>k__BackingField: 3
   <IsDashing>k__BackingField: 0
   <DashSpeed>k__BackingField: 30
-  <DashTime>k__BackingField: 0.5
+  <DashTime>k__BackingField: 1
 --- !u!114 &4011922343640468828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
+  dashCoolTime: 1.5
 --- !u!54 &4350681127592723824
 Rigidbody:
   m_ObjectHideFlags: 0

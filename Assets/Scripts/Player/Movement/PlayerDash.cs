@@ -11,8 +11,14 @@ public class PlayerDash : MonoBehaviour
     private Vector3 dashDirection;
     private WaitForSeconds waitForDashSeconds;
 
+    [SerializeField]
+    private float dashCoolTime = 1.5f;
+    private float elaspedTime = 0.0f;
+    private bool canDash = true;
+
     private void Start()
     {
+        elaspedTime = 0.0f;
         waitForDashSeconds = new WaitForSeconds(status.DashTime);
     }
 
@@ -31,6 +37,16 @@ public class PlayerDash : MonoBehaviour
             rigid.velocity = dashDirection;
         }
         rigid.velocity *= 0.5f;
+
+        if (canDash == false)
+        {
+            elaspedTime += Time.deltaTime;
+            if (elaspedTime >= dashCoolTime)
+            {
+                elaspedTime -= dashCoolTime;
+                canDash = true;
+            }
+        }
     }
 
     private void OnDisable()
@@ -43,7 +59,11 @@ public class PlayerDash : MonoBehaviour
 
     private void OnDash(InputAction.CallbackContext _context)
     {
+        if (canDash == false)
+            return;
+
         status.IsDashing = true;
+        canDash = false;
 
         dashDirection = rigid.transform.forward * status.DashSpeed;
         dashDirection.y = 0f;

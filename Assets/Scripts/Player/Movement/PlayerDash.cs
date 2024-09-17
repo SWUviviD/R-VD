@@ -7,7 +7,6 @@ public class PlayerDash : MonoBehaviour
 {
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private PlayerStatus status;
-    [SerializeField] private PlayerMove move;
 
     private Vector3 dashDirection;
     private WaitForSeconds waitForDashSeconds;
@@ -46,15 +45,7 @@ public class PlayerDash : MonoBehaviour
     {
         status.IsDashing = true;
 
-        Vector3 moveDir = move.MoveDirection;
-        if(moveDir != Vector3.zero)
-        {
-            dashDirection = moveDir.normalized * status.DashSpeed;
-        }
-        else
-        {
-            dashDirection = Vector3.forward * status.DashSpeed;
-        }
+        dashDirection = rigid.transform.forward * status.DashSpeed;
         dashDirection.y = 0f;
 
         StartCoroutine(EndDashing());

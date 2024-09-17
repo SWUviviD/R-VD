@@ -11,10 +11,8 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float rayLength = 1f;
     [SerializeField] private float heightLength = 0.8f;
     [SerializeField] private LayerMask groundLayerMask;
-
-    [SerializeField] private float moveDrag = 0.9f;
     
-    private Vector3 moveDirection;
+    public Vector3 MoveDirection { get; private set; }
 
     public bool IsGrounded { get; private set; }
 
@@ -30,16 +28,10 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        Vector3 move = new Vector3(moveDirection.x, 0f, moveDirection.y);
-        if (move.sqrMagnitude > 0)
+        if (status.IsDashing == false)
         {
-            transform.rotation = Quaternion.LookRotation(move);
-            Vector3 realMovement = move.normalized * status.MoveSpeed;
-            realMovement.y = rigid.velocity.y;
-            rigid.velocity = realMovement;
-            LogManager.Instance.Log(rigid.velocity.ToString() );
+            Move();
         }
-        rigid.velocity *= 0.9f;
 
         RaycastHit hit;
         IsGrounded = ShootRay(out hit);
@@ -48,6 +40,20 @@ public class PlayerMove : MonoBehaviour
             Rebound(ref hit);
         }
 
+    }
+
+    private void Move()
+    {
+        Vector3 move = new Vector3(MoveDirection.x, 0f, MoveDirection.y);
+        if (move.sqrMagnitude > 0)
+        {
+            transform.rotation = Quaternion.LookRotation(move);
+            Vector3 realMovement = move.normalized * status.MoveSpeed;
+            realMovement.y = rigid.velocity.y;
+            rigid.velocity = realMovement;
+            LogManager.Instance.Log(rigid.velocity.ToString());
+        }
+        rigid.velocity *= 0.9f;
     }
 
     private bool ShootRay(out RaycastHit hit)
@@ -73,6 +79,6 @@ public class PlayerMove : MonoBehaviour
 
     private void DoMove(InputAction.CallbackContext obj)
     {
-        moveDirection = obj.ReadValue<Vector2>();
+        MoveDirection = obj.ReadValue<Vector2>();
     }
 }

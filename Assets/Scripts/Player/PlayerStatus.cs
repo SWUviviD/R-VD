@@ -19,6 +19,15 @@ public class PlayerStatus : MonoBehaviour
     public float JumpSpeed { get; private set; }
     [field: SerializeField]
     public float FallingSpeed { get; private set; }
+
+    [field: SerializeField]
+    public bool IsDashing { get; set; }
+
+    [field: SerializeField]
+    public float DashSpeed { get; private set; }
+
+    [field: SerializeField]
+    public float DashTime { get; private set; }
     
     public float GetMoveSpeed()
     {

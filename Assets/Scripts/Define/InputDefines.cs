@@ -17,6 +17,12 @@ namespace Defines
             IsCanceled,
             All,
         }
+
+        public enum SkillType
+        {
+            MAX
+        }
+
         public struct InputActionName
         {
             public InputActionName(ActionMapType _mapType, string _actionName)

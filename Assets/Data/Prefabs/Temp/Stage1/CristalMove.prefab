@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6902875159480323884
+--- !u!1001 &7421655468219297804
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -61,41 +61,42 @@ PrefabInstance:
     - target: {fileID: 6496071601880966687, guid: 9f7573a5169bf984684f2a66e119f2fc,
         type: 3}
       propertyPath: m_Name
-      value: Cristal_Blink
+      value: Cristal_Move
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6496071601880966687, guid: 9f7573a5169bf984684f2a66e119f2fc,
+    - targetCorrespondingSourceObject: {fileID: 3538874252531558490, guid: 9f7573a5169bf984684f2a66e119f2fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8132012599929648332}
+      addedObject: {fileID: 8218036841170595220}
   m_SourcePrefab: {fileID: 100100000, guid: 9f7573a5169bf984684f2a66e119f2fc, type: 3}
---- !u!1 &427101813828708659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6496071601880966687, guid: 9f7573a5169bf984684f2a66e119f2fc,
+--- !u!4 &3500923687879729147 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6227004767363248119, guid: 9f7573a5169bf984684f2a66e119f2fc,
     type: 3}
-  m_PrefabInstance: {fileID: 6902875159480323884}
+  m_PrefabInstance: {fileID: 7421655468219297804}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8132012599929648332
+--- !u!1 &6333080536539502678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3538874252531558490, guid: 9f7573a5169bf984684f2a66e119f2fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 7421655468219297804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8218036841170595220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 427101813828708659}
+  m_GameObject: {fileID: 6333080536539502678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2e23e7c52627c346a632e577932e180, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d7305cca9e23e74ab944074e2ec3724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkObject: {fileID: 3868031898664222791}
-  disableTime: 1
-  enableTime: 1
---- !u!1 &3868031898664222791 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7666801013855326059, guid: 9f7573a5169bf984684f2a66e119f2fc,
-    type: 3}
-  m_PrefabInstance: {fileID: 6902875159480323884}
-  m_PrefabAsset: {fileID: 0}
+  moveingObject: {fileID: 3500923687879729147}
+  speed: 2
+  startPoint: {x: 0, y: 0, z: 0}
+  endPoint: {x: 0, y: 0, z: 0}

@@ -26,4 +26,10 @@ public abstract class GimmickBase : MonoBehaviour
 
     /// <summary> 기믹의 실제 동작은 각 자식 클래스에서 정의 </summary>
     protected abstract void Interact();
+
+    /// <summary> 디버깅 버튼 (TODO: 삭제) </summary>
+    public void OnInteraction()
+    {
+        Interact();
+    }
 }

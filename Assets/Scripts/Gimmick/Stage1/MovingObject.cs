@@ -23,12 +23,12 @@ public class MovingObject : MonoBehaviour
             elapsedSpeed += Time.deltaTime;
             if(elapsedSpeed >= speed)
             {
-                transform.position = endPoint;
+                moveingObject.position = endPoint;
                 break;
             }
 
             curPoint = Vector3.Lerp(start, end, elapsedSpeed / speed);
-            transform.position = curPoint;
+            moveingObject.position = curPoint;
 
             yield return null;
         }

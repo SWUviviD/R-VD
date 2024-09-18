@@ -2,24 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cristal : MonoBehaviour
+public class Cristal : GimmickTrigger
 {
-    [SerializeField] GameObject cristal;
-    [SerializeField] GameObject icyRoad;
+    [Header("Cristal")]
+    [SerializeField] private CapsuleCollider capsuleCollider;
+    [SerializeField] private GameObject cristalGO;
+    [SerializeField] private GameObject starPathGO;
+    [SerializeField] private float rotateSpeed = 1f;
+    [SerializeField] private int scaleUpTime = 60;
 
-    private void Start()
+    protected virtual void Start()
     {
-        cristal.SetActive(true);
-        icyRoad.SetActive(false);
+        cristalGO.SetActive(true);
+        starPathGO.SetActive(false);
+        StartCoroutine(IRotate(rotateSpeed));
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void Interact()
     {
-        // 화살이 지나갔을 경우
-        if(other.transform.parent.TryGetComponent<TestProjectile>(out var _) == true)
+        isActive = false;
+        capsuleCollider.enabled = false;
+        cristalGO.SetActive(false);
+        starPathGO.SetActive(true);
+        StartCoroutine(IScaleUp(scaleUpTime));
+    }
+
+    /// <summary> 크리스탈 회전 샘플 </summary>
+    private IEnumerator IRotate(float speed)
+    {
+        while (isActive)
         {
-            cristal.SetActive(false);
-            icyRoad.SetActive(true);
+            cristalGO.transform.Rotate(Vector3.up * speed);
+            yield return null;
+        }
+    }
+
+    /// <summary> 빙판 생성 연출 샘플 </summary>
+    private IEnumerator IScaleUp(int time)
+    {
+        for (int i = 0; i <= time; ++i)
+        {
+            starPathGO.transform.localScale = Vector3.one * i / time;
+            yield return null;
         }
     }
 }

@@ -30,7 +30,7 @@ public class LocalDataManager : Singleton<LocalDataManager>
         }
         catch (Exception ex)
         {
-            LogManager.Instance.LogError("SetDataFromFile error: " + ex.Message);
+            LogManager.LogError("SetDataFromFile error: " + ex.Message);
         }
 
         return _fileName;

@@ -1,24 +1,24 @@
 using UnityEngine;
 
-public class LogManager : Singleton<LogManager>
+public static class LogManager
 {
-    public void Log(string msg)
+    public static void Log(string msg)
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_MODE
         Debug.Log(msg);
 #endif
     }
 
-    public void LogWarning(string msg)
+    public static void LogWarning(string msg)
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_MODE
         Debug.LogWarning(msg);
 #endif
     }
 
-    public void LogError(string msg)
+    public static void LogError(string msg)
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || DEVELOPMENT_MODE
         Debug.LogError(msg);
 #endif
     }

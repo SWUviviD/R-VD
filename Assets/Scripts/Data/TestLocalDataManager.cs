@@ -14,7 +14,7 @@ public class TestLocalDataManager : MonoBehaviour
         var datas = LocalDataManager.Instance.GetData<sample>(key);
         foreach (var data in datas)
         {
-            LogManager.Instance.Log(data.LINE_NM);
+            LogManager.Log(data.LINE_NM);
         }
     }
 }

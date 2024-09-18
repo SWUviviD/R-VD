@@ -103,7 +103,7 @@ public class UIManager : MonoSingleton<UIManager>
     {
         if (lastUI != ui)
         {
-            LogManager.Instance.LogError($"최상위 UI가 아닙니다. ( {ui.name} )");
+            LogManager.LogError($"최상위 UI가 아닙니다. ( {ui.name} )");
             return;
         }
 

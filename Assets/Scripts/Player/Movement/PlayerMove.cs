@@ -51,7 +51,7 @@ public class PlayerMove : MonoBehaviour
             Vector3 realMovement = move.normalized * status.MoveSpeed;
             realMovement.y = rigid.velocity.y;
             rigid.velocity = realMovement;
-            LogManager.Instance.Log(rigid.velocity.ToString());
+            LogManager.Log(rigid.velocity.ToString());
         }
         rigid.velocity *= 0.9f;
     }

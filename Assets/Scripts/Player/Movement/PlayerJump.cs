@@ -50,7 +50,7 @@ public class PlayerJump : MonoBehaviour
             Vector3 realFalling = rigid.velocity;
             realFalling.y -= status.FallingSpeed;
             rigid.velocity = realFalling;
-            LogManager.Instance.Log(rigid.velocity.ToString());
+            LogManager.Log(rigid.velocity.ToString());
         }
     }
 

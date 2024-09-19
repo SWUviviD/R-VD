@@ -34,18 +34,21 @@ public class StringManagerSystem : Singleton<StringManagerSystem>
         foreach (var line in lines)
         {
             if (string.IsNullOrWhiteSpace(line))
-                continue; // 빈 줄은 무시
+                continue; // 빈 줄 무시
 
-            // ':'로 key와 value 분리
-            var parts = line.Split(new[] { ':' }, 2);
+            // ;로 끝나는 라인을 처리하여 분리
+            var tempLine = line.TrimEnd(';'); // 마지막 ; 제거
+            var parts = tempLine.Split(new[] { "\":\"" }, System.StringSplitOptions.None); // key와 value를 ":"로 분리
+
             if (parts.Length != 2)
             {
                 LogManager.LogWarning("Invalid line format: " + line);
                 continue;
             }
 
-            string key = parts[0].Trim();    // key
-            string value = parts[1].Trim();  // value
+            // key와 value에서 양쪽 " 제거
+            string key = parts[0].Trim('\"').Trim();    // key 부분
+            string value = parts[1].Trim('\"').Trim();  // value 부분
 
             // key-value 쌍으로 Dictionary에 저장
             if (!stringData.ContainsKey(key))

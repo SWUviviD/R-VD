@@ -30,6 +30,10 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             Init();
         }
+        else if( _instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
     protected virtual void Init() { }

@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "StarHunt",
+                    "type": "Button",
+                    "id": "38fb29df-4f5b-4849-bb71-1d14f1444d6a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -172,6 +181,17 @@
                     "action": "CameraRotation",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e6a2c5d8-4916-49de-8bbf-1ee9a9daaaf8",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StarHunt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

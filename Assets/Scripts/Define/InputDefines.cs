@@ -20,6 +20,7 @@ namespace Defines
 
         public enum SkillType
         {
+            StarHunt,
             MAX
         }
 

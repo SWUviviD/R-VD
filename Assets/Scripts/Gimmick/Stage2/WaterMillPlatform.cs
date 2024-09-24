@@ -64,6 +64,5 @@ public partial class WaterMillPlatform : Poolable
     public override void Enqueue()
     {
         gameObject.SetActive(false);
-        returnToPool.Invoke(type, this);
     }
 }

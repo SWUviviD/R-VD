@@ -71,6 +71,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""StarHunt"",
+                    ""type"": ""Button"",
+                    ""id"": ""38fb29df-4f5b-4849-bb71-1d14f1444d6a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6a2c5d8-4916-49de-8bbf-1ee9a9daaaf8"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StarHunt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -252,6 +272,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
         m_PlayerActions_Magic = m_PlayerActions.FindAction("Magic", throwIfNotFound: true);
         m_PlayerActions_CameraRotation = m_PlayerActions.FindAction("CameraRotation", throwIfNotFound: true);
+        m_PlayerActions_StarHunt = m_PlayerActions.FindAction("StarHunt", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -321,6 +342,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Dash;
     private readonly InputAction m_PlayerActions_Magic;
     private readonly InputAction m_PlayerActions_CameraRotation;
+    private readonly InputAction m_PlayerActions_StarHunt;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -330,6 +352,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_PlayerActions_Dash;
         public InputAction @Magic => m_Wrapper.m_PlayerActions_Magic;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerActions_CameraRotation;
+        public InputAction @StarHunt => m_Wrapper.m_PlayerActions_StarHunt;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -354,6 +377,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @CameraRotation.started += instance.OnCameraRotation;
             @CameraRotation.performed += instance.OnCameraRotation;
             @CameraRotation.canceled += instance.OnCameraRotation;
+            @StarHunt.started += instance.OnStarHunt;
+            @StarHunt.performed += instance.OnStarHunt;
+            @StarHunt.canceled += instance.OnStarHunt;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -373,6 +399,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @CameraRotation.started -= instance.OnCameraRotation;
             @CameraRotation.performed -= instance.OnCameraRotation;
             @CameraRotation.canceled -= instance.OnCameraRotation;
+            @StarHunt.started -= instance.OnStarHunt;
+            @StarHunt.performed -= instance.OnStarHunt;
+            @StarHunt.canceled -= instance.OnStarHunt;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -452,6 +481,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnMagic(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnStarHunt(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

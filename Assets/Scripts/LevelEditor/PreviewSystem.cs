@@ -4,10 +4,18 @@ using UnityEngine;
 
 namespace LevelEditor
 {
+    /// <summary>
+    /// 배치 미리보기 시스템을 관리하는 클래스
+    /// </summary>
     public class PreviewSystem : MonoBehaviour
     {
+        /// <summary> 미리보기 오프셋 값 </summary>
         [SerializeField] private float previewOffset = 0.06f;
+
+        /// <summary> 오브젝트 위치와 설치 가능 유무를 색으로 나타내는 셀 </summary>
         [SerializeField] private GameObject cellIndicator;
+
+        /// <summary> 미리보기용 반투명 머터리얼 </summary>
         [SerializeField] private Material previewMaterialPrefab;
 
         private GameObject previewObject;
@@ -25,6 +33,9 @@ namespace LevelEditor
             cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
         }
 
+        /// <summary>
+        /// 오브젝트 배치 미리보기 시작
+        /// </summary>
         public void StartShowingPlacementPreview(GameObject prefab, Vector3Int size)
         {
             previewObject = Instantiate(prefab);
@@ -33,6 +44,9 @@ namespace LevelEditor
             cellIndicator.SetActive(true);
         }
 
+        /// <summary>
+        /// 오브젝트의 크기에 맞게 셀 크기 준비
+        /// </summary>
         private void PrepareCursor(Vector3Int size)
         {
             if (size.x > 0 || size.y > 0 || size.z > 0)
@@ -42,6 +56,9 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// 미리보기 오브젝트를 반투명하게 나타나도록 준비
+        /// </summary>
         private void PreparePreview(GameObject previewObject)
         {
             renderers = previewObject.GetComponentsInChildren<Renderer>();
@@ -56,6 +73,9 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// 오브젝트 미리보기 중지
+        /// </summary>
         public void StopShowingPreview()
         {
             cellIndicator.SetActive(false);
@@ -65,6 +85,9 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// 오브젝트 제거 미리보기
+        /// </summary>
         public void StartShowingRemovePreview()
         {
             cellIndicator.SetActive(true);
@@ -72,6 +95,9 @@ namespace LevelEditor
             ApplyFeedbackToCursor(false);
         }
 
+        /// <summary>
+        /// 미리보기 위치 업데이트
+        /// </summary>
         public void UpdatePosition(Vector3 position, bool validity)
         {
             if (previewObject != null)
@@ -83,24 +109,25 @@ namespace LevelEditor
             ApplyFeedbackToCursor(validity);
         }
 
+        /// <summary>
+        /// 미리보기 오브젝트를 지정된 위치로 이동
+        /// </summary>
         private void MovePreview(Vector3 position)
         {
             previewObject.transform.position = new Vector3(position.x, position.y + previewOffset, position.z);
         }
 
+        /// <summary>
+        /// 셀을 지정된 위치로 이동
+        /// </summary>
         private void MoveCursor(Vector3 position)
         {
             cellIndicator.transform.position = position;
         }
 
-        private void ApplyFeedback(bool validity)
-        {
-            Color c = validity ? Color.white : Color.red;
-            cellIndicatorRenderer.material.color = c;
-            c.a = 0.5f;
-            previewMaterialInstance.color = c;
-        }
-
+        /// <summary>
+        /// 미리보기 오브젝트에 오브젝트 설치 가능 유무에 따른 반투명 색 적용
+        /// </summary>
         private void ApplyFeedbackToPreview(bool validity)
         {
             color = validity ? Color.white : Color.red;
@@ -108,6 +135,9 @@ namespace LevelEditor
             previewMaterialInstance.color = color;
         }
 
+        /// <summary>
+        /// 셀에 오브젝트 설치 가능 유무에 따른 반투명 색 적용
+        /// </summary>
         private void ApplyFeedbackToCursor(bool validity)
         {
             color = validity ? Color.white : Color.red;

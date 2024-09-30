@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace LevelEditor
 {
+    /// <summary>
+    /// 배치 시스템을 관리하는 클래스
+    /// </summary>
     public class PlacementSystem : MonoBehaviour
     {
         [Header("Components")]
@@ -32,6 +35,9 @@ namespace LevelEditor
             furnitureData = new GridData();
         }
 
+        /// <summary>
+        /// 오브젝트 ID를 통한 오브젝트 배치 시작
+        /// </summary>
         public void StartPlacement(int ID)
         {
             StopPlacement();
@@ -41,6 +47,9 @@ namespace LevelEditor
             inputSystem.OnExit += StopPlacement;
         }
 
+        /// <summary>
+        /// 설치된 오브젝트 제거 시작
+        /// </summary>
         public void StartRemoving()
         {
             StopPlacement();
@@ -50,6 +59,9 @@ namespace LevelEditor
             inputSystem.OnExit += StopPlacement;
         }
 
+        /// <summary>
+        /// 오브젝트 배치
+        /// </summary>
         private void PlaceStructure()
         {
             if (inputSystem.IsPointerOverUI())
@@ -62,6 +74,9 @@ namespace LevelEditor
             buildingState.OnAction(gridPosition);
         }
 
+        /// <summary>
+        /// 오브젝트 배치 중지
+        /// </summary>
         private void StopPlacement()
         {
             if (buildingState == null)
@@ -79,13 +94,17 @@ namespace LevelEditor
 
         private void Update()
         {
+            // 오브젝트가 없을 경우 종료
             if (buildingState == null)
             {
                 return;
             }
 
+            // 마우스 위치 및 마우스 위치에 따른 그리드 위치 갱신
             mousePosition = inputSystem.GetSelectedMapPosition();
             gridPosition = grid.WorldToCell(mousePosition);
+
+            // 마지막 그리드 위치와 현재 그리드 위치가 다른 경우 갱신
             if (lastDetectedPosition != gridPosition)
             {
                 buildingState.UpdateState(gridPosition);

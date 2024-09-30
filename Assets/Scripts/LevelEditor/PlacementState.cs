@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace LevelEditor
 {
+    /// <summary>
+    /// 오브젝트 배치 상태를 관리하는 클래스
+    /// </summary>
     public class PlacementState : IBuildingState
     {
         private int selectedObjectIndex = -1;
@@ -54,11 +57,13 @@ namespace LevelEditor
         public void OnAction(Vector3Int gridPosition)
         {
             placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            // 오브젝트 설치가 불가능하면 종료
             if (!placementValidity)
             {
                 return;
             }
 
+            // 오브젝트 배치 및 데이터 추가
             index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
             selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
             selectedData.AddObjectAt(gridPosition,
@@ -66,9 +71,13 @@ namespace LevelEditor
                                      database.objectData[selectedObjectIndex].ID,
                                      index);
 
+            // 미리보기 오브젝트 갱신
             previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
         }
 
+        /// <summary>
+        /// 오브젝트 배치가 가능한지 검사
+        /// </summary>
         private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
         {
             selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
@@ -78,8 +87,10 @@ namespace LevelEditor
 
         public void UpdateState(Vector3Int gridPosition)
         {
+            // 오브젝트 배치 가능 유무 검사
             placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
 
+            // 미리보기 오브젝트 갱신
             previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
         }
     }

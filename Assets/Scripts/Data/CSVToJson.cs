@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +10,13 @@ using static UnityEditor.LightingExplorerTableColumn;
 using System.Xml.Serialization;
 using UnityEngine.Assertions;
 using System.ComponentModel;
+using MemoryPack;
+using StaticData;
+using Cinemachine;
 
 public class CSVToJson : AssetPostprocessor
 {
-    const string basePath = "Assets/Resource/RawData/";
+    const string basePath = "Assets/Data/RawData/LocalData";
 
     void OnPreprocessAsset()
     {
@@ -51,7 +54,8 @@ public class CSVToJson : AssetPostprocessor
             // 타입 기준으로 세팅
             var listType = typeof(List<>);
             var concreteType = listType.MakeGenericType(Type.GetType($"StaticData.{fileName}"));
-            var jsonList = (IList)Activator.CreateInstance(concreteType);
+            //var jsonList = (IList)Activator.CreateInstance(concreteType);
+            List<DataBase> list = new List<DataBase>();
 
             for (int i = 1; i < csvLines.Length; i++)
             {
@@ -68,15 +72,20 @@ public class CSVToJson : AssetPostprocessor
                     Type.GetType($"StaticData.{fileName}").GetProperty(headers[j]).SetValue(newInstance, value);
                 }
 
-                jsonList.Add(newInstance);
-                
+                //jsonList.Add(newInstance);
+                list.Add(newInstance as DataBase);
             }
 
-            var serializableList = typeof(SerializableList<>).MakeGenericType(Type.GetType($"StaticData.{fileName}"));
-            var serializedJsonList = Activator.CreateInstance(serializableList);
-            serializedJsonList.GetType().GetProperty("list")?.SetValue(serializedJsonList, jsonList);
+            //var serializableList = typeof(SerializableList<>).MakeGenericType(Type.GetType($"StaticData.{fileName}"));
+            //var serializedJsonList = Activator.CreateInstance(serializableList);
+            //serializedJsonList.GetType().GetProperty("list")?.SetValue(serializedJsonList, list);
 
-            var data = JsonUtility.ToJson(serializedJsonList, true);
+
+
+            var byteArray = MemoryPackSerializer.Serialize(list);
+            SerializeManager.Instance.SaveDataFile(fileName, byteArray);
+
+            var data = JsonUtility.ToJson(list, true);
             File.WriteAllText(basePath + "/Json/" + fileName + ".json", data);
         }
 
@@ -84,10 +93,11 @@ public class CSVToJson : AssetPostprocessor
     }
 
     [System.Serializable]
-    public class SerializableList<T>
+    public partial class SerializableList<T> where T : DataBase, IMemoryPackable<T>
     {
+        [MemoryPackInclude]
         [SerializeField]
         private List<T> _list;
-        public List<T> list { get => _list; set => _list = value; }
+        [MemoryPackIgnore] public List<T> list { get => _list; set => _list = value; }
     }
 }

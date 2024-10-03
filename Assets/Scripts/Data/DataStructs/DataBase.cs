@@ -1,3 +1,4 @@
+using MemoryPack;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,10 +6,11 @@ using UnityEngine;
 
 namespace StaticData
 {
+    [MemoryPackable]
     [Serializable]
-    public class DataBase
+    public partial class DataBase
     {
-        public int ID { get; set; }
-        public string ID_str { get; set; }
+        [MemoryPackInclude] public int ID { get; set; }
+        [MemoryPackInclude] public string ID_str { get; set; }
     }
 }

@@ -1,62 +1,82 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using Defines;
 using Cinemachine;
+using System.Collections;
 
 public class CameraSkill : MonoBehaviour
 {
-    [SerializeField] public Transform player; // 플레이어의 Transform
-    [SerializeField] public CinemachineVirtualCamera virtualCamera;
-    [SerializeField] private float minZoom = 0f; // 최소 줌
-    [SerializeField] private float maxZoom = 10f; // 최대 줌
-    [SerializeField] private float zoomSpeed = 1f; // 줌 아웃 속도
-    [SerializeField] private float returnSpeed = 2f; // 원래 상태로 돌아오는 속도
-    private float targetZoom; // 목표 줌
-    private float zoomTime; // 현재 스킬 키 누른 시간
-    private bool isKeyPressing; // 키 누르고 있는지 상태
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private Transform target;
+    [SerializeField] private float zoomOutMaxTime = 1.0f; // 최대시간
+    [SerializeField] private float maxZoomOutDistance = 10.0f; // 최장거리
+    [SerializeField] private float zoomInReturnTime = 0.5f; // 돌아가는 시간
+
+    private float currentZoomTime = 0.0f;
+    private bool isZoomingOut = false;
+    private Vector3 initialFollowOffset;
+
+    private CinemachineTransposer transposer;
 
     private void Start()
     {
-        targetZoom = minZoom; // 초기 줌 설정
+        if (virtualCamera != null)
+        {
+            transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+            if (transposer != null)
+            {
+                initialFollowOffset = new Vector3(transposer.m_FollowOffset.x, 6.0f, transposer.m_FollowOffset.z);
+                transposer.m_FollowOffset = initialFollowOffset;
+            }
+        }
     }
 
     private void Update()
     {
-        // 줌 상태 업데이트
-        if (isKeyPressing)
+        if (Input.GetKey(KeyCode.Q))
         {
-            // 스킬 키가 눌리면 줌 아웃
-            zoomTime += Time.deltaTime;
-            if (zoomTime > 1f) zoomTime = 1f; // 최대 시간 제한
-            targetZoom = Mathf.Lerp(minZoom, maxZoom, zoomTime);
-        }
-        else
-        {
-            // 스킬 키가 떼지면 원래 상태로 돌아옴
-            if (targetZoom > minZoom)
+            if (!isZoomingOut)
             {
-                targetZoom = Mathf.MoveTowards(targetZoom, minZoom, returnSpeed * Time.deltaTime);
+                isZoomingOut = true;
+                StopAllCoroutines();
             }
+            ZoomOutCamera();
         }
-
-        virtualCamera.transform.localPosition = new Vector3(virtualCamera.transform.localPosition.x, virtualCamera.transform.localPosition.y, -targetZoom);
-    }
-
-    public void OnSkillStart(InputAction.CallbackContext _playerStatus)
-    {
-        if (_playerStatus.started)
+        else if (Input.GetKeyUp(KeyCode.Q))
         {
-            isKeyPressing = true;
-            zoomTime = 0f; // 초기화
+            isZoomingOut = false;
+            StartCoroutine(ResetCamera());
         }
     }
 
-    public void OnSkillStop(InputAction.CallbackContext _playerStatus)
+    private void ZoomOutCamera()
     {
-        if (_playerStatus.canceled)
+        if (transposer == null || target == null)
+            return;
+
+        currentZoomTime += Time.deltaTime;
+        if (currentZoomTime > zoomOutMaxTime)
         {
-            isKeyPressing = false; // 스킬 키가 떼어짐
+            currentZoomTime = zoomOutMaxTime;
         }
+
+        float newOffsetZ = Mathf.Lerp(initialFollowOffset.z, initialFollowOffset.z - maxZoomOutDistance, currentZoomTime / zoomOutMaxTime);
+        transposer.m_FollowOffset = new Vector3(initialFollowOffset.x, 6.0f, newOffsetZ);
+    }
+
+    private IEnumerator ResetCamera()
+    {
+        float elapsedTime = 0.0f;
+        Vector3 startOffset = transposer.m_FollowOffset;
+
+        while (elapsedTime < zoomInReturnTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / zoomInReturnTime;
+            float newOffsetZ = Mathf.Lerp(startOffset.z, initialFollowOffset.z, t);
+            transposer.m_FollowOffset = new Vector3(initialFollowOffset.x, 6.0f, newOffsetZ);
+            yield return null;
+        }
+
+        transposer.m_FollowOffset = initialFollowOffset;
+        currentZoomTime = 0.0f;
     }
 }

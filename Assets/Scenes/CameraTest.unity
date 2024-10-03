@@ -1524,8 +1524,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 756663397}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: -25}
+  m_LocalRotation: {x: 0.26693365, y: 0, z: 0, w: 0.96371496}
+  m_LocalPosition: {x: 5, y: 6, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1623,7 +1623,9 @@ MonoBehaviour:
   defaultDistance: 10
   shiftDistance: 12
   shiftAndSpaceDistance: 15
+  zoomInDistance: 5
   transitionSpeed: 5
+  zoomInSpeed: 3
   playerStatus: {fileID: 1893357329}
   baseDistance: 25
 --- !u!114 &803517214
@@ -1679,7 +1681,7 @@ MonoBehaviour:
   target: {fileID: 593668119}
   zoomOutMaxTime: 1
   maxZoomOutDistance: 10
-  zoomInReturnTime: 0.5
+  zoomInReturnTime: 0.2
 --- !u!114 &803553094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1696,7 +1698,9 @@ MonoBehaviour:
   defaultDistance: 10
   shiftDistance: 12
   shiftAndSpaceDistance: 15
+  zoomInDistance: 5
   transitionSpeed: 5
+  zoomInSpeed: 3
   playerStatus: {fileID: 1893357329}
   baseDistance: 25
 --- !u!114 &803553095
@@ -1712,6 +1716,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 803553096}
+  deadZoneWidth: 0.1
+  deadZoneHeight: 0.1
 --- !u!114 &803553096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1759,8 +1765,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803553092}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: -25}
+  m_LocalRotation: {x: 0.26693365, y: 0, z: 0, w: 0.96371496}
+  m_LocalPosition: {x: 5, y: 6, z: -25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1847,8 +1853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_BindingMode: 4
+  m_FollowOffset: {x: 0, y: 6, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1877,8 +1883,8 @@ MonoBehaviour:
   m_VerticalDamping: 0.5
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_DeadZoneWidth: 0
-  m_DeadZoneHeight: 0
+  m_DeadZoneWidth: 0.5
+  m_DeadZoneHeight: 0.5
   m_SoftZoneWidth: 0.8
   m_SoftZoneHeight: 0.8
   m_BiasX: 0
@@ -3062,9 +3068,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCamera: {fileID: 0}
   defaultDistance: -3
-  shiftDistance: -5
+  shiftDistance: 12
   shiftAndSpaceDistance: -7
+  zoomInDistance: 5
   transitionSpeed: 5
+  zoomInSpeed: 3
   playerStatus: {fileID: 0}
   baseDistance: 25
 --- !u!4 &2007096367 stripped

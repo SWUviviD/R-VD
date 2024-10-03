@@ -8,12 +8,14 @@ public class CameraFocusPlayer : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
 
     [Header("Camera Distances")]
-    public float defaultDistance = 10f;        
-    public float shiftDistance = 12f;         
-    public float shiftAndSpaceDistance = 15f;    
+    public float defaultDistance = 10f;
+    public float shiftDistance = 12f;
+    public float shiftAndSpaceDistance = 15f;
+    public float zoomInDistance = 3f;
 
     [Header("Transition Settings")]
-    public float transitionSpeed = 5f;    
+    public float transitionSpeed = 5f;
+    public float zoomInSpeed = 0.2f;
 
     private CinemachineTransposer transposer;
     private float targetDistance;
@@ -26,6 +28,11 @@ public class CameraFocusPlayer : MonoBehaviour
     [SerializeField] private float baseDistance = 25f;
     public float BaseDistance => baseDistance;
 
+    private Vector3 previousPlayerPosition;
+    private float playerMovementThreshold = 0.1f;
+
+    private float timeSincePlayerStopped = 0f;
+    private float zoomInDelay = 1f;
 
     private void Start()
     {
@@ -48,60 +55,21 @@ public class CameraFocusPlayer : MonoBehaviour
             return;
         }
 
-        // 기본 거리 설정
         targetDistance = defaultDistance;
         Vector3 currentOffset = transposer.m_FollowOffset;
-        currentOffset.z = -defaultDistance; 
+        currentOffset.z = -defaultDistance;
         transposer.m_FollowOffset = currentOffset;
-    }
 
-    private void OnEnable()
-    {
-        InputManager.Instance.AddInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Dash),
-            Defines.InputDefines.ActionPoint.IsStarted,
-            OnShiftPressed);
-
-        InputManager.Instance.AddInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Dash),
-            Defines.InputDefines.ActionPoint.IsCanceled,
-            OnShiftReleased);
-
-        InputManager.Instance.AddInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Jump),
-            Defines.InputDefines.ActionPoint.IsStarted,
-            OnSpacePressed);
-
-        InputManager.Instance.AddInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Jump),
-            Defines.InputDefines.ActionPoint.IsCanceled,
-            OnSpaceReleased);
-    }
-
-    private void OnDisable()
-    {
-        InputManager.Instance.RemoveInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Dash),
-            Defines.InputDefines.ActionPoint.IsStarted,
-            OnShiftPressed);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Dash),
-            Defines.InputDefines.ActionPoint.IsCanceled,
-            OnShiftReleased);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Jump),
-            Defines.InputDefines.ActionPoint.IsStarted,
-            OnSpacePressed);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new Defines.InputDefines.InputActionName(Defines.InputDefines.ActionMapType.PlayerActions, Defines.InputDefines.Jump),
-            Defines.InputDefines.ActionPoint.IsCanceled,
-            OnSpaceReleased);
+        previousPlayerPosition = playerStatus.transform.position;
     }
 
     private void FixedUpdate()
+    {
+        HandleCameraDistance();
+        HandleZoomInOnPlayerStop();
+    }
+
+    private void HandleCameraDistance()
     {
         if (isShiftPressed && isSpacePressed)
         {
@@ -124,6 +92,29 @@ public class CameraFocusPlayer : MonoBehaviour
         Vector3 currentOffset = transposer.m_FollowOffset;
         currentOffset.z = Mathf.Lerp(currentOffset.z, -targetDistance, Time.deltaTime * transitionSpeed);
         transposer.m_FollowOffset = currentOffset;
+    }
+
+    private void HandleZoomInOnPlayerStop()
+    {
+        float playerSpeed = (playerStatus.transform.position - previousPlayerPosition).magnitude / Time.deltaTime;
+
+        if (playerSpeed < playerMovementThreshold)
+        {
+            timeSincePlayerStopped += Time.deltaTime;
+
+            if (timeSincePlayerStopped >= zoomInDelay)
+            {
+                Vector3 currentOffset = transposer.m_FollowOffset;
+                currentOffset.z = Mathf.Lerp(currentOffset.z, -zoomInDistance, Time.deltaTime * zoomInSpeed);
+                transposer.m_FollowOffset = currentOffset;
+            }
+        }
+        else
+        {
+            timeSincePlayerStopped = 0f;
+        }
+
+        previousPlayerPosition = playerStatus.transform.position;
     }
 
     private void OnShiftPressed(InputAction.CallbackContext context)

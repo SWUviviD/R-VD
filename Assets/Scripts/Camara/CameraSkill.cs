@@ -8,7 +8,7 @@ public class CameraSkill : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float zoomOutMaxTime = 1.0f; // 최대시간
     [SerializeField] private float maxZoomOutDistance = 10.0f; // 최장거리
-    [SerializeField] private float zoomInReturnTime = 0.5f; // 돌아가는 시간
+    [SerializeField] private float zoomInReturnTime = 0.2f; // 돌아가는 시간
 
     private float currentZoomTime = 0.0f;
     private bool isZoomingOut = false;

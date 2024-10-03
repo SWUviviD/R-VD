@@ -6,6 +6,12 @@ public class CameraSetup : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
+    /// <summary>
+    /// 카메라 following 영역 조절 변수
+    /// </summary>
+    [SerializeField] private float deadZoneWidth = 0.1f; // 좌우 10%
+    [SerializeField] private float deadZoneHeight = 0.1f; // 상하 10%
+
     void Start()
     {
         if (virtualCamera == null)
@@ -18,7 +24,6 @@ public class CameraSetup : MonoBehaviour
             }
         }
 
-        // CinemachineTransposer 설정
         CinemachineTransposer transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         if (transposer == null)
         {
@@ -27,12 +32,14 @@ public class CameraSetup : MonoBehaviour
         transposer.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
         transposer.m_FollowOffset = new Vector3(0, 6, -10);
 
-        // CinemachineGroupComposer 설정
         CinemachineGroupComposer groupComposer = virtualCamera.GetCinemachineComponent<CinemachineGroupComposer>();
         if (groupComposer == null)
         {
             groupComposer = virtualCamera.AddCinemachineComponent<CinemachineGroupComposer>();
         }
         groupComposer.m_TrackedObjectOffset = new Vector3(0, 2, 0);
+
+        groupComposer.m_DeadZoneWidth = deadZoneWidth;
+        groupComposer.m_DeadZoneHeight = deadZoneHeight;
     }
 }

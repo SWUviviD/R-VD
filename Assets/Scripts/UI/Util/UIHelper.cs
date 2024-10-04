@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class UIHelper : MonoBehaviour
+public static class UIHelper
 {
-    // Start is called before the first frame update
-    void Start()
+    public static void OnClick(Button _btn, UnityAction _callback)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        #if UNITY_EDITOR
+        UnityEventTools.RemovePersistentListener(_btn.onClick, _callback);
+        UnityEventTools.AddPersistentListener(_btn.onClick, _callback);
+        #else
+        _btn.onClick.RemoveListener(_callback);
+        _btn.onClick.AddListener(_callback);
+        #endif
     }
 }

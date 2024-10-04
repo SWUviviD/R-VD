@@ -11,4 +11,9 @@ public static class CollectionExtension
             _action.Invoke(obj);
         }
     }
+
+    public static bool IsNullOrEmpty<T>(this IList<T> _list)
+    {
+        return _list == null || _list.Count == 0;
+    }
 }

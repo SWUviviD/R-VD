@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
@@ -13,17 +14,36 @@ public class GimmickFolderIcon : MonoBehaviour
 {
     [SerializeField] private Image imgIcon;
     [SerializeField] private Text txtName;
+    [SerializeField] private Button btnSelect;
+    [SerializeField] private GameObject objSelected;
 
     [SerializeField] private Sprite sprFolder;
     [SerializeField] private Sprite sprGimmick;
 
-    private string path;
+    public bool IsGimmick { get; private set; } 
+    public string IconName { get; private set; }
+    public string Path { get; private set; }
+    public bool IsSelected => objSelected.activeSelf;
 
-    public void Init(bool _isGimmick, string _name, string _path)
+    public void Init(Action<GimmickFolderIcon> _onClick)
     {
-        path = _path;
-        txtName.text = _name;
+        btnSelect.onClick.AddListener(() => _onClick.Invoke(this));
+        objSelected.SetActive(false);
+    }
+    
+    public void Set(bool _isGimmick, string _iconName, string _path)
+    {
+        objSelected.SetActive(false);
+        IconName = _iconName;
+        IsGimmick = _isGimmick;
+        Path = _path;
+        txtName.text = _iconName;
 
         imgIcon.sprite = _isGimmick ? sprGimmick : sprFolder;
+    }
+
+    public void SetSelect(bool _set)
+    {
+        objSelected.SetActive(_set);
     }
 }

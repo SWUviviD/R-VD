@@ -23,7 +23,8 @@ public class CameraSkill : MonoBehaviour
             transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
             if (transposer != null)
             {
-                initialFollowOffset = new Vector3(transposer.m_FollowOffset.x, 6.0f, transposer.m_FollowOffset.z);
+                initialFollowOffset = new Vector3(transposer.m_FollowOffset.x, 6.0f,
+                    transposer.m_FollowOffset.z);
                 transposer.m_FollowOffset = initialFollowOffset;
             }
         }
@@ -58,7 +59,8 @@ public class CameraSkill : MonoBehaviour
             currentZoomTime = zoomOutMaxTime;
         }
 
-        float newOffsetZ = Mathf.Lerp(initialFollowOffset.z, initialFollowOffset.z - maxZoomOutDistance, currentZoomTime / zoomOutMaxTime);
+        float newOffsetZ = Mathf.Lerp(initialFollowOffset.z,
+            initialFollowOffset.z - maxZoomOutDistance, currentZoomTime / zoomOutMaxTime);
         transposer.m_FollowOffset = new Vector3(initialFollowOffset.x, 6.0f, newOffsetZ);
     }
 

@@ -1626,7 +1626,7 @@ MonoBehaviour:
   zoomInDistance: 5
   transitionSpeed: 5
   zoomInSpeed: 3
-  playerStatus: {fileID: 1893357329}
+  playerStatus: {fileID: 0}
   baseDistance: 25
 --- !u!114 &803517214
 MonoBehaviour:
@@ -1656,8 +1656,8 @@ GameObject:
   - component: {fileID: 803553097}
   - component: {fileID: 803553096}
   - component: {fileID: 803553095}
-  - component: {fileID: 803553094}
-  - component: {fileID: 803553093}
+  - component: {fileID: 803553099}
+  - component: {fileID: 803553100}
   m_Layer: 0
   m_Name: PlayerFollowOuto
   m_TagString: Untagged
@@ -1665,44 +1665,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &803553093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803553092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75207c9741dcae84b8ab877b5ccf3932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 803553096}
-  target: {fileID: 593668119}
-  zoomOutMaxTime: 1
-  maxZoomOutDistance: 10
-  zoomInReturnTime: 0.2
---- !u!114 &803553094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803553092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff61890f1f7cce04dbe55daa245f7d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 803553096}
-  defaultDistance: 10
-  shiftDistance: 12
-  shiftAndSpaceDistance: 15
-  zoomInDistance: 5
-  transitionSpeed: 5
-  zoomInSpeed: 3
-  playerStatus: {fileID: 1893357329}
-  baseDistance: 25
 --- !u!114 &803553095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1773,6 +1735,44 @@ Transform:
   - {fileID: 1025625406}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &803553099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803553092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff61890f1f7cce04dbe55daa245f7d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 803553096}
+  defaultDistance: 10
+  shiftDistance: 10.5
+  shiftAndSpaceDistance: 11
+  zoomInDistance: 5
+  transitionSpeed: 5
+  zoomInSpeed: 0.5
+  playerStatus: {fileID: 1893357329}
+  baseDistance: 25
+--- !u!114 &803553100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803553092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75207c9741dcae84b8ab877b5ccf3932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 803553096}
+  target: {fileID: 593668119}
+  zoomOutMaxTime: 1
+  maxZoomOutDistance: 10
+  zoomInReturnTime: 0.2
 --- !u!1 &863537377
 GameObject:
   m_ObjectHideFlags: 0

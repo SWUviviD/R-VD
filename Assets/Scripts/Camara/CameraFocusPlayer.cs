@@ -9,13 +9,13 @@ public class CameraFocusPlayer : MonoBehaviour
 
     [Header("Camera Distances")]
     public float defaultDistance = 10f;
-    public float shiftDistance = 12f;
-    public float shiftAndSpaceDistance = 15f;
-    public float zoomInDistance = 3f;
+    public float shiftDistance = 10.5f;
+    public float shiftAndSpaceDistance = 11f;
+    public float zoomInDistance = 2f;
 
     [Header("Transition Settings")]
     public float transitionSpeed = 5f;
-    public float zoomInSpeed = 0.2f;
+    public float zoomInSpeed = 0.5f;
 
     private CinemachineTransposer transposer;
     private float targetDistance;
@@ -32,7 +32,7 @@ public class CameraFocusPlayer : MonoBehaviour
     private float playerMovementThreshold = 0.1f;
 
     private float timeSincePlayerStopped = 0f;
-    private float zoomInDelay = 1f;
+    private float zoomInDelay = 0.3f;
 
     private void Start()
     {

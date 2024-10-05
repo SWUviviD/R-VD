@@ -9,8 +9,8 @@ public class CameraSetup : MonoBehaviour
     /// <summary>
     /// 카메라 following 영역 조절 변수
     /// </summary>
-    [SerializeField] private float deadZoneWidth = 0.1f; // 좌우 10%
-    [SerializeField] private float deadZoneHeight = 0.1f; // 상하 10%
+    [SerializeField] private float deadZoneWidth = 0.1f;
+    [SerializeField] private float deadZoneHeight = 0.1f;
 
     void Start()
     {

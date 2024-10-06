@@ -12,6 +12,11 @@ public static class CollectionExtension
         }
     }
 
+    public static bool IsNullOrEmpty(this string _str)
+    {
+        return string.IsNullOrEmpty(_str);
+    }
+
     public static bool IsNullOrEmpty<T>(this IList<T> _list)
     {
         return _list == null || _list.Count == 0;

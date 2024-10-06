@@ -60,6 +60,22 @@ namespace LevelEditor
 
             return lastPosition;
         }
+
+        /// <summary>
+        /// 마우스로 설치된 오브젝트 반환
+        /// </summary>
+        public int GetSelectedPlacedObjectIndex()
+        {
+            mousePos = Input.mousePosition;
+            mousePos.z = sceneCamera.nearClipPlane;
+            ray = sceneCamera.ScreenPointToRay(mousePos);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask))
+            {
+                return hit.transform.GetComponent<PlacementData>().PlacedObjectIndex;
+            }
+
+            return -1;
+        }
     }
 }
 

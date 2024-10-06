@@ -54,7 +54,7 @@ namespace LevelEditor
             if (size.x > 0 || size.y > 0 || size.z > 0)
             {
                 cellIndicator.transform.localScale = new Vector3(size.x, size.y, size.z);
-                cellIndicatorRenderer.material.mainTextureScale = new Vector2(size.x, size.z);
+                //cellIndicatorRenderer.material.mainTextureScale = new Vector2(size.x, size.z);
             }
         }
 

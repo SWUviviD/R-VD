@@ -11,31 +11,24 @@ namespace LevelEditor
     {
         private int selectedObjectIndex = -1;
         private int ID;
-        private Grid grid;
         private PreviewSystem previewSystem;
         private ObjectDatabase database;
-        private GridData floorData;
-        private GridData furnitureData;
+        private GridData selectedData;
         private ObjectPlacer objectPlacer;
 
-        private GridData selectedData;
         private bool placementValidity;
         private int index;
 
         public PlacementState(int ID,
-                              Grid grid,
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
-                              GridData floorData,
-                              GridData furnitureData,
+                              GridData selectedData,
                               ObjectPlacer objectPlacer)
         {
             this.ID = ID;
-            this.grid = grid;
             this.previewSystem = previewSystem;
             this.database = database;
-            this.floorData = floorData;
-            this.furnitureData = furnitureData;
+            this.selectedData = selectedData;
             this.objectPlacer = objectPlacer;
 
             selectedObjectIndex = database.objectData.FindIndex(data => data.ID == this.ID);
@@ -54,9 +47,9 @@ namespace LevelEditor
             previewSystem.StopShowingPreview();
         }
 
-        public void OnAction(Vector3 gridPosition)
+        public void OnAction(Vector3 position)
         {
-            placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
             // 오브젝트 설치가 불가능하면 종료
             if (!placementValidity)
             {
@@ -64,15 +57,15 @@ namespace LevelEditor
             }
 
             // 오브젝트 배치 및 데이터 추가
-            index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Prefab, gridPosition);
-            selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-            selectedData.AddObjectAt(gridPosition,
-                                     database.objectData[selectedObjectIndex].Size,
+            index = objectPlacer.PlaceObject(position,
+                                             database.objectData[selectedObjectIndex].Prefab,
+                                             database.objectData[selectedObjectIndex].Size);
+            selectedData.AddObjectAt(position,
                                      database.objectData[selectedObjectIndex].ID,
                                      index);
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(gridPosition, false);
+            previewSystem.UpdatePosition(position, false);
         }
 
         /// <summary>
@@ -80,8 +73,6 @@ namespace LevelEditor
         /// </summary>
         private bool CheckPlacementValidity(Vector3 position, int selectedObjectIndex)
         {
-            selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-
             return selectedData.CanPlaceObjectAt(position, database.objectData[selectedObjectIndex].Size);
         }
 

@@ -10,7 +10,6 @@ namespace LevelEditor
     public class PlacementSystem : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private Grid grid;
         [SerializeField] private ObjectDatabase database;
         [SerializeField] private GameObject gridVisualization;
 
@@ -23,16 +22,17 @@ namespace LevelEditor
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
         private Vector3 mousePosition;
 
-        private GridData floorData;
-        private GridData furnitureData;
+        private GridData selectedData;
 
         private IBuildingState buildingState;
 
         private void Start()
         {
             gridVisualization.SetActive(false);
-            floorData = new GridData();
-            furnitureData = new GridData();
+            selectedData = new GridData();
+
+            inputSystem.OnClicked += PlaceStructure;
+            inputSystem.OnExit += StopPlacement;
         }
 
         /// <summary>
@@ -41,10 +41,8 @@ namespace LevelEditor
         public void StartPlacement(int ID)
         {
             StopPlacement();
-            gridVisualization.SetActive(true);
-            buildingState = new PlacementState(ID, grid, previewSystem, database, floorData, furnitureData, objectPlacer);
-            inputSystem.OnClicked += PlaceStructure;
-            inputSystem.OnExit += StopPlacement;
+            //gridVisualization.SetActive(true);
+            buildingState = new PlacementState(ID, previewSystem, database, selectedData, objectPlacer);
         }
 
         /// <summary>
@@ -53,10 +51,8 @@ namespace LevelEditor
         public void StartRemoving()
         {
             StopPlacement();
-            gridVisualization.SetActive(true);
-            buildingState = new RemovingState(grid, previewSystem, floorData, furnitureData, objectPlacer);
-            inputSystem.OnClicked += PlaceStructure;
-            inputSystem.OnExit += StopPlacement;
+            //gridVisualization.SetActive(true);
+            buildingState = new RemovingState(previewSystem, selectedData, objectPlacer);
         }
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace LevelEditor
         /// </summary>
         private void PlaceStructure()
         {
-            if (inputSystem.IsPointerOverUI())
+            if (inputSystem.IsPointerOverUI() || buildingState == null)
             {
                 return;
             }
@@ -89,8 +85,6 @@ namespace LevelEditor
 
             gridVisualization.SetActive(false);
             buildingState.EndState();
-            inputSystem.OnClicked -= PlaceStructure;
-            inputSystem.OnExit -= StopPlacement;
             lastDetectedPosition = Vector3Int.zero;
             buildingState = null;
         }

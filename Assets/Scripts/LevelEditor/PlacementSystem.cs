@@ -70,8 +70,11 @@ namespace LevelEditor
             }
 
             mousePosition = inputSystem.GetSelectedMapPosition();
-            gridPosition = grid.WorldToCell(mousePosition);
-            buildingState.OnAction(gridPosition);
+            buildingState.OnAction(mousePosition);
+
+            //mousePosition = inputSystem.GetSelectedMapPosition();
+            //gridPosition = grid.WorldToCell(mousePosition);
+            //buildingState.OnAction(gridPosition);
         }
 
         /// <summary>
@@ -100,16 +103,20 @@ namespace LevelEditor
                 return;
             }
 
-            // 마우스 위치 및 마우스 위치에 따른 그리드 위치 갱신
+            // 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
             mousePosition = inputSystem.GetSelectedMapPosition();
-            gridPosition = grid.WorldToCell(mousePosition);
+            buildingState.UpdateState(mousePosition);
 
-            // 마지막 그리드 위치와 현재 그리드 위치가 다른 경우 갱신
-            if (lastDetectedPosition != gridPosition)
-            {
-                buildingState.UpdateState(gridPosition);
-                lastDetectedPosition = gridPosition;
-            }
+            //// 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
+            //mousePosition = inputSystem.GetSelectedMapPosition();
+            //gridPosition = grid.WorldToCell(mousePosition);
+
+            //// 마지막 그리드 위치와 현재 그리드 위치가 다른 경우 갱신
+            //if (lastDetectedPosition != gridPosition)
+            //{
+            //    buildingState.UpdateState(gridPosition);
+            //    lastDetectedPosition = gridPosition;
+            //}
         }
     }
 }

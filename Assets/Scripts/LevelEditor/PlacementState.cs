@@ -54,7 +54,7 @@ namespace LevelEditor
             previewSystem.StopShowingPreview();
         }
 
-        public void OnAction(Vector3Int gridPosition)
+        public void OnAction(Vector3 gridPosition)
         {
             placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
             // 오브젝트 설치가 불가능하면 종료
@@ -64,7 +64,7 @@ namespace LevelEditor
             }
 
             // 오브젝트 배치 및 데이터 추가
-            index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
+            index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Prefab, gridPosition);
             selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
             selectedData.AddObjectAt(gridPosition,
                                      database.objectData[selectedObjectIndex].Size,
@@ -72,26 +72,26 @@ namespace LevelEditor
                                      index);
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+            previewSystem.UpdatePosition(gridPosition, false);
         }
 
         /// <summary>
         /// 오브젝트 배치가 가능한지 검사
         /// </summary>
-        private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+        private bool CheckPlacementValidity(Vector3 position, int selectedObjectIndex)
         {
             selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
 
-            return selectedData.CanPlaceObjectAt(gridPosition, database.objectData[selectedObjectIndex].Size);
+            return selectedData.CanPlaceObjectAt(position, database.objectData[selectedObjectIndex].Size);
         }
 
-        public void UpdateState(Vector3Int gridPosition)
+        public void UpdateState(Vector3 position)
         {
             // 오브젝트 배치 가능 유무 검사
-            placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
+            previewSystem.UpdatePosition(position, placementValidity);
         }
     }
 }

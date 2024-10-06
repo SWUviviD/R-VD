@@ -24,6 +24,7 @@ namespace LevelEditor
 
         private Renderer[] renderers;
         private Material[] materials;
+        private Collider[] colliders;
         private Color color;
 
         private void Start()
@@ -40,6 +41,7 @@ namespace LevelEditor
         {
             previewObject = Instantiate(prefab);
             PreparePreview(previewObject);
+            PrepareCollider(previewObject);
             PrepareCursor(size);
             cellIndicator.SetActive(true);
         }
@@ -70,6 +72,18 @@ namespace LevelEditor
                     materials[i] = previewMaterialInstance;
                 }
                 renderer.materials = materials;
+            }
+        }
+
+        /// <summary>
+        /// 미리보기 오브젝트 충돌처리 무시
+        /// </summary>
+        private void PrepareCollider(GameObject previewObject)
+        {
+            colliders = previewObject.GetComponentsInChildren<Collider>();
+            foreach (Collider child in colliders)
+            {
+                child.enabled = false;
             }
         }
 

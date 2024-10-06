@@ -13,10 +13,10 @@ namespace LevelEditor
         void EndState();
 
         /// <summary> 액션이 발생했을 때 실행되는 함수 </summary>
-        void OnAction(Vector3Int gridPosition);
+        void OnAction(Vector3 gridPosition);
 
         /// <summary> 상태가 업데이트될 때 실행되는 함수 </summary>
-        void UpdateState(Vector3Int gridPosition);
+        void UpdateState(Vector3 gridPosition);
     }
 }
 

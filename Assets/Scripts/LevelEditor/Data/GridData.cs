@@ -11,13 +11,13 @@ namespace LevelEditor
     public class GridData
     {
         /// <summary> 그리드에 배치된 오브젝트 데이터를 저장하는 딕셔너리 </summary>
-        private Dictionary<Vector3Int, PlacementData> placedObjects = new Dictionary<Vector3Int, PlacementData>();
+        private Dictionary<Vector3, PlacementData> placedObjects = new Dictionary<Vector3, PlacementData>();
 
         /// <summary> 배치할 위치 리스트 </summary>
-        private List<Vector3Int> positionToOccupy;
+        private List<Vector3> positionToOccupy;
 
         /// <summary> 반환값 리스트 </summary>
-        private List<Vector3Int> returnVal;
+        private List<Vector3> returnVal;
 
         /// <summary> 현재 배치할 오브젝트의 데이터 </summary>
         private PlacementData data;
@@ -25,7 +25,7 @@ namespace LevelEditor
         /// <summary>
         /// 주어진 위치에 오브젝트를 추가
         /// </summary>
-        public void AddObjectAt(Vector3Int gridPosition, Vector3Int objectSize, int ID, int placedObjectIndex)
+        public void AddObjectAt(Vector3 gridPosition, Vector3 objectSize, int ID, int placedObjectIndex)
         {
             positionToOccupy = CalculatePositions(gridPosition, objectSize);
             data = new PlacementData(positionToOccupy, ID, placedObjectIndex);
@@ -44,7 +44,7 @@ namespace LevelEditor
         // <summary>
         /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
         /// </summary>
-        public bool CanPlaceObjectAt(Vector3Int gridPosition, Vector3Int objectSize)
+        public bool CanPlaceObjectAt(Vector3 gridPosition, Vector3 objectSize)
         {
             positionToOccupy = CalculatePositions(gridPosition, objectSize);
             foreach (var pos in positionToOccupy)
@@ -60,16 +60,16 @@ namespace LevelEditor
         /// <summary>
         /// 오브젝트가 차지할 3차원 좌표 계산
         /// </summary>
-        private List<Vector3Int> CalculatePositions(Vector3Int gridPosition, Vector3Int objectSize)
+        private List<Vector3> CalculatePositions(Vector3 gridPosition, Vector3 objectSize)
         {
-            returnVal = new List<Vector3Int>();
+            returnVal = new List<Vector3>();
             for (int x = 0; x < objectSize.x; ++x)
             {
                 for (int y = 0; y < objectSize.y; ++y)
                 {
                     for (int z = 0; z < objectSize.z; ++z)
                     {
-                        returnVal.Add(gridPosition + new Vector3Int(x, y, z));
+                        returnVal.Add(gridPosition + new Vector3(x, y, z));
                     }
                 }
             }
@@ -79,7 +79,7 @@ namespace LevelEditor
         /// <summary>
         /// 주어진 위치에서 배치된 오브젝트의 인덱스를 반환
         /// </summary>
-        public int GetRepresentationIndex(Vector3Int gridPosition)
+        public int GetRepresentationIndex(Vector3 gridPosition)
         {
             if (!placedObjects.ContainsKey(gridPosition))
             {
@@ -91,7 +91,7 @@ namespace LevelEditor
         /// <summary>
         /// 주어진 위치에서 오브젝트를 제거
         /// </summary>
-        public void RemoveObjectAt(Vector3Int gridPosition)
+        public void RemoveObjectAt(Vector3 gridPosition)
         {
             foreach (var pos in placedObjects[gridPosition].occupiedPositions)
             {

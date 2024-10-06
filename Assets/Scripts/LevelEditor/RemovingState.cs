@@ -39,7 +39,7 @@ namespace LevelEditor
             previewSystem.StopShowingPreview();
         }
 
-        public void OnAction(Vector3Int gridPosition)
+        public void OnAction(Vector3 gridPosition)
         {
             // 선택된 데이터 초기화
             selectedData = null;
@@ -69,23 +69,22 @@ namespace LevelEditor
             }
 
             // 셀 위치 및 미리보기 위치 갱신
-            cellPosition = grid.CellToWorld(gridPosition);
-            previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition));
+            previewSystem.UpdatePosition(gridPosition, CheckIfSelectionIsValid(gridPosition));
         }
 
         /// <summary>
         /// 오브젝트 선택이 유효한지 검사
         /// </summary>
-        private bool CheckIfSelectionIsValid(Vector3Int gridPosition)
+        private bool CheckIfSelectionIsValid(Vector3 gridPosition)
         {
-            return !(furnitureData.CanPlaceObjectAt(gridPosition, Vector3Int.one)
-                     && floorData.CanPlaceObjectAt(gridPosition, Vector3Int.one));
+            return !(furnitureData.CanPlaceObjectAt(gridPosition, Vector3.one)
+                     && floorData.CanPlaceObjectAt(gridPosition, Vector3.one));
         }
 
-        public void UpdateState(Vector3Int gridPosition)
+        public void UpdateState(Vector3 gridPosition)
         {
             validity = CheckIfSelectionIsValid(gridPosition);
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), validity);
+            previewSystem.UpdatePosition(gridPosition, validity);
         }
     }
 }

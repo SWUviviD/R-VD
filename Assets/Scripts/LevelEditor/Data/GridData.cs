@@ -49,6 +49,14 @@ namespace LevelEditor
         /// <summary>
         /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
         /// </summary>
+        public Vector3 GetPlaceObjectPosition()
+        {
+            return placedObjects[colliders[0].transform.root.position].PlacedPosition;
+        }
+
+        /// <summary>
+        /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
+        /// </summary>
         public bool CanRemoveObjectAt(Vector3 position)
         {
             colliders = Physics.OverlapSphere(position, 0.1f, LayerMask.GetMask("PlacedArea"));
@@ -84,6 +92,18 @@ namespace LevelEditor
                 }
             }
             return returnVal;
+        }
+
+        /// <summary>
+        /// 주어진 위치에서 배치된 오브젝트의 인덱스를 반환
+        /// </summary>
+        public int GetPlacedObjectID(Vector3 position)
+        {
+            if (!placedObjects.ContainsKey(position))
+            {
+                return -1;
+            }
+            return placedObjects[position].ID;
         }
 
         /// <summary>

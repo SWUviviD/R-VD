@@ -99,7 +99,8 @@ namespace LevelEditor
 
             // 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
             mousePosition = inputSystem.GetSelectedMapPosition();
-            buildingState.UpdateState(mousePosition);
+            Vector3 objectNormal = inputSystem.GetSelectedMapDirection();
+            buildingState.UpdateState(mousePosition, objectNormal);
 
             //// 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
             //mousePosition = inputSystem.GetSelectedMapPosition();

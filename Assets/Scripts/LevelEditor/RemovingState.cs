@@ -68,7 +68,7 @@ namespace LevelEditor
             return placementData.CanRemoveObjectAt(position);
         }
 
-        public void UpdateState(Vector3 position)
+        public void UpdateState(Vector3 position, Vector3 objectNormal)
         {
             validity = CheckIfSelectionIsValid(position);
             previewSystem.UpdatePosition(position, validity);

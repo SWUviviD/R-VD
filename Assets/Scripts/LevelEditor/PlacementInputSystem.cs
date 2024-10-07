@@ -21,6 +21,7 @@ namespace LevelEditor
         public event Action OnExit;
 
         private Vector3 lastPosition;
+        private Vector3 lastDirection;
         private Vector3 mousePos;
         private RaycastHit hit;
         private Ray ray;
@@ -62,19 +63,19 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 마우스로 설치된 오브젝트 반환
+        /// 마우스로 선택된 맵 위치 반환
         /// </summary>
-        public int GetSelectedPlacedObjectIndex()
+        public Vector3 GetSelectedMapDirection()
         {
             mousePos = Input.mousePosition;
             mousePos.z = sceneCamera.nearClipPlane;
             ray = sceneCamera.ScreenPointToRay(mousePos);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask))
             {
-                return hit.transform.GetComponent<PlacementData>().PlacedObjectIndex;
+                lastDirection = hit.normal;
             }
 
-            return -1;
+            return lastDirection;
         }
     }
 }

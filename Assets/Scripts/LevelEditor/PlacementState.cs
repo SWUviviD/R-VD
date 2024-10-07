@@ -13,22 +13,27 @@ namespace LevelEditor
         private int ID;
         private PreviewSystem previewSystem;
         private ObjectDatabase database;
-        private GridData selectedData;
+        private GridData placementData;
         private ObjectPlacer objectPlacer;
 
+        private Vector3 collisionPosition;
+        private Vector3 collisionObjectSize;
+        private Vector3 collisionNormal;
+        private int collisionObjectID;
         private bool placementValidity;
+        private int collisionObjectIndex;
         private int index;
 
         public PlacementState(int ID,
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
-                              GridData selectedData,
+                              GridData placementData,
                               ObjectPlacer objectPlacer)
         {
             this.ID = ID;
             this.previewSystem = previewSystem;
             this.database = database;
-            this.selectedData = selectedData;
+            this.placementData = placementData;
             this.objectPlacer = objectPlacer;
 
             selectedObjectIndex = database.objectData.FindIndex(data => data.ID == this.ID);
@@ -49,23 +54,25 @@ namespace LevelEditor
 
         public void OnAction(Vector3 position)
         {
+            // 오브젝트 설치가 불가능한 경우
             placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
-            // 오브젝트 설치가 불가능하면 종료
             if (!placementValidity)
             {
-                return;
+                // 측면 설치
+                position = UpdatePosition(position, collisionNormal);
+                if (CheckPlacementValidity(position, selectedObjectIndex) == false)
+                {
+                    return;
+                }
             }
 
             // 오브젝트 배치 및 데이터 추가
             index = objectPlacer.PlaceObject(position,
                                              database.objectData[selectedObjectIndex].Prefab,
                                              database.objectData[selectedObjectIndex].Size);
-            selectedData.AddObjectAt(position,
+            placementData.AddObjectAt(position,
                                      database.objectData[selectedObjectIndex].ID,
                                      index);
-
-            // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(position, false);
         }
 
         /// <summary>
@@ -73,16 +80,50 @@ namespace LevelEditor
         /// </summary>
         private bool CheckPlacementValidity(Vector3 position, int selectedObjectIndex)
         {
-            return selectedData.CanPlaceObjectAt(position, database.objectData[selectedObjectIndex].Size);
+            return placementData.CanPlaceObjectAt(position, database.objectData[selectedObjectIndex].Size);
         }
 
-        public void UpdateState(Vector3 position)
+        public void UpdateState(Vector3 position, Vector3 objectNormal)
         {
             // 오브젝트 배치 가능 유무 검사
             placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
 
+            if (!placementValidity)
+            {
+                position = UpdatePosition(position, objectNormal);
+                if (CheckPlacementValidity(position, selectedObjectIndex) == false)
+                {
+                    previewSystem.UpdatePosition(position, false);
+                    return;
+                }
+            }
+
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(position, placementValidity);
+            previewSystem.UpdatePosition(position, true);
+        }
+
+        /// <summary>
+        /// 충돌한 오브젝트의 법선으로 배치할 오브젝트 위치 계산
+        /// </summary>
+        private Vector3 UpdatePosition(Vector3 position, Vector3 objectNormal)
+        {
+            collisionNormal = objectNormal;
+
+            // 충돌한 오브젝트 갱신
+            collisionPosition = placementData.GetPlaceObjectPosition();
+            collisionObjectID = placementData.GetPlacedObjectID(collisionPosition);
+            collisionObjectIndex = database.objectData.FindIndex(data => data.ID == collisionObjectID);
+            if (collisionObjectIndex == -1)
+            {
+                return position;
+            }
+
+            // 측면 충돌 시 오브젝트 위치 갱신
+            position += new Vector3(database.objectData[selectedObjectIndex].Size.x * objectNormal.x / 2,
+                                    0f,
+                                    database.objectData[selectedObjectIndex].Size.z * objectNormal.z / 2);
+
+            return position;
         }
     }
 }

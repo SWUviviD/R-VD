@@ -71,6 +71,12 @@ public class GimmickQuickSlot : MonoBehaviour
         {
             currentIconIndex = 1;
             SelectIcon(null);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            currentIconIndex = 1;
+            SelectIcon(null);
             placementSystem.StartRemoving();
         }
     }
@@ -79,7 +85,13 @@ public class GimmickQuickSlot : MonoBehaviour
     {
         currentIcon?.Select(false);
         currentIcon = _icon;
-        currentIcon?.Select(true);   
+        currentIcon?.Select(true);
+
+        if (_icon != null)
+        {
+            if (_icon.PrefabAddress.IsNullOrEmpty()) return;
+            placementSystem.StartPlacement(_icon.PrefabAddress);
+        }
     }
 
     private void OnClickSlotIcon(GimmickQuickSlotIcon _icon)
@@ -88,9 +100,6 @@ public class GimmickQuickSlot : MonoBehaviour
         
         currentIconIndex = _icon.Index;
         SelectIcon(_icon);
-
-        if (_icon.PrefabAddress.IsNullOrEmpty()) return;
-        placementSystem.StartPlacement(_icon.PrefabAddress);
     }
     
     private void OnSelectGimmickInFolder(GimmickFolderIcon _obj)
@@ -109,6 +118,7 @@ public class GimmickQuickSlot : MonoBehaviour
             slotData[index] = string.Empty;
         }
         currentIcon.Set(_obj.AddressPath);
+        OnClickSlotIcon(currentIcon);
         slotData[currentIconIndex] = _obj.AddressPath;
     }
 }

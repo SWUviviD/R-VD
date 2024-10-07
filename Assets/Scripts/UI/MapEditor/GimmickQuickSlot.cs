@@ -86,12 +86,8 @@ public class GimmickQuickSlot : MonoBehaviour
         currentIcon?.Select(false);
         currentIcon = _icon;
         currentIcon?.Select(true);
-
-        if (_icon != null)
-        {
-            if (_icon.PrefabAddress.IsNullOrEmpty()) return;
-            placementSystem.StartPlacement(_icon.PrefabAddress);
-        }
+        
+        placementSystem.StartPlacement(_icon?.PrefabAddress);
     }
 
     private void OnClickSlotIcon(GimmickQuickSlotIcon _icon)

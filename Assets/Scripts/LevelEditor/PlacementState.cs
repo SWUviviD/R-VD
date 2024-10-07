@@ -70,9 +70,12 @@ namespace LevelEditor
             index = objectPlacer.PlaceObject(position,
                                              database.objectData[selectedObjectIndex].Prefab,
                                              database.objectData[selectedObjectIndex].Size);
-            placementData.AddObjectAt(position,
-                                     database.objectData[selectedObjectIndex].ID,
-                                     index);
+            if (index != -1)
+            {
+                placementData.AddObjectAt(position,
+                                         database.objectData[selectedObjectIndex].ID,
+                                         index);
+            }
         }
 
         /// <summary>

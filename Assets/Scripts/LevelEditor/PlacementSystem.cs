@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
 
+using Defines;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LevelEditor
@@ -10,7 +12,7 @@ namespace LevelEditor
     public class PlacementSystem : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private ObjectDatabase database;
+        [SerializeField] private ObjectDatabase database = new ObjectDatabase();
         [SerializeField] private GameObject gridVisualization;
 
         [Header("Systems")]
@@ -18,13 +20,21 @@ namespace LevelEditor
         [SerializeField] private PreviewSystem previewSystem;
         [SerializeField] private ObjectPlacer objectPlacer;
 
+        private string path = "Prefabs/Gimmick";
+        private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
+        private int objectID = 0;
+
         private Vector3Int gridPosition;
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
         private Vector3 mousePosition;
 
+        private GameObject prefab;
+        private Vector3 prefabSize;
         private GridData selectedData;
-
         private IBuildingState buildingState;
+
+        private Renderer[] renderers;
+        private Bounds totalBounds;
 
         private void Start()
         {
@@ -38,11 +48,24 @@ namespace LevelEditor
         /// <summary>
         /// 오브젝트 ID를 통한 오브젝트 배치 시작
         /// </summary>
-        public void StartPlacement(int ID)
+        public void StartPlacement(string prefabAddress)
         {
             StopPlacement();
             //gridVisualization.SetActive(true);
-            buildingState = new PlacementState(ID, previewSystem, database, selectedData, objectPlacer);
+
+            if (!objectIDs.ContainsKey(prefabAddress))
+            {
+                prefab = AddressableAssetsManager.Instance.SyncLoadObject(
+                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}.prefab"),
+                    prefabAddress) as GameObject;
+
+                objectID++;
+                objectIDs[prefabAddress] = objectID;
+                prefabSize = CalculatePrefabSize(prefab);
+                database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
+            }
+
+            buildingState = new PlacementState(objectIDs[prefabAddress], previewSystem, database, selectedData, objectPlacer);
         }
 
         /// <summary>
@@ -67,10 +90,6 @@ namespace LevelEditor
 
             mousePosition = inputSystem.GetSelectedMapPosition();
             buildingState.OnAction(mousePosition);
-
-            //mousePosition = inputSystem.GetSelectedMapPosition();
-            //gridPosition = grid.WorldToCell(mousePosition);
-            //buildingState.OnAction(gridPosition);
         }
 
         /// <summary>
@@ -89,6 +108,27 @@ namespace LevelEditor
             buildingState = null;
         }
 
+        /// <summary>
+        /// 프리팹 전체 크기 반환 (Box Collider 형태)
+        /// </summary>
+        /// <returns></returns>
+        private Vector3 CalculatePrefabSize(GameObject prefab)
+        {
+            // 모든 자식들의 Renderer 컴포넌트를 가져오기
+            renderers = prefab.GetComponentsInChildren<Renderer>();
+            if (renderers.Length > 0)
+            {
+                // 프리팹 전체 Bounds 크기
+                totalBounds = renderers[0].bounds;
+                for (int i = 1; i < renderers.Length; i++)
+                {
+                    totalBounds.Encapsulate(renderers[i].bounds);
+                }
+                return totalBounds.size;
+            }
+            return Vector3.zero;
+        }
+
         private void Update()
         {
             // 오브젝트가 없을 경우 종료
@@ -101,17 +141,6 @@ namespace LevelEditor
             mousePosition = inputSystem.GetSelectedMapPosition();
             Vector3 objectNormal = inputSystem.GetSelectedMapDirection();
             buildingState.UpdateState(mousePosition, objectNormal);
-
-            //// 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
-            //mousePosition = inputSystem.GetSelectedMapPosition();
-            //gridPosition = grid.WorldToCell(mousePosition);
-
-            //// 마지막 그리드 위치와 현재 그리드 위치가 다른 경우 갱신
-            //if (lastDetectedPosition != gridPosition)
-            //{
-            //    buildingState.UpdateState(gridPosition);
-            //    lastDetectedPosition = gridPosition;
-            //}
         }
     }
 }

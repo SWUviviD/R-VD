@@ -37,7 +37,7 @@ namespace LevelEditor
         /// <summary>
         /// 오브젝트 배치 미리보기 시작
         /// </summary>
-        public void StartShowingPlacementPreview(GameObject prefab, Vector3Int size)
+        public void StartShowingPlacementPreview(GameObject prefab, Vector3 size)
         {
             previewObject = Instantiate(prefab);
             PreparePreview(previewObject);
@@ -49,12 +49,9 @@ namespace LevelEditor
         /// <summary>
         /// 오브젝트의 크기에 맞게 셀 크기 준비
         /// </summary>
-        private void PrepareCursor(Vector3Int size)
+        private void PrepareCursor(Vector3 size)
         {
-            if (size.x > 0 || size.y > 0 || size.z > 0)
-            {
-                cellIndicator.transform.localScale = new Vector3(size.x, size.y, size.z);
-            }
+            cellIndicator.transform.localScale = new Vector3(size.x, size.y, size.z);
         }
 
         /// <summary>

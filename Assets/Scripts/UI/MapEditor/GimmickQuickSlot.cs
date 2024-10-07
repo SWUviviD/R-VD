@@ -90,8 +90,7 @@ public class GimmickQuickSlot : MonoBehaviour
         SelectIcon(_icon);
 
         if (_icon.PrefabAddress.IsNullOrEmpty()) return;
-        // TODO : 연결하기
-        //placementSystem.StartPlacement(_icon.PrefabAddress);
+        placementSystem.StartPlacement(_icon.PrefabAddress);
     }
     
     private void OnSelectGimmickInFolder(GimmickFolderIcon _obj)

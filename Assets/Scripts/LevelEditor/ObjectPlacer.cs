@@ -23,6 +23,11 @@ namespace LevelEditor
         /// </summary>
         public int PlaceObject(Vector3 position, GameObject prefab, Vector3 scale)
         {
+            if (scale == Vector3.zero)
+            {
+                return -1;
+            }
+
             newObject = Instantiate(prefab);
             newObject.transform.position = position;
             placedGameObjects.Add(newObject);

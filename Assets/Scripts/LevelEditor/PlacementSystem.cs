@@ -27,6 +27,7 @@ namespace LevelEditor
         private Vector3Int gridPosition;
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
         private Vector3 mousePosition;
+        private Vector3 objectNormal;
 
         private GameObject prefab;
         private Vector3 prefabSize;
@@ -52,6 +53,11 @@ namespace LevelEditor
         {
             StopPlacement();
             //gridVisualization.SetActive(true);
+
+            if (prefabAddress.IsNullOrEmpty())
+            {
+                return;
+            }
 
             if (!objectIDs.ContainsKey(prefabAddress))
             {
@@ -139,7 +145,7 @@ namespace LevelEditor
 
             // 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
             mousePosition = inputSystem.GetSelectedMapPosition();
-            Vector3 objectNormal = inputSystem.GetSelectedMapDirection();
+            objectNormal = inputSystem.GetSelectedMapDirection();
             buildingState.UpdateState(mousePosition, objectNormal);
         }
     }

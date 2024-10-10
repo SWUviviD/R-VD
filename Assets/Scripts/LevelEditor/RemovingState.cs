@@ -10,27 +10,23 @@ namespace LevelEditor
     public class RemovingState : IBuildingState
     {
         private int gameObjectIndex = -1;
-        private Grid grid;
         private PreviewSystem previewSystem;
-        private GridData floorData;
-        private GridData furnitureData;
+        private GridData selectedData;
+        private GridData placementData;
         private ObjectPlacer objectPlacer;
 
-        private GridData selectedData;
-        private Vector3 cellPosition;
+        private Collider[] colliders;
+        private Vector3 objectPosition;
         private bool validity;
 
-        public RemovingState(Grid grid,
-                             PreviewSystem previewSystem,
-                             GridData floorData,
-                             GridData furnitureData,
+        public RemovingState(PreviewSystem previewSystem,
+                             GridData placementData,
                              ObjectPlacer objectPlacer)
         {
-            this.grid = grid;
             this.previewSystem = previewSystem;
-            this.floorData = floorData;
-            this.furnitureData = furnitureData;
+            this.placementData = placementData;
             this.objectPlacer = objectPlacer;
+
             previewSystem.StartShowingRemovePreview();
         }
 
@@ -39,24 +35,19 @@ namespace LevelEditor
             previewSystem.StopShowingPreview();
         }
 
-        public void OnAction(Vector3Int gridPosition)
+        public void OnAction(Vector3 position)
         {
-            // 선택된 데이터 초기화
             selectedData = null;
-            if (furnitureData.CanPlaceObjectAt(gridPosition, Vector3Int.one) == false)
+            if (placementData.CanRemoveObjectAt(position))
             {
-                // 가구 데이터 선택
-                selectedData = furnitureData;
-            }
-            else if (floorData.CanPlaceObjectAt(gridPosition, Vector3Int.one) == false)
-            {
-                // 바닥 데이터 선택
-                selectedData = floorData;
+                selectedData = placementData;
             }
 
+            //if (selectedData.CanRemoveObjectAt(position))
             if (selectedData != null)
             {
-                gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+                objectPosition = selectedData.GetRemoveObjectPosition();
+                gameObjectIndex = selectedData.GetRepresentationIndex(objectPosition);
                 // 오브젝트 인덱스가 유효하지 않으면 종료
                 if (gameObjectIndex == -1)
                 {
@@ -64,28 +55,23 @@ namespace LevelEditor
                 }
 
                 // 배치된 오브젝트 및 배치 시스템의 오브젝트 데이터 제거
-                selectedData.RemoveObjectAt(gridPosition);
+                selectedData.RemoveObjectAt(objectPosition);
                 objectPlacer.RemoveObjectAt(gameObjectIndex);
             }
-
-            // 셀 위치 및 미리보기 위치 갱신
-            cellPosition = grid.CellToWorld(gridPosition);
-            previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition));
         }
 
         /// <summary>
         /// 오브젝트 선택이 유효한지 검사
         /// </summary>
-        private bool CheckIfSelectionIsValid(Vector3Int gridPosition)
+        private bool CheckIfSelectionIsValid(Vector3 position)
         {
-            return !(furnitureData.CanPlaceObjectAt(gridPosition, Vector3Int.one)
-                     && floorData.CanPlaceObjectAt(gridPosition, Vector3Int.one));
+            return placementData.CanRemoveObjectAt(position);
         }
 
-        public void UpdateState(Vector3Int gridPosition)
+        public void UpdateState(Vector3 position, Vector3 objectNormal)
         {
-            validity = CheckIfSelectionIsValid(gridPosition);
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), validity);
+            validity = CheckIfSelectionIsValid(position);
+            previewSystem.UpdatePosition(position, validity);
         }
     }
 }

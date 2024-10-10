@@ -21,6 +21,7 @@ namespace LevelEditor
         public event Action OnExit;
 
         private Vector3 lastPosition;
+        private Vector3 lastDirection;
         private Vector3 mousePos;
         private RaycastHit hit;
         private Ray ray;
@@ -59,6 +60,22 @@ namespace LevelEditor
             }
 
             return lastPosition;
+        }
+
+        /// <summary>
+        /// 마우스로 선택된 맵 위치 반환
+        /// </summary>
+        public Vector3 GetSelectedMapDirection()
+        {
+            mousePos = Input.mousePosition;
+            mousePos.z = sceneCamera.nearClipPlane;
+            ray = sceneCamera.ScreenPointToRay(mousePos);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask))
+            {
+                lastDirection = hit.normal;
+            }
+
+            return lastDirection;
         }
     }
 }

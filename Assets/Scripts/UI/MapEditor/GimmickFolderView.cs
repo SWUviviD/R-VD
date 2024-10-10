@@ -10,6 +10,7 @@ using UnityEngine.UI;
 /// </summary>
 public class GimmickFolderView : MonoBehaviour
 {
+    public static string GimmickFolderAbsolutePath = Path.Combine(Application.dataPath, GimmickFolderPath);
     private const string GimmickFolderPath = "Data/Prefabs/Gimmick";
 
     private const string ParentFolderName = "../";
@@ -52,7 +53,7 @@ public class GimmickFolderView : MonoBehaviour
         btnViewport.onClick.AddListener(() => OnClickIcon(null));
 
         gimmickIconList = new List<GimmickFolderIcon>();
-        gimmickDirectoryInfo = new DirectoryInfo(Path.Combine(Application.dataPath, GimmickFolderPath));
+        gimmickDirectoryInfo = new DirectoryInfo(GimmickFolderAbsolutePath);
         currentDirectoryInfo = gimmickDirectoryInfo;
         
         var rtTransform = transform as RectTransform;

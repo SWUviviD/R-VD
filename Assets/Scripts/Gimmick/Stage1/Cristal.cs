@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class Cristal : GimmickTrigger
 {
     [Header("Cristal")]
@@ -47,3 +47,4 @@ public class Cristal : GimmickTrigger
         }
     }
 }
+*/

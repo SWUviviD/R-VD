@@ -11,31 +11,29 @@ namespace LevelEditor
     {
         private int selectedObjectIndex = -1;
         private int ID;
-        private Grid grid;
         private PreviewSystem previewSystem;
         private ObjectDatabase database;
-        private GridData floorData;
-        private GridData furnitureData;
+        private GridData placementData;
         private ObjectPlacer objectPlacer;
 
-        private GridData selectedData;
+        private Vector3 collisionPosition;
+        private Vector3 collisionObjectSize;
+        private Vector3 collisionNormal;
+        private int collisionObjectID;
         private bool placementValidity;
+        private int collisionObjectIndex;
         private int index;
 
         public PlacementState(int ID,
-                              Grid grid,
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
-                              GridData floorData,
-                              GridData furnitureData,
+                              GridData placementData,
                               ObjectPlacer objectPlacer)
         {
             this.ID = ID;
-            this.grid = grid;
             this.previewSystem = previewSystem;
             this.database = database;
-            this.floorData = floorData;
-            this.furnitureData = furnitureData;
+            this.placementData = placementData;
             this.objectPlacer = objectPlacer;
 
             selectedObjectIndex = database.objectData.FindIndex(data => data.ID == this.ID);
@@ -54,44 +52,81 @@ namespace LevelEditor
             previewSystem.StopShowingPreview();
         }
 
-        public void OnAction(Vector3Int gridPosition)
+        public void OnAction(Vector3 position)
         {
-            placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
-            // 오브젝트 설치가 불가능하면 종료
+            // 오브젝트 설치가 불가능한 경우
+            placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
             if (!placementValidity)
             {
-                return;
+                // 측면 설치
+                position = UpdatePosition(position, collisionNormal);
+                if (CheckPlacementValidity(position, selectedObjectIndex) == false)
+                {
+                    return;
+                }
             }
 
             // 오브젝트 배치 및 데이터 추가
-            index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
-            selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-            selectedData.AddObjectAt(gridPosition,
-                                     database.objectData[selectedObjectIndex].Size,
-                                     database.objectData[selectedObjectIndex].ID,
-                                     index);
-
-            // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+            index = objectPlacer.PlaceObject(position,
+                                             database.objectData[selectedObjectIndex].Prefab,
+                                             database.objectData[selectedObjectIndex].Size);
+            if (index != -1)
+            {
+                placementData.AddObjectAt(position,
+                                         database.objectData[selectedObjectIndex].ID,
+                                         index);
+            }
         }
 
         /// <summary>
         /// 오브젝트 배치가 가능한지 검사
         /// </summary>
-        private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+        private bool CheckPlacementValidity(Vector3 position, int selectedObjectIndex)
         {
-            selectedData = database.objectData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-
-            return selectedData.CanPlaceObjectAt(gridPosition, database.objectData[selectedObjectIndex].Size);
+            return placementData.CanPlaceObjectAt(position, database.objectData[selectedObjectIndex].Size);
         }
 
-        public void UpdateState(Vector3Int gridPosition)
+        public void UpdateState(Vector3 position, Vector3 objectNormal)
         {
             // 오브젝트 배치 가능 유무 검사
-            placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+            placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
+
+            if (!placementValidity)
+            {
+                position = UpdatePosition(position, objectNormal);
+                if (CheckPlacementValidity(position, selectedObjectIndex) == false)
+                {
+                    previewSystem.UpdatePosition(position, false);
+                    return;
+                }
+            }
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
+            previewSystem.UpdatePosition(position, true);
+        }
+
+        /// <summary>
+        /// 충돌한 오브젝트의 법선으로 배치할 오브젝트 위치 계산
+        /// </summary>
+        private Vector3 UpdatePosition(Vector3 position, Vector3 objectNormal)
+        {
+            collisionNormal = objectNormal;
+
+            // 충돌한 오브젝트 갱신
+            collisionPosition = placementData.GetPlaceObjectPosition();
+            collisionObjectID = placementData.GetPlacedObjectID(collisionPosition);
+            collisionObjectIndex = database.objectData.FindIndex(data => data.ID == collisionObjectID);
+            if (collisionObjectIndex == -1)
+            {
+                return position;
+            }
+
+            // 측면 충돌 시 오브젝트 위치 갱신
+            position += new Vector3(database.objectData[selectedObjectIndex].Size.x * objectNormal.x / 2,
+                                    0f,
+                                    database.objectData[selectedObjectIndex].Size.z * objectNormal.z / 2);
+
+            return position;
         }
     }
 }

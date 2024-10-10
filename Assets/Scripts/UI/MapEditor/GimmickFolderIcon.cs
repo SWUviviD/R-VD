@@ -22,7 +22,10 @@ public class GimmickFolderIcon : MonoBehaviour
 
     public bool IsGimmick { get; private set; } 
     public string IconName { get; private set; }
+    /// <summary> 실제 파일이 위치하는 경로 </summary>
     public string Path { get; private set; }
+    /// <summary> 어드레서블 상에서의 경로 </summary>
+    public string AddressPath { get; private set; }
     public bool IsSelected => objSelected.activeSelf;
 
     public void Init(Action<GimmickFolderIcon> _onClick)
@@ -37,6 +40,7 @@ public class GimmickFolderIcon : MonoBehaviour
         IconName = _iconName;
         IsGimmick = _isGimmick;
         Path = _path;
+        AddressPath = GetAddressablePath(_path);
         txtName.text = _iconName;
 
         imgIcon.sprite = _isGimmick ? sprGimmick : sprFolder;
@@ -45,5 +49,11 @@ public class GimmickFolderIcon : MonoBehaviour
     public void SetSelect(bool _set)
     {
         objSelected.SetActive(_set);
+    }
+    
+    private string GetAddressablePath(string _path)
+    {
+        var relativePath = System.IO.Path.GetRelativePath(GimmickFolderView.GimmickFolderAbsolutePath, _path);
+        return relativePath;
     }
 }

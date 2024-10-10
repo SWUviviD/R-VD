@@ -10,8 +10,8 @@ namespace LevelEditor
     /// </summary>
     public class PlacementData
     {
-        /// <summary> 오브젝트가 차지하는 위치 리스트 </summary>
-        public List<Vector3Int> occupiedPositions;
+        /// <summary> 배치된 오브젝트의 위치 </summary>
+        public Vector3 PlacedPosition { get; private set; }
 
         /// <summary> 오브젝트의 고유 ID </summary>
         public int ID { get; private set; }
@@ -22,10 +22,10 @@ namespace LevelEditor
         /// <summary>
         /// PlacementData 클래스의 생성자, 오브젝트의 위치, ID, 인덱스를 설정
         /// </summary>
-        public PlacementData(List<Vector3Int> occupiedPositions, int ID, int placedObjectIndex)
+        public PlacementData(Vector3 placedPosition, int id, int placedObjectIndex)
         {
-            this.occupiedPositions = occupiedPositions;
-            this.ID = ID;
+            PlacedPosition = placedPosition;
+            ID = id;
             PlacedObjectIndex = placedObjectIndex;
         }
     }

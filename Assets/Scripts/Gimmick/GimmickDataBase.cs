@@ -10,6 +10,7 @@ using UnityEngine.Serialization;
 /// 모든 데이터에 대해서는 설명을 넣어야 하며, [field: Header()] 어트리뷰트를 통해 넣어야 한다.
 /// 여기에 있는 값을 수정하고 실행하면 기믹에 변경사항이 적용된다.
 /// </summary>
+
 public class GimmickDataBase : MonoBehaviour
 {
     /// <summary>

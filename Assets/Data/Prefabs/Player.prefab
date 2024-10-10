@@ -226,9 +226,7 @@ GameObject:
   - component: {fileID: 8235526216619956373}
   - component: {fileID: 8199604404254181693}
   - component: {fileID: 512464082732337944}
-  - component: {fileID: 2036612702373472162}
   - component: {fileID: 3010588022041336495}
-  - component: {fileID: 4011922343640468828}
   - component: {fileID: 573848819944701192}
   - component: {fileID: 4350681127592723824}
   m_Layer: 6
@@ -314,18 +312,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2036612702373472162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5191573275404387913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bbc4c6567e6e6b49a02d2cdd6df2b00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3010588022041336495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,20 +334,8 @@ MonoBehaviour:
   <IsDashing>k__BackingField: 0
   <DashSpeed>k__BackingField: 30
   <DashTime>k__BackingField: 1
---- !u!114 &4011922343640468828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5191573275404387913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f4b8dccb2354bde8fd0e20acbe54e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  status: {fileID: 3010588022041336495}
-  projectile: {fileID: 0}
+  maxHealth: 100
+  currentHealth: 0
 --- !u!114 &573848819944701192
 MonoBehaviour:
   m_ObjectHideFlags: 0

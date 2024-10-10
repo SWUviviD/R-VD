@@ -108,7 +108,7 @@ public class GimmickFolderView : MonoBehaviour
                 if (isActive)
                 {
                     bool isGimmick = i >= folders.Length;
-                    string iconName = isGimmick ? files[i - folders.Length].Name : folders[i].Name;
+                    string iconName = isGimmick ? files[i - folders.Length].Name.Split(".")[0] : folders[i].Name;
                     string path = isGimmick ? files[i - folders.Length].FullName : folders[i].FullName;
                     gimmickIconList[i].Set(isGimmick, iconName, path);
                     gimmickIconList[i].transform.SetSiblingIndex(i);

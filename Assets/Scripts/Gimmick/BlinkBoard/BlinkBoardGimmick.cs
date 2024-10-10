@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using MemoryPack.Formatters;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BlinkBoardGimmick : GimmickBase<BlinkBoardData>
 {

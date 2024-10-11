@@ -7,7 +7,7 @@ public class PlayerStatus : MonoBehaviour
     [field: SerializeField]
     public float MoveSpeed { get; private set; }
     [field: SerializeField]
-    public float AdditionalMoveSpeed { get; private set; }
+    public float AdditionalMoveSpeed { get; set; }
     
     [field: SerializeField]
     public float AttackRange { get; private set; }

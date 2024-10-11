@@ -13,7 +13,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private PlayerMove move;
     [SerializeField] AnimationCurve curveY = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-    private bool isJumping = false;
+    public bool IsJumping { get; private set; }
     private bool isFalling = false;
 
     private float startPos;

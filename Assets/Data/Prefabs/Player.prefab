@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3179223563415434176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5947897825476552715}
+  m_Layer: 6
+  m_Name: Project
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5947897825476552715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3179223563415434176}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.131, z: 0.728}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8235526216619956373}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4118888347567863273
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +260,7 @@ GameObject:
   - component: {fileID: 3010588022041336495}
   - component: {fileID: 573848819944701192}
   - component: {fileID: 4350681127592723824}
+  - component: {fileID: 6796862284092498013}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -251,6 +283,7 @@ Transform:
   m_Children:
   - {fileID: 413159361346818306}
   - {fileID: 2337852020153859581}
+  - {fileID: 5947897825476552715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8199604404254181693
@@ -267,12 +300,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
+  jump: {fileID: 512464082732337944}
   maxVelocity: 0
   rayLength: 1
   heightLength: 0.8
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  maxinumAngle: 66
+  mininumAngle: -46
+  addMaxRadio: 1.5
+  addMinRadio: -1
 --- !u!114 &512464082732337944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,7 +367,7 @@ MonoBehaviour:
   <AttackRange>k__BackingField: 0
   <ProjectileSpeed>k__BackingField: 0
   <JumpHeight>k__BackingField: 50
-  <JumpSpeed>k__BackingField: 0
+  <JumpSpeed>k__BackingField: 10
   <FallingSpeed>k__BackingField: 3
   <IsDashing>k__BackingField: 0
   <DashSpeed>k__BackingField: 30
@@ -378,6 +416,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6796862284092498013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191573275404387913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d2eaea6e386e1408349fd7cdea32a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillType: 0
+  projectTrs: {fileID: 5947897825476552715}
+  minShotRange: 20
+  maxShotRange: 105
+  maxKeyPressedTime: 0.8
 --- !u!1 &7285138156443567926
 GameObject:
   m_ObjectHideFlags: 0

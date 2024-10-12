@@ -21,6 +21,8 @@ public abstract class GimmickBase<T> : MonoBehaviour where T : GimmickDataBase
     /// </summary>
     [SerializeField] protected T gimmickData;
 
+    public T GimmickData => gimmickData;
+
     /// <summary> 모든 기믹 공통 동작: 활성화/비활성화 </summary>
     // protected virtual void Activate()
     // {

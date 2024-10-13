@@ -16,6 +16,7 @@ namespace LevelEditor
         private ObjectPlacer objectPlacer;
         private GimmickStatus gimmickStatus;
         private GimmickStatusData gimmickStatusData;
+        private EditingTransformPosition editingTransformPosition;
 
         private Vector3 objectPosition;
         private bool validity;
@@ -23,12 +24,14 @@ namespace LevelEditor
         public ModifyState(PreviewSystem previewSystem,
                            GridData placementData,
                            ObjectPlacer objectPlacer,
-                           GimmickStatus gimmickStatus)
+                           GimmickStatus gimmickStatus,
+                           EditingTransformPosition editingTransformPosition)
         {
             this.previewSystem = previewSystem;
             this.placementData = placementData;
             this.objectPlacer = objectPlacer;
             this.gimmickStatus = gimmickStatus;
+            this.editingTransformPosition = editingTransformPosition;
 
             //previewSystem.StartShowingRemovePreview();
         }
@@ -36,21 +39,27 @@ namespace LevelEditor
         public void EndState()
         {
             gimmickStatus.SetGimmickData(null);
+            //placementData.PlacedAreaToggle(false);
+            editingTransformPosition.SetObjectTransform(null);
             //previewSystem.StopShowingPreview();
         }
 
         public void OnAction(Vector3 position)
         {
+            //placementData.PlacedAreaToggle(false);
             selectedData = null;
             if (placementData.IsPlacedObjectAt(position))
             {
                 selectedData = placementData;
+                //selectedData.PlacedAreaToggle(true);
             }
 
             //if (selectedData.IsPlacedObjectAt(position))
             if (selectedData != null)
             {
                 objectPosition = selectedData.GetObjectPosition();
+                Transform tr = selectedData.GetObjectTransform();
+                editingTransformPosition.SetObjectTransform(tr);
                 gameObjectIndex = selectedData.GetRepresentationIndex(objectPosition);
                 // 오브젝트 인덱스가 유효하지 않으면 종료
                 if (gameObjectIndex == -1)

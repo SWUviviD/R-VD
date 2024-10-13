@@ -21,11 +21,15 @@ namespace LevelEditor
         [SerializeField] private ObjectPlacer objectPlacer;
         [SerializeField] private GimmickStatus gimmickStatus;
 
+        [Header("Transform Editor")]
+        [SerializeField] private EditingTransformPosition editingTransformPosition;
+
         private string path = "Prefabs/Gimmick";
         private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
         private Dictionary<string, GimmickDataBase> gimmickDataBases = new Dictionary<string, GimmickDataBase>();
         private GimmickStatusData gimmickStatusData;
         private int objectID = 0;
+        private bool isModify;
 
         private Vector3Int gridPosition;
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
@@ -104,11 +108,11 @@ namespace LevelEditor
 
         public void StartModify(Vector3 mousePosition)
         {
-            if (selectedData.IsPlacedObjectAt(mousePosition) && buildingState == null)
+            if (selectedData.IsPlacedObjectAt(mousePosition))
             {
                 StopPlacement();
                 //gridVisualization.SetActive(true);
-                buildingState = new ModifyState(previewSystem, selectedData, objectPlacer, gimmickStatus);
+                buildingState = new ModifyState(previewSystem, selectedData, objectPlacer, gimmickStatus, editingTransformPosition);
             }
         }
 
@@ -118,7 +122,10 @@ namespace LevelEditor
         private void PlaceStructure()
         {
             mousePosition = inputSystem.GetSelectedMapPosition();
-            StartModify(mousePosition);
+            if (editingTransformPosition.IsEditTransformPosition() == false)
+            {
+                StartModify(mousePosition);
+            }
 
             if (inputSystem.IsPointerOverUI() || buildingState == null)
             {
@@ -138,7 +145,7 @@ namespace LevelEditor
                 return;
             }
 
-            gridVisualization.SetActive(false);
+            //gridVisualization.SetActive(false);
             buildingState.EndState();
             lastDetectedPosition = Vector3Int.zero;
             buildingState = null;

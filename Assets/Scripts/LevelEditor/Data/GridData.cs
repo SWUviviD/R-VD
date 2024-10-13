@@ -20,6 +20,7 @@ namespace LevelEditor
         private PlacementData data;
 
         private Collider[] colliders;
+        private Renderer lateRenderer;
 
         /// <summary>
         /// 주어진 위치에 오브젝트를 추가
@@ -68,11 +69,36 @@ namespace LevelEditor
         }
 
         /// <summary>
+        /// 해당 오브젝트의 배치된 범위를 보여주는 토글
+        /// </summary>
+        public void PlacedAreaToggle(bool active)
+        {
+            if (lateRenderer != null)
+            {
+                lateRenderer.enabled = false;
+            }
+
+            if (active && colliders.Length > 0)
+            {
+                lateRenderer = colliders[0].gameObject.GetComponent<Renderer>();
+                lateRenderer.enabled = true;
+            }
+        }
+
+        /// <summary>
         /// 오브젝트 위치 반환
         /// </summary>
         public Vector3 GetObjectPosition()
         {
             return colliders[0].transform.root.position;
+        }
+
+        /// <summary>
+        /// 오브젝트 트랜스폼 반환
+        /// </summary>
+        public Transform GetObjectTransform()
+        {
+            return colliders[0].transform.root.transform;
         }
 
         /// <summary>

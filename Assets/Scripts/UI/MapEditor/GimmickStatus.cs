@@ -45,8 +45,6 @@ public class GimmickStatus : MonoBehaviour
     
     private RectTransform rt;
     private GimmickDataBase gimmickData;
-
-    [SerializeField] private BlinkBoardGimmick gimmick;
     
     private void Start()
     {
@@ -58,9 +56,6 @@ public class GimmickStatus : MonoBehaviour
         currentGimmickStatusList = new List<IGimmickStatusTypeBase>();
         
         rt = transform as RectTransform;
-
-        var testValue = new GimmickStatusData("GimmickName", gimmick.GimmickData, gimmick.SetGimmick);
-        SetGimmickData(testValue);
     }
 
     /// <summary>

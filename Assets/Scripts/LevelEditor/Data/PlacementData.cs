@@ -1,6 +1,5 @@
 #if UNITY_EDITOR
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace LevelEditor
@@ -10,6 +9,9 @@ namespace LevelEditor
     /// </summary>
     public class PlacementData
     {
+        /// <summary> 기믹 수치 값 </summary>
+        public GimmickStatusData GimmickStatusData { get; private set; }
+
         /// <summary> 배치된 오브젝트의 위치 </summary>
         public Vector3 PlacedPosition { get; private set; }
 
@@ -22,8 +24,9 @@ namespace LevelEditor
         /// <summary>
         /// PlacementData 클래스의 생성자, 오브젝트의 위치, ID, 인덱스를 설정
         /// </summary>
-        public PlacementData(Vector3 placedPosition, int id, int placedObjectIndex)
+        public PlacementData(GimmickStatusData gimmickStatusData, Vector3 placedPosition, int id, int placedObjectIndex)
         {
+            GimmickStatusData = gimmickStatusData;
             PlacedPosition = placedPosition;
             ID = id;
             PlacedObjectIndex = placedObjectIndex;

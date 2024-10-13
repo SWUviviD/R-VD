@@ -1,6 +1,6 @@
 #if UNITY_EDITOR
 
-using Defines;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,9 +19,12 @@ namespace LevelEditor
         [SerializeField] private PlacementInputSystem inputSystem;
         [SerializeField] private PreviewSystem previewSystem;
         [SerializeField] private ObjectPlacer objectPlacer;
+        [SerializeField] private GimmickStatus gimmickStatus;
 
         private string path = "Prefabs/Gimmick";
         private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
+        private Dictionary<string, GimmickDataBase> gimmickDataBases = new Dictionary<string, GimmickDataBase>();
+        private GimmickStatusData gimmickStatusData;
         private int objectID = 0;
 
         private Vector3Int gridPosition;
@@ -33,6 +36,9 @@ namespace LevelEditor
         private Vector3 prefabSize;
         private GridData selectedData;
         private IBuildingState buildingState;
+
+        private GimmickBase<GimmickDataBase> gimmickData;
+        private GimmickDataBase gimmickDataBase;
 
         private Renderer[] renderers;
         private Bounds totalBounds;
@@ -67,11 +73,23 @@ namespace LevelEditor
 
                 objectID++;
                 objectIDs[prefabAddress] = objectID;
+
+                gimmickDataBase = prefab.GetComponent<GimmickDataBase>();
+                gimmickDataBases[prefabAddress] = gimmickDataBase;
+
                 prefabSize = CalculatePrefabSize(prefab);
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
             }
 
-            buildingState = new PlacementState(objectIDs[prefabAddress], previewSystem, database, selectedData, objectPlacer);
+            // TODO: GimmickStatusData의 UnityAction OnReset 수정 필요
+            // TODO: gimmickData = prefab.GetComponent<GimmickBase<BlinkBoardData>>(), 결과: null;
+            gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], gimmickDataBase.Init);
+            buildingState = new PlacementState(objectIDs[prefabAddress],
+                                               gimmickStatusData,
+                                               previewSystem,
+                                               database,
+                                               selectedData,
+                                               objectPlacer);
         }
 
         /// <summary>
@@ -84,17 +102,29 @@ namespace LevelEditor
             buildingState = new RemovingState(previewSystem, selectedData, objectPlacer);
         }
 
+        public void StartModify(Vector3 mousePosition)
+        {
+            if (selectedData.IsPlacedObjectAt(mousePosition) && buildingState == null)
+            {
+                StopPlacement();
+                //gridVisualization.SetActive(true);
+                buildingState = new ModifyState(previewSystem, selectedData, objectPlacer, gimmickStatus);
+            }
+        }
+
         /// <summary>
-        /// 오브젝트 배치
+        /// 오브젝트 배치 및 수정
         /// </summary>
         private void PlaceStructure()
         {
+            mousePosition = inputSystem.GetSelectedMapPosition();
+            StartModify(mousePosition);
+
             if (inputSystem.IsPointerOverUI() || buildingState == null)
             {
                 return;
             }
 
-            mousePosition = inputSystem.GetSelectedMapPosition();
             buildingState.OnAction(mousePosition);
         }
 

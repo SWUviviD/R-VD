@@ -5,34 +5,38 @@ using UnityEngine;
 namespace LevelEditor
 {
     /// <summary>
-    /// 설치된 오브젝트 제거 상태를 관리하는 클래스
+    /// 설치된 오브젝트 수치 값을 관리하는 클래스
     /// </summary>
-    public class RemovingState : IBuildingState
+    public class ModifyState : IBuildingState
     {
         private int gameObjectIndex = -1;
         private PreviewSystem previewSystem;
         private GridData selectedData;
         private GridData placementData;
         private ObjectPlacer objectPlacer;
+        private GimmickStatus gimmickStatus;
+        private GimmickStatusData gimmickStatusData;
 
-        private Collider[] colliders;
         private Vector3 objectPosition;
         private bool validity;
 
-        public RemovingState(PreviewSystem previewSystem,
-                             GridData placementData,
-                             ObjectPlacer objectPlacer)
+        public ModifyState(PreviewSystem previewSystem,
+                           GridData placementData,
+                           ObjectPlacer objectPlacer,
+                           GimmickStatus gimmickStatus)
         {
             this.previewSystem = previewSystem;
             this.placementData = placementData;
             this.objectPlacer = objectPlacer;
+            this.gimmickStatus = gimmickStatus;
 
-            previewSystem.StartShowingRemovePreview();
+            //previewSystem.StartShowingRemovePreview();
         }
 
         public void EndState()
         {
-            previewSystem.StopShowingPreview();
+            gimmickStatus.SetGimmickData(null);
+            //previewSystem.StopShowingPreview();
         }
 
         public void OnAction(Vector3 position)
@@ -54,9 +58,9 @@ namespace LevelEditor
                     return;
                 }
 
-                // 배치된 오브젝트 및 배치 시스템의 오브젝트 데이터 제거
-                selectedData.RemoveObjectAt(objectPosition);
-                objectPlacer.RemoveObjectAt(gameObjectIndex);
+                // 배치된 오브젝트의 기믹 상태 값 출력
+                gimmickStatusData = selectedData.GetGimmickStatus(objectPosition);
+                gimmickStatus.SetGimmickData(gimmickStatusData);
             }
         }
 

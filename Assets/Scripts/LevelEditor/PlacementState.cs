@@ -11,6 +11,7 @@ namespace LevelEditor
     {
         private int selectedObjectIndex = -1;
         private int ID;
+        private GimmickStatusData gimmickStatusData;
         private PreviewSystem previewSystem;
         private ObjectDatabase database;
         private GridData placementData;
@@ -25,12 +26,14 @@ namespace LevelEditor
         private int index;
 
         public PlacementState(int ID,
+                              GimmickStatusData gimmickStatusData,
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
                               GridData placementData,
                               ObjectPlacer objectPlacer)
         {
             this.ID = ID;
+            this.gimmickStatusData = gimmickStatusData;
             this.previewSystem = previewSystem;
             this.database = database;
             this.placementData = placementData;
@@ -72,9 +75,10 @@ namespace LevelEditor
                                              database.objectData[selectedObjectIndex].Size);
             if (index != -1)
             {
-                placementData.AddObjectAt(position,
-                                         database.objectData[selectedObjectIndex].ID,
-                                         index);
+                placementData.AddObjectAt(gimmickStatusData,
+                                          position,
+                                          database.objectData[selectedObjectIndex].ID,
+                                          index);
             }
         }
 

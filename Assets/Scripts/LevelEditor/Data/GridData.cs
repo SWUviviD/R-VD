@@ -24,9 +24,9 @@ namespace LevelEditor
         /// <summary>
         /// 주어진 위치에 오브젝트를 추가
         /// </summary>
-        public void AddObjectAt(Vector3 position, int ID, int placedObjectIndex)
+        public void AddObjectAt(GimmickStatusData gimmickStatusData, Vector3 position, int ID, int placedObjectIndex)
         {
-            data = new PlacementData(position, ID, placedObjectIndex);
+            data = new PlacementData(gimmickStatusData, position, ID, placedObjectIndex);
             placedObjects.Add(position, data);
         }
 
@@ -55,9 +55,9 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
+        /// 해당 마우스 위치에 오브젝트가 존재하는지 확인
         /// </summary>
-        public bool CanRemoveObjectAt(Vector3 position)
+        public bool IsPlacedObjectAt(Vector3 position)
         {
             colliders = Physics.OverlapSphere(position, 0.1f, LayerMask.GetMask("PlacedArea"));
             if (colliders.Length > 0)
@@ -68,9 +68,9 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 삭제할 오브젝트 위치 반환
+        /// 오브젝트 위치 반환
         /// </summary>
-        public Vector3 GetRemoveObjectPosition()
+        public Vector3 GetObjectPosition()
         {
             return colliders[0].transform.root.position;
         }
@@ -123,7 +123,15 @@ namespace LevelEditor
         /// </summary>
         public void RemoveObjectAt(Vector3 position)
         {
-            placedObjects.Remove(placedObjects[position].PlacedPosition);
+            placedObjects.Remove(position);
+        }
+
+        /// <summary>
+        /// 주어진 위치의 기믹 수치를 반환
+        /// </summary>
+        public GimmickStatusData GetGimmickStatus(Vector3 position)
+        {
+            return placedObjects[position].GimmickStatusData;
         }
     }
 }

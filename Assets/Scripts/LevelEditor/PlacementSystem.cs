@@ -23,14 +23,18 @@ namespace LevelEditor
 
         [Header("Transform Editor")]
         [SerializeField] private EditingTransformPosition editingTransformPosition;
+        [SerializeField] private EditingTransformRotation editingTransformRotation;
+        [SerializeField] private EditingTransformScale editingTransformScale;
 
         private string path = "Prefabs/Gimmick";
         private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
+        private KeyCode keyCode = KeyCode.Q;
         private int objectID = 0;
 
         private Vector3Int gridPosition;
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
         private Vector3 mousePosition;
+        private Vector3 lastMousePosition;
         private Vector3 objectNormal;
 
         private GameObject prefab;
@@ -48,6 +52,7 @@ namespace LevelEditor
 
             inputSystem.OnClicked += PlaceStructure;
             inputSystem.OnExit += StopPlacement;
+            inputSystem.OnModify += StartModify;
         }
 
         /// <summary>
@@ -92,17 +97,21 @@ namespace LevelEditor
                                               objectPlacer);
         }
 
-        public void StartModify(Vector3 mousePosition)
+        public void StartModify(KeyCode key)
         {
-            if (selectedData.IsPlacedObjectAt(mousePosition))
-            {
-                StopPlacement();
-                buildingState = new ModifyState(previewSystem,
-                                                selectedData,
-                                                objectPlacer,
-                                                gimmickStatus,
-                                                editingTransformPosition);
-            }
+            StopPlacement();
+
+            keyCode = key;
+            buildingState = new ModifyState(previewSystem,
+                                            selectedData,
+                                            objectPlacer,
+                                            gimmickStatus,
+                                            editingTransformPosition,
+                                            editingTransformRotation,
+                                            editingTransformScale,
+                                            keyCode);
+
+            buildingState.OnAction(lastMousePosition);
         }
 
         /// <summary>
@@ -111,9 +120,11 @@ namespace LevelEditor
         private void PlaceStructure()
         {
             mousePosition = inputSystem.GetSelectedMapPosition();
-            if (editingTransformPosition.IsEditTransformPosition() == false)
+            lastMousePosition = mousePosition;
+            if (selectedData.IsPlacedObjectAt(mousePosition))
             {
-                StartModify(mousePosition);
+                StartModify(keyCode);
+                return;
             }
 
             if (inputSystem.IsPointerOverUI() || buildingState == null)
@@ -135,7 +146,6 @@ namespace LevelEditor
             }
 
             buildingState.EndState();
-            lastDetectedPosition = Vector3Int.zero;
             buildingState = null;
         }
 

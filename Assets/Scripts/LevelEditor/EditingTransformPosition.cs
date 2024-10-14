@@ -10,17 +10,17 @@ namespace LevelEditor
         [Header("Main Camera")]
         [SerializeField] private Camera mainCamera;
 
-        [Header("DirectionX")]
-        [SerializeField] private GameObject quadX;
-        [SerializeField] private GameObject arrowX;
+        [Header("Position X")]
+        [SerializeField] private Transform quadX;
+        [SerializeField] private Transform arrowX;
 
-        [Header("DirectionY")]
-        [SerializeField] private GameObject quadY;
-        [SerializeField] private GameObject arrowY;
+        [Header("Position Y")]
+        [SerializeField] private Transform quadY;
+        [SerializeField] private Transform arrowY;
 
-        [Header("DirectionZ")]
-        [SerializeField] private GameObject quadZ;
-        [SerializeField] private GameObject arrowZ;
+        [Header("Position Z")]
+        [SerializeField] private Transform quadZ;
+        [SerializeField] private Transform arrowZ;
 
         [Header("Layer Mask")]
         [SerializeField] private LayerMask placementMask;
@@ -42,10 +42,7 @@ namespace LevelEditor
             // 마우스 버튼이 눌렸는지 확인
             if (Input.GetMouseButtonDown(0))
             {
-                mousePos = Input.mousePosition;
-                ray = mainCamera.ScreenPointToRay(mousePos);
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask) &&
-                    hit.transform.IsChildOf(transform))
+                if (IsEditTransformPosition())
                 {
                     isDragging = true;
                     offset = draggedObject.position - GetMouseWorldPosition(plane);
@@ -67,6 +64,9 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// 위치 에디터를 선택하였는지 검사
+        /// </summary>
         public bool IsEditTransformPosition()
         {
             // UI가 있을 경우
@@ -87,6 +87,9 @@ namespace LevelEditor
             return false;
         }
 
+        /// <summary>
+        /// 수정할 오브젝트 설정
+        /// </summary>
         public void SetObjectTransform(Transform objectTR)
         {
             if (objectTR == null)
@@ -123,29 +126,29 @@ namespace LevelEditor
         {
             newPosition = GetMouseWorldPosition(plane) + offset;
 
-            if (hit.transform.IsChildOf(quadX.transform))
+            if (hit.transform.IsChildOf(quadX))
             {
                 newPosition.x = draggedObject.position.x;
             }
-            else if (hit.transform.IsChildOf(quadY.transform))
+            else if (hit.transform.IsChildOf(quadY))
             {
                 newPosition.y = draggedObject.position.y;
             }
-            else if (hit.transform.IsChildOf(quadZ.transform))
+            else if (hit.transform.IsChildOf(quadZ))
             {
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowX.transform))
+            else if (hit.transform.IsChildOf(arrowX))
             {
                 newPosition.y = draggedObject.position.y;
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowY.transform))
+            else if (hit.transform.IsChildOf(arrowY))
             {
                 newPosition.x = draggedObject.position.x;
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowZ.transform))
+            else if (hit.transform.IsChildOf(arrowZ))
             {
                 newPosition.x = draggedObject.position.x;
                 newPosition.y = draggedObject.position.y;

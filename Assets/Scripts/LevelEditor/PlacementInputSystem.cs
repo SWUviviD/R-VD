@@ -19,6 +19,7 @@ namespace LevelEditor
 
         public event Action OnClicked;
         public event Action OnExit;
+        public Action<KeyCode> OnModify;
 
         private Vector3 lastPosition;
         private Vector3 lastDirection;
@@ -35,6 +36,23 @@ namespace LevelEditor
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 OnExit?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                OnModify?.Invoke(KeyCode.Q);
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                OnModify?.Invoke(KeyCode.W);
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                OnModify?.Invoke(KeyCode.E);
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                OnModify?.Invoke(KeyCode.R);
             }
         }
 

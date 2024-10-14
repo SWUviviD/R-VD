@@ -19,6 +19,7 @@ namespace LevelEditor
         /// <summary> 현재 배치할 오브젝트의 데이터 </summary>
         private PlacementData data;
 
+        private LayerMask placedArea = LayerMask.GetMask("PlacedArea");
         private Collider[] colliders;
         private Renderer lateRenderer;
 
@@ -39,7 +40,7 @@ namespace LevelEditor
             colliders = Physics.OverlapBox(position + objectSize.y * Vector3.up / 2,
                                            objectSize * 0.99f / 2,
                                            Quaternion.identity,
-                                           LayerMask.GetMask("PlacedArea"));
+                                           placedArea);
             if (colliders.Length > 0)
             {
                 return false;
@@ -60,7 +61,7 @@ namespace LevelEditor
         /// </summary>
         public bool IsPlacedObjectAt(Vector3 position)
         {
-            colliders = Physics.OverlapSphere(position, 0.1f, LayerMask.GetMask("PlacedArea"));
+            colliders = Physics.OverlapSphere(position, 0.1f, placedArea);
             if (colliders.Length > 0)
             {
                 return true;

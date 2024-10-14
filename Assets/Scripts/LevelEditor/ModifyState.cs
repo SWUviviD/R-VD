@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
 
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace LevelEditor
 {
@@ -17,6 +19,9 @@ namespace LevelEditor
         private GimmickStatus gimmickStatus;
         private GimmickStatusData gimmickStatusData;
         private EditingTransformPosition editingTransformPosition;
+        private EditingTransformRotation editingTransformRotation;
+        private EditingTransformScale editingTransformScale;
+        private KeyCode keyCode;
 
         private Vector3 objectPosition;
         private bool validity;
@@ -25,41 +30,39 @@ namespace LevelEditor
                            GridData placementData,
                            ObjectPlacer objectPlacer,
                            GimmickStatus gimmickStatus,
-                           EditingTransformPosition editingTransformPosition)
+                           EditingTransformPosition editingTransformPosition,
+                           EditingTransformRotation editingTransformRotation,
+                           EditingTransformScale editingTransformScale,
+                           KeyCode keyCode)
         {
             this.previewSystem = previewSystem;
             this.placementData = placementData;
             this.objectPlacer = objectPlacer;
             this.gimmickStatus = gimmickStatus;
             this.editingTransformPosition = editingTransformPosition;
-
-            //previewSystem.StartShowingRemovePreview();
+            this.editingTransformRotation = editingTransformRotation;
+            this.editingTransformScale = editingTransformScale;
+            this.keyCode = keyCode;
         }
 
         public void EndState()
         {
             gimmickStatus.SetGimmickData(null);
-            //placementData.PlacedAreaToggle(false);
-            editingTransformPosition.SetObjectTransform(null);
-            //previewSystem.StopShowingPreview();
+            ModifyTransform(keyCode, null);
         }
 
         public void OnAction(Vector3 position)
         {
-            //placementData.PlacedAreaToggle(false);
             selectedData = null;
             if (placementData.IsPlacedObjectAt(position))
             {
                 selectedData = placementData;
-                //selectedData.PlacedAreaToggle(true);
             }
 
-            //if (selectedData.IsPlacedObjectAt(position))
             if (selectedData != null)
             {
                 objectPosition = selectedData.GetObjectPosition();
-                Transform tr = selectedData.GetObjectTransform();
-                editingTransformPosition.SetObjectTransform(tr);
+                ModifyTransform(keyCode, selectedData.GetObjectTransform());
                 gameObjectIndex = selectedData.GetRepresentationIndex(objectPosition);
                 // 오브젝트 인덱스가 유효하지 않으면 종료
                 if (gameObjectIndex == -1)
@@ -70,6 +73,28 @@ namespace LevelEditor
                 // 배치된 오브젝트의 기믹 상태 값 출력
                 gimmickStatusData = placementData.GetGimmickStatus(objectPosition);
                 gimmickStatus.SetGimmickData(gimmickStatusData);
+            }
+        }
+
+        private void ModifyTransform(KeyCode keyCode, Transform transform)
+        {
+            if (keyCode == KeyCode.Q)
+            {
+                editingTransformPosition.SetObjectTransform(null);
+                editingTransformRotation.SetObjectTransform(null);
+                editingTransformScale.SetObjectTransform(null);
+            }
+            if (keyCode == KeyCode.W)
+            {
+                editingTransformPosition.SetObjectTransform(transform);
+            }
+            else if (keyCode == KeyCode.E)
+            {
+                editingTransformRotation.SetObjectTransform(transform);
+            }
+            else if (keyCode == KeyCode.R)
+            {
+                editingTransformScale.SetObjectTransform(transform);
             }
         }
 

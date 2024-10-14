@@ -7,7 +7,10 @@ using UnityEngine;
 /// <summary>
 /// 기믹 베이스가 제네릭이므로 특정하기가 어려워서 만든 인터페이스 
 /// </summary>
-public interface IGimmickBase { }
+public interface IGimmickBase
+{
+    public abstract void SetGimmick();
+}
 
 public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : GimmickDataBase
 {

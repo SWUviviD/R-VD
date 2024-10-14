@@ -15,6 +15,8 @@ namespace LevelEditor
         /// <summary> 배치된 오브젝트들의 리스트 </summary>
         [SerializeField] private List<GameObject> placedGameObjects = new List<GameObject>();
 
+        public List<GameObject> PlacedGameObjects => placedGameObjects;
+
         private GameObject newObject;
         private GameObject areaObject;
 

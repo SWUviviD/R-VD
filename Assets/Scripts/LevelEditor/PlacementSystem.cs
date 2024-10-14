@@ -26,9 +26,6 @@ namespace LevelEditor
 
         private string path = "Prefabs/Gimmick";
         private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
-        private Dictionary<string, GimmickDataBase> gimmickDataBases = new Dictionary<string, GimmickDataBase>();
-        private Dictionary<string, GimmickBase<GimmickDataBase>> gimmickbases = new Dictionary<string, GimmickBase<GimmickDataBase>>();
-        private GimmickStatusData gimmickStatusData;
         private int objectID = 0;
 
         private Vector3Int gridPosition;
@@ -40,9 +37,6 @@ namespace LevelEditor
         private Vector3 prefabSize;
         private GridData selectedData;
         private IBuildingState buildingState;
-
-        private GimmickBase<GimmickDataBase> gimmickData;
-        private GimmickDataBase gimmickDataBase;
 
         private Renderer[] renderers;
         private Bounds totalBounds;
@@ -78,20 +72,9 @@ namespace LevelEditor
 
                 prefabSize = CalculatePrefabSize(prefab);
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
-                
-                gimmickDataBase = prefab.GetComponent<GimmickDataBase>();
-                gimmickDataBases[prefabAddress] = gimmickDataBase;
-
-                var gimmickBase = prefab.GetComponent(typeof(IGimmickBase));
-                gimmickData = prefab.GetComponent(typeof(IGimmickBase)) as GimmickBase<GimmickDataBase>;
-                gimmickbases[prefabAddress] = gimmickData;
             }
 
-            //gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], gimmickbases[prefabAddress].SetGimmick);
-            gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], null);
-
             buildingState = new PlacementState(objectIDs[prefabAddress],
-                                               gimmickStatusData,
                                                previewSystem,
                                                database,
                                                selectedData,
@@ -104,7 +87,9 @@ namespace LevelEditor
         public void StartRemoving()
         {
             StopPlacement();
-            buildingState = new RemovingState(previewSystem, selectedData, objectPlacer);
+            buildingState = new RemovingState(previewSystem,
+                                              selectedData,
+                                              objectPlacer);
         }
 
         public void StartModify(Vector3 mousePosition)
@@ -112,7 +97,11 @@ namespace LevelEditor
             if (selectedData.IsPlacedObjectAt(mousePosition))
             {
                 StopPlacement();
-                buildingState = new ModifyState(previewSystem, selectedData, objectPlacer, gimmickStatus, editingTransformPosition);
+                buildingState = new ModifyState(previewSystem,
+                                                selectedData,
+                                                objectPlacer,
+                                                gimmickStatus,
+                                                editingTransformPosition);
             }
         }
 
@@ -122,7 +111,7 @@ namespace LevelEditor
         private void PlaceStructure()
         {
             mousePosition = inputSystem.GetSelectedMapPosition();
-            if (editingTransformPosition?.IsEditTransformPosition() == false)
+            if (editingTransformPosition.IsEditTransformPosition() == false)
             {
                 StartModify(mousePosition);
             }

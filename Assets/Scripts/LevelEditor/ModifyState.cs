@@ -68,7 +68,7 @@ namespace LevelEditor
                 }
 
                 // 배치된 오브젝트의 기믹 상태 값 출력
-                gimmickStatusData = selectedData.GetGimmickStatus(objectPosition);
+                gimmickStatusData = placementData.GetGimmickStatus(objectPosition);
                 gimmickStatus.SetGimmickData(gimmickStatusData);
             }
         }

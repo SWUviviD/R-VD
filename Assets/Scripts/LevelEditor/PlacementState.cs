@@ -26,14 +26,12 @@ namespace LevelEditor
         private int index;
 
         public PlacementState(int ID,
-                              GimmickStatusData gimmickStatusData,
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
                               GridData placementData,
                               ObjectPlacer objectPlacer)
         {
             this.ID = ID;
-            this.gimmickStatusData = gimmickStatusData;
             this.previewSystem = previewSystem;
             this.database = database;
             this.placementData = placementData;
@@ -75,6 +73,18 @@ namespace LevelEditor
                                              database.objectData[selectedObjectIndex].Size);
             if (index != -1)
             {
+                // 기믹 상태 데이터 생성
+                // if (TryGetComponent)
+                gimmickStatusData = null;
+                if (objectPlacer.PlacedGameObjects[index].TryGetComponent(out GimmickDataBase gimmickDataBase) &&
+                    objectPlacer.PlacedGameObjects[index].TryGetComponent(out IGimmickBase iGimmickBase))
+                {
+                    gimmickStatusData = new GimmickStatusData(database.objectData[selectedObjectIndex].Name,
+                                                              gimmickDataBase,
+                                                              iGimmickBase.SetGimmick);
+                }
+
+                // PlacementData 기믹 상태 데이터를 포함한 오브젝트 정보 생성
                 placementData.AddObjectAt(gimmickStatusData,
                                           position,
                                           database.objectData[selectedObjectIndex].ID,

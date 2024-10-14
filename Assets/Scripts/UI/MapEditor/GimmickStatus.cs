@@ -26,6 +26,8 @@ public class GimmickStatus : MonoBehaviour
     [SerializeField] private Text txtTitle;
     /// <summary> 리셋 버튼. 데이터에 맞게 기믹을 변경한다. </summary>
     [SerializeField] private Button btnReset;
+    /// <summary> 리셋 버튼의 트랜스폼 </summary>
+    [SerializeField] private Transform trResetButton;
 
     /// <summary> 기믹 스테이터스에서 bool 타입을 표현하기 위한 프리팹 </summary>
     [SerializeField] private GimmickStatusBool prefabBool;
@@ -202,7 +204,7 @@ public class GimmickStatus : MonoBehaviour
             }
         }
         
-        btnReset.transform.SetSiblingIndex(++index);
+        trResetButton.SetSiblingIndex(++index);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }

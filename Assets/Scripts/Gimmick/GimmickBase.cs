@@ -4,7 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GimmickBase<T> : MonoBehaviour where T : GimmickDataBase
+/// <summary>
+/// 기믹 베이스가 제네릭이므로 특정하기가 어려워서 만든 인터페이스 
+/// </summary>
+public interface IGimmickBase { }
+
+public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : GimmickDataBase
 {
     // [Header("Gimmick Base")]
     // /// <summary> 기믹과 상호작용하는 타겟 </summary>

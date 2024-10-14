@@ -78,12 +78,12 @@ namespace LevelEditor
 
                 prefabSize = CalculatePrefabSize(prefab);
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
-
+                
                 gimmickDataBase = prefab.GetComponent<GimmickDataBase>();
                 gimmickDataBases[prefabAddress] = gimmickDataBase;
 
-                // TODO: gimmickData = prefab.GetComponent<GimmickBase<GimmickDataBase>>(), 결과: null
-                gimmickData = prefab.GetComponent<GimmickBase<GimmickDataBase>>();
+                var gimmickBase = prefab.GetComponent(typeof(IGimmickBase));
+                gimmickData = prefab.GetComponent(typeof(IGimmickBase)) as GimmickBase<GimmickDataBase>;
                 gimmickbases[prefabAddress] = gimmickData;
             }
 
@@ -122,7 +122,7 @@ namespace LevelEditor
         private void PlaceStructure()
         {
             mousePosition = inputSystem.GetSelectedMapPosition();
-            if (editingTransformPosition.IsEditTransformPosition() == false)
+            if (editingTransformPosition?.IsEditTransformPosition() == false)
             {
                 StartModify(mousePosition);
             }

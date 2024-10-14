@@ -27,9 +27,9 @@ namespace LevelEditor
         private string path = "Prefabs/Gimmick";
         private Dictionary<string, int> objectIDs = new Dictionary<string, int>();
         private Dictionary<string, GimmickDataBase> gimmickDataBases = new Dictionary<string, GimmickDataBase>();
+        private Dictionary<string, GimmickBase<GimmickDataBase>> gimmickbases = new Dictionary<string, GimmickBase<GimmickDataBase>>();
         private GimmickStatusData gimmickStatusData;
         private int objectID = 0;
-        private bool isModify;
 
         private Vector3Int gridPosition;
         private Vector3Int lastDetectedPosition = Vector3Int.zero;
@@ -62,8 +62,6 @@ namespace LevelEditor
         public void StartPlacement(string prefabAddress)
         {
             StopPlacement();
-            //gridVisualization.SetActive(true);
-
             if (prefabAddress.IsNullOrEmpty())
             {
                 return;
@@ -78,16 +76,20 @@ namespace LevelEditor
                 objectID++;
                 objectIDs[prefabAddress] = objectID;
 
+                prefabSize = CalculatePrefabSize(prefab);
+                database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
+
                 gimmickDataBase = prefab.GetComponent<GimmickDataBase>();
                 gimmickDataBases[prefabAddress] = gimmickDataBase;
 
-                prefabSize = CalculatePrefabSize(prefab);
-                database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
+                // TODO: gimmickData = prefab.GetComponent<GimmickBase<GimmickDataBase>>(), 결과: null
+                gimmickData = prefab.GetComponent<GimmickBase<GimmickDataBase>>();
+                gimmickbases[prefabAddress] = gimmickData;
             }
 
-            // TODO: GimmickStatusData의 UnityAction OnReset 수정 필요
-            // TODO: gimmickData = prefab.GetComponent<GimmickBase<BlinkBoardData>>(), 결과: null;
-            gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], gimmickDataBase.Init);
+            //gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], gimmickbases[prefabAddress].SetGimmick);
+            gimmickStatusData = new GimmickStatusData(prefabAddress, gimmickDataBases[prefabAddress], null);
+
             buildingState = new PlacementState(objectIDs[prefabAddress],
                                                gimmickStatusData,
                                                previewSystem,
@@ -102,7 +104,6 @@ namespace LevelEditor
         public void StartRemoving()
         {
             StopPlacement();
-            //gridVisualization.SetActive(true);
             buildingState = new RemovingState(previewSystem, selectedData, objectPlacer);
         }
 
@@ -111,7 +112,6 @@ namespace LevelEditor
             if (selectedData.IsPlacedObjectAt(mousePosition))
             {
                 StopPlacement();
-                //gridVisualization.SetActive(true);
                 buildingState = new ModifyState(previewSystem, selectedData, objectPlacer, gimmickStatus, editingTransformPosition);
             }
         }
@@ -145,7 +145,6 @@ namespace LevelEditor
                 return;
             }
 
-            //gridVisualization.SetActive(false);
             buildingState.EndState();
             lastDetectedPosition = Vector3Int.zero;
             buildingState = null;

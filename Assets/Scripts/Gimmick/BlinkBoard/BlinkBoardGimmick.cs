@@ -30,6 +30,8 @@ public class BlinkBoardGimmick : GimmickBase<BlinkBoardData>
     protected override void Init()
     {
         panelList = new List<BlinkBoardPanelProp>();
+
+        panelList.AddRange(GetComponentsInChildren<BlinkBoardPanelProp>());
     }
 
     public override void SetGimmick()

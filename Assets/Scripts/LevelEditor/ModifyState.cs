@@ -1,8 +1,6 @@
 #if UNITY_EDITOR
 
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace LevelEditor
 {
@@ -23,6 +21,7 @@ namespace LevelEditor
         private EditingTransformScale editingTransformScale;
         private KeyCode keyCode;
 
+        private Transform objectTransform;
         private Vector3 objectPosition;
         private bool validity;
 
@@ -61,17 +60,15 @@ namespace LevelEditor
 
             if (selectedData != null)
             {
-                objectPosition = selectedData.GetObjectPosition();
-                ModifyTransform(keyCode, selectedData.GetObjectTransform());
-                gameObjectIndex = selectedData.GetRepresentationIndex(objectPosition);
-                // 오브젝트 인덱스가 유효하지 않으면 종료
-                if (gameObjectIndex == -1)
+                objectTransform = selectedData.GetObjectTransformAt(position);
+                ModifyTransform(keyCode, objectTransform);
+                if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTransform, out gameObjectIndex))
                 {
                     return;
                 }
 
                 // 배치된 오브젝트의 기믹 상태 값 출력
-                gimmickStatusData = placementData.GetGimmickStatus(objectPosition);
+                gimmickStatusData = placementData.GetGimmickStatus(gameObjectIndex);
                 gimmickStatus.SetGimmickData(gimmickStatusData);
             }
         }

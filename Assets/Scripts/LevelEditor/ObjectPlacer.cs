@@ -14,8 +14,10 @@ namespace LevelEditor
 
         /// <summary> 배치된 오브젝트들의 리스트 </summary>
         [SerializeField] private List<GameObject> placedGameObjects = new List<GameObject>();
+        private Dictionary<Transform, int> placedObjectIndexs = new Dictionary<Transform, int>();
 
         public List<GameObject> PlacedGameObjects => placedGameObjects;
+        public Dictionary<Transform, int> PlacedObjectIndexs => placedObjectIndexs;
 
         private GameObject newObject;
         private GameObject areaObject;
@@ -38,6 +40,8 @@ namespace LevelEditor
             areaObject.transform.position = position;
             areaObject.transform.localScale = scale;
             areaObject.transform.SetParent(newObject.transform);
+
+            placedObjectIndexs[areaObject.transform.parent] = placedGameObjects.Count - 1;
 
             return placedGameObjects.Count - 1;
         }

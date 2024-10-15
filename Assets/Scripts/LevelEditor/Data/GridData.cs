@@ -10,8 +10,8 @@ namespace LevelEditor
     /// </summary>
     public class GridData
     {
-        /// <summary> 그리드에 배치된 오브젝트 데이터를 저장하는 딕셔너리 </summary>
-        private Dictionary<Vector3, PlacementData> placedObjects = new Dictionary<Vector3, PlacementData>();
+        /// <summary> 배치된 오브젝트 데이터를 저장하는 리스트 </summary>
+        private List<PlacementData> placedObjects = new List<PlacementData>();
 
         /// <summary> 반환값 리스트 </summary>
         private List<Vector3> returnVal;
@@ -29,7 +29,7 @@ namespace LevelEditor
         public void AddObjectAt(GimmickStatusData gimmickStatusData, Vector3 position, int ID, int placedObjectIndex)
         {
             data = new PlacementData(gimmickStatusData, position, ID, placedObjectIndex);
-            placedObjects.Add(position, data);
+            placedObjects.Add(data);
         }
 
         /// <summary>
@@ -49,14 +49,6 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
-        /// </summary>
-        public Vector3 GetPlaceObjectPosition()
-        {
-            return placedObjects[colliders[0].transform.root.position].PlacedPosition;
-        }
-
-        /// <summary>
         /// 해당 마우스 위치에 오브젝트가 존재하는지 확인
         /// </summary>
         public bool IsPlacedObjectAt(Vector3 position)
@@ -67,6 +59,19 @@ namespace LevelEditor
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 해당 마우스 위치의 오브젝트 트랜스폼 반환
+        /// </summary>
+        public Transform GetObjectTransformAt(Vector3 position)
+        {
+            colliders = Physics.OverlapSphere(position, 0.1f, placedArea);
+            if (colliders.Length > 0)
+            {
+                return colliders[0].transform.parent.parent;
+            }
+            return null;
         }
 
         /// <summary>
@@ -95,14 +100,6 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 오브젝트 트랜스폼 반환
-        /// </summary>
-        public Transform GetObjectTransform()
-        {
-            return colliders[0].transform.root.transform;
-        }
-
-        /// <summary>
         /// 오브젝트가 차지할 3차원 좌표 계산
         /// </summary>
         private List<Vector3> CalculatePositions(Vector3 position, Vector3 objectSize)
@@ -122,43 +119,19 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 주어진 위치에서 배치된 오브젝트의 인덱스를 반환
-        /// </summary>
-        public int GetPlacedObjectID(Vector3 position)
-        {
-            if (!placedObjects.ContainsKey(position))
-            {
-                return -1;
-            }
-            return placedObjects[position].ID;
-        }
-
-        /// <summary>
-        /// 주어진 위치에서 배치된 오브젝트의 인덱스를 반환
-        /// </summary>
-        public int GetRepresentationIndex(Vector3 position)
-        {
-            if (!placedObjects.ContainsKey(position))
-            {
-                return -1;
-            }
-            return placedObjects[position].PlacedObjectIndex;
-        }
-
-        /// <summary>
         /// 주어진 위치에서 오브젝트 제거
         /// </summary>
-        public void RemoveObjectAt(Vector3 position)
+        public void RemoveObjectAt(int placedIndex)
         {
-            placedObjects.Remove(position);
+            placedObjects[placedIndex] = null;
         }
 
         /// <summary>
         /// 주어진 위치의 기믹 수치를 반환
         /// </summary>
-        public GimmickStatusData GetGimmickStatus(Vector3 position)
+        public GimmickStatusData GetGimmickStatus(int placedIndex)
         {
-            return placedObjects[position].GimmickStatusData;
+            return placedObjects[placedIndex].GimmickStatusData;
         }
     }
 }

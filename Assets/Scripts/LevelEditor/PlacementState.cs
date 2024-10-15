@@ -59,6 +59,7 @@ namespace LevelEditor
             placementValidity = CheckPlacementValidity(position, selectedObjectIndex);
             if (!placementValidity)
             {
+                // TODO: 수정 필요
                 // 측면 설치
                 position = UpdatePosition(position, collisionNormal);
                 if (CheckPlacementValidity(position, selectedObjectIndex) == false)
@@ -74,7 +75,6 @@ namespace LevelEditor
             if (index != -1)
             {
                 // 기믹 상태 데이터 생성
-                // if (TryGetComponent)
                 gimmickStatusData = null;
                 if (objectPlacer.PlacedGameObjects[index].TryGetComponent(out GimmickDataBase gimmickDataBase) &&
                     objectPlacer.PlacedGameObjects[index].TryGetComponent(out IGimmickBase iGimmickBase))
@@ -126,9 +126,11 @@ namespace LevelEditor
         {
             collisionNormal = objectNormal;
 
+            // TODO : 오브젝트 겹치지 않도록 수정 중
             // 충돌한 오브젝트 갱신
-            collisionPosition = placementData.GetPlaceObjectPosition();
-            collisionObjectID = placementData.GetPlacedObjectID(collisionPosition);
+            //objectPlacer.PlacedObjectIndexs
+            //collisionPosition = placementData.GetPlaceObjectPosition();
+            //collisionObjectID = placementData.GetPlacedObjectID(collisionPosition);
             collisionObjectIndex = database.objectData.FindIndex(data => data.ID == collisionObjectID);
             if (collisionObjectIndex == -1)
             {

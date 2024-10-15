@@ -47,6 +47,7 @@ namespace LevelEditor
 
         private void Start()
         {
+            gimmickStatus.gameObject.SetActive(false);
             gridVisualization.SetActive(false);
             selectedData = new GridData();
 
@@ -60,6 +61,11 @@ namespace LevelEditor
         /// </summary>
         public void StartPlacement(string prefabAddress)
         {
+            if (gimmickStatus.gameObject.activeSelf)
+            {
+                return;
+            }
+
             StopPlacement();
             if (prefabAddress.IsNullOrEmpty())
             {

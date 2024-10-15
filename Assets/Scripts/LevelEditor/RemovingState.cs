@@ -16,6 +16,7 @@ namespace LevelEditor
         private ObjectPlacer objectPlacer;
 
         private Collider[] colliders;
+        private Transform objectTransform;
         private Vector3 objectPosition;
         private bool validity;
 
@@ -46,8 +47,8 @@ namespace LevelEditor
             //if (selectedData.IsPlacedObjectAt(position))
             if (selectedData != null)
             {
-                objectPosition = selectedData.GetObjectPosition();
-                gameObjectIndex = selectedData.GetRepresentationIndex(objectPosition);
+                objectTransform = selectedData.GetObjectTransformAt(position);
+                gameObjectIndex = objectPlacer.PlacedObjectIndexs[objectTransform];
                 // 오브젝트 인덱스가 유효하지 않으면 종료
                 if (gameObjectIndex == -1)
                 {
@@ -55,7 +56,7 @@ namespace LevelEditor
                 }
 
                 // 배치된 오브젝트 및 배치 시스템의 오브젝트 데이터 제거
-                selectedData.RemoveObjectAt(objectPosition);
+                selectedData.RemoveObjectAt(gameObjectIndex);
                 objectPlacer.RemoveObjectAt(gameObjectIndex);
             }
         }

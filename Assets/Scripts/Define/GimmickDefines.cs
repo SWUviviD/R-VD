@@ -9,5 +9,11 @@ namespace Defines
             SkillA,
             SkillB,
         }
+
+        public enum PlacementModeType
+        {
+            Gimmick,
+            CameraPath,
+        }
     }
 }

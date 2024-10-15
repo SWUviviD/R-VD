@@ -141,6 +141,7 @@ public class GimmickStatus : MonoBehaviour
                 else
                 {
                     statusBool = boolTypeList[^1];
+                    statusBool.gameObject.SetActive(true);
                     boolTypeList.RemoveAt(boolTypeList.Count - 1);
                 }
                 
@@ -159,6 +160,7 @@ public class GimmickStatus : MonoBehaviour
                 else
                 {
                     statusInt = intTypeList[^1];
+                    statusInt.gameObject.SetActive(true);
                     intTypeList.RemoveAt(intTypeList.Count - 1);
                 }
 
@@ -177,6 +179,7 @@ public class GimmickStatus : MonoBehaviour
                 else
                 {
                     statusFloat = floatTypeList[^1];
+                    statusFloat.gameObject.SetActive(true);
                     floatTypeList.RemoveAt(floatTypeList.Count - 1);
                 }
                 
@@ -195,6 +198,7 @@ public class GimmickStatus : MonoBehaviour
                 else
                 {
                     statusVector3 = vector3TypeList[^1];
+                    statusVector3.gameObject.SetActive(true);
                     vector3TypeList.RemoveAt(vector3TypeList.Count - 1);
                 }
                 

@@ -25,11 +25,11 @@ public class GimmickStatusVector3 : GimmickStatusTypeBase<Vector3>
     {
         txtName.text = _name;
         value = _value;
+        targetObject = _targetObject;
+        setProperty = _setProperty;
         inputValueX.text = _value.x.ToString();
         inputValueY.text = _value.y.ToString();
         inputValueZ.text = _value.z.ToString();
-        targetObject = _targetObject;
-        setProperty = _setProperty;
     }
 
     private void OnInputValueXChanged(string _value)
@@ -39,7 +39,6 @@ public class GimmickStatusVector3 : GimmickStatusTypeBase<Vector3>
         else x = float.Parse(_value);
         value.x = x;
         setProperty.Invoke(targetObject, value);
-        SetValue(value);
     }
     
     private void OnInputValueYChanged(string _value)
@@ -49,7 +48,6 @@ public class GimmickStatusVector3 : GimmickStatusTypeBase<Vector3>
         else y = float.Parse(_value);
         value.y = y;
         setProperty.Invoke(targetObject, value);
-        SetValue(value);
     }
     
     private void OnInputValueZChanged(string _value)
@@ -59,6 +57,5 @@ public class GimmickStatusVector3 : GimmickStatusTypeBase<Vector3>
         else z = float.Parse(_value);
         value.z = z;
         setProperty.Invoke(targetObject, value);
-        SetValue(value);
     }
 }

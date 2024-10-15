@@ -17,9 +17,9 @@ public class GimmickStatusInt : GimmickStatusTypeBase<int>
     public override void Set(string _name, int _value, object _targetObject, Action<object, object> _setProperty)
     {
         txtName.text = _name;
-        inputValue.text = _value.ToString();
         targetObject = _targetObject;
         setProperty = _setProperty;
+        inputValue.text = _value.ToString();
     }
 
     private void OnInputValueChanged(string _value)
@@ -28,6 +28,5 @@ public class GimmickStatusInt : GimmickStatusTypeBase<int>
         if (_value.IsNullOrEmpty()) value = 0;
         else value = int.Parse(_value);
         setProperty.Invoke(targetObject, value);
-        SetValue(value);
     }
 }

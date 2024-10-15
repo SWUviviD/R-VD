@@ -17,9 +17,9 @@ public class GimmickStatusFloat : GimmickStatusTypeBase<float>
     public override void Set(string _name, float _value, object _targetObject, Action<object, object> _setProperty)
     {
         txtName.text = _name;
-        inputValue.text = _value.ToString();
         targetObject = _targetObject;
         setProperty = _setProperty;
+        inputValue.text = _value.ToString();
     }
 
     private void OnInputValueChanged(string _value)
@@ -28,6 +28,5 @@ public class GimmickStatusFloat : GimmickStatusTypeBase<float>
         if (_value.IsNullOrEmpty()) value = 0;
         else value = float.Parse(_value);
         setProperty.Invoke(targetObject, value);
-        SetValue(value);
     }
 }

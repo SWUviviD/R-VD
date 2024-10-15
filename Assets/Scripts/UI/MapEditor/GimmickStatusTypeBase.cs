@@ -9,7 +9,6 @@ public interface IGimmickStatusTypeBase { }
 /// </summary>
 public abstract class GimmickStatusTypeBase<T> : MonoBehaviour, IGimmickStatusTypeBase
 {
-    public System.Action<T> OnValueChanged { get; set; }
 
     protected object targetObject;
     protected System.Action<object, object> setProperty;
@@ -19,9 +18,4 @@ public abstract class GimmickStatusTypeBase<T> : MonoBehaviour, IGimmickStatusTy
     /// 프로퍼티의 값을 세팅할 수 있는 함수도 설정한다.
     /// </summary>
     public abstract void Set(string _name, T _value, object _targetObject, System.Action<object, object> _setProperty);
-    
-    public void SetValue(T _value)
-    {
-        OnValueChanged?.Invoke(_value);
-    }
 }

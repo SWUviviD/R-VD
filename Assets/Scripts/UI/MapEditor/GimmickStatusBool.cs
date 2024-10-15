@@ -17,14 +17,13 @@ public class GimmickStatusBool : GimmickStatusTypeBase<bool>
     public override void Set(string _name, bool _value, object _targetObject, Action<object, object> _setProperty)
     {
         txtName.text = _name;
-        toggleValue.isOn = _value;
         targetObject = _targetObject;
         setProperty = _setProperty;
+        toggleValue.isOn = _value;
     }
 
     private void OnInputValueChanged(bool _value)
     {
         setProperty.Invoke(targetObject, _value);
-        SetValue(_value);
     }
 }

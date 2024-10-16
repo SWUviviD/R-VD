@@ -14,8 +14,11 @@ namespace LevelEditor
         /// <summary> 에디터 씬 카메라 </summary>
         [SerializeField] private Camera sceneCamera;
 
-        /// <summary> 배치할 레이어 마스크 </summary>
-        [SerializeField] private LayerMask placementMask;
+        /// <summary> 배치된 오브젝트 영역 마스크 </summary>
+        [SerializeField] private LayerMask placedAreaMask;
+
+        /// <summary> 배치된 오브젝트 영역 마스크 </summary>
+        [SerializeField] private LayerMask TransformEditorMask;
 
         public event Action OnClicked;
         public event Action OnExit;
@@ -29,6 +32,11 @@ namespace LevelEditor
 
         private void Update()
         {
+            if (Input.GetMouseButton(1))
+            {
+                return;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 OnClicked?.Invoke();
@@ -67,12 +75,28 @@ namespace LevelEditor
         /// <summary>
         /// 마우스로 선택된 맵 위치 반환
         /// </summary>
+        public bool IsTransformEditorAt()
+        {
+            mousePos = Input.mousePosition;
+            mousePos.z = sceneCamera.nearClipPlane;
+            ray = sceneCamera.ScreenPointToRay(mousePos);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, TransformEditorMask))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 마우스로 선택된 맵 위치 반환
+        /// </summary>
         public Vector3 GetSelectedMapPosition()
         {
             mousePos = Input.mousePosition;
             mousePos.z = sceneCamera.nearClipPlane;
             ray = sceneCamera.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placedAreaMask))
             {
                 lastPosition = hit.point;
             }
@@ -88,7 +112,7 @@ namespace LevelEditor
             mousePos = Input.mousePosition;
             mousePos.z = sceneCamera.nearClipPlane;
             ray = sceneCamera.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placementMask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placedAreaMask))
             {
                 lastDirection = hit.normal;
             }

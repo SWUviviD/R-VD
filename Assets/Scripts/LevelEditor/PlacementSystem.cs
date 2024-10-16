@@ -40,7 +40,8 @@ namespace LevelEditor
         private GameObject prefab;
         private Vector3 prefabSize;
         private GridData selectedData;
-        private IBuildingState buildingState;
+        private IBuildingState currentState;
+        private IBuildingState modifyState;
 
         private Renderer[] renderers;
         private Bounds totalBounds;
@@ -85,7 +86,7 @@ namespace LevelEditor
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
             }
 
-            buildingState = new PlacementState(objectIDs[prefabAddress],
+            currentState = new PlacementState(objectIDs[prefabAddress],
                                                previewSystem,
                                                database,
                                                selectedData,
@@ -98,47 +99,56 @@ namespace LevelEditor
         public void StartRemoving()
         {
             StopPlacement();
-            buildingState = new RemovingState(previewSystem,
+            currentState = new RemovingState(previewSystem,
                                               selectedData,
                                               objectPlacer);
         }
 
+        /// <summary>
+        /// 오브젝트 수정 시작
+        /// </summary>
         public void StartModify(KeyCode key)
         {
             StopPlacement();
-
-            keyCode = key;
-            buildingState = new ModifyState(previewSystem,
+            currentState = new ModifyState(previewSystem,
                                             selectedData,
                                             objectPlacer,
                                             gimmickStatus,
                                             editingTransformPosition,
                                             editingTransformRotation,
                                             editingTransformScale,
-                                            keyCode);
+                                            key);
 
-            buildingState.OnAction(lastMousePosition);
+            keyCode = key;
+            modifyState = currentState;
+            currentState.OnAction(lastMousePosition);
         }
 
         /// <summary>
-        /// 오브젝트 배치 및 수정
+        /// 오브젝트 배치 및 수정 (마우스 클릭할 경우)
         /// </summary>
         private void PlaceStructure()
         {
+            if (inputSystem.IsPointerOverUI() || inputSystem.IsTransformEditorAt())
+            {
+                return;
+            }
+
             mousePosition = inputSystem.GetSelectedMapPosition();
             lastMousePosition = mousePosition;
-            if (selectedData.IsPlacedObjectAt(mousePosition))
+
+            // 오브젝트 수정 상태 조건
+            if (currentState == null || currentState == modifyState)
             {
-                StartModify(keyCode);
+                StopPlacement();
+                if (selectedData.IsPlacedObjectAt(mousePosition))
+                {
+                    StartModify(keyCode);
+                }
                 return;
             }
 
-            if (inputSystem.IsPointerOverUI() || buildingState == null)
-            {
-                return;
-            }
-
-            buildingState.OnAction(mousePosition);
+            currentState.OnAction(mousePosition);
         }
 
         /// <summary>
@@ -146,19 +156,18 @@ namespace LevelEditor
         /// </summary>
         private void StopPlacement()
         {
-            if (buildingState == null)
+            if (currentState == null)
             {
                 return;
             }
 
-            buildingState.EndState();
-            buildingState = null;
+            currentState.EndState();
+            currentState = null;
         }
 
         /// <summary>
         /// 프리팹 전체 크기 반환 (Box Collider 형태)
         /// </summary>
-        /// <returns></returns>
         private Vector3 CalculatePrefabSize(GameObject prefab)
         {
             // 모든 자식들의 Renderer 컴포넌트를 가져오기
@@ -179,7 +188,7 @@ namespace LevelEditor
         private void Update()
         {
             // 오브젝트가 없을 경우 종료
-            if (buildingState == null)
+            if (currentState == null)
             {
                 return;
             }
@@ -187,7 +196,7 @@ namespace LevelEditor
             // 마우스 위치 및 마우스 위치에 따른 오브젝트 위치 갱신
             mousePosition = inputSystem.GetSelectedMapPosition();
             objectNormal = inputSystem.GetSelectedMapDirection();
-            buildingState.UpdateState(mousePosition, objectNormal);
+            currentState.UpdateState(mousePosition, objectNormal);
         }
     }
 }

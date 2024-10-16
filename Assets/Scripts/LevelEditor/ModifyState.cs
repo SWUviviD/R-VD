@@ -22,7 +22,6 @@ namespace LevelEditor
         private KeyCode keyCode;
 
         private Transform objectTransform;
-        private Vector3 objectPosition;
         private bool validity;
 
         public ModifyState(PreviewSystem previewSystem,

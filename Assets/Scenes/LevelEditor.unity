@@ -3609,9 +3609,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneCamera: {fileID: 246458074}
-  placementMask:
+  placedAreaMask:
     serializedVersion: 2
-    m_Bits: 3145856
+    m_Bits: 1048704
+  TransformEditorMask:
+    serializedVersion: 2
+    m_Bits: 2097152
 --- !u!1 &1005838081
 GameObject:
   m_ObjectHideFlags: 0
@@ -4171,7 +4174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewOffset: 0.06
-  cellIndicator: {fileID: 218333941713290772}
+  cellIndicator: {fileID: 6726489186195670527}
   previewMaterialPrefab: {fileID: 2100000, guid: f7976b794ba06c5459f3c6bc34983ae0,
     type: 2}
 --- !u!1 &1538750513
@@ -5245,22 +5248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba79e7178502dd2468b72669915e33f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &218333941713290772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6290281769285525506}
-  m_Layer: 0
-  m_Name: CellIndicator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
 --- !u!222 &337081970857858313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5392,16 +5379,6 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 246458074}
-    - target: {fileID: 961980802571899723, guid: 49e391619b5fbd944933a975edd59c08,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1090365608803603632, guid: 49e391619b5fbd944933a975edd59c08,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2203850258052982214, guid: 49e391619b5fbd944933a975edd59c08,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5457,11 +5434,6 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 246458074}
-    - target: {fileID: 5933845568659104545, guid: 49e391619b5fbd944933a975edd59c08,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7453961098064089808, guid: 49e391619b5fbd944933a975edd59c08,
         type: 3}
       propertyPath: mainCamera
@@ -5749,7 +5721,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6290281769285525506}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3793729220769381569
 MonoBehaviour:
@@ -6005,22 +5977,6 @@ RectTransform:
   m_AnchoredPosition: {x: 25, y: 0}
   m_SizeDelta: {x: -25, y: 0}
   m_Pivot: {x: 0, y: 1}
---- !u!4 &6290281769285525506
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218333941713290772}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3679985792835846436}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &6643807710911174671
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6062,12 +6018,12 @@ GameObject:
   - component: {fileID: 5938986860124600765}
   - component: {fileID: 2790740401253130047}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: CellIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6876508413169198275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6323,7 +6279,7 @@ SceneRoots:
   - {fileID: 1005838082}
   - {fileID: 364073866}
   - {fileID: 951593199}
-  - {fileID: 6290281769285525506}
+  - {fileID: 3679985792835846436}
   - {fileID: 556000188}
   - {fileID: 2073908931}
   - {fileID: 1388671306820940882}

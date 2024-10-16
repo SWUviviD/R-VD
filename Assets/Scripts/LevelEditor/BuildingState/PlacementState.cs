@@ -131,6 +131,9 @@ namespace LevelEditor
             //objectPlacer.PlacedObjectIndexs
             //collisionPosition = placementData.GetPlaceObjectPosition();
             //collisionObjectID = placementData.GetPlacedObjectID(collisionPosition);
+
+
+
             collisionObjectIndex = database.objectData.FindIndex(data => data.ID == collisionObjectID);
             if (collisionObjectIndex == -1)
             {

@@ -15,5 +15,12 @@ namespace Defines
             Gimmick,
             CameraPath,
         }
+
+        public enum CameraPathInsertMode
+        {
+            None,
+            Add,
+            Insert,
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Defines;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -17,6 +18,9 @@ public class CameraPathFolderView : MonoBehaviour
 
     [SerializeField] private Button btnAddPoint;
     [SerializeField] private Button btnInsertPoint;
+
+    [SerializeField] private CameraPathInsertSystem insertSystem;
+    [SerializeField] private CameraPathInputSystem inputSystem;
     
     private bool isOpen;
 
@@ -56,11 +60,11 @@ public class CameraPathFolderView : MonoBehaviour
 
     private void OnClickAddPoint()
     {
-        
+        insertSystem.SetInsertMode(GimmickDefines.CameraPathInsertMode.Add);
     }
 
     private void OnClickInsertPoint()
     {
-        
+        insertSystem.SetInsertMode(GimmickDefines.CameraPathInsertMode.Insert);
     }
 }

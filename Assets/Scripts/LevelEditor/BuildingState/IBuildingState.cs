@@ -16,7 +16,7 @@ namespace LevelEditor
         void OnAction(Vector3 position);
 
         /// <summary> 상태가 업데이트될 때 실행되는 함수 </summary>
-        void UpdateState(Vector3 position, Vector3 objectNormal);
+        void UpdateState(Vector3 position);
     }
 }
 

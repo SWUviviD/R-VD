@@ -69,7 +69,7 @@ namespace LevelEditor
             return placementData.IsPlacedObjectAt(position);
         }
 
-        public void UpdateState(Vector3 position, Vector3 objectNormal)
+        public void UpdateState(Vector3 position)
         {
             validity = CheckIfSelectionIsValid(position);
             previewSystem.UpdatePosition(position, validity);

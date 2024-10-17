@@ -21,6 +21,7 @@ namespace LevelEditor
         private GameObject previewObject;
         private Material previewMaterialInstance;
         private Renderer cellIndicatorRenderer;
+        private Vector3 cellSize;
 
         private Renderer[] renderers;
         private Material[] materials;
@@ -51,7 +52,8 @@ namespace LevelEditor
         /// </summary>
         private void PrepareCursor(Vector3 size)
         {
-            cellIndicator.transform.localScale = new Vector3(size.x, size.y, size.z);
+            cellIndicator.transform.localScale = size;
+
         }
 
         /// <summary>
@@ -132,6 +134,7 @@ namespace LevelEditor
         /// </summary>
         private void MoveCursor(Vector3 position)
         {
+            position.y += cellIndicator.transform.localScale.y / 2;
             cellIndicator.transform.position = position;
         }
 

@@ -103,22 +103,6 @@ namespace LevelEditor
 
             return lastPosition;
         }
-
-        /// <summary>
-        /// 마우스로 선택된 맵 위치 반환
-        /// </summary>
-        public Vector3 GetSelectedMapDirection()
-        {
-            mousePos = Input.mousePosition;
-            mousePos.z = sceneCamera.nearClipPlane;
-            ray = sceneCamera.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, placedAreaMask))
-            {
-                lastDirection = hit.normal;
-            }
-
-            return lastDirection;
-        }
     }
 }
 

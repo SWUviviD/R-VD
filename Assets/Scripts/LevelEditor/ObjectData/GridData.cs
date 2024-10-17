@@ -21,7 +21,10 @@ namespace LevelEditor
 
         private LayerMask placedArea = LayerMask.GetMask("PlacedArea");
         private Collider[] colliders;
+        private Transform[] transforms;
         private Renderer lateRenderer;
+        private int count;
+
 
         /// <summary>
         /// 주어진 위치에 오브젝트를 추가
@@ -46,6 +49,31 @@ namespace LevelEditor
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// 해당 위치에 오브젝트를 배치할 수 있는지 확인
+        /// </summary>
+        public bool TryGetCollisionedObjects(Vector3 position, Vector3 objectSize, out Transform[] transforms)
+        {
+            count = Physics.OverlapBoxNonAlloc(position + objectSize.y * Vector3.up / 2,
+                                               objectSize * 0.99f / 2,
+                                               colliders,
+                                               Quaternion.identity,
+                                               placedArea);
+
+            if (count > 0)
+            {
+                transforms = new Transform[count];
+                for (int i = 0; i < count; ++i)
+                {
+                    transforms[i] = colliders[i].transform.parent.parent;
+                }
+                return true;
+            }
+            transforms = null;
+
+            return false;
         }
 
         /// <summary>
@@ -92,33 +120,6 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// 오브젝트 위치 반환
-        /// </summary>
-        public Vector3 GetObjectPosition()
-        {
-            return colliders[0].transform.root.position;
-        }
-
-        /// <summary>
-        /// 오브젝트가 차지할 3차원 좌표 계산
-        /// </summary>
-        private List<Vector3> CalculatePositions(Vector3 position, Vector3 objectSize)
-        {
-            returnVal = new List<Vector3>();
-            for (int x = 0; x < objectSize.x; ++x)
-            {
-                for (int y = 0; y < objectSize.y; ++y)
-                {
-                    for (int z = 0; z < objectSize.z; ++z)
-                    {
-                        returnVal.Add(position + new Vector3(x, y, z));
-                    }
-                }
-            }
-            return returnVal;
-        }
-
-        /// <summary>
         /// 주어진 위치에서 오브젝트 제거
         /// </summary>
         public void RemoveObjectAt(int placedIndex)
@@ -132,6 +133,11 @@ namespace LevelEditor
         public GimmickStatusData GetGimmickStatus(int placedIndex)
         {
             return placedObjects[placedIndex].GimmickStatusData;
+        }
+
+        public int GetPlacedObjectID(int placedIndex)
+        {
+            return placedObjects[placedIndex].ID;
         }
     }
 }

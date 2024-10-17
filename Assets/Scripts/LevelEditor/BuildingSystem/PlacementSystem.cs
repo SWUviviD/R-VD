@@ -46,6 +46,10 @@ namespace LevelEditor
         private Renderer[] renderers;
         private Bounds totalBounds;
 
+        private string lastPrefabAddress;
+        private float gridSize;
+        private bool isGridMod;
+
         private void Start()
         {
             gimmickStatus.gameObject.SetActive(false);
@@ -68,6 +72,7 @@ namespace LevelEditor
             }
 
             StopPlacement();
+            lastPrefabAddress = prefabAddress;
             if (prefabAddress.IsNullOrEmpty())
             {
                 return;
@@ -90,7 +95,9 @@ namespace LevelEditor
                                                previewSystem,
                                                database,
                                                selectedData,
-                                               objectPlacer);
+                                               objectPlacer,
+                                               gridSize,
+                                               isGridMod);
         }
 
         /// <summary>
@@ -183,6 +190,16 @@ namespace LevelEditor
                 return totalBounds.size;
             }
             return Vector3.zero;
+        }
+
+        /// <summary>
+        /// 그리드 형태로 오브젝트 배치 설정
+        /// </summary>
+        public void GridModToggle(float size, bool active)
+        {
+            gridSize = size;
+            isGridMod = active;
+            StartPlacement(lastPrefabAddress);
         }
 
         private void Update()

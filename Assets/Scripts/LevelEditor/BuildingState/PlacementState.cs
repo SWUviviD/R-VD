@@ -16,6 +16,8 @@ namespace LevelEditor
         private ObjectDatabase database;
         private GridData placementData;
         private ObjectPlacer objectPlacer;
+        private float gridSize;
+        private bool isGridMod;
 
         private Vector3 collisionPosition;
         private Vector3 collisionObjectSize;
@@ -38,13 +40,17 @@ namespace LevelEditor
                               PreviewSystem previewSystem,
                               ObjectDatabase database,
                               GridData placementData,
-                              ObjectPlacer objectPlacer)
+                              ObjectPlacer objectPlacer,
+                              float gridSize,
+                              bool isGridMod)
         {
             this.ID = ID;
             this.previewSystem = previewSystem;
             this.database = database;
             this.placementData = placementData;
             this.objectPlacer = objectPlacer;
+            this.gridSize = gridSize;
+            this.isGridMod = isGridMod;
 
             selectedObjectIndex = database.objectData.FindIndex(data => data.ID == this.ID);
             if (selectedObjectIndex < 0)
@@ -64,6 +70,14 @@ namespace LevelEditor
 
         public void OnAction(Vector3 position)
         {
+            // 그리드 모드 검사
+            if (isGridMod)
+            {
+                position = new Vector3((int)(position.x / gridSize) * gridSize,
+                                       (int)(position.y / gridSize) * gridSize,
+                                       (int)(position.z / gridSize) * gridSize);
+            }
+
             // 오브젝트 설치가 불가능한 경우
             if (!CheckPlacementValidity(position, selectedObjectIndex))
             {
@@ -113,6 +127,14 @@ namespace LevelEditor
             if (!CheckPlacementValidity(position, selectedObjectIndex))
             {
                 position = GetFixedPosition(position, database.objectData[selectedObjectIndex].Size);
+            }
+
+            // 그리드 모드 검사
+            if (isGridMod)
+            {
+                position = new Vector3((int)(position.x / gridSize) * gridSize,
+                                       (int)(position.y / gridSize) * gridSize,
+                                       (int)(position.z / gridSize) * gridSize);
             }
 
             // 미리보기 오브젝트 갱신
@@ -175,6 +197,7 @@ namespace LevelEditor
                 }
 
             }
+
             return position;
         }
     }

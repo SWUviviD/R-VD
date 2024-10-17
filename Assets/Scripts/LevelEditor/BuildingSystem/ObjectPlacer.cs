@@ -15,12 +15,14 @@ namespace LevelEditor
         /// <summary> 배치된 오브젝트들의 리스트 </summary>
         [SerializeField] private List<GameObject> placedGameObjects = new List<GameObject>();
         private Dictionary<Transform, int> placedObjectIndexs = new Dictionary<Transform, int>();
+        private List<Renderer> placedAreaRenderers = new List<Renderer>();
 
         public List<GameObject> PlacedGameObjects => placedGameObjects;
         public Dictionary<Transform, int> PlacedObjectIndexs => placedObjectIndexs;
 
         private GameObject newObject;
         private GameObject areaObject;
+        private bool isShowArea;
 
         /// <summary>
         /// 새로운 오브젝트 배치
@@ -39,6 +41,8 @@ namespace LevelEditor
             areaObject = Instantiate(placedArea);
             areaObject.transform.position = position;
             areaObject.transform.localScale = scale;
+            placedAreaRenderers.Add(areaObject.GetComponentInChildren<Renderer>());
+            placedAreaRenderers[placedGameObjects.Count - 1].enabled = isShowArea;
             areaObject.transform.SetParent(newObject.transform);
 
             placedObjectIndexs[areaObject.transform.parent] = placedGameObjects.Count - 1;
@@ -58,6 +62,15 @@ namespace LevelEditor
 
             Destroy(placedGameObjects[gameObjectIndex]);
             placedGameObjects[gameObjectIndex] = null;
+        }
+
+        /// <summary>
+        /// 설치된 오브젝트 영역 표시 설정
+        /// </summary>
+        public void ShowPlacedAreas(bool active)
+        {
+            isShowArea = active;
+            placedAreaRenderers.ForEach(_ => _.enabled = active);
         }
     }
 }

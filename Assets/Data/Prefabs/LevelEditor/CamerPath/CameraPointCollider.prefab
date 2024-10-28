@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1359346904772149706}
+  - component: {fileID: 5907044565584985097}
   m_Layer: 0
   m_Name: trStartPoint
   m_TagString: Untagged
@@ -31,6 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1551306078678571490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5907044565584985097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069315707214776340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47cfd869cbc78416eaeb5250ea7e7f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5640818527591491205
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7589263768922177613}
+  - component: {fileID: 2559239096084516018}
   m_Layer: 0
   m_Name: trEndPoint
   m_TagString: Untagged
@@ -62,6 +76,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1551306078678571490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2559239096084516018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5640818527591491205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47cfd869cbc78416eaeb5250ea7e7f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5727157217835974080
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +187,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trStartBezierPoint: {fileID: 1359346904772149706}
   trEndBezierPoint: {fileID: 7589263768922177613}
+  startHandleTarget: {fileID: 5907044565584985097}
+  endHandleTarget: {fileID: 2559239096084516018}
 --- !u!1 &9027122773870777885
 GameObject:
   m_ObjectHideFlags: 0

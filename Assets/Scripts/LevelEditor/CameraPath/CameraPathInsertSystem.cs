@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Defines;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
@@ -60,6 +61,8 @@ public class CameraPathInsertSystem : MonoBehaviour
     [SerializeField] private CameraPathInputSystem inputSystem;
     [SerializeField] private CameraPointCollider prefabCameraPoint;
 
+    [FormerlySerializedAs("handlerViewer")] [SerializeField] private NameHandleManager handlerManager;
+    
     [SerializeField] private Text txtState;
     
     public GimmickDefines.CameraPathInsertMode InsertMode { get; private set; }
@@ -99,6 +102,13 @@ public class CameraPathInsertSystem : MonoBehaviour
     private void AddPath(Vector3 _position)
     {
         var cameraPoint = Instantiate(prefabCameraPoint, _position, Quaternion.identity, transform);
+
+        Vector3 startBezierPoint = _position;
+        Vector3 endBezierPoint = _position;
+        
+        cameraPoint.SetStartBezierPoint(startBezierPoint);
+        cameraPoint.SetEndBezierPoint(endBezierPoint);
+        cameraPoint.Set();
         CameraPointList.Add(cameraPoint);
     }
 

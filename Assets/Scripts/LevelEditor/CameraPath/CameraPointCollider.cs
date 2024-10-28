@@ -11,13 +11,38 @@ public class CameraPointCollider : MonoBehaviour
     [SerializeField] private Transform trStartBezierPoint;
     [SerializeField] private Transform trEndBezierPoint;
 
+    [SerializeField] private NameHandleTarget startHandleTarget;
+    [SerializeField] private NameHandleTarget endHandleTarget;
+    
+    public Transform TrStartBezierPoint => trStartBezierPoint;
+    public Transform TrEndBezierPoint => trEndBezierPoint;
+    
     public CameraPathPoint CameraPathPoint { get; private set; }
+
+    private NameHandleData startPathHandle;
+    private NameHandleData endPathHandle;
+
+    /// <summary>
+    /// 캐싱해둔 카메라
+    /// </summary>
+    private Camera camera;
     
     private void Awake()
     {
         CameraPathPoint = new CameraPathPoint();
         trStartBezierPoint.position = Vector3.zero;
         trEndBezierPoint.position = Vector3.zero;
+
+        camera = Camera.main;
+    }
+
+    public void Set()
+    {
+        startPathHandle = new NameHandleData("StartHandle", Color.cyan);
+        endPathHandle = new NameHandleData("EndHandle", Color.cyan);
+        
+        startHandleTarget.Set(startPathHandle);
+        endHandleTarget.Set(endPathHandle);
     }
 
     /// <summary>

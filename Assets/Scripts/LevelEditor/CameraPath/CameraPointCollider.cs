@@ -30,8 +30,8 @@ public class CameraPointCollider : MonoBehaviour
     private void Awake()
     {
         CameraPathPoint = new CameraPathPoint();
-        trStartBezierPoint.position = Vector3.zero;
-        trEndBezierPoint.position = Vector3.zero;
+        trStartBezierPoint.localPosition = Vector3.zero;
+        trEndBezierPoint.localPosition = Vector3.zero;
 
         camera = Camera.main;
     }
@@ -50,11 +50,12 @@ public class CameraPointCollider : MonoBehaviour
     /// </summary>
     public void SetStartBezierPoint(Vector3 _startPoint)
     {
-        Vector3 endPoint = new Vector3(-_startPoint.x, _startPoint.y, -_startPoint.z);
+        trStartBezierPoint.position = _startPoint;
+        var startLocalPoint = trStartBezierPoint.localPosition;
+        Vector3 endPoint = transform.position + new Vector3(-startLocalPoint.x, startLocalPoint.y, -startLocalPoint.z);
+        trEndBezierPoint.position = endPoint;
         CameraPathPoint.CurveStartPoint = _startPoint;
         CameraPathPoint.CurveEndPoint = endPoint;
-        trStartBezierPoint.position = _startPoint;
-        trEndBezierPoint.position = endPoint;
     }
 
     /// <summary>
@@ -63,6 +64,11 @@ public class CameraPointCollider : MonoBehaviour
     /// <param name="_endPoint"></param>
     public void SetEndBezierPoint(Vector3 _endPoint)
     {
-        SetStartBezierPoint(new Vector3(-_endPoint.x, _endPoint.y, -_endPoint.z));
+        trEndBezierPoint.position = _endPoint;
+        var startLocalPoint = trEndBezierPoint.localPosition;
+        Vector3 startPoint = transform.position + new Vector3(-startLocalPoint.x, startLocalPoint.y, -startLocalPoint.z);
+        trStartBezierPoint.position = startPoint;
+        CameraPathPoint.CurveEndPoint = _endPoint;
+        CameraPathPoint.CurveStartPoint = startPoint;
     }
 }

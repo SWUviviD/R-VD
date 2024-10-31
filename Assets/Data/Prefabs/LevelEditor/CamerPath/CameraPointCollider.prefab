@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 6156834853964487870}
   - component: {fileID: 4945334367451570008}
   - component: {fileID: 401348725369451882}
+  - component: {fileID: 4463121865878998506}
   m_Layer: 0
   m_Name: CameraPointCollider
   m_TagString: Untagged
@@ -187,8 +188,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trStartBezierPoint: {fileID: 1359346904772149706}
   trEndBezierPoint: {fileID: 7589263768922177613}
+  handleTarget: {fileID: 4463121865878998506}
   startHandleTarget: {fileID: 5907044565584985097}
   endHandleTarget: {fileID: 2559239096084516018}
+--- !u!114 &4463121865878998506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5727157217835974080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47cfd869cbc78416eaeb5250ea7e7f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9027122773870777885
 GameObject:
   m_ObjectHideFlags: 0

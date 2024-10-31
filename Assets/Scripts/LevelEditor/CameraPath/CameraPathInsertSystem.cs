@@ -39,20 +39,25 @@ public class CameraPathPoint
     public Vector3 GetBezier(float _t)
     {
         _t = Mathf.Clamp(_t, 0f, 1f);
-        
-        Vector3 v1 = new Vector3(CurveStartPoint.x, 0f, CurveStartPoint.z);
+
+        Vector3 StoE = (CurveEndPoint - CurveStartPoint).normalized;
+        Vector3 EtoS = (CurveStartPoint - CurveEndPoint).normalized;
+        float dist = (CurveStartPoint - CurveEndPoint).magnitude;
+        float halfDist = dist * 0.5f;
+
+        Vector3 v1 = Position + EtoS * halfDist;
         Vector3 v2 = CurveStartPoint;
         Vector3 v3 = CurveEndPoint;
-        Vector3 v4 = new Vector3(CurveEndPoint.x, 0f, CurveEndPoint.z);
+        Vector3 v4 = Position + StoE * halfDist;
 
-        Vector3 v1v2 = (v2 - v1) * _t;
-        Vector3 v2v3 = (v3 - v2) * _t;
-        Vector3 v3v4 = (v4 - v3) * _t;
+        Vector3 v1v2 = v1 + (v2 - v1) * _t;
+        Vector3 v2v3 = v2 + (v3 - v2) * _t;
+        Vector3 v3v4 = v3 + (v4 - v3) * _t;
 
-        Vector3 v1v2tov2v3 = (v2v3 - v1v2) * _t;
-        Vector3 v2v3tov3v4 = (v3v4 - v2v3) * _t;
+        Vector3 v1v2tov2v3 = v1v2 + (v2v3 - v1v2) * _t;
+        Vector3 v2v3tov3v4 = v2v3 + (v3v4 - v2v3) * _t;
 
-        return (v2v3tov3v4 - v1v2tov2v3) * _t;
+        return v1v2tov2v3 + (v2v3tov3v4 - v1v2tov2v3) * _t;
     }
 }
 
@@ -61,13 +66,20 @@ public class CameraPathInsertSystem : MonoBehaviour
     [SerializeField] private CameraPathInputSystem inputSystem;
     [SerializeField] private CameraPointCollider prefabCameraPoint;
 
-    [FormerlySerializedAs("handlerViewer")] [SerializeField] private NameHandleManager handlerManager;
+    [SerializeField] private LineRenderer pathRenderer;
     
     [SerializeField] private Text txtState;
-    
     public GimmickDefines.CameraPathInsertMode InsertMode { get; private set; }
 
+    /// <summary>
+    /// 카메라 경로 리스트. 맵 저장 시 저장되어야 함.
+    /// </summary>
     public List<CameraPointCollider> CameraPointList { get; private set; }
+
+    /// <summary>
+    /// 카메라 경로 곡선을 표현하기 위한 꼭짓점 개수
+    /// </summary>
+    public const int CameraPathCurveVertexCount = 8;
 
     private void Awake()
     {
@@ -103,17 +115,53 @@ public class CameraPathInsertSystem : MonoBehaviour
     {
         var cameraPoint = Instantiate(prefabCameraPoint, _position, Quaternion.identity, transform);
 
-        Vector3 startBezierPoint = _position;
-        Vector3 endBezierPoint = _position;
+        var camera = Camera.main;
         
+        var right = camera.transform.right;
+        var left = -right;
+        var up = camera.transform.up;
+        
+        Vector3 startBezierPoint = _position + (left + up) * 0.8f;
+        Vector3 endBezierPoint = _position + (right + up) * 0.8f;
+        
+        cameraPoint.Set();
         cameraPoint.SetStartBezierPoint(startBezierPoint);
         cameraPoint.SetEndBezierPoint(endBezierPoint);
-        cameraPoint.Set();
         CameraPointList.Add(cameraPoint);
+        
+        RefreshLineDrawer();
     }
 
     private void InsertPath(Vector3 _position)
     {
         
+    }
+
+    /// <summary>
+    /// 라인렌더러를 그리기 위한 데이터 갱신
+    /// </summary>
+    private void RefreshLineDrawer()
+    {
+        int cameraPositionCount = CameraPointList.Count * CameraPathCurveVertexCount;
+        pathRenderer.positionCount = cameraPositionCount;
+
+        // 버텍스 곡선 증가량
+        float incrementRatio = 1f / (CameraPathCurveVertexCount - 1);
+        
+        for (int i = 0; i < CameraPointList.Count; ++i)
+        {
+            pathRenderer.SetPosition(i * CameraPathCurveVertexCount, CameraPointList[i].CameraPathPoint.GetStartPoint());
+            
+            // 버텍스를 찍을 곡선의 비율
+            float ratio = 0f;
+
+            for (int j = 0; j < CameraPathCurveVertexCount; ++j)
+            {
+                // 곡선 위치 구하기
+                var position = CameraPointList[i].CameraPathPoint.GetBezier(ratio);
+                pathRenderer.SetPosition(i * CameraPathCurveVertexCount + j, position);
+                ratio += incrementRatio;
+            }
+        }
     }
 }

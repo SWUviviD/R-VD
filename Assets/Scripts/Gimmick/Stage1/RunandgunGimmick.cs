@@ -1,75 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
 {
-    [Header("Gimmick Configuration")]
+    [SerializeField] private LayerMask damageLayerMask; // 데미지 존 레이어 마스크
+    [SerializeField] private LayerMask healLayerMask;   // 힐 존 레이어 마스크
+    [SerializeField] private PlayerStatus playerStatus; // 플레이어 상태를 관리하는 스크립트 참조
 
-    [Tooltip("플레이어 레이어")]
-    [SerializeField] private LayerMask playerLayerMask;
 
-    private bool isPlayerInside = false;
-    private float timer = 0f;
+    /// <summary>
+    /// 변수 선언
+    /// </summary>
+    private float elapsedTime;  // 경과 시간 변수
 
-    private PlayerStatus playerStatus;
-
+    /// <summary>
+    /// 상속
+    /// </summary>
     protected override void Init()
     {
-        
+        // 추가 작업 없음 
     }
 
     public override void SetGimmick()
     {
-       
+        elapsedTime = 0f;
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    /// <summary>
+    /// 기믹 작동
+    /// </summary>
+        private void Update()
     {
-        if (((1 << other.gameObject.layer) & playerLayerMask) != 0)
+        // 플레이어 아래에 Ray를 쏘아 현재 레이어 확인
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity))
         {
-            isPlayerInside = true;
-            playerStatus = other.GetComponent<PlayerStatus>();
-
-            if (playerStatus == null)
+            // DamageZone일 경우 체력 감소
+            if ((damageLayerMask.value & (1 << hit.collider.gameObject.layer)) > 0)
             {
-                LogManager.LogWarning("RunandgunGimmick: 플레이어 오브젝트에 PlayerStatus 컴포넌트가 없습니다.");
-                return;
-            }
+                elapsedTime += Time.deltaTime;
 
-            if (gimmickData.IsHealZone)
-            {
-                if (gimmickData.HealAmount <= 0f)
+                if (elapsedTime >= gimmickData.DamageTickInterval)
                 {
-                    playerStatus.FullHeal();
-                }
-                else
-                {
-                    playerStatus.Heal(gimmickData.HealAmount);
+                    playerStatus.TakeDamage(gimmickData.DamageAmount); // 체력 감소 함수 호출
+                    elapsedTime = 0f;                     // 경과 시간 초기화
                 }
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (((1 << other.gameObject.layer) & playerLayerMask) != 0)
-        {
-            isPlayerInside = false;
-            timer = 0f;
-            playerStatus = null;
-        }
-    }
-
-    private void Update()
-    {
-        if (isPlayerInside && !gimmickData.IsHealZone && playerStatus != null && playerStatus.IsAlive())
-        {
-            timer += Time.deltaTime;
-            if (timer >= gimmickData.DamageInterval)
+            // HealZone일 경우 체력 회복
+            else if ((healLayerMask.value & (1 << hit.collider.gameObject.layer)) > 0)
             {
-                timer -= gimmickData.DamageInterval;
-
-                float damageAmount = playerStatus.MaxHealth * gimmickData.DamagePercentage;
-                playerStatus.TakeDamage(damageAmount);
+                playerStatus.FullHeal(); // 플레이어 체력 회복
+            }
+            else
+            {
+                elapsedTime = 0f; // 어떤 존에도 해당하지 않으면 경과 시간 초기화
             }
         }
     }

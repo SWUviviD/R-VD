@@ -73,7 +73,6 @@ public class PlayerStatus : MonoBehaviour
     {
         // 사망 확인
         // 추가 구현 필요
-        LogManager.Log("[PlayerStatus] 플레이어가 사망했습니다.");
     }
 
 
@@ -84,8 +83,6 @@ public class PlayerStatus : MonoBehaviour
     {
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        // 체력 감소 확인
-        LogManager.Log($"[PlayerStatus] 체력이 감소했습니다. 현재 체력: {currentHealth}/{maxHealth}");
 
         // 사망 처리
         if (currentHealth <= 0f)
@@ -101,8 +98,6 @@ public class PlayerStatus : MonoBehaviour
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-        // 체력 회복 확인
-        LogManager.Log($"[PlayerStatus] 체력이 회복되었습니다. 현재 체력: {currentHealth}/{maxHealth}");
     }
 
     /// <summary>
@@ -111,8 +106,6 @@ public class PlayerStatus : MonoBehaviour
     public void FullHeal()
     {
         currentHealth = maxHealth;
-        // 체력 회복 확인
-        LogManager.Log($"[PlayerStatus] 체력이 100% 회복되었습니다.");
     }
 
     public float GetHealthPercentage()

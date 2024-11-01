@@ -1,19 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RunandgunGimmickData", menuName = "ScriptableObjects/RunandgunGimmickData")]
+
 public class RunandgunGimmickData : GimmickDataBase
 {
-    [Header("Heal Settings")]
-    [Tooltip("체력 감소 비율")]
-    public float DamagePercentage = 0.05f;
+    [GimmickData("Tick 시간당 감소하는 체력량")]
+    [field: SerializeField]
+    public float DamageAmount { get; set; } = 10f; // 데미지 존에서 틱당 감소되는 체력 양
 
-    [Tooltip("체력 회복 여부")]
-    public bool IsHealZone = false;
+    [GimmickData("회복 구간에서 회복되는 체력량")]
+    [field: SerializeField]
+    public float HealAmount { get; set; } = 100f; // 힐 존에서 회복되는 체력 양
 
-    [Tooltip("체력 회복량")]
-    public float HealAmount = 0f;
-
-    [Tooltip("체력 감소 간격(초)")]
-    public float DamageInterval = 1f;
-
+    [GimmickData("체력을 감소시킬 기준시간(초)")]
+    [field: SerializeField]
+    public float DamageTickInterval { get; set; } = 2f; // 데미지 틱 간격 시간 (초)
 }

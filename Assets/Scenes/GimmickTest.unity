@@ -2753,7 +2753,7 @@ PrefabInstance:
     - target: {fileID: 8283268397070107833, guid: 8eaba436f9a01a847b3c5e13bd2c46d3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99992794
       objectReference: {fileID: 0}
     - target: {fileID: 8283268397070107833, guid: 8eaba436f9a01a847b3c5e13bd2c46d3,
         type: 3}
@@ -2768,7 +2768,7 @@ PrefabInstance:
     - target: {fileID: 8283268397070107833, guid: 8eaba436f9a01a847b3c5e13bd2c46d3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: -0.012010736
       objectReference: {fileID: 0}
     - target: {fileID: 8283268397070107833, guid: 8eaba436f9a01a847b3c5e13bd2c46d3,
         type: 3}
@@ -2783,7 +2783,7 @@ PrefabInstance:
     - target: {fileID: 8283268397070107833, guid: 8eaba436f9a01a847b3c5e13bd2c46d3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -1.376
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2827,12 +2827,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 1824840701}
-  damageAmount: 20
-  knockbackForce: 10
-  moveSpeed: 5
-  rotationSpeed: 100
+  rotationSpeed: 30
   minDisappearTime: 2
   maxDisappearTime: 5
+  fadeDuration: 0.3
 --- !u!114 &1824840701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,9 +2844,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointList: []
-  VisibleDuration: 4
-  KnockbackForce: 20
-  Damage: 20
+  <VisibleDuration>k__BackingField: 4
+  <KnockbackForce>k__BackingField: 120
+  <Damage>k__BackingField: 20
 --- !u!54 &1824840702
 Rigidbody:
   m_ObjectHideFlags: 0

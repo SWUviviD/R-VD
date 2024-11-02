@@ -6,11 +6,9 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     [SerializeField] private float rotationSpeed;  // 회전 속도
     [SerializeField] private float minDisappearTime; // 사라지는 최소 시간
     [SerializeField] private float maxDisappearTime; // 사라지는 최대 시간
-    [SerializeField] private float fadeDuration = 0.3f; // 페이드 인/아웃 시간
 
     private Rigidbody rb;
     private Coroutine disappearCoroutine;
-    private Renderer gimmickRenderer; // 페이드 효과용 렌더러
 
     protected override void Init()
     {
@@ -19,15 +17,14 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
 
     public override void SetGimmick()
     {
-        rotationSpeed = 100f;
-        minDisappearTime = 2f;
-        maxDisappearTime = 5f;
+        rotationSpeed = 30f; 
+        minDisappearTime = 2f; 
+        maxDisappearTime = 5f; 
     }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        gimmickRenderer = GetComponent<Renderer>();
+        rb = GetComponent<Rigidbody>(); 
     }
 
     private void OnEnable()
@@ -43,67 +40,77 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         }
     }
 
+
+    /// <summary>
+    /// 오브젝트 회전
+    /// </summary>
     private void FixedUpdate()
     {
         rb.angularVelocity = Vector3.back * rotationSpeed; // Z축을 기준으로 회전
     }
 
     /// <summary>
-    /// 오브젝트 비활성화-활성화 코루틴
+    /// 페이드아웃-페이드인
     /// </summary>
+    /// <returns></returns>
     private IEnumerator AppearDisappearRoutine()
     {
         while (true)
         {
-            yield return FadeIn(); // 페이드 인 효과
-            yield return new WaitForSeconds(gimmickData.VisibleDuration); // 활성화
-            yield return FadeOut(); // 페이드 아웃 효과
+            // 기믹 활성화
+            gameObject.SetActive(true);
+            yield return new WaitForSeconds(gimmickData.VisibleDuration); // 가시화 유지 시간
 
-            yield return new WaitForSeconds(Random.Range((int)minDisappearTime, (int)maxDisappearTime + 1)); // 비활성화 유지
+            yield return StartCoroutine(FadeOutRoutine()); // 서서히 사라짐
+
+            // 기믹 비활성화
+            gameObject.SetActive(false);
+
+            // 비활성화 상태 유지
+            yield return new WaitForSeconds(2f);
+
+            // 서서히 나타남
+            yield return StartCoroutine(FadeInRoutine());
         }
     }
 
-    /// <summary>
-    /// 페이드 인
-    /// </summary>
-    private IEnumerator FadeIn()
+    private IEnumerator FadeOutRoutine()
     {
-        Color color = gimmickRenderer.material.color;
-        float elapsedTime = 0f;
+        Material material = GetComponent<Renderer>().material;
+        Color color = material.color;
 
-        while (elapsedTime < fadeDuration)
+        // 현재 알파 값을 유지하면서 서서히 감소
+        for (float t = 0; t < 0.3f; t += Time.deltaTime)
         {
-            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration); // 알파 값을 서서히 증가
-            gimmickRenderer.material.color = new Color(color.r, color.g, color.b, alpha);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            color.a = Mathf.Lerp(1, 0, t / 0.3f); // 알파 값 1에서 0으로 변경
+            material.color = color;
+            yield return null; // 다음 프레임까지 대기
         }
 
-        gimmickRenderer.material.color = new Color(color.r, color.g, color.b, 1f); // 완전히 가시화
+        color.a = 0; // 완전히 투명하게 설정
+        material.color = color; // 색상 적용
     }
 
-    /// <summary>
-    /// 페이드 아웃
-    /// </summary>
-    private IEnumerator FadeOut()
+    private IEnumerator FadeInRoutine()
     {
-        Color color = gimmickRenderer.material.color;
-        float elapsedTime = 0f;
+        Material material = GetComponent<Renderer>().material;
+        Color color = material.color;
 
-        while (elapsedTime < fadeDuration)
+        // 현재 알파 값을 유지하면서 서서히 증가
+        for (float t = 0; t < 0.3f; t += Time.deltaTime)
         {
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration); // 알파 값을 서서히 감소
-            gimmickRenderer.material.color = new Color(color.r, color.g, color.b, alpha);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            color.a = Mathf.Lerp(0, 1, t / 0.3f); // 알파 값 0에서 1로 변경
+            material.color = color;
+            yield return null; // 다음 프레임까지 대기
         }
 
-        gimmickRenderer.material.color = new Color(color.r, color.g, color.b, 0f); // 완전히 비가시화
-        gameObject.SetActive(false); // 비가시화 상태로 전환
+        color.a = 1; // 완전히 불투명하게 설정
+        material.color = color; // 색상 적용
     }
 
+
     /// <summary>
-    /// 충돌 판정 (+ 넉백)
+    /// 충돌 판정 (+ 플레이어 넉백)
     /// </summary>
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)

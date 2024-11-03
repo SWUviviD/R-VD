@@ -24,6 +24,8 @@ public class CameraPointCollider : MonoBehaviour
     [SerializeField] private NameHandleTarget pointV4HandleTarget;
     
     public CameraPathPoint CameraPathPoint { get; private set; }
+    
+    public int Index { get; private set; }
 
     private NameHandleData pointHandle;
     private NameHandleData pointV1Handle;
@@ -56,16 +58,17 @@ public class CameraPointCollider : MonoBehaviour
 
     public void Set(int _index, Action<Transform> _onClickHandle)
     {
+        Index = _index;
+        
         var right = Camera.main.transform.right;
         var left = -right;
-        var up = Camera.main.transform.up;
 
         float handleDist = 0.8f;
 
-        TrPointV1.position = transform.position + left * handleDist;
-        TrPointV2.position = transform.position + (left + up) * handleDist;
-        TrPointV3.position = transform.position + (right + up) * handleDist;
-        TrPointV4.position = transform.position + right * handleDist;
+        TrPointV1.position = transform.position + handleDist * 2 * left;
+        TrPointV2.position = transform.position + handleDist * left;
+        TrPointV3.position = transform.position + handleDist * right;
+        TrPointV4.position = transform.position + handleDist * 2 * right;
         
         onClickHandle = _onClickHandle;
 
@@ -82,12 +85,35 @@ public class CameraPointCollider : MonoBehaviour
         handleTarget.Set(pointHandle);
     }
 
-    public Vector3 GetBezier(float _ratio)
+    public void Refresh()
     {
         CameraPathPoint.PointV1 = TrPointV1.position;
         CameraPathPoint.PointV2 = TrPointV2.position;
         CameraPathPoint.PointV3 = TrPointV3.position;
         CameraPathPoint.PointV4 = TrPointV4.position;
+
+        var distV1V2 = (GetVector2Point(TrPointV1) - GetVector2Point(TrPointV2)).magnitude;
+        var distV2V3 = (GetVector2Point(TrPointV2) - GetVector2Point(TrPointV3)).magnitude;
+        var distV3V4 = (GetVector2Point(TrPointV3) - GetVector2Point(TrPointV4)).magnitude;
+
+        var totalDist = distV1V2 + distV2V3 + distV3V4;
+
+        CameraPathPoint.RatioV1V2 = distV1V2 / totalDist;
+        CameraPathPoint.RatioV2V3 = distV2V3 / totalDist;
+        CameraPathPoint.RatioV3V4 = distV3V4 / totalDist;
+    }
+
+    /// <summary>
+    /// 각 포인트의 트랜스폼으로 Vector2를 계산하여 반환한다.
+    /// 카메라의 이동을 구현할 때 Y축을 제외한 X와 Z만을 사용하기 때문이다.
+    /// </summary>
+    private Vector2 GetVector2Point(Transform _transform)
+    {
+        return new Vector2(_transform.position.x, _transform.position.z);
+    }
+
+    public Vector3 GetBezier(float _ratio)
+    {
         return CameraPathPoint.GetBezier(_ratio);
     }
 }

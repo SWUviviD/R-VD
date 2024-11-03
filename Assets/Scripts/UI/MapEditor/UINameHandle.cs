@@ -9,15 +9,17 @@ using UnityEngine.UI;
 /// </summary>
 public class NameHandleData
 {
-    public string Name { get; private set; }
-    public Color Color { get; private set; }
+    public string Name { get; set; }
+    public Color BackgroundColor { get; set; }
+    public Color TextColor { get; set; }
 
-    public Action OnClick;
+    public Action OnClick { get; set; }
 
-    public NameHandleData(string _name, Color _color, Action _onClick)
+    public NameHandleData(string _name, Color _backgroundColor, Color _textColor, Action _onClick)
     {
         Name = _name;
-        Color = _color;
+        BackgroundColor = _backgroundColor;
+        TextColor = _textColor;
         OnClick = _onClick;
     }
 }
@@ -61,8 +63,9 @@ public class UINameHandle : MonoBehaviour
     {
         handleData = _data;
         trTarget = _trTarget;
-        imgHandle.color = _data.Color;
+        imgHandle.color = _data.BackgroundColor;
         txtHandle.text = _data.Name;
+        txtHandle.color = _data.TextColor;
         gameObject.SetActive(true);
     }
     

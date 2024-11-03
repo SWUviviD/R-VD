@@ -15,35 +15,19 @@ public class CameraPathPoint
     /// <summary> 포인트의 위치 </summary>
     public Vector3 Position { get; set; }
     
-    /// <summary>
-    /// 포인트의 곡선을 조절하는 포인트의 위치.
-    /// 이 위치는 베지어 곡선을 시작하는 위치이다.
-    /// </summary>
-    public Vector3 CurveStartPoint { get; set; }
-    
-    /// <summary>
-    /// 포인트의 곡선을 조절하는 포인트의 위치.
-    /// 이 위치는 베지어 곡선이 끝나는 위치이다.
-    /// </summary>
-    public Vector3 CurveEndPoint { get; set; }
+    // 베지어 곡선에 필요한 값들
+    public Vector3 PointV1 { get; set; }
+    public Vector3 PointV2 { get; set; }
+    public Vector3 PointV3 { get; set; }
+    public Vector3 PointV4 { get; set; }
 
     public Vector3 GetBezier(float _t)
     {
         _t = Mathf.Clamp(_t, 0f, 1f);
 
-        Vector3 StoE = (CurveEndPoint - CurveStartPoint).normalized;
-        Vector3 EtoS = (CurveStartPoint - CurveEndPoint).normalized;
-        float dist = (CurveStartPoint - CurveEndPoint).magnitude;
-        float halfDist = dist * 0.5f;
-
-        Vector3 v1 = Position + EtoS * halfDist;
-        Vector3 v2 = CurveStartPoint;
-        Vector3 v3 = CurveEndPoint;
-        Vector3 v4 = Position + StoE * halfDist;
-
-        Vector3 v1v2 = v1 + (v2 - v1) * _t;
-        Vector3 v2v3 = v2 + (v3 - v2) * _t;
-        Vector3 v3v4 = v3 + (v4 - v3) * _t;
+        Vector3 v1v2 = PointV1 + (PointV2 - PointV1) * _t;
+        Vector3 v2v3 = PointV2 + (PointV3 - PointV2) * _t;
+        Vector3 v3v4 = PointV3 + (PointV4 - PointV3) * _t;
 
         Vector3 v1v2tov2v3 = v1v2 + (v2v3 - v1v2) * _t;
         Vector3 v2v3tov3v4 = v2v3 + (v3v4 - v2v3) * _t;
@@ -116,12 +100,7 @@ public class CameraPathInsertSystem : MonoBehaviour
     {
         var cameraPoint = Instantiate(prefabCameraPoint, _position, Quaternion.identity, transform);
         
-        Vector3 startBezierPoint = _position + (Vector3.left + Vector3.up) * 0.8f;
-        Vector3 endBezierPoint = _position + (Vector3.right + Vector3.up) * 0.8f;
-        
-        cameraPoint.Set(OnClickPathHandle);
-        cameraPoint.SetStartBezierPoint(startBezierPoint);
-        cameraPoint.SetEndBezierPoint(endBezierPoint);
+        cameraPoint.Set(CameraPointList.Count, OnClickPathHandle);
         CameraPointList.Add(cameraPoint);
         
         RefreshLineDrawer();
@@ -153,7 +132,7 @@ public class CameraPathInsertSystem : MonoBehaviour
         
         for (int i = 0; i < CameraPointList.Count; ++i)
         {
-            pathRenderer.SetPosition(i * CameraPathCurveVertexCount, CameraPointList[i].TrStartBezierPoint.position);
+            pathRenderer.SetPosition(i * CameraPathCurveVertexCount, CameraPointList[i].TrPointV1.position);
             
             // 버텍스를 찍을 곡선의 비율
             float ratio = 0f;

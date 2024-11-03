@@ -12,10 +12,13 @@ public class NameHandleData
     public string Name { get; private set; }
     public Color Color { get; private set; }
 
-    public NameHandleData(string _name, Color _color)
+    public Action OnClick;
+
+    public NameHandleData(string _name, Color _color, Action _onClick)
     {
         Name = _name;
         Color = _color;
+        OnClick = _onClick;
     }
 }
 
@@ -37,6 +40,8 @@ public class UINameHandle : MonoBehaviour
     /// </summary>
     private Transform trTarget;
 
+    private NameHandleData handleData;
+
     /// <summary>
     /// 풀로 되돌아가는 함수
     /// </summary>
@@ -45,15 +50,16 @@ public class UINameHandle : MonoBehaviour
     /// <summary> 캐싱해둔 메인 카메라 </summary>
     private Camera camera;
     
-    public void Initialize(Action<UINameHandle> _cbReturnToPool, Action<Transform> _cbOnClick)
+    public void Initialize(Action<UINameHandle> _cbReturnToPool)
     {
-        btnHandle.onClick.AddListener(() => _cbOnClick(trTarget));
+        UIHelper.OnClick(btnHandle, OnClickHandle);
         cbReturnToPool = _cbReturnToPool;
         camera = Camera.main;
     }
 
     public void WakeUp(Transform _trTarget, NameHandleData _data)
     {
+        handleData = _data;
         trTarget = _trTarget;
         imgHandle.color = _data.Color;
         txtHandle.text = _data.Name;
@@ -65,5 +71,10 @@ public class UINameHandle : MonoBehaviour
         trTarget = null;
         cbReturnToPool(this);
         gameObject.SetActive(false);
+    }
+
+    private void OnClickHandle()
+    {
+        handleData.OnClick?.Invoke();
     }
 }

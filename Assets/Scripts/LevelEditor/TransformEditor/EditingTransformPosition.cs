@@ -27,6 +27,11 @@ namespace LevelEditor
 
         private Plane plane = new Plane(Vector3.one, Vector3.zero);
 
+        /// <summary>
+        /// 위치가 변경된다면 호출될 함수
+        /// </summary>
+        private System.Action onTransformChanged;
+        
         private bool isDragging;
         private Vector3 offset;
         private Transform draggedObject;
@@ -53,6 +58,12 @@ namespace LevelEditor
             if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
+            }
+
+            if (onTransformChanged != null && isDragging)
+            {
+                // 드래그 중이면서 콜백 함수가 있다면, 트랜스폼이 변경되었음을 알린다.
+                onTransformChanged();
             }
 
             // 드래그 중일 때 오브젝트 이동
@@ -90,7 +101,7 @@ namespace LevelEditor
         /// <summary>
         /// 수정할 오브젝트 설정
         /// </summary>
-        public void SetObjectTransform(Transform objectTR)
+        public void SetObjectTransform(Transform objectTR, System.Action _cbTransformChanged = null)
         {
             if (objectTR == null)
             {
@@ -99,6 +110,7 @@ namespace LevelEditor
                 return;
             }
 
+            onTransformChanged = _cbTransformChanged;
             gameObject.SetActive(true);
             draggedObject = objectTR;
             transform.position = draggedObject.position;

@@ -20,8 +20,11 @@ public class CameraPointCollider : MonoBehaviour
     
     public CameraPathPoint CameraPathPoint { get; private set; }
 
+    private NameHandleData pointHandle;
     private NameHandleData startPathHandle;
     private NameHandleData endPathHandle;
+
+    private Action<Transform> onClickHandle;
 
     /// <summary>
     /// 캐싱해둔 카메라
@@ -42,14 +45,17 @@ public class CameraPointCollider : MonoBehaviour
         camera = Camera.main;
     }
 
-    public void Set()
+    public void Set(Action<Transform> _onClickHandle)
     {
-        startPathHandle = new NameHandleData("StartHandle", Color.cyan);
-        endPathHandle = new NameHandleData("EndHandle", Color.cyan);
+        onClickHandle = _onClickHandle;
         
-        handleTarget.Set(new NameHandleData("Point", new Color(0f, 1f, 0.8f, 1f)));
+        startPathHandle = new NameHandleData("StartHandle", Color.cyan, OnClickStartHandle);
+        endPathHandle = new NameHandleData("EndHandle", Color.cyan, OnClickEndHandle);
+        pointHandle = new NameHandleData("Point", new Color(0f, 1f, 0.8f, 1f), OnClickPointHandle);
+        
         startHandleTarget.Set(startPathHandle);
         endHandleTarget.Set(endPathHandle);
+        handleTarget.Set(pointHandle);
     }
 
     /// <summary>
@@ -58,24 +64,35 @@ public class CameraPointCollider : MonoBehaviour
     public void SetStartBezierPoint(Vector3 _startPoint)
     {
         trStartBezierPoint.position = _startPoint;
-        // var startLocalPoint = trStartBezierPoint.localPosition;
-        // Vector3 endPoint = transform.position + new Vector3(-startLocalPoint.x, startLocalPoint.y, -startLocalPoint.z);
-        // trEndBezierPoint.position = endPoint;
-        CameraPathPoint.CurveStartPoint = _startPoint;
-        //CameraPathPoint.CurveEndPoint = endPoint;
     }
 
     /// <summary>
     /// 베지어 곡선의 끝 지점이 수정된 경우
     /// </summary>
-    /// <param name="_endPoint"></param>
     public void SetEndBezierPoint(Vector3 _endPoint)
     {
         trEndBezierPoint.position = _endPoint;
-        // var startLocalPoint = trEndBezierPoint.localPosition;
-        // Vector3 startPoint = transform.position + new Vector3(-startLocalPoint.x, startLocalPoint.y, -startLocalPoint.z);
-        // trStartBezierPoint.position = startPoint;
-        CameraPathPoint.CurveEndPoint = _endPoint;
-        //CameraPathPoint.CurveStartPoint = startPoint;
+    }
+
+    private void OnClickStartHandle()
+    {
+        onClickHandle(trStartBezierPoint);
+    }
+
+    private void OnClickEndHandle()
+    {
+        onClickHandle(trEndBezierPoint);
+    }
+
+    private void OnClickPointHandle()
+    {
+        onClickHandle(transform);
+    }
+
+    public Vector3 GetBezier(float _ratio)
+    {
+        CameraPathPoint.CurveStartPoint = trStartBezierPoint.position;
+        CameraPathPoint.CurveEndPoint = trEndBezierPoint.position;
+        return CameraPathPoint.GetBezier(_ratio);
     }
 }

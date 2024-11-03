@@ -16,11 +16,6 @@ public class NameHandleManager : MonoSingleton<NameHandleManager>
     /// </summary>
     [SerializeField] UINameHandle prefabNameHandle;
 
-    /// <summary>
-    /// 위치값을 설정할 수 있는 에디팅
-    /// </summary>
-    [SerializeField] EditingTransformPosition editingTransformPosition;
-
     [SerializeField] RectTransform rcCanvas; 
     
     /// <summary>
@@ -55,17 +50,12 @@ public class NameHandleManager : MonoSingleton<NameHandleManager>
     private UINameHandle CreateHandle()
     {
         UINameHandle handle = Instantiate(prefabNameHandle, transform);
-        handle.Initialize(ReturnToPool, OnClickHandle);
+        handle.Initialize(ReturnToPool);
         return handle;
     }
 
     private void ReturnToPool(UINameHandle _handle)
     {
         pathHandleList.Add(_handle);
-    }
-
-    private void OnClickHandle(Transform _trTarget)
-    {
-        editingTransformPosition.SetObjectTransform(_trTarget);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Defines;
+using LevelEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -25,16 +26,6 @@ public class CameraPathPoint
     /// 이 위치는 베지어 곡선이 끝나는 위치이다.
     /// </summary>
     public Vector3 CurveEndPoint { get; set; }
-
-    public Vector3 GetStartPoint()
-    {
-        return Position + CurveStartPoint;
-    }
-
-    public Vector3 GetEndPoint()
-    {
-        return Position + CurveEndPoint;
-    }
 
     public Vector3 GetBezier(float _t)
     {
@@ -65,7 +56,8 @@ public class CameraPathInsertSystem : MonoBehaviour
 {
     [SerializeField] private CameraPathInputSystem inputSystem;
     [SerializeField] private CameraPointCollider prefabCameraPoint;
-
+    [SerializeField] private EditingTransformPosition editingTransform; 
+    
     [SerializeField] private LineRenderer pathRenderer;
     
     [SerializeField] private Text txtState;
@@ -86,6 +78,15 @@ public class CameraPathInsertSystem : MonoBehaviour
         inputSystem.OnClickScreen = OnClickScreen;
         CameraPointList = new List<CameraPointCollider>();
         SetInsertMode(GimmickDefines.CameraPathInsertMode.None);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // ESC키를 누르면 현재 핸들의 위치 수정하는 오브젝트를 끈다.
+            OnClickPathHandle(null);
+        }
     }
 
     public void SetInsertMode(GimmickDefines.CameraPathInsertMode _insertMode)
@@ -114,17 +115,11 @@ public class CameraPathInsertSystem : MonoBehaviour
     private void AddPath(Vector3 _position)
     {
         var cameraPoint = Instantiate(prefabCameraPoint, _position, Quaternion.identity, transform);
-
-        var camera = Camera.main;
         
-        var right = camera.transform.right;
-        var left = -right;
-        var up = camera.transform.up;
+        Vector3 startBezierPoint = _position + (Vector3.left + Vector3.up) * 0.8f;
+        Vector3 endBezierPoint = _position + (Vector3.right + Vector3.up) * 0.8f;
         
-        Vector3 startBezierPoint = _position + (left + up) * 0.8f;
-        Vector3 endBezierPoint = _position + (right + up) * 0.8f;
-        
-        cameraPoint.Set();
+        cameraPoint.Set(OnClickPathHandle);
         cameraPoint.SetStartBezierPoint(startBezierPoint);
         cameraPoint.SetEndBezierPoint(endBezierPoint);
         CameraPointList.Add(cameraPoint);
@@ -135,6 +130,14 @@ public class CameraPathInsertSystem : MonoBehaviour
     private void InsertPath(Vector3 _position)
     {
         
+    }
+
+    /// <summary>
+    /// 카메라 경로를 표기하는 핸들이 클릭된경우, 트랜스폼을 설정할 수 있도록 설정한다.
+    /// </summary>
+    private void OnClickPathHandle(Transform _transform)
+    {
+        editingTransform.SetObjectTransform(_transform, RefreshLineDrawer);
     }
 
     /// <summary>
@@ -150,7 +153,7 @@ public class CameraPathInsertSystem : MonoBehaviour
         
         for (int i = 0; i < CameraPointList.Count; ++i)
         {
-            pathRenderer.SetPosition(i * CameraPathCurveVertexCount, CameraPointList[i].CameraPathPoint.GetStartPoint());
+            pathRenderer.SetPosition(i * CameraPathCurveVertexCount, CameraPointList[i].TrStartBezierPoint.position);
             
             // 버텍스를 찍을 곡선의 비율
             float ratio = 0f;
@@ -158,7 +161,7 @@ public class CameraPathInsertSystem : MonoBehaviour
             for (int j = 0; j < CameraPathCurveVertexCount; ++j)
             {
                 // 곡선 위치 구하기
-                var position = CameraPointList[i].CameraPathPoint.GetBezier(ratio);
+                var position = CameraPointList[i].GetBezier(ratio);
                 pathRenderer.SetPosition(i * CameraPathCurveVertexCount + j, position);
                 ratio += incrementRatio;
             }

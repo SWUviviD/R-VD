@@ -1711,12 +1711,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427901830}
   m_CullTransparentMesh: 1
---- !u!1 &452975190 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 610317183343821629, guid: 49e391619b5fbd944933a975edd59c08,
-    type: 3}
-  m_PrefabInstance: {fileID: 1388671306820940882}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &463527362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4087,7 +4081,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabNameHandle: {fileID: 5930572415870535641, guid: 6e9f7f85dadab4656a2d580271a81cfa,
     type: 3}
-  editingTransformPosition: {fileID: 2074882724}
   rcCanvas: {fileID: 426135335}
 --- !u!1 &877313556
 GameObject:
@@ -4295,7 +4288,6 @@ MonoBehaviour:
   - {fileID: 877313556}
   - {fileID: 1526949979}
   - {fileID: 90122849}
-  - {fileID: 452975190}
   - {fileID: 1538750513}
   - {fileID: 5969665787622847054}
   - {fileID: 730399151}
@@ -6966,6 +6958,7 @@ MonoBehaviour:
   inputSystem: {fileID: 1621017390}
   prefabCameraPoint: {fileID: 401348725369451882, guid: b8580aade098645ee831b299603b97fc,
     type: 3}
+  editingTransform: {fileID: 2074882724}
   pathRenderer: {fileID: 463527363}
   txtState: {fileID: 188029558}
 --- !u!1 &1637821608
@@ -8315,6 +8308,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TransformObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 610317183343821629, guid: 49e391619b5fbd944933a975edd59c08,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 943076416988606802, guid: 49e391619b5fbd944933a975edd59c08,
         type: 3}

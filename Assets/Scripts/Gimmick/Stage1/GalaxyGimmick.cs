@@ -8,6 +8,8 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     [SerializeField] private float maxDisappearTime; // 사라지는 최대 시간
 
     private Rigidbody rb;
+    private Renderer galRenderer;
+    private Collider galCollider;
     private Coroutine disappearCoroutine;
 
     protected override void Init()
@@ -24,9 +26,15 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>(); 
+        rb = GetComponent<Rigidbody>();
+        galRenderer = GetComponent<Renderer>();
+        galCollider = GetComponent<Collider>();
     }
 
+
+    /// <summary>
+    /// 가시화-비가시화 상태의 코루틴 지정
+    /// </summary>
     private void OnEnable()
     {
         disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
@@ -46,66 +54,28 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     /// </summary>
     private void FixedUpdate()
     {
-        rb.angularVelocity = Vector3.back * rotationSpeed; // Z축을 기준으로 회전
+        rb.angularVelocity = Vector3.back * rotationSpeed; // z축을 기준으로 회전
     }
 
+
     /// <summary>
-    /// 페이드아웃-페이드인
+    /// 가시화-비가시화
     /// </summary>
     /// <returns></returns>
     private IEnumerator AppearDisappearRoutine()
     {
         while (true)
         {
-            // 기믹 활성화
-            gameObject.SetActive(true);
-            yield return new WaitForSeconds(gimmickData.VisibleDuration); // 가시화 유지 시간
+            // 오브젝트 가시화, 충돌 처리
+            galRenderer.enabled = true;
+            galCollider.enabled = true;
+            yield return new WaitForSeconds(gimmickData.VisibleDuration);
 
-            yield return StartCoroutine(FadeOutRoutine()); // 서서히 사라짐
-
-            // 기믹 비활성화
-            gameObject.SetActive(false);
-
-            // 비활성화 상태 유지
-            yield return new WaitForSeconds(2f);
-
-            // 서서히 나타남
-            yield return StartCoroutine(FadeInRoutine());
+            // 오브젝트 비가시화, 충돌 x
+            galRenderer.enabled = false;
+            galCollider.enabled = false;
+            yield return new WaitForSeconds(Random.Range(2, 6));
         }
-    }
-
-    private IEnumerator FadeOutRoutine()
-    {
-        Material material = GetComponent<Renderer>().material;
-        Color color = material.color;
-
-        // 현재 알파 값을 유지하면서 서서히 감소
-        for (float t = 0; t < 0.3f; t += Time.deltaTime)
-        {
-            color.a = Mathf.Lerp(1, 0, t / 0.3f); // 알파 값 1에서 0으로 변경
-            material.color = color;
-            yield return null; // 다음 프레임까지 대기
-        }
-
-        color.a = 0; // 완전히 투명하게 설정
-        material.color = color; // 색상 적용
-    }
-
-    private IEnumerator FadeInRoutine()
-    {
-        Material material = GetComponent<Renderer>().material;
-        Color color = material.color;
-
-        // 현재 알파 값을 유지하면서 서서히 증가
-        for (float t = 0; t < 0.3f; t += Time.deltaTime)
-        {
-            color.a = Mathf.Lerp(0, 1, t / 0.3f); // 알파 값 0에서 1로 변경
-            material.color = color;
-            yield return null; // 다음 프레임까지 대기
-        }
-
-        color.a = 1; // 완전히 불투명하게 설정
-        material.color = color; // 색상 적용
     }
 
 

@@ -29,6 +29,9 @@ public class PlayerStatus : MonoBehaviour
     [field: SerializeField]
     public float DashTime { get; private set; }
 
+    [field: SerializeField]
+    public Vector3 RespawnPoint { get; private set; }
+
     /// <summary>
     /// Runandgun 기믹을 위한 체력 힐 세팅
     /// </summary>
@@ -45,6 +48,7 @@ public class PlayerStatus : MonoBehaviour
     private void Awake()
     {
         currentHealth = maxHealth;
+        RespawnPoint = transform.position;
     }
 
 
@@ -63,6 +67,10 @@ public class PlayerStatus : MonoBehaviour
         AdditionalMoveSpeed = set ? -MoveSpeed : 0f;
     }
 
+    public void SetRespawnPoint(Vector3 pos)
+    {
+        RespawnPoint = pos;
+    }
 
     public bool IsAlive()
     {
@@ -73,6 +81,11 @@ public class PlayerStatus : MonoBehaviour
     {
         // 사망 확인
         // 추가 구현 필요
+
+        // 플레이어 체력 회복 (임시 추가)
+        FullHeal();
+        // 플레이어 위치를 리스폰 지점으로 이동
+        transform.position = RespawnPoint;
     }
 
 

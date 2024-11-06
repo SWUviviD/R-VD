@@ -14,6 +14,7 @@ namespace LevelEditor
         [Header("Components")]
         [SerializeField] private ObjectDatabase database = new ObjectDatabase();
         [SerializeField] private GameObject gridVisualization;
+        [SerializeField] private GameObject checkpointArea;
 
         [Header("Systems")]
         [SerializeField] private PlacementInputSystem inputSystem;
@@ -49,6 +50,7 @@ namespace LevelEditor
         private string lastPrefabAddress;
         private float gridSize;
         private bool isGridMod;
+        private bool isCheckpointMod;
 
         private void Start()
         {
@@ -89,6 +91,11 @@ namespace LevelEditor
 
                 prefabSize = CalculatePrefabSize(prefab);
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
+            }
+
+            if (!isCheckpointMod && prefabAddress == checkpointArea.name)
+            {
+                return;
             }
 
             currentState = new PlacementState(objectIDs[prefabAddress],
@@ -199,6 +206,16 @@ namespace LevelEditor
         {
             gridSize = size;
             isGridMod = active;
+            StartPlacement(lastPrefabAddress);
+        }
+
+        /// <summary>
+        /// 설치된 기믹 오브젝트의 콜라이더 활성화 토글
+        /// </summary>
+        public void PlacedCollidersActiveToggle(bool active)
+        {
+            isCheckpointMod = active;
+            objectPlacer.PlacedCollidersActiveToggle(active);
             StartPlacement(lastPrefabAddress);
         }
 

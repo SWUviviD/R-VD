@@ -59,6 +59,7 @@ namespace LevelEditor
                 return;
             }
 
+            // 오브젝트 배치 미리보기 시작
             previewSystem.StartShowingPlacementPreview(database.objectData[selectedObjectIndex].Prefab,
                                                        database.objectData[selectedObjectIndex].Size);
         }
@@ -88,11 +89,12 @@ namespace LevelEditor
                     return;
                 }
             }
-
+            
             // 오브젝트 배치 및 데이터 추가
             index = objectPlacer.PlaceObject(position,
-                                             database.objectData[selectedObjectIndex].Prefab,
-                                             database.objectData[selectedObjectIndex].Size);
+                                             database.objectData[selectedObjectIndex].Name,
+                                             database.objectData[selectedObjectIndex].Size,
+                                             database.objectData[selectedObjectIndex].Prefab);
             if (index != -1)
             {
                 // 기믹 상태 데이터 생성
@@ -162,9 +164,9 @@ namespace LevelEditor
                 return position;
             }
 
-            foreach (Transform objectTR in transforms)
+            foreach (Transform objectTransform in transforms)
             {
-                if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTR, out int gameObjectIndex))
+                if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTransform, out int gameObjectIndex))
                 {
                     LogManager.LogError("감지된 오브젝트의 Index를 알 수 없습니다.");
                     continue;
@@ -179,11 +181,11 @@ namespace LevelEditor
                 collisionedScale = new Vector3(placedSize.x * placedScale.x, placedSize.y * placedScale.y, placedSize.z * placedScale.z);
 
                 // X축 보정
-                distanceX = objectTR.position.x - position.x;
+                distanceX = objectTransform.position.x - position.x;
                 moveX = (size.x + collisionedScale.x) / 2 - Mathf.Abs(distanceX);
 
                 // Z축 보정
-                distanceZ = objectTR.position.z - position.z;
+                distanceZ = objectTransform.position.z - position.z;
                 moveZ = (size.z + collisionedScale.z) / 2 - Mathf.Abs(distanceZ);
 
                 // 보정된 위치로 위치 이동

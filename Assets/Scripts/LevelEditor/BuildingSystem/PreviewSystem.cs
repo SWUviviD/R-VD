@@ -11,17 +11,14 @@ namespace LevelEditor
     {
         /// <summary> 미리보기 오프셋 값 </summary>
         [SerializeField] private float previewOffset = 0.06f;
-
         /// <summary> 오브젝트 위치와 설치 가능 유무를 색으로 나타내는 셀 </summary>
         [SerializeField] private GameObject cellIndicator;
-
         /// <summary> 미리보기용 반투명 머터리얼 </summary>
         [SerializeField] private Material previewMaterialPrefab;
 
         private GameObject previewObject;
         private Material previewMaterialInstance;
         private Renderer cellIndicatorRenderer;
-        private Vector3 cellSize;
 
         private Renderer[] renderers;
         private Material[] materials;
@@ -53,7 +50,6 @@ namespace LevelEditor
         private void PrepareCursor(Vector3 size)
         {
             cellIndicator.transform.localScale = size;
-
         }
 
         /// <summary>

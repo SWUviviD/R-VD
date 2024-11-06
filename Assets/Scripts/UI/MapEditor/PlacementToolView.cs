@@ -13,6 +13,12 @@ namespace LevelEditor
         [SerializeField] private PlacementSystem placementSystem;
         [SerializeField] private ObjectPlacer objectPlacer;
 
+        [Header("Show Area Toggle")]
+        /// <summary> 체크포인트 모드 토글 </summary>
+        [SerializeField] private Button checkpointModToggle;
+        /// <summary> 체크포인트 모드 체크 마크 이미지 </summary>
+        [SerializeField] private Image imgCheckpointModMark;
+
         [Header("Grid Mod Toggle")]
         /// <summary> 그리드 모드 토글 </summary>
         [SerializeField] private Button gridModToggle;
@@ -29,16 +35,29 @@ namespace LevelEditor
 
         private bool isShowed;
         private bool isGridMod;
+        private bool isCheckpointMod;
 
         private void Start()
         {
             isGridMod = false;
             isShowed = false;
 
+            UIHelper.OnClick(checkpointModToggle, CheckpointModToggle);
+
             UIHelper.OnClick(gridModToggle, GridModToggle);
             inputGridSize.onEndEdit.AddListener(GridSizeChanged);
 
             UIHelper.OnClick(showAreaToggle, ShowAreaToggle);
+        }
+
+        /// <summary>
+        /// 체크포인트 모드 토글
+        /// </summary>
+        private void CheckpointModToggle()
+        {
+            isCheckpointMod = !isCheckpointMod;
+            imgCheckpointModMark.enabled = isCheckpointMod;
+            placementSystem.PlacedCollidersActiveToggle(isCheckpointMod);
         }
 
         /// <summary>
@@ -52,6 +71,10 @@ namespace LevelEditor
             
         }
 
+        /// <summary>
+        /// 그리드 모드 사이즈 설정
+        /// </summary>
+        /// <param name="text"></param>
         private void GridSizeChanged(string text)
         {
             placementSystem.GridModToggle(float.Parse(text), isGridMod);

@@ -63,6 +63,7 @@ namespace LevelEditor
                 ModifyTransform(keyCode, objectTransform);
                 if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTransform, out gameObjectIndex))
                 {
+                    LogManager.LogError("감지된 오브젝트의 Index를 알 수 없습니다.");
                     return;
                 }
 

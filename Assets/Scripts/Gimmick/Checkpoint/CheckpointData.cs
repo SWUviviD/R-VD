@@ -6,7 +6,7 @@ public class CheckpointData : GimmickDataBase
 {
     [GimmickData("자동 저장 영역")]
     [field: SerializeField]
-    public Vector3 AreaSize { get; set; } = new Vector3(10f, 3f, 10f);
+    public Vector3 AreaSize { get; set; } = new Vector3(5f, 3f, 5f);
 
     [GimmickData("플레이어 리스폰 위치")]
     [field: SerializeField]

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MemoryPack;
 
-namespace StaticData
+namespace LocalData
 {
     [MemoryPackable]
     [Serializable]

@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using StaticData;
-using System.Diagnostics;
+using LocalData;
 
 public class TestLocalDataManager : MonoBehaviour
 {

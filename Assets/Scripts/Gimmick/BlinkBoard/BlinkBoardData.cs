@@ -1,16 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LocalData;
 using UnityEngine;
-
-public class GimmickDataAttribute : Attribute
-{
-    public string Desc { get; private set; }
-    public GimmickDataAttribute(string _desc)
-    {
-        Desc = _desc;
-    }
-}
 
 public class BlinkBoardData : GimmickDataBase
 {
@@ -33,4 +25,22 @@ public class BlinkBoardData : GimmickDataBase
     [GimmickData("다음 빙판이 사라지는 텀")]
     [field: SerializeField]
     public float NextBlinkTime { get; set; } = 0.25f;
+    
+    public override void SaveGimmickData(in LDMapData _mapData)
+    {
+        var sdBlinkBoardData = new LDBlinkBoardData();
+        
+        foreach (var kvPoint in DictPoint)
+        {
+            sdBlinkBoardData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
+        }
+
+        sdBlinkBoardData.BoardCount = BoardCount;
+        sdBlinkBoardData.BoardSize = BoardSize;
+        sdBlinkBoardData.BlinkTime = BlinkTime;
+        sdBlinkBoardData.DurationTime = DurationTime;
+        sdBlinkBoardData.NextBlinkTime = NextBlinkTime;
+        
+        _mapData.BlinkBoardDataList.Add(sdBlinkBoardData);
+    }
 }

@@ -2,17 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using Defines;
 using UnityEditor;
-using static UnityEditor.LightingExplorerTableColumn;
-using System.Xml.Serialization;
 using UnityEngine.Assertions;
 using System.ComponentModel;
 using MemoryPack;
-using StaticData;
-using Cinemachine;
+using LocalData;
 
 public class CSVToJson : AssetPostprocessor
 {

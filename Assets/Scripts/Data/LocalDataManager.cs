@@ -1,4 +1,4 @@
-using StaticData;
+using LocalData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ public class LocalDataManager : Singleton<LocalDataManager>
             object obj = AddressableAssetsManager.Instance.SyncLoadObject(ASSET_PATH + _folderPath + "/" + _fileName, _fileName);
             TextAsset list = obj as TextAsset;
 
-            var data = JsonUtility.FromJson<CSVToJson.SerializableList<StaticData.sample>>(list.text);
+            var data = JsonUtility.FromJson<CSVToJson.SerializableList<sample>>(list.text);
             foreach (var item in data.list)
             {
                 AddData(_fileName, item);

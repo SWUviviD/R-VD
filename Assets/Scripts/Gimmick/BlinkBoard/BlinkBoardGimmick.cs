@@ -69,11 +69,6 @@ public class BlinkBoardGimmick : GimmickBase<BlinkBoardData>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            SetGimmick();
-        }
-        
         if (isStartBlink == false) return;
 
         elapsedTime += Time.deltaTime;

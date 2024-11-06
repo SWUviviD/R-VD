@@ -1,7 +1,7 @@
-using StaticData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LocalData;
 
 public class TestSerializeManager : MonoBehaviour
 {

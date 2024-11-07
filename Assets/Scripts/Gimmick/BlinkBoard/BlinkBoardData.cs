@@ -30,6 +30,11 @@ public class BlinkBoardData : GimmickDataBase
     {
         var sdBlinkBoardData = new LDBlinkBoardData();
         
+        sdBlinkBoardData.Position = trGimmick.position;
+        sdBlinkBoardData.Rotation = trGimmick.rotation.eulerAngles;
+        sdBlinkBoardData.Scale = trGimmick.localScale;
+        sdBlinkBoardData.Address = address;
+        
         foreach (var kvPoint in DictPoint)
         {
             sdBlinkBoardData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
@@ -42,5 +47,23 @@ public class BlinkBoardData : GimmickDataBase
         sdBlinkBoardData.NextBlinkTime = NextBlinkTime;
         
         _mapData.BlinkBoardDataList.Add(sdBlinkBoardData);
+    }
+
+    public void Set(LDBlinkBoardData _ldData)
+    {
+        foreach (var kv in _ldData.DictPoint)
+        {
+            DictPoint[kv.Key].position = kv.Value;
+        }
+
+        trGimmick.position = _ldData.Position;
+        trGimmick.rotation = Quaternion.Euler(_ldData.Rotation);
+        trGimmick.localScale = _ldData.Scale;
+        
+        BoardCount = _ldData.BoardCount;
+        BoardSize = _ldData.BoardSize;
+        BlinkTime = _ldData.BlinkTime;
+        DurationTime = _ldData.DurationTime;
+        NextBlinkTime = _ldData.NextBlinkTime;
     }
 }

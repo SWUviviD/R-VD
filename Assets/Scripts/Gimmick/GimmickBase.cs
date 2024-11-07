@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public interface IGimmickBase
 {
-    public abstract void SetGimmick();
+    public void SetGimmick();
 }
 
 public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : GimmickDataBase
@@ -43,7 +43,7 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     
     private void Awake()
     {
-        gimmickData.Init();
+        gimmickData.Init(transform, GetAddress());
         Init();
     }
 
@@ -56,6 +56,14 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     /// 기믹을 현재 gimmickData에 있는 값을 기준으로 세팅한다.
     /// </summary>
     public abstract void SetGimmick();
+
+    /// <summary>
+    /// 어드레스를 반환하는 함수. 반드시 구현이 되어야 함.
+    /// </summary>
+    protected virtual string GetAddress()
+    {
+        return "";
+    }
 
     /// <summary> 기믹의 실제 동작은 각 자식 클래스에서 정의 </summary>
     // protected abstract void Interact();

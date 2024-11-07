@@ -9,7 +9,7 @@ public class TestSerializeManager : MonoBehaviour
     void Start()
     {
         List<sample> samples = new List<sample>();
-        SerializeManager.Instance.LoadDataFilie<sample>(out samples, "sample");
+        SerializeManager.Instance.LoadDataFile<sample>(out samples, "sample");
 
         foreach (var item in samples)
         {

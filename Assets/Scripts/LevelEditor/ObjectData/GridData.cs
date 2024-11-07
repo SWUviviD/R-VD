@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace LevelEditor
@@ -8,7 +9,7 @@ namespace LevelEditor
     /// <summary>
     /// 그리드에 오브젝트 배치를 관리하는 클래스
     /// </summary>
-    public class GridData
+    public class GridData : Singleton<GridData>
     {
         /// <summary> 배치된 오브젝트 데이터를 저장하는 리스트 </summary>
         private List<PlacementData> placedObjects = new List<PlacementData>();
@@ -138,6 +139,20 @@ namespace LevelEditor
         public int GetPlacedObjectID(int placedIndex)
         {
             return placedObjects[placedIndex].ID;
+        }
+
+        /// <summary>
+        /// 기믹 데이터 반환
+        /// </summary>
+        public List<GimmickDataBase> GetGimmickDataBaseList()
+        {
+            List<GimmickDataBase> result = new List<GimmickDataBase>(placedObjects.Count);
+            foreach (var obj in placedObjects)
+            {
+                result.Add(obj.GimmickStatusData.GimmickDataBase);
+            }
+
+            return result;
         }
     }
 }

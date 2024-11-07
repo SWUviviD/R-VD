@@ -34,6 +34,11 @@ public class BlinkBoardGimmick : GimmickBase<BlinkBoardData>
         panelList.AddRange(GetComponentsInChildren<BlinkBoardPanelProp>());
     }
 
+    protected override string GetAddress()
+    {
+        return "Assets/Data/Prefabs/Gimmick/BlinkBoardGimmick.prefab";
+    }
+
     public override void SetGimmick()
     {
         if (panelList.Count < gimmickData.BoardCount)

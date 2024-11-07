@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using LocalData;
 using MemoryPack;
+using UnityEditor;
 
 
 public class SerializeManager : Singleton<SerializeManager>
 {
     private const string folder_path = "Assets/Data/RawData/LocalData/Bytes";
+    private static readonly string folder_absoute_path = Path.Combine(Application.dataPath, "Data/RawData/LocalData/Bytes");
 
-    public byte[] Serialize(object obj)
+    public byte[] Serialize<T>(List<T> obj) where T : DataBase
     {
         return MemoryPackSerializer.Serialize(obj);
     }
@@ -35,7 +38,7 @@ public class SerializeManager : Singleton<SerializeManager>
     }
 
     // 파일 불러오기 함수
-    public bool LoadDataFilie<T>(out List<T> list, string fileName)
+    public bool LoadDataFile<T>(out List<T> list, string fileName)
     {
         try
         {
@@ -51,6 +54,11 @@ public class SerializeManager : Singleton<SerializeManager>
             list = null;
             return false;
         }
-        
+    }
+
+    public bool IsFileExist(string _fileName)
+    {
+        DirectoryInfo rootDirectory = new DirectoryInfo(Path.Combine(folder_absoute_path, _fileName));
+        return rootDirectory.Exists;
     }
 }

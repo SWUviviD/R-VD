@@ -11,5 +11,10 @@ namespace LocalData
     public partial class LDMapData : DataBase
     {
         [MemoryPackInclude] public List<LDBlinkBoardData> BlinkBoardDataList { get; set; }
+
+        public LDMapData()
+        {
+            BlinkBoardDataList = new List<LDBlinkBoardData>();
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace LevelEditor
         {
             gimmickStatus.gameObject.SetActive(false);
             gridVisualization.SetActive(false);
-            selectedData = new GridData();
+            selectedData = GridData.Instance;
 
             inputSystem.OnClicked += PlaceStructure;
             inputSystem.OnExit += StopPlacement;

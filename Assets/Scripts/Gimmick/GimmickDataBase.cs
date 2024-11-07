@@ -33,8 +33,20 @@ public class GimmickDataBase : MonoBehaviour
     /// </summary>
     public Dictionary<string, Transform> DictPoint { get; private set; }
 
-    public void Init()
+    /// <summary>
+    /// 기믹의 트랜스폼. 데이터 저장에 필요하다.
+    /// </summary>
+    protected Transform trGimmick;
+    /// <summary>
+    /// 기믹의 주소. 로드할때 필요하다.
+    /// </summary>
+    protected string address;
+
+    public void Init(Transform _gimmick, string _address)
     {
+        trGimmick = _gimmick;
+        address = _address;
+        
         DictPoint = new Dictionary<string, Transform>();
         
         foreach (var point in pointList)

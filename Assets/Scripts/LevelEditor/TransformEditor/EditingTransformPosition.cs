@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,54 +11,80 @@ namespace LevelEditor
         [Header("Main Camera")]
         [SerializeField] private Camera mainCamera;
 
-        [Header("Position X")]
+        [Header("Quad")]
+        [SerializeField] private Transform quad;
         [SerializeField] private Transform quadX;
-        [SerializeField] private Transform arrowX;
-
-        [Header("Position Y")]
         [SerializeField] private Transform quadY;
-        [SerializeField] private Transform arrowY;
-
-        [Header("Position Z")]
         [SerializeField] private Transform quadZ;
+
+        [Header("Position")]
+        [SerializeField] private Transform arrowX;
+        [SerializeField] private Transform arrowY;
         [SerializeField] private Transform arrowZ;
 
         [Header("Layer Mask")]
         [SerializeField] private LayerMask placementMask;
 
-        private Plane plane = new Plane(Vector3.one, Vector3.zero);
+        private List<Transform> positionObjects = new List<Transform>();
+        private Vector3 quadScale = Vector3.one;
+        private Transform selectedObject;
+        private float editorDistance = 7f;
 
         /// <summary>
         /// 위치가 변경된다면 호출될 함수
         /// </summary>
         private System.Action onTransformChanged;
-        
-        private bool isDragging;
-        private Vector3 offset;
-        private Transform draggedObject;
-        private float rayDistance;
 
+        private bool isDragging;
+        private Transform draggedObject;
         private Vector3 mousePos;
+        private Vector3 curPosition;
         private Vector3 newPosition;
+        private Vector3 offset;
         private RaycastHit hit;
         private Ray ray;
 
+        private void Awake()
+        {
+            positionObjects.Add(quadX);
+            positionObjects.Add(quadY);
+            positionObjects.Add(quadZ);
+            positionObjects.Add(arrowX);
+            positionObjects.Add(arrowY);
+            positionObjects.Add(arrowZ);
+        }
+
+        private void OnEnable()
+        {
+            UpdateQuadDirection();
+        }
+
         private void Update()
         {
-            // 마우스 버튼이 눌렸는지 확인
+            // 마우스 좌클릭이 눌렸는지 확인
             if (Input.GetMouseButtonDown(0))
             {
                 if (IsEditTransformPosition())
                 {
                     isDragging = true;
-                    offset = draggedObject.position - GetMouseWorldPosition(plane);
+                    selectedObject = GetSelectedObject(hit);
+                    SetSelectedObjectsActive(selectedObject);
+                    curPosition = draggedObject.position;
+                    offset = -GetMouseWorldPosition(transform);
                 }
             }
 
-            // 마우스 버튼이 떼어졌는지 확인
+            // 마우스 좌클릭이 떼어졌는지 확인
             if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
+                SetSelectedObjectsActive(null);
+            }
+
+            // 카메라와 오브젝트 위치에 따른 쿼드 갱신
+            if (Input.GetMouseButtonUp(1))
+            {
+                UpdateQuadDirection();
             }
 
             if (onTransformChanged != null && isDragging)
@@ -69,9 +96,13 @@ namespace LevelEditor
             // 드래그 중일 때 오브젝트 이동
             if (isDragging && draggedObject != null)
             {
-                GetConstrainedPosition(hit);
+                GetConstrainedPosition(selectedObject);
                 draggedObject.position = newPosition;
-                transform.position = newPosition;
+            }
+
+            if (draggedObject != null)
+            {
+                transform.position = UpdateEditorPosition(draggedObject.position);
             }
         }
 
@@ -99,6 +130,21 @@ namespace LevelEditor
         }
 
         /// <summary>
+        /// 선택된 에디터 오브젝트 반환
+        /// </summary>
+        private Transform GetSelectedObject(RaycastHit hit)
+        {
+            foreach (Transform tr in positionObjects)
+            {
+                if (hit.transform.IsChildOf(tr))
+                {
+                    return tr;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// 수정할 오브젝트 설정
         /// </summary>
         public void SetObjectTransform(Transform objectTR, System.Action _cbTransformChanged = null)
@@ -113,57 +159,116 @@ namespace LevelEditor
             onTransformChanged = _cbTransformChanged;
             gameObject.SetActive(true);
             draggedObject = objectTR;
-            transform.position = draggedObject.position;
+            transform.position = UpdateEditorPosition(draggedObject.position);
         }
 
         /// <summary>
-        /// 마우스의 월드 위치 반환
+        /// 카메라와 오브젝트 위치에 따른 쿼드 갱신
         /// </summary>
-        private Vector3 GetMouseWorldPosition(Plane plane)
+        private void UpdateQuadDirection()
         {
-            mousePos = Input.mousePosition;
-            ray = mainCamera.ScreenPointToRay(mousePos);
-            if (plane.Raycast(ray, out rayDistance))
-            {
-                return ray.GetPoint(rayDistance);
-            }
+            quadScale.x = mainCamera.transform.position.x > transform.position.x ? 1f : -1f;
+            quadScale.z = mainCamera.transform.position.z > transform.position.z ? 1f : -1f;
+            quad.localScale = quadScale;
+        }
 
-            return Vector3.zero;
+        /// <summary>
+        /// 클릭한 오브젝트의 마우스 월드 위치 반환
+        /// </summary>
+        private Vector3 GetMouseWorldPosition(Transform objectTR)
+        {
+            mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.WorldToScreenPoint(objectTR.position).z);
+
+            return Camera.main.ScreenToWorldPoint(mousePos);
+        }
+
+        /// <summary>
+        /// 에디터 오브젝트 위치 반환
+        /// </summary>
+        private Vector3 UpdateEditorPosition(Vector3 objectPos)
+        {
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(objectPos);
+            if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
+            {
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(objectPos);
+                screenPosition.z = editorDistance;
+
+                return Camera.main.ScreenToWorldPoint(screenPosition);
+            }
+            return objectPos;
         }
 
         /// <summary>
         /// 축에 따라 위치 제한
         /// </summary>
-        private void GetConstrainedPosition(RaycastHit hit)
+        private void GetConstrainedPosition(Transform selected)
         {
-            newPosition = GetMouseWorldPosition(plane) + offset;
+            newPosition = curPosition + (GetMouseWorldPosition(transform) + offset) *
+                          (Vector3.Distance(mainCamera.transform.position, draggedObject.position) /
+                           Vector3.Distance(mainCamera.transform.position, transform.position));
 
-            if (hit.transform.IsChildOf(quadX))
+            if (selected == quadX)
             {
                 newPosition.x = draggedObject.position.x;
             }
-            else if (hit.transform.IsChildOf(quadY))
+            else if (selected == quadY)
             {
                 newPosition.y = draggedObject.position.y;
             }
-            else if (hit.transform.IsChildOf(quadZ))
+            else if (selected == quadZ)
             {
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowX))
+            else if (selected == arrowX)
             {
                 newPosition.y = draggedObject.position.y;
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowY))
+            else if (selected == arrowY)
             {
                 newPosition.x = draggedObject.position.x;
                 newPosition.z = draggedObject.position.z;
             }
-            else if (hit.transform.IsChildOf(arrowZ))
+            else if (selected == arrowZ)
             {
                 newPosition.x = draggedObject.position.x;
                 newPosition.y = draggedObject.position.y;
+            }
+        }
+
+        /// <summary>
+        /// 가시성을 위한 에디터 오브젝트 방향별 활성화
+        /// </summary>
+        private void SetSelectedObjectsActive(Transform selected)
+        {
+            if (selected == null)
+            {
+                positionObjects.ForEach(_ => _.gameObject.SetActive(true));
+                return;
+            }
+
+            positionObjects.ForEach(_ => _.gameObject.SetActive(false));
+            if (selected == quadX)
+            {
+                quadX.gameObject.SetActive(true);
+                arrowY.gameObject.SetActive(true);
+                arrowZ.gameObject.SetActive(true);
+            }
+            else if (selected == quadY)
+            {
+                quadY.gameObject.SetActive(true);
+                arrowZ.gameObject.SetActive(true);
+                arrowX.gameObject.SetActive(true);
+            }
+            else if (selected == quadZ)
+            {
+                quadZ.gameObject.SetActive(true);
+                arrowX.gameObject.SetActive(true);
+                arrowY.gameObject.SetActive(true);
+            }
+            else // selected == (arrowX, arrowY, arrowZ)
+            {
+                selected.gameObject.SetActive(true);
             }
         }
     }

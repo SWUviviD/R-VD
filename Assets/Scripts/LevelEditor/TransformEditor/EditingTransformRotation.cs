@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +20,9 @@ namespace LevelEditor
         [Header("Layer Mask")]
         [SerializeField] private LayerMask placementMask;
 
+        private List<Transform> rotationObjects = new List<Transform>();
+        private float editorDistance = 7f;
+
         private bool isRotating = false;
         private Transform selectedObject;
         private Vector3 lastMousePosition;
@@ -30,14 +34,23 @@ namespace LevelEditor
         private RaycastHit hit;
         private Ray ray;
 
+        private void Awake()
+        {
+            rotationObjects.Add(sphere);
+            rotationObjects.Add(rotationX);
+            rotationObjects.Add(rotationY);
+            rotationObjects.Add(rotationZ);
+        }
+
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 if (IsEditTransformRotation())
                 {
-                    selectedObject = hit.transform;
                     isRotating = true;
+                    selectedObject = hit.transform;
+                    SetSelectedObjectsActive(selectedObject);
                     lastMousePosition = Input.mousePosition;
                 }
             }
@@ -46,6 +59,7 @@ namespace LevelEditor
             {
                 isRotating = false;
                 selectedObject = null;
+                SetSelectedObjectsActive(selectedObject);
             }
 
             if (isRotating && selectedObject != null)
@@ -83,6 +97,11 @@ namespace LevelEditor
                     rotatedObject.Rotate(100f * Time.deltaTime * newRotation, Space.Self);
                 }
                 transform.rotation = rotatedObject.rotation;
+            }
+
+            if (rotatedObject != null)
+            {
+                transform.position = UpdateEditorPosition(rotatedObject.position);
             }
         }
 
@@ -125,6 +144,45 @@ namespace LevelEditor
             rotatedObject = objectTR;
             transform.position = rotatedObject.position;
             transform.rotation = rotatedObject.rotation;
+        }
+
+        /// <summary>
+        /// 에디터 오브젝트 위치 반환
+        /// </summary>
+        private Vector3 UpdateEditorPosition(Vector3 objectPos)
+        {
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(objectPos);
+            if (screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1)
+            {
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(objectPos);
+                screenPosition.z = editorDistance;
+
+                return Camera.main.ScreenToWorldPoint(screenPosition);
+            }
+            return objectPos;
+        }
+
+        /// <summary>
+        /// 가시성을 위한 에디터 오브젝트 방향별 활성화
+        /// </summary>
+        private void SetSelectedObjectsActive(Transform selected)
+        {
+            if (selected == null)
+            {
+                rotationObjects.ForEach(_ => _.gameObject.SetActive(true));
+                return;
+            }
+            
+            if (selected == sphere)
+            {
+                rotationObjects.ForEach(_ => _.gameObject.SetActive(true));
+                selected.gameObject.SetActive(false);
+            }
+            else // selected == (rotationX, rotationY, rotationZ)
+            {
+                rotationObjects.ForEach(_ => _.gameObject.SetActive(false));
+                selected.gameObject.SetActive(true);
+            }
         }
     }
 }

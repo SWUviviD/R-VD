@@ -57,9 +57,23 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
             if (playerStatus == null)
             {
                 playerStatus = other.GetComponentInParent<PlayerStatus>();
+                playerStatus.SetRespawnPoint(respawnPoint.position);
             }
-            // 한 번만 저장되게 하려면 아래의 코드를 위의 조건문 안으로 이동
-            playerStatus.SetRespawnPoint(respawnPoint.position);
+        }
+    }
+
+    private void Update()
+    {
+        if (playerStatus == null)
+        {
+            return;
+        }    
+
+        // 플레이어 추락 시 데미지 및 리스폰 이동
+        if (playerStatus.transform.position.y < gimmickData.DropRespawnHeight)
+        {
+            playerStatus.TakeDamage(gimmickData.DropDamage);
+            playerStatus.transform.position = respawnPoint.position;
         }
     }
 }

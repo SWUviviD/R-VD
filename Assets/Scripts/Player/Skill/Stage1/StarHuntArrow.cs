@@ -29,9 +29,10 @@ public partial class StarHuntArrow : Poolable
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        // 여기에 크리스탈 처리
+        if(other.gameObject.layer == 1 << 9)
+            returnToPool.Invoke(Defines.PoolDefines.PoolType.StarHunts, this);
     }
 }
 

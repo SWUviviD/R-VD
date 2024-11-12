@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GimmickStatusData
@@ -22,6 +23,8 @@ public class GimmickStatusData
 
 public class GimmickStatus : MonoBehaviour
 {
+    /// <summary> 드래그를 위한 타이틀 </summary>
+    [SerializeField] GimmickStatusTitle title;
     /// <summary> 기믹 스테이터스의 제목 </summary>
     [SerializeField] private Text txtTitle;
     /// <summary> 리셋 버튼. 데이터에 맞게 기믹을 변경한다. </summary>
@@ -29,6 +32,8 @@ public class GimmickStatus : MonoBehaviour
     /// <summary> 리셋 버튼의 트랜스폼 </summary>
     [SerializeField] private Transform trResetButton;
 
+    /// <summary> 타입을 표현하는 오브젝트의 부모. 스크롤뷰의 컨텐츠이다. </summary>
+    [SerializeField] private Transform trParent;
     /// <summary> 기믹 스테이터스에서 bool 타입을 표현하기 위한 프리팹 </summary>
     [SerializeField] private GimmickStatusBool prefabBool;
     /// <summary> 기믹 스테이터스에서 int 타입을 표현하기 위한 프리팹 </summary>
@@ -50,6 +55,8 @@ public class GimmickStatus : MonoBehaviour
     
     private void Start()
     {
+        title.OnDragTitle = MoveStatus;
+        
         boolTypeList = new List<GimmickStatusBool>();
         intTypeList = new List<GimmickStatusInt>();
         floatTypeList = new List<GimmickStatusFloat>();
@@ -58,6 +65,14 @@ public class GimmickStatus : MonoBehaviour
         currentGimmickStatusList = new List<IGimmickStatusTypeBase>();
         
         rt = transform as RectTransform;
+    }
+
+    /// <summary>
+    /// 스테이터스 바를 이동시킨다.
+    /// </summary>
+    private void MoveStatus(Vector2 _delta)
+    {
+        transform.position += new Vector3(_delta.x, _delta.y, 0f);
     }
 
     /// <summary>
@@ -136,7 +151,7 @@ public class GimmickStatus : MonoBehaviour
 
                 if (boolTypeList.IsNullOrEmpty())
                 {
-                    statusBool = Instantiate(prefabBool, transform);
+                    statusBool = Instantiate(prefabBool, trParent);
                 }
                 else
                 {
@@ -146,7 +161,7 @@ public class GimmickStatus : MonoBehaviour
                 }
                 
                 statusBool.Set(property.Name, (bool)property.GetValue(gimmickData), gimmickData, property.SetValue);
-                statusBool.transform.SetSiblingIndex(++index);
+                statusBool.transform.SetSiblingIndex(index++);
                 currentGimmickStatusList.Add(statusBool);
             }
             else if (propertyType == typeof(int))
@@ -155,7 +170,7 @@ public class GimmickStatus : MonoBehaviour
                 
                 if (intTypeList.IsNullOrEmpty())
                 {
-                    statusInt = Instantiate(prefabInt, transform);
+                    statusInt = Instantiate(prefabInt, trParent);
                 }
                 else
                 {
@@ -165,7 +180,7 @@ public class GimmickStatus : MonoBehaviour
                 }
 
                 statusInt.Set(property.Name, (int)property.GetValue(gimmickData), gimmickData, property.SetValue);
-                statusInt.transform.SetSiblingIndex(++index);
+                statusInt.transform.SetSiblingIndex(index++);
                 currentGimmickStatusList.Add(statusInt);
             }
             else if (propertyType == typeof(float))
@@ -174,7 +189,7 @@ public class GimmickStatus : MonoBehaviour
 
                 if (floatTypeList.IsNullOrEmpty())
                 {
-                    statusFloat = Instantiate(prefabFloat, transform);
+                    statusFloat = Instantiate(prefabFloat, trParent);
                 }
                 else
                 {
@@ -184,7 +199,7 @@ public class GimmickStatus : MonoBehaviour
                 }
                 
                 statusFloat.Set(property.Name, (float)property.GetValue(gimmickData), gimmickData, property.SetValue);
-                statusFloat.transform.SetSiblingIndex(++index);
+                statusFloat.transform.SetSiblingIndex(index++);
                 currentGimmickStatusList.Add(statusFloat);
             }
             else if (propertyType == typeof(Vector3))
@@ -193,7 +208,7 @@ public class GimmickStatus : MonoBehaviour
 
                 if (vector3TypeList.IsNullOrEmpty())
                 {
-                    statusVector3 = Instantiate(prefabVector3, transform);
+                    statusVector3 = Instantiate(prefabVector3, trParent);
                 }
                 else
                 {
@@ -203,12 +218,10 @@ public class GimmickStatus : MonoBehaviour
                 }
                 
                 statusVector3.Set(property.Name, (Vector3)property.GetValue(gimmickData), gimmickData, property.SetValue);
-                statusVector3.transform.SetSiblingIndex(++index);
+                statusVector3.transform.SetSiblingIndex(index++);
                 currentGimmickStatusList.Add(statusVector3);
             }
         }
-        
-        trResetButton.SetSiblingIndex(++index);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }

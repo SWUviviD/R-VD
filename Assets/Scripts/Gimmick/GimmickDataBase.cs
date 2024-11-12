@@ -62,4 +62,9 @@ public class GimmickDataBase : MonoBehaviour
     {
         // 맵 데이터 추가하기.
     }
+
+    public virtual void Set(LDGimmickDataBase _ldData)
+    {
+
+    }
 }

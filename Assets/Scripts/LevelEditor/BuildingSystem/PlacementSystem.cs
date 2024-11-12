@@ -231,6 +231,63 @@ namespace LevelEditor
             mousePosition = inputSystem.GetSelectedMapPosition();
             currentState.UpdateState(mousePosition);
         }
+
+        /// <summary>
+        /// 에디터에서 기믹을 로드할 때만 사용되는 함수
+        /// </summary>
+        public void CreateGimmick(string address, Vector3 position, Vector3 rotation, Vector3 scale, GimmickDataBase gimmick)
+        {
+            string gimmickName = address.Split("/")[^1].Split(".")[0];
+
+            if (!objectIDs.ContainsKey(gimmickName))
+            {
+                prefab = AddressableAssetsManager.Instance.SyncLoadObject(address, address) as GameObject;
+
+                objectIDs[gimmickName] = objectID;
+                objectID++;
+
+                prefabSize = CalculatePrefabSize(prefab);
+                database.objectData.Add(new ObjectData(gimmickName, objectID, prefabSize, prefab));
+            }
+
+            prefab = database.objectData[objectIDs[gimmickName]].Prefab;
+            int index = objectPlacer.PlaceObject(gimmickName,
+                                                 position,
+                                                 rotation,
+                                                 scale,
+                                                 database.objectData[objectIDs[gimmickName]].Size,
+                                                 prefab);
+
+            if (index != -1)
+            {
+                // 기믹 상태 데이터 생성
+                GimmickStatusData statusData = null;
+                if (objectPlacer.PlacedGameObjects[index].TryGetComponent(out IGimmickBase iGimmickBase))
+                {
+                    statusData = new GimmickStatusData(gimmickName, gimmick, iGimmickBase.SetGimmick);
+                }
+
+                // PlacementData 기믹 상태 데이터를 포함한 오브젝트 정보 생성
+                GridData.Instance.AddObjectAt(statusData,
+                                              position,
+                                              rotation,
+                                              scale,
+                                              database.objectData[objectIDs[gimmickName]].ID);
+
+            }
+
+
+            //var instance = Instantiate(prefab);
+            //instance.transform.position = position;
+            //instance.transform.rotation = Quaternion.Euler(rotation);
+            //instance.transform.localScale = scale;
+
+            //if (instance.TryGetComponent(out IGimmickBase gimmickBase))
+            //{
+            //    var statusData = new GimmickStatusData(gimmickName, gimmick, gimmickBase.SetGimmick);
+            //    GridData.Instance.AddObjectAt(statusData, position, rotation, scale, objectIDs[gimmickName]);
+            //}
+        }
     }
 }
 

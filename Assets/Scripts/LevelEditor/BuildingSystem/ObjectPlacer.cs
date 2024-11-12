@@ -34,20 +34,22 @@ namespace LevelEditor
         /// <summary>
         /// 새로운 오브젝트 배치
         /// </summary>
-        public int PlaceObject(Vector3 position, string name, Vector3 scale, GameObject prefab)
+        public int PlaceObject(string name, Vector3 position, Vector3 rotation, Vector3 scale, Vector3 objScale, GameObject prefab)
         {
-            if (scale == Vector3.zero)
+            if (objScale == Vector3.zero)
             {
                 return -1;
             }
 
             newObject = Instantiate(prefab);
             newObject.transform.position = position;
+            newObject.transform.rotation = Quaternion.Euler(rotation);
+            newObject.transform.localScale = scale;
             PlacedGameObjects.Add(newObject);
 
             areaObject = Instantiate(placedArea);
             areaObject.transform.position = position;
-            areaObject.transform.localScale = scale;
+            areaObject.transform.localScale = objScale;
             placedAreaRenderers.Add(areaObject.GetComponentInChildren<Renderer>());
             placedAreaRenderers[PlacedGameObjects.Count - 1].enabled = isShowArea;
             areaObject.transform.SetParent(newObject.transform);

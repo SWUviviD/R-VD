@@ -49,21 +49,25 @@ public class BlinkBoardData : GimmickDataBase
         _mapData.BlinkBoardDataList.Add(sdBlinkBoardData);
     }
 
-    public void Set(LDBlinkBoardData _ldData)
+    public override void Set(LDGimmickDataBase _ldData)
     {
-        foreach (var kv in _ldData.DictPoint)
+        base.Set(_ldData);
+
+        var ldBlinkBoardData = (LDBlinkBoardData)_ldData;
+
+        foreach (var kv in ldBlinkBoardData.DictPoint)
         {
             DictPoint[kv.Key].position = kv.Value;
         }
 
-        trGimmick.position = _ldData.Position;
-        trGimmick.rotation = Quaternion.Euler(_ldData.Rotation);
-        trGimmick.localScale = _ldData.Scale;
-        
-        BoardCount = _ldData.BoardCount;
-        BoardSize = _ldData.BoardSize;
-        BlinkTime = _ldData.BlinkTime;
-        DurationTime = _ldData.DurationTime;
-        NextBlinkTime = _ldData.NextBlinkTime;
+        trGimmick.position = ldBlinkBoardData.Position;
+        trGimmick.rotation = Quaternion.Euler(ldBlinkBoardData.Rotation);
+        trGimmick.localScale = ldBlinkBoardData.Scale;
+
+        BoardCount = ldBlinkBoardData.BoardCount;
+        BoardSize = ldBlinkBoardData.BoardSize;
+        BlinkTime = ldBlinkBoardData.BlinkTime;
+        DurationTime = ldBlinkBoardData.DurationTime;
+        NextBlinkTime = ldBlinkBoardData.NextBlinkTime;
     }
 }

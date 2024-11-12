@@ -89,10 +89,12 @@ namespace LevelEditor
                     return;
                 }
             }
-            
+
             // 오브젝트 배치 및 데이터 추가
-            index = objectPlacer.PlaceObject(position,
-                                             database.objectData[selectedObjectIndex].Name,
+            index = objectPlacer.PlaceObject(database.objectData[selectedObjectIndex].Name,
+                                             position,
+                                             Vector3.zero,
+                                             Vector3.one,
                                              database.objectData[selectedObjectIndex].Size,
                                              database.objectData[selectedObjectIndex].Prefab);
             if (index != -1)
@@ -110,8 +112,9 @@ namespace LevelEditor
                 // PlacementData 기믹 상태 데이터를 포함한 오브젝트 정보 생성
                 placementData.AddObjectAt(gimmickStatusData,
                                           position,
-                                          database.objectData[selectedObjectIndex].ID,
-                                          index);
+                                          Vector3.zero,
+                                          Vector3.one,
+                                          database.objectData[selectedObjectIndex].ID);
             }
         }
 

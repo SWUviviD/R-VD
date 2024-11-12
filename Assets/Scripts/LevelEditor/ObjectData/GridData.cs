@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace LevelEditor
@@ -30,9 +29,9 @@ namespace LevelEditor
         /// <summary>
         /// 주어진 위치에 오브젝트를 추가
         /// </summary>
-        public void AddObjectAt(GimmickStatusData gimmickStatusData, Vector3 position, int ID, int placedObjectIndex)
+        public void AddObjectAt(GimmickStatusData gimmickStatusData, Vector3 position, Vector3 rotation, Vector3 scale, int ID)
         {
-            data = new PlacementData(gimmickStatusData, position, ID, placedObjectIndex);
+            data = new PlacementData(gimmickStatusData, position, rotation, scale, ID);
             placedObjects.Add(data);
         }
 

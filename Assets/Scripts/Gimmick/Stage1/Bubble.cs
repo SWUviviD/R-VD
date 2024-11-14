@@ -3,29 +3,25 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class Bubble : MonoBehaviour
+public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
 {
     [SerializeField] GameObject bubbleObject;
     [SerializeField] Collider bubbleCollider;
-    [SerializeField] float popOffsetTime;
-    [SerializeField] float resetOffsetTime;
 
     private WaitForSeconds resetSeconds;
 
-    private void Start()
+    protected override void Init()
     {
-        resetSeconds = new WaitForSeconds(resetOffsetTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    [ContextMenu("SetMenu")]
+    public override void SetGimmick()
     {
-        PlayerJump jump = null;
-        if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
-        {
-            jump.Jump();
-            StartCoroutine(BubblePop());
-        }
+        resetSeconds = new WaitForSeconds(gimmickData.ResetOffsetTime);
 
+        StopAllCoroutines();
+        bubbleObject.SetActive(true);
+        bubbleCollider.enabled = true;
     }
 
     private IEnumerator BubblePop()
@@ -39,5 +35,15 @@ public class Bubble : MonoBehaviour
         // 여기에 다시 제생되는 애니메이션 세팅
         bubbleObject.SetActive(true);
         bubbleCollider.enabled = true;
+    }
+
+    public void Interact(GameObject player)
+    {
+        PlayerJump jump = null;
+        if (player.TryGetComponent<PlayerJump>(out jump) == true)
+        {
+            jump.Jump();
+            StartCoroutine(BubblePop());
+        }
     }
 }

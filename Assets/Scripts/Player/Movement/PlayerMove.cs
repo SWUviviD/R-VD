@@ -26,8 +26,11 @@ public class PlayerMove : MonoBehaviour
 
     public bool IsGrounded { get; private set; }
 
+    private GameObject currentFloor;
+
     private void OnEnable()
     {
+        currentFloor = null;
         InputManager.Instance.AddInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Move),
             InputDefines.ActionPoint.All,
@@ -44,7 +47,12 @@ public class PlayerMove : MonoBehaviour
         if(IsGrounded)
         {
             Rebound(ref hit);
+            FloorInteract(ref hit);
             isSlope = AddSpeed(in hit);
+        }
+        else
+        {
+            ResetCurrentFloor();
         }
 
         if (status.IsDashing == false)
@@ -85,6 +93,35 @@ public class PlayerMove : MonoBehaviour
         float deep = _hit.distance - heightLength;
         rigid.MovePosition(rigid.transform.position - new Vector3(0f, deep, 0f));
     }
+
+    private void FloorInteract(ref RaycastHit _hit)
+    {
+        if(currentFloor != _hit.collider.gameObject)
+        {
+            currentFloor = _hit.collider.gameObject;
+            
+            IFloorInteractive interactiveObj = null;
+            
+            interactiveObj = currentFloor.GetComponentInChildren<IFloorInteractive>();
+            if(interactiveObj != null)
+            {
+                interactiveObj.Interact(gameObject);
+                return;
+            }
+
+            interactiveObj = currentFloor.GetComponentInParent<IFloorInteractive>();
+            if (interactiveObj != null)
+            {
+                interactiveObj.Interact(gameObject);
+            }
+        }
+    }
+
+    private void ResetCurrentFloor()
+    {
+        currentFloor = null;
+    }
+
 
     private bool AddSpeed(in RaycastHit hit)
     {

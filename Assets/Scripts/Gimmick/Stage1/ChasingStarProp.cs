@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class ChasingStarProp : MonoBehaviour
+public class ChasingStarProp : GimmickDataBase
 {
+    [SerializeField] public Transform panel;
+    public ChasingGimmickData Data;
+
     private Rigidbody rb;
     private float fallSpeed;
     private float damage;
@@ -25,7 +28,7 @@ public class ChasingStarProp : MonoBehaviour
     {
         if (isFalling)
         {
-            transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+            transform.position += Vector3.down * Data.StarFallSpeed * Time.deltaTime;
         }
     }
 
@@ -46,23 +49,17 @@ public class ChasingStarProp : MonoBehaviour
                     float appliedKnockback = player.IsDashing ? KnockbackForce * 1.5f : KnockbackForce;
                     playerRb.AddForce(knockbackDir * appliedKnockback, ForceMode.Impulse);
                 }
-
-                gameObject.SetActive(false);
-                isFalling = false;
             }
         }
-        else if (other.CompareTag("Panel"))
-        {
-            gameObject.SetActive(false);
-            isFalling = false;
-        }
+
+        ResetStar();
     }
 
 
     public void ResetStar()
     {
         isFalling = false;
-        transform.position = new Vector3(0, 10, 0);
+        transform.position = new Vector3(transform.position.x, panel.transform.position.y + 20, transform.position.z);
         gameObject.SetActive(false);
     }
 }

@@ -68,6 +68,15 @@ public class PlayerJump : MonoBehaviour
 
     }
 
+    public void Jump(float force)
+    {
+        if (move.IsGrounded == false) // 떨어지는 중
+        {
+            return;
+        }
+        rigid.AddForce(Vector3.up * force, ForceMode.Impulse);
+    }
+
     private void OnDisable()
     {
         InputManager.Instance?.RemoveInputEventFunction(

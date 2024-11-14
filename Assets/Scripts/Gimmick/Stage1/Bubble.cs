@@ -42,7 +42,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
         PlayerJump jump = null;
         if (player.TryGetComponent<PlayerJump>(out jump) == true)
         {
-            jump.Jump();
+            jump.Jump(gimmickData.JumpForce);
             StartCoroutine(BubblePop());
         }
     }

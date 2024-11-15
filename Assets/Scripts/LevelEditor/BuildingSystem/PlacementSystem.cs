@@ -13,7 +13,6 @@ namespace LevelEditor
     {
         [Header("Components")]
         [SerializeField] private ObjectDatabase database = new ObjectDatabase();
-        [SerializeField] private GameObject gridVisualization;
         [SerializeField] private GameObject checkpointArea;
 
         [Header("Systems")]
@@ -55,7 +54,6 @@ namespace LevelEditor
         private void Start()
         {
             gimmickStatus.gameObject.SetActive(false);
-            gridVisualization.SetActive(false);
             selectedData = GridData.Instance;
 
             inputSystem.OnClicked += PlaceStructure;

@@ -24,11 +24,13 @@ namespace LevelEditor
         public event Action OnExit;
         public Action<KeyCode> OnModify;
 
+        private Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         private Vector3 lastPosition;
         private Vector3 lastDirection;
         private Vector3 mousePos;
         private RaycastHit hit;
         private Ray ray;
+        private float distance;
 
         private void Update()
         {
@@ -96,9 +98,14 @@ namespace LevelEditor
             mousePos = Input.mousePosition;
             mousePos.z = sceneCamera.nearClipPlane;
             ray = sceneCamera.ScreenPointToRay(mousePos);
+
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, placedAreaMask))
             {
                 lastPosition = hit.point;
+            }
+            else if (groundPlane.Raycast(ray, out distance))
+            {
+                lastPosition = ray.GetPoint(distance);
             }
 
             return lastPosition;

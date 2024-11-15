@@ -23,10 +23,12 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float addMinRadio = -1f;
     
     public Vector3 MoveDirection { get; private set; }
+    public Vector3 CurrentFeetPosition { get; private set; }
 
     public bool IsGrounded { get; private set; }
 
     private GameObject currentFloor;
+    private IFloorInteractive currentFloorInteractive;
 
     private void OnEnable()
     {
@@ -80,6 +82,8 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(realMovement);
         }
         rigid.velocity *= 0.9f;
+
+        CurrentFeetPosition = hit.point;
     }
 
     private bool ShootRay(out RaycastHit hit)
@@ -99,20 +103,23 @@ public class PlayerMove : MonoBehaviour
         if(currentFloor != _hit.collider.gameObject)
         {
             currentFloor = _hit.collider.gameObject;
-            
-            IFloorInteractive interactiveObj = null;
-            
-            interactiveObj = currentFloor.GetComponentInChildren<IFloorInteractive>();
-            if(interactiveObj != null)
+
+            if(currentFloorInteractive != null)
             {
-                interactiveObj.Interact(gameObject);
+                currentFloorInteractive.InteractEnd(gameObject);
+            }
+
+            currentFloorInteractive = currentFloor.GetComponentInChildren<IFloorInteractive>();
+            if(currentFloorInteractive != null)
+            {
+                currentFloorInteractive.InteractStart(gameObject);
                 return;
             }
 
-            interactiveObj = currentFloor.GetComponentInParent<IFloorInteractive>();
-            if (interactiveObj != null)
+            currentFloorInteractive = currentFloor.GetComponentInParent<IFloorInteractive>();
+            if (currentFloorInteractive != null)
             {
-                interactiveObj.Interact(gameObject);
+                currentFloorInteractive.InteractStart(gameObject);
             }
         }
     }
@@ -120,6 +127,12 @@ public class PlayerMove : MonoBehaviour
     private void ResetCurrentFloor()
     {
         currentFloor = null;
+        CurrentFeetPosition = Vector3.zero;
+        if (currentFloorInteractive != null)
+        {
+            currentFloorInteractive.InteractEnd(gameObject);
+            currentFloorInteractive = null;
+        }
     }
 
 
@@ -127,7 +140,6 @@ public class PlayerMove : MonoBehaviour
     {
         var myAngle = Vector3.Angle(transform.forward, hit.normal) - 90;
 
-        LogManager.Log(myAngle.ToString());
         if(myAngle > maxinumAngle) // 올라가는 중
         {
             status.AdditionalMoveSpeed = status.MoveSpeed * addMinRadio;

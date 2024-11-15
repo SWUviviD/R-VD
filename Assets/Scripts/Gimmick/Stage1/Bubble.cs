@@ -37,7 +37,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
         bubbleCollider.enabled = true;
     }
 
-    public void Interact(GameObject player)
+    public void InteractStart(GameObject player)
     {
         PlayerJump jump = null;
         if (player.TryGetComponent<PlayerJump>(out jump) == true)
@@ -45,5 +45,9 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
             jump.Jump(gimmickData.JumpForce);
             StartCoroutine(BubblePop());
         }
+    }
+
+    public void InteractEnd(GameObject player)
+    {
     }
 }

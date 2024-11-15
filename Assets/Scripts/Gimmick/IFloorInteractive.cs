@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IFloorInteractive
 {
-    public void Interact(GameObject player);
+    public void InteractStart(GameObject player);
+    public void InteractEnd(GameObject player);
 }

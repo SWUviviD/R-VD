@@ -253,6 +253,7 @@ namespace LevelEditor
                                                  position,
                                                  rotation,
                                                  scale,
+                                                 totalBounds.center,
                                                  database.objectData[objectIDs[gimmickName]].Size,
                                                  prefab);
 

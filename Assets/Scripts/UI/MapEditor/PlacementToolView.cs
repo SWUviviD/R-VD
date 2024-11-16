@@ -41,6 +41,7 @@ namespace LevelEditor
         {
             isGridMod = false;
             isShowed = false;
+            GridModToggle();
 
             UIHelper.OnClick(checkpointModToggle, CheckpointModToggle);
 

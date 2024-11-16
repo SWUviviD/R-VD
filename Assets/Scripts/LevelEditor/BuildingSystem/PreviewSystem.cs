@@ -24,6 +24,8 @@ namespace LevelEditor
         private Material[] materials;
         private Collider[] colliders;
         private Color color;
+        private Vector3 objCenter;
+        private Vector3 objScale;
 
         private void Start()
         {
@@ -35,9 +37,11 @@ namespace LevelEditor
         /// <summary>
         /// 오브젝트 배치 미리보기 시작
         /// </summary>
-        public void StartShowingPlacementPreview(GameObject prefab, Vector3 size)
+        public void StartShowingPlacementPreview(GameObject prefab, Vector3 size, Vector3 center)
         {
             previewObject = Instantiate(prefab);
+            objCenter = center;
+            objScale = size;
             PreparePreview(previewObject);
             PrepareCollider(previewObject);
             PrepareCursor(size);
@@ -122,7 +126,7 @@ namespace LevelEditor
         /// </summary>
         private void MovePreview(Vector3 position)
         {
-            previewObject.transform.position = new Vector3(position.x, position.y + previewOffset, position.z);
+            previewObject.transform.position = new Vector3(position.x, position.y + previewOffset + objScale.y / 2f, position.z) - objCenter;
         }
 
         /// <summary>

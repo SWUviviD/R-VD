@@ -3,6 +3,7 @@ using UnityEngine;
 public class ChasingStarProp : GimmickDataBase
 {
     [SerializeField] public Transform panel;
+    public ChasingGimmick sc;
     public ChasingGimmickData Data;
 
     private Rigidbody rb;
@@ -10,10 +11,78 @@ public class ChasingStarProp : GimmickDataBase
     private float damage;
     private bool isFalling;
     private float KnockbackForce = 120f;
+    private float move;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        move = panel.localScale.x / 6.0f;
+        SetPosition();
+    }
+
+
+    /// <summary>
+    /// 위치 초기화
+    /// </summary>
+    public void SetPosition()
+    {
+        if (sc.starList.Length == 1)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        }
+        else if (sc.starList.Length == 2)
+        {
+            if (sc.currentStarIndex == 0)
+            {
+                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+            }
+
+            else if (sc.currentStarIndex == 1)
+            {
+                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z - 2 * move);
+            }
+        }
+        else if (sc.starList.Length == 3)
+        {
+            if (sc.currentStarIndex == 0)
+            {
+                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+            }
+
+            else if (sc.currentStarIndex == 1)
+            {
+                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z - 2 * move);
+            }
+
+            else if (sc.currentStarIndex == 2)
+            { 
+                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z + 2 * move);
+            }
+        }
+        else if (sc.starList.Length == 4)
+        {
+            if (sc.currentStarIndex == 0)
+            {
+                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+            }
+
+            else if (sc.currentStarIndex == 1)
+            {
+                transform.position = new Vector3(transform.position.x - move, transform.position.y, transform.position.z + move);
+            }
+
+            else if (sc.currentStarIndex == 2)
+            {
+                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z - move);
+            }
+
+            else if (sc.currentStarIndex == 3)
+            {
+                transform.position = new Vector3(transform.position.x - move, transform.position.y, transform.position.z - move);
+            }
+        }
     }
 
     public void StartFalling(float speed, float playerDamage)
@@ -24,14 +93,23 @@ public class ChasingStarProp : GimmickDataBase
         gameObject.SetActive(true);
     }
 
+
+    /// <summary>
+    /// 떨어지는 속도 조절
+    /// </summary>
     private void Update()
     {
         if (isFalling)
         {
-            transform.position += Vector3.down * Data.StarFallSpeed * Time.deltaTime;
+            transform.position += Vector3.down * Data.StarFallSpeed * 10 * Time.deltaTime;
         }
     }
 
+
+    /// <summary>
+    /// 넉백 처리
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -59,7 +137,7 @@ public class ChasingStarProp : GimmickDataBase
     public void ResetStar()
     {
         isFalling = false;
-        transform.position = new Vector3(transform.position.x, panel.transform.position.y + 20, transform.position.z);
+        transform.position = new Vector3(transform.position.x, panel.transform.position.y + 30, transform.position.z);
         gameObject.SetActive(false);
     }
 }

@@ -14,7 +14,7 @@ public class NameHandleTarget : MonoBehaviour
     private NameHandleData handleData;
     private bool hasNameHandle;
 
-    private Camera camera;
+    private Camera mainCamera;
     private RectTransform rcCanvas;
     
     private void Awake()
@@ -22,7 +22,7 @@ public class NameHandleTarget : MonoBehaviour
         nameHandle = null;
         handleData = null;
         hasNameHandle = false;
-        camera = Camera.main;
+        mainCamera = Camera.main;
         rcCanvas = NameHandleManager.Instance.CanvasRectTransform;
     }
 
@@ -49,7 +49,7 @@ public class NameHandleTarget : MonoBehaviour
 
         if (hasNameHandle == false) return;
 
-        Vector2 viewport = camera.WorldToViewportPoint(transform.position);
+        Vector2 viewport = mainCamera.WorldToViewportPoint(transform.position);
         Vector2 screenPosition = new Vector2(
             viewport.x * rcCanvas.sizeDelta.x - rcCanvas.sizeDelta.x * 0.5f,
             viewport.y * rcCanvas.sizeDelta.y - rcCanvas.sizeDelta.y * 0.5f);
@@ -59,7 +59,7 @@ public class NameHandleTarget : MonoBehaviour
 
     private bool IsInCamera()
     {
-        Vector2 viewPort = camera.WorldToViewportPoint(transform.position);
+        Vector2 viewPort = mainCamera.WorldToViewportPoint(transform.position);
         return viewPort.x > 0f && viewPort.x < 1f &&
                viewPort.y > 0f && viewPort.y < 1f;
     }

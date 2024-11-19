@@ -101,7 +101,7 @@ public class ChasingStarProp : GimmickDataBase
     {
         if (isFalling)
         {
-            transform.position += Vector3.down * Data.StarFallSpeed * 10 * Time.deltaTime;
+            transform.position += Vector3.down * Time.deltaTime * 10 * Data.StarFallSpeed;
         }
     }
 
@@ -112,6 +112,8 @@ public class ChasingStarProp : GimmickDataBase
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Trigger");
+
         if (other.CompareTag("Player"))
         {
             var player = other.GetComponent<PlayerStatus>();
@@ -128,7 +130,11 @@ public class ChasingStarProp : GimmickDataBase
                     playerRb.AddForce(knockbackDir * appliedKnockback, ForceMode.Impulse);
                 }
             }
+
+            Debug.Log("player");
         }
+
+        Destroy(gameObject);
 
         ResetStar();
     }

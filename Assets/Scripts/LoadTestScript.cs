@@ -15,15 +15,17 @@ public class LoadTestScript : MonoBehaviour
         
         foreach (var blinkBoard in mapData.BlinkBoardDataList)
         {
-            GameObject prefab = (GameObject)AddressableAssetsManager.Instance.SyncLoadObject(blinkBoard.Address, blinkBoard.Address);
-            var instance = Instantiate(prefab).GetComponent<BlinkBoardGimmick>();
-            instance.GimmickData.Set(blinkBoard);
+            placementSystem.CreateGimmick(blinkBoard.Address, blinkBoard.Position, blinkBoard.Rotation, blinkBoard.Scale, blinkBoard);
 
-            // CreateGimmick으로 생성되는 기믹 확인을 위해 instance는 잠시 꺼두기
-            instance.gameObject.SetActive(false);
+            //GameObject prefab = (GameObject)AddressableAssetsManager.Instance.SyncLoadObject(blinkBoard.Address, blinkBoard.Address);
+            //var instance = Instantiate(prefab).GetComponent<BlinkBoardGimmick>();
+            //instance.GimmickData.Set(blinkBoard);
 
-            // 오브젝트 생성 (하지만, 기믹 데이터가 열리고 수정되는건 CreateGimmick으로 생성된 오브젝트가 아닌, 위에 생성된 instance에 연결되어 있음)
-            placementSystem.CreateGimmick(blinkBoard.Address, blinkBoard.Position, blinkBoard.Rotation, blinkBoard.Scale, instance.GimmickData);
+            //// CreateGimmick으로 생성되는 기믹 확인을 위해 instance는 잠시 꺼두기
+            //instance.gameObject.SetActive(false);
+
+            //// 오브젝트 생성 (하지만, 기믹 데이터가 열리고 수정되는건 CreateGimmick으로 생성된 오브젝트가 아닌, 위에 생성된 instance에 연결되어 있음)
+            //placementSystem.CreateGimmick(blinkBoard.Address, blinkBoard.Position, blinkBoard.Rotation, blinkBoard.Scale, instance.GimmickData);
 
 
             // Test-1 : GimmickDataBase가 Monobehaviour를 상속받아 data가 생성이 안됨

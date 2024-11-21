@@ -88,7 +88,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         // 플레이어와 충돌했을 때
         if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
         {
-            playerStatus.TakeDamage(gimmickData.Damage); // 데미지
+            playerStatus.Damage(gimmickData.Damage); // 데미지
 
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
             if (playerRb != null)

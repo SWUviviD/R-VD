@@ -44,7 +44,7 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
 
                 if (elapsedTime >= gimmickData.DamageTickInterval)
                 {
-                    playerStatus.TakeDamage(gimmickData.DamageAmount); // 체력 감소 함수 호출
+                    playerStatus.Damage(gimmickData.DamageAmount); // 체력 감소 함수 호출
                     elapsedTime = 0f;                     // 경과 시간 초기화
                 }
             }

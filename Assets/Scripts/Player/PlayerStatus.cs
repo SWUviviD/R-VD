@@ -32,22 +32,14 @@ public class PlayerStatus : MonoBehaviour
     [field: SerializeField]
     public Vector3 RespawnPoint { get; private set; }
 
-    /// <summary>
-    /// Runandgun 기믹을 위한 체력 힐 세팅
-    /// </summary>
-    [Header("Health Settings")]
-    [SerializeField]
-    private float maxHealth = 100f;
-    public float MaxHealth => maxHealth;
 
-    [SerializeField]
-    private float currentHealth;
-    public float CurrentHealth => currentHealth;
+    [field: SerializeField]
+    public float HP { get; set; }
 
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        HP = 100f;
         RespawnPoint = transform.position;
     }
 
@@ -74,7 +66,7 @@ public class PlayerStatus : MonoBehaviour
 
     public bool IsAlive()
     {
-        return currentHealth > 0f;
+        return HP > 0f;
     }
 
     private void Die()
@@ -84,6 +76,7 @@ public class PlayerStatus : MonoBehaviour
 
         // 플레이어 체력 회복 (임시 추가)
         FullHeal();
+
         // 플레이어 위치를 리스폰 지점으로 이동
         transform.position = RespawnPoint;
     }
@@ -92,37 +85,33 @@ public class PlayerStatus : MonoBehaviour
     /// <summary>
     /// 일정량(amount) 체력 감소
     /// </summary>
-    public void TakeDamage(float amount)
+    public void Damage(float amount)
     {
-        currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        HP -= amount;
+        Debug.Log(HP);
 
         // 사망 처리
-        if (currentHealth <= 0f)
+        if (HP <= 0f)
         {
             Die();
         }
     }
 
     /// <summary>
-    /// 일정량(amount) 체력 회복
-    /// </summary>
-    public void Heal(float amount)
-    {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-    }
-
-    /// <summary>
-    /// 100% 체력 회복
+    /// 체력 회복
     /// </summary>
     public void FullHeal()
     {
-        currentHealth = maxHealth;
+        HP = 100f;
+        Debug.Log(HP);
     }
 
-    public float GetHealthPercentage()
+    public void Heal(float amount)
     {
-        return (currentHealth / maxHealth) * 100f;
+        HP += amount;
+        if (HP > 100)
+        {
+            HP = 100;
+        }
     }
 }

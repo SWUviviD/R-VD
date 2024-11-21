@@ -123,25 +123,24 @@ public class ChasingStarProp : GimmickDataBase
                 // 넉백 방향 계산
                 Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
 
-                if (collision.transform.position.y < 0.1f)
-                {
-                    knockbackDir.y = 0;
-                    knockbackDir.Normalize();
-                }
+                knockbackDir.y = 0;
+                knockbackDir.Normalize();
 
                 // 대쉬 여부에 따른 넉백 거리
                 if (playerStatus.IsDashing) // 대쉬 상태면
                 {
-                    playerRb.AddForce(knockbackDir * (Data.KnockbackForce * 1.5f), ForceMode.Impulse);
+                    playerRb.AddForce(knockbackDir * (Data.KnockbackForce * 1.5f), ForceMode.Impulse); // 넉백 거리 증가
+                    playerStatus.IsDashing = false;
                 }
                 else // 대쉬 상태가 아니면
                 {
-                    playerRb.AddForce(knockbackDir * Data.KnockbackForce, ForceMode.Impulse);
+                    playerRb.AddForce(knockbackDir * Data.KnockbackForce, ForceMode.Impulse); // 일반 넉백 거리
                 }
             }
         }
         ResetStar();
     }
+
 
 
 

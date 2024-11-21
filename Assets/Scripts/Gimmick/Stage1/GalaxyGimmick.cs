@@ -24,6 +24,11 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         maxDisappearTime = 5f; 
     }
 
+    protected override string GetAddress()
+    {
+        return "Assets/Data/Prefabs/Gimmick/Galaxy.prefab";
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();

@@ -47,6 +47,11 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
         currentStarIndex = 0;
     }
 
+    protected override string GetAddress()
+    {
+        return "Assets/Data/Prefabs/Gimmick/Chasing.prefab";
+    }
+
     private IEnumerator DropStars()
     {
         while (true)

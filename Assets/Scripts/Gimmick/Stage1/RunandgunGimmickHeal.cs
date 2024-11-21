@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
+public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>
 {
     private PlayerStatus playerStatus;
     private Coroutine damageCoroutine;
@@ -21,8 +21,9 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
 
     protected override string GetAddress()
     {
-        return "Assets/Data/Prefabs/Gimmick/RunandGun/DamageZone.prefab";
+        return "Assets/Data/Prefabs/Gimmick/RunandGun/HealZone.prefab";
     }
+
 
     /// <summary>
     /// 트리거 처리

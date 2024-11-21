@@ -30,57 +30,57 @@ public class ChasingStarProp : GimmickDataBase
     {
         if (sc.starList.Length == 1)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            transform.position = new Vector3(panel.transform.position.x, transform.position.y, panel.transform.position.z);
         }
         else if (sc.starList.Length == 2)
         {
             if (sc.currentStarIndex == 0)
             {
-                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
             }
 
             else if (sc.currentStarIndex == 1)
             {
-                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z - 2 * move);
+                transform.position = new Vector3(panel.transform.position.x - 2 * move, transform.position.y, panel.transform.position.z - 2 * move);
             }
         }
         else if (sc.starList.Length == 3)
         {
             if (sc.currentStarIndex == 0)
             {
-                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
             }
 
             else if (sc.currentStarIndex == 1)
             {
-                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z - 2 * move);
+                transform.position = new Vector3(panel.transform.position.x - 2 * move, transform.position.y, panel.transform.position.z - 2 * move);
             }
 
             else if (sc.currentStarIndex == 2)
             { 
-                transform.position = new Vector3(transform.position.x - 2 * move, transform.position.y, transform.position.z + 2 * move);
+                transform.position = new Vector3(panel.transform.position.x - 2 * move, panel.transform.position.y, panel.transform.position.z + 2 * move);
             }
         }
         else if (sc.starList.Length == 4)
         {
             if (sc.currentStarIndex == 0)
             {
-                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z + move);
+                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
             }
 
             else if (sc.currentStarIndex == 1)
             {
-                transform.position = new Vector3(transform.position.x - move, transform.position.y, transform.position.z + move);
+                transform.position = new Vector3(panel.transform.position.x - move, transform.position.y, panel.transform.position.z + move);
             }
 
             else if (sc.currentStarIndex == 2)
             {
-                transform.position = new Vector3(transform.position.x + move, transform.position.y, transform.position.z - move);
+                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z - move);
             }
 
             else if (sc.currentStarIndex == 3)
             {
-                transform.position = new Vector3(transform.position.x - move, transform.position.y, transform.position.z - move);
+                transform.position = new Vector3(panel.transform.position.x - move, transform.position.y, panel.transform.position.z - move);
             }
         }
     }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 {
-    [SerializeField] public Transform panel;
     [SerializeField] public ChasingStarProp[] starList;
     public int currentStarIndex;
 

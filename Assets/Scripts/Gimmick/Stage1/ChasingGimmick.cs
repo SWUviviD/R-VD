@@ -51,7 +51,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
     {
         while (true)
         {
-            starList[currentStarIndex].StartFalling(gimmickData.StarFallSpeed, gimmickData.PlayerDamage);
+            starList[currentStarIndex].StartFalling(gimmickData.StarFallSpeed, gimmickData.Damage);
             yield return new WaitForSeconds(gimmickData.ResponeTime);
             currentStarIndex = (currentStarIndex + 1) % starList.Length;
 

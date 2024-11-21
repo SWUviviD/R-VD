@@ -110,40 +110,45 @@ public class ChasingStarProp : GimmickDataBase
     /// 넉백 처리
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Trigger");
-
-        if (other.CompareTag("Player"))
+        // 플레이어와 충돌했을 때
+        if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
         {
-            var player = other.GetComponent<PlayerStatus>();
-            if (player != null)
+            playerStatus.TakeDamage(Data.Damage); // 데미지
+
+            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+            if (playerRb != null)
             {
-                player.TakeDamage(damage);
+                // 넉백 방향 계산
+                Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
 
-                Rigidbody playerRb = other.GetComponent<Rigidbody>();
-                if (playerRb != null)
+                if (collision.transform.position.y < 0.1f)
                 {
-                    Vector3 knockbackDir = (other.transform.position - transform.position).normalized;
+                    knockbackDir.y = 0;
+                    knockbackDir.Normalize();
+                }
 
-                    float appliedKnockback = player.IsDashing ? KnockbackForce * 1.5f : KnockbackForce;
-                    playerRb.AddForce(knockbackDir * appliedKnockback, ForceMode.Impulse);
+                // 대쉬 여부에 따른 넉백 거리
+                if (playerStatus.IsDashing) // 대쉬 상태면
+                {
+                    playerRb.AddForce(knockbackDir * (Data.KnockbackForce * 1.5f), ForceMode.Impulse);
+                }
+                else // 대쉬 상태가 아니면
+                {
+                    playerRb.AddForce(knockbackDir * Data.KnockbackForce, ForceMode.Impulse);
                 }
             }
-
-            Debug.Log("player");
         }
-
-        Destroy(gameObject);
-
         ResetStar();
     }
+
 
 
     public void ResetStar()
     {
         isFalling = false;
-        transform.position = new Vector3(transform.position.x, panel.transform.position.y + 30, transform.position.z);
+        transform.position = new Vector3(panel.transform.position.x, panel.transform.position.y + 30, panel.transform.position.z);
         gameObject.SetActive(false);
     }
 }

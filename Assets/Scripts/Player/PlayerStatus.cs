@@ -108,6 +108,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void Heal(float amount)
     {
+        Debug.Log(HP);
         HP += amount;
         if (HP > 100)
         {

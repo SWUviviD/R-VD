@@ -765,6 +765,11 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5001666932494678891, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5191573275404387913, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
         type: 3}
       propertyPath: m_Name
@@ -1270,12 +1275,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 0}
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  healLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
   playerStatus: {fileID: 1893357329}
 --- !u!1001 &425985688
 PrefabInstance:
@@ -1550,7 +1549,7 @@ GameObject:
   - component: {fileID: 662463224}
   - component: {fileID: 662463229}
   - component: {fileID: 662463228}
-  m_Layer: 11
+  m_Layer: 20
   m_Name: DamageZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1572,7 +1571,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1637,8 +1636,8 @@ Transform:
   m_GameObject: {fileID: 662463223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.87, y: 0, z: 18.57}
-  m_LocalScale: {x: 10, y: 0.2, z: 10}
+  m_LocalPosition: {x: 8.87, y: 0.5, z: 18.57}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1656,12 +1655,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 662463229}
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  healLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
   playerStatus: {fileID: 1893357329}
 --- !u!114 &662463229
 MonoBehaviour:
@@ -2846,9 +2839,9 @@ GameObject:
   - component: {fileID: 1758212066}
   - component: {fileID: 1758212071}
   - component: {fileID: 1758212070}
-  m_Layer: 12
+  m_Layer: 20
   m_Name: HealZone
-  m_TagString: Untagged
+  m_TagString: Heal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2868,7 +2861,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2933,8 +2926,8 @@ Transform:
   m_GameObject: {fileID: 1758212065}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.9, y: 0, z: 18.57}
-  m_LocalScale: {x: 10, y: 0.2, z: 10}
+  m_LocalPosition: {x: 19.9, y: 0.5, z: 18.57}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2952,12 +2945,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 1758212071}
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  healLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
   playerStatus: {fileID: 1893357329}
 --- !u!114 &1758212071
 MonoBehaviour:
@@ -3596,12 +3583,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 0}
-  damageLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  healLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
   playerStatus: {fileID: 1893357329}
 --- !u!1001 &646692144433376915
 PrefabInstance:

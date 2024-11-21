@@ -88,7 +88,7 @@ public class PlayerStatus : MonoBehaviour
     public void Damage(float amount)
     {
         HP -= amount;
-        Debug.Log(HP);
+        LogManager.Log(HP.ToString());
 
         // 사망 처리
         if (HP <= 0f)
@@ -103,12 +103,12 @@ public class PlayerStatus : MonoBehaviour
     public void FullHeal()
     {
         HP = 100f;
-        Debug.Log(HP);
+        LogManager.Log(HP.ToString());
     }
 
     public void Heal(float amount)
     {
-        Debug.Log(HP);
+        LogManager.Log(HP.ToString());
         HP += amount;
         if (HP > 100)
         {

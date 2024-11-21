@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
 {
-    [SerializeField] private PlayerStatus playerStatus;
+    private PlayerStatus playerStatus;
     private Coroutine damageCoroutine;
 
     /// <summary>
@@ -11,7 +11,7 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
     /// </summary>
     protected override void Init()
     {
-        // 추가 초기화 작업 없음
+        playerStatus = FindObjectOfType<PlayerStatus>();
     }
 
     public override void SetGimmick()
@@ -28,12 +28,10 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>
         {
             if (gameObject.tag == "Heal")
             {
-                Debug.Log("Heal");
                 playerStatus.FullHeal();
             }
             else if (damageCoroutine == null)
             {
-                Debug.Log("Damaged");
                 damageCoroutine = StartCoroutine(DamageOverTime());
             }
         }

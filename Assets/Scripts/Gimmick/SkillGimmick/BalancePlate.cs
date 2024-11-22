@@ -30,6 +30,8 @@ public class BalancePlate : GimmickBase<BalancePlateData>, IFloorInteractive
     {
         plate.transform.rotation = Quaternion.Euler(Vector3.zero);
 
+        centerTransform.localScale = Vector3.one * gimmickData.Radius * 2;
+        centerTransform.position = plate.transform.position - Vector3.up * gimmickData.Radius;
         plate.transform.localScale = Vector3.one * gimmickData.Radius * 2;
         level1Dist = gimmickData.Radius / 3;
         level2Dist = level1Dist * 2;

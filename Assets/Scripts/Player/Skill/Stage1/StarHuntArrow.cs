@@ -16,6 +16,7 @@ public partial class StarHuntArrow : Poolable
         //transform.SetParent(_parent);
 
         range = _range;
+        transform.position = startPosition;
         transform.rotation = _parent.rotation;
         rigib.Move(_parent.position, Quaternion.identity);
         rigib.angularVelocity = Vector3.zero;

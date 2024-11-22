@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>
+public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>, IFloorInteractive
 {
     private PlayerStatus playerStatus;
     private Coroutine damageCoroutine;
@@ -24,40 +24,6 @@ public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>
         return "Assets/Data/Prefabs/Gimmick/RunandGun/HealZone.prefab";
     }
 
-
-    /// <summary>
-    /// 트리거 처리
-    /// </summary>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (gameObject.tag == "Heal")
-            {
-                playerStatus.FullHeal();
-            }
-            else if (damageCoroutine == null)
-            {
-                damageCoroutine = StartCoroutine(DamageOverTime());
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (gameObject.tag != "Heal")
-            {
-                if (damageCoroutine != null)
-                {
-                    StopCoroutine(damageCoroutine);
-                    damageCoroutine = null;
-                }
-            }
-        }
-    }
-
     /// <summary>
     /// 데미지를 일정 시간 간격으로 적용
     /// </summary>
@@ -67,6 +33,30 @@ public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>
         {
             playerStatus.Damage(GimmickData.DamageAmount);
             yield return new WaitForSeconds(GimmickData.DamageTickInterval);
+        }
+    }
+
+    public void InteractStart(GameObject player)
+    {
+        if (gameObject.tag == "Heal")
+        {
+            playerStatus.FullHeal();
+        }
+        else if (damageCoroutine == null)
+        {
+            damageCoroutine = StartCoroutine(DamageOverTime());
+        }
+    }
+
+    public void InteractEnd(GameObject player)
+    {
+        if (gameObject.tag != "Heal")
+        {
+            if (damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+                damageCoroutine = null;
+            }
         }
     }
 }

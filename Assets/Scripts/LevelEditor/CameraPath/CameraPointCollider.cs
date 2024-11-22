@@ -41,7 +41,7 @@ public class CameraPointCollider : MonoBehaviour
     /// <summary>
     /// 캐싱해둔 카메라
     /// </summary>
-    private Camera camera;
+    private Camera mainCamera;
     
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class CameraPointCollider : MonoBehaviour
         CameraPathPoint.PointV3 = TrPointV3.position;
         CameraPathPoint.PointV4 = TrPointV4.position;
 
-        camera = Camera.main;
+        mainCamera = Camera.main;
     }
 
     public void Set(int _index, Action<Transform> _onClickHandle)

@@ -50,13 +50,13 @@ public class UINameHandle : MonoBehaviour
     private System.Action<UINameHandle> cbReturnToPool;
 
     /// <summary> 캐싱해둔 메인 카메라 </summary>
-    private Camera camera;
+    private Camera mainCamera;
     
     public void Initialize(Action<UINameHandle> _cbReturnToPool)
     {
         UIHelper.OnClick(btnHandle, OnClickHandle);
         cbReturnToPool = _cbReturnToPool;
-        camera = Camera.main;
+        mainCamera = Camera.main;
     }
 
     public void WakeUp(Transform _trTarget, NameHandleData _data)

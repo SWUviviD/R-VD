@@ -17,6 +17,9 @@ namespace LevelEditor
         private GridData placementData;
         private ObjectPlacer objectPlacer;
         private float gridSize;
+        private float gridSizeX;
+        private float gridSizeY;
+        private float gridSizeZ;
         private bool isGridMod;
 
         private Vector3 collisionPosition;
@@ -25,16 +28,23 @@ namespace LevelEditor
         private bool placementValidity;
         private int index;
 
+        private Renderer[] renderers;
+        private Bounds totalBounds;
         private Vector3 placedSize;
         private Vector3 placedScale;
         private Vector3 collisionedScale;
+        private Vector3 objScale;
 
         private float distanceX;
         private float distanceY;
         private float distanceZ;
+        private float moveMaxX;
+        private float moveMaxY;
+        private float moveMaxZ;
         private float moveX;
         private float moveY;
         private float moveZ;
+        private bool isPlacementValid;
 
         public PlacementState(int ID,
                               PreviewSystem previewSystem,
@@ -60,8 +70,14 @@ namespace LevelEditor
             }
 
             // 오브젝트 배치 미리보기 시작
+            totalBounds = GetPrefabBounds(database.objectData[selectedObjectIndex].Prefab);
             previewSystem.StartShowingPlacementPreview(database.objectData[selectedObjectIndex].Prefab,
-                                                       database.objectData[selectedObjectIndex].Size);
+                                                       database.objectData[selectedObjectIndex].Size,
+                                                       totalBounds.center);
+
+            gridSizeX = database.objectData[selectedObjectIndex].Size.x;
+            gridSizeY = database.objectData[selectedObjectIndex].Size.y;
+            gridSizeZ = database.objectData[selectedObjectIndex].Size.z;
         }
 
         public void EndState()
@@ -74,9 +90,9 @@ namespace LevelEditor
             // 그리드 모드 검사
             if (isGridMod)
             {
-                position = new Vector3((int)(position.x / gridSize) * gridSize,
-                                       (int)(position.y / gridSize) * gridSize,
-                                       (int)(position.z / gridSize) * gridSize);
+                position = new Vector3((int)(position.x / gridSizeX) * gridSizeX,
+                                       (int)(position.y / gridSizeY) * gridSizeY,
+                                       (int)(position.z / gridSizeZ) * gridSizeZ);
             }
 
             // 오브젝트 설치가 불가능한 경우
@@ -95,6 +111,7 @@ namespace LevelEditor
                                              position,
                                              Vector3.zero,
                                              Vector3.one,
+                                             totalBounds.center,
                                              database.objectData[selectedObjectIndex].Size,
                                              database.objectData[selectedObjectIndex].Prefab);
             if (index != -1)
@@ -128,22 +145,24 @@ namespace LevelEditor
 
         public void UpdateState(Vector3 position)
         {
-            // 오브젝트 배치 가능 유무 검사
-            if (!CheckPlacementValidity(position, selectedObjectIndex))
-            {
-                position = GetFixedPosition(position, database.objectData[selectedObjectIndex].Size);
-            }
-
             // 그리드 모드 검사
             if (isGridMod)
             {
-                position = new Vector3((int)(position.x / gridSize) * gridSize,
-                                       (int)(position.y / gridSize) * gridSize,
-                                       (int)(position.z / gridSize) * gridSize);
+                position = new Vector3((int)(position.x / gridSizeX) * gridSizeX,
+                                       (int)(position.y / gridSizeY) * gridSizeY,
+                                       (int)(position.z / gridSizeZ) * gridSizeZ);
+            }
+
+            // 오브젝트 배치 가능 유무 검사
+            isPlacementValid = CheckPlacementValidity(position, selectedObjectIndex);
+            if (!isPlacementValid)
+            {
+                position = GetFixedPosition(position, database.objectData[selectedObjectIndex].Size);
+                isPlacementValid = CheckPlacementValidity(position, selectedObjectIndex);
             }
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(position, true);
+            previewSystem.UpdatePosition(position, isPlacementValid);
         }
 
         /// <summary>
@@ -151,8 +170,46 @@ namespace LevelEditor
         /// </summary>
         private Vector3 GetFixedPosition(Vector3 position, Vector3 size)
         {
-            // TODO: 위치값 보정 개선 필요
+            position += Vector3.down * size.y / 2f;
+            position = GetFixedPositionY(position, size);
             position = GetFixedPositionXZ(position, size);
+
+            return position;
+        }
+
+        /// <summary>
+        /// 배치할 오브젝트 Y축 보정
+        /// </summary>
+        private Vector3 GetFixedPositionY(Vector3 position, Vector3 size)
+        {
+            if (!placementData.TryGetCollisionedObjects(position, size, out Transform[] transforms))
+            {
+                return position;
+            }
+
+            moveMaxY = 0;
+            foreach (Transform objectTransform in transforms)
+            {
+                if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTransform, out int gameObjectIndex))
+                {
+                    LogManager.LogError("감지된 오브젝트의 Index를 알 수 없습니다.");
+                    continue;
+                }
+
+                // 저장된 ID 탐색
+                collisionObjectID = database.objectData.FindIndex(data => data.ID == placementData.GetPlacedObjectID(gameObjectIndex));
+
+                // 크기 계산
+                placedSize = database.objectData[collisionObjectID].Size;
+                placedScale = objectPlacer.PlacedGameObjects[gameObjectIndex].transform.localScale;
+                collisionedScale = new Vector3(placedSize.x * placedScale.x, placedSize.y * placedScale.y, placedSize.z * placedScale.z);
+
+                // Y축 보정
+                distanceY = objectTransform.position.y - position.y;
+                moveY = (size.y + collisionedScale.y) / 2 - Mathf.Abs(distanceY);
+                moveMaxY = Mathf.Max(moveMaxY, moveY);
+            }
+            position.y += isGridMod ? (Mathf.CeilToInt(moveMaxY / gridSize) + 1) * gridSize : moveMaxY;
 
             return position;
         }
@@ -167,6 +224,8 @@ namespace LevelEditor
                 return position;
             }
 
+            moveMaxX = 0f;
+            moveMaxZ = 0f;
             foreach (Transform objectTransform in transforms)
             {
                 if (!objectPlacer.PlacedObjectIndexs.TryGetValue(objectTransform, out int gameObjectIndex))
@@ -186,24 +245,58 @@ namespace LevelEditor
                 // X축 보정
                 distanceX = objectTransform.position.x - position.x;
                 moveX = (size.x + collisionedScale.x) / 2 - Mathf.Abs(distanceX);
+                moveMaxX = Mathf.Max(moveMaxX, moveX);
 
                 // Z축 보정
                 distanceZ = objectTransform.position.z - position.z;
                 moveZ = (size.z + collisionedScale.z) / 2 - Mathf.Abs(distanceZ);
+                moveMaxZ = Mathf.Max(moveMaxZ, moveZ);
+            }
 
-                // 보정된 위치로 위치 이동
+            // 보정된 위치로 위치 이동
+            if (isGridMod) // 그리드 모드 (O)
+            {
+                if (moveX < moveZ && moveMaxX > 0)
+                {
+                    position.x += distanceX < 0 ? moveMaxX : -moveMaxX;
+                }
+                else if (moveX > moveZ && moveMaxZ > 0)
+                {
+                    position.z += distanceZ < 0 ? moveMaxZ : -moveMaxZ;
+                }
+            }
+            else // 그리드 모드 (X)
+            {
                 if (moveX < moveZ && moveX > 0)
                 {
-                    position.x += distanceX < 0 ? moveX : -moveX;
+                    position.x += distanceX < 0 ? moveMaxX : -moveMaxX;
                 }
                 else if (moveX > moveZ && moveZ > 0)
                 {
-                    position.z += distanceZ < 0 ? moveZ : -moveZ;
+                    position.z += distanceZ < 0 ? moveMaxZ : -moveMaxZ;
                 }
-
             }
 
             return position;
+        }
+
+        /// <summary>
+        /// 프리팹 전체 크기를 계산할 Bounds 반환
+        /// </summary>
+        private Bounds GetPrefabBounds(GameObject prefab)
+        {
+            // 모든 자식들의 Renderer 컴포넌트를 가져오기
+            renderers = prefab.GetComponentsInChildren<Renderer>();
+            if (renderers.Length > 0)
+            {
+                // 프리팹 전체 Bounds 크기
+                totalBounds = renderers[0].bounds;
+                for (int i = 1; i < renderers.Length; ++i)
+                {
+                    totalBounds.Encapsulate(renderers[i].bounds);
+                }
+            }
+            return totalBounds;
         }
     }
 }

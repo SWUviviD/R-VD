@@ -24,7 +24,8 @@ public class SaveLoadView : MonoBehaviour
         if (inputFileName.text == string.Empty) return;
 
         var gimmickDataList = GridData.Instance.GetGimmickDataBaseList();
-        StageManager.Instance.SaveStage(FileName, gimmickDataList);
+        var cameraPath = CameraPathInsertSystem.Instance.GetCameraPath();
+        StageManager.Instance.SaveStage(FileName, gimmickDataList, cameraPath);
     }
 
     private void OnClickLoad()

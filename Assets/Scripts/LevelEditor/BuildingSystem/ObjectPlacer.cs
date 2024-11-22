@@ -34,7 +34,7 @@ namespace LevelEditor
         /// <summary>
         /// 새로운 오브젝트 배치
         /// </summary>
-        public int PlaceObject(string name, Vector3 position, Vector3 rotation, Vector3 scale, Vector3 objScale, GameObject prefab)
+        public int PlaceObject(string name, Vector3 position, Vector3 rotation, Vector3 scale, Vector3 center, Vector3 objScale, GameObject prefab)
         {
             if (objScale == Vector3.zero)
             {
@@ -42,7 +42,7 @@ namespace LevelEditor
             }
 
             newObject = Instantiate(prefab);
-            newObject.transform.position = position;
+            newObject.transform.position = position - center + new Vector3(0f, objScale.y / 2f, 0f);
             newObject.transform.rotation = Quaternion.Euler(rotation);
             newObject.transform.localScale = scale;
             PlacedGameObjects.Add(newObject);

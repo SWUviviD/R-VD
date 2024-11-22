@@ -22,7 +22,7 @@ public class StageManager : MonoSingleton<StageManager>
     /// <summary>
     /// 스테이지를 저장한다.
     /// </summary>
-    public void SaveStage(string _fileName, List<GimmickDataBase> _gimmickDataBases)
+    public void SaveStage(string _fileName, List<GimmickDataBase> _gimmickDataBases, List<CameraPathPoint> _cameraPath)
     {
         mapDatas.Clear();
         mapDatas.Add(new LDMapData());
@@ -31,6 +31,8 @@ public class StageManager : MonoSingleton<StageManager>
         {
             gimmickData.SaveGimmickData(mapDatas[0]);
         }
+
+        mapDatas[0].CameraPathList = _cameraPath;
         
         byte[] bytes = SerializeManager.Instance.Serialize(mapDatas);
         SerializeManager.Instance.SaveDataFile(_fileName, bytes);

@@ -4,13 +4,39 @@ using UnityEngine;
 
 public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 {
-    [SerializeField] public Transform panel;
-    [SerializeField] public List<ChasingStarProp> starList;
-    private int currentStarIndex;
+    [SerializeField] public ChasingStarProp[] starList;
+    public int currentStarIndex;
 
     protected override void Init()
     {
-        for (int i = 0; i < starList.Count; i++)
+        // 별똥별 관리 배열 초기화
+        starList = new ChasingStarProp[gimmickData.TotalNum];
+
+        if (starList.Length == 1)
+        {
+            starList[0] = Instantiate(gimmickData.starListPrefab[0]);
+        }
+        else if (starList.Length == 2)
+        {
+            starList[0] = Instantiate(gimmickData.starListPrefab[1]);
+            starList[1] = Instantiate(gimmickData.starListPrefab[3]);
+        }
+        else if (starList.Length == 3)
+        {
+            starList[0] = Instantiate(gimmickData.starListPrefab[1]);
+            starList[1] = Instantiate(gimmickData.starListPrefab[3]);
+            starList[2] = Instantiate(gimmickData.starListPrefab[3]);
+        }
+        else if (starList.Length == 4)
+        {
+            starList[0] = Instantiate(gimmickData.starListPrefab[2]);
+            starList[1] = Instantiate(gimmickData.starListPrefab[2]);
+            starList[2] = Instantiate(gimmickData.starListPrefab[2]);
+            starList[3] = Instantiate(gimmickData.starListPrefab[2]);
+        }
+
+        // 프리팹 비가시화
+        for (int i = 0; i < starList.Length; i++)
         {
             starList[i].gameObject.SetActive(false);
         }
@@ -21,13 +47,18 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
         currentStarIndex = 0;
     }
 
+    protected override string GetAddress()
+    {
+        return "Assets/Data/Prefabs/Gimmick/Chasing.prefab";
+    }
+
     private IEnumerator DropStars()
     {
         while (true)
         {
-            starList[currentStarIndex].StartFalling(gimmickData.StarFallSpeed, gimmickData.PlayerDamage);
+            starList[currentStarIndex].StartFalling(gimmickData.StarFallSpeed, gimmickData.Damage);
             yield return new WaitForSeconds(gimmickData.ResponeTime);
-            currentStarIndex = (currentStarIndex + 1) % starList.Count;
+            currentStarIndex = (currentStarIndex + 1) % starList.Length;
 
             if (currentStarIndex == 0)
             {

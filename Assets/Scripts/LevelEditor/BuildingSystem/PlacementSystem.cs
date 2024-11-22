@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using LocalData;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -233,7 +234,7 @@ namespace LevelEditor
         /// <summary>
         /// 에디터에서 기믹을 로드할 때만 사용되는 함수
         /// </summary>
-        public void CreateGimmick(string address, Vector3 position, Vector3 rotation, Vector3 scale, GimmickDataBase gimmick)
+        public void CreateGimmick(string address, Vector3 position, Vector3 rotation, Vector3 scale, LDGimmickDataBase gimmick)
         {
             string gimmickName = address.Split("/")[^1].Split(".")[0];
 
@@ -253,6 +254,7 @@ namespace LevelEditor
                                                  position,
                                                  rotation,
                                                  scale,
+                                                 totalBounds.center,
                                                  database.objectData[objectIDs[gimmickName]].Size,
                                                  prefab);
 
@@ -260,9 +262,12 @@ namespace LevelEditor
             {
                 // 기믹 상태 데이터 생성
                 GimmickStatusData statusData = null;
-                if (objectPlacer.PlacedGameObjects[index].TryGetComponent(out IGimmickBase iGimmickBase))
+                if (objectPlacer.PlacedGameObjects[index].TryGetComponent(out GimmickDataBase gimmickDataBase) &&
+                    objectPlacer.PlacedGameObjects[index].TryGetComponent(out IGimmickBase iGimmickBase))
                 {
-                    statusData = new GimmickStatusData(gimmickName, gimmick, iGimmickBase.SetGimmick);
+                    statusData = new GimmickStatusData(gimmickName, gimmickDataBase, iGimmickBase.SetGimmick);
+                    gimmickDataBase.Set(gimmick);
+                    iGimmickBase.SetGimmick();
                 }
 
                 // PlacementData 기믹 상태 데이터를 포함한 오브젝트 정보 생성

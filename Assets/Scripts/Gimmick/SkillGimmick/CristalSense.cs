@@ -9,6 +9,7 @@ public class CristalSense : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        OnCristalBreak?.Invoke();
+        if(other.gameObject.layer == 8)
+            OnCristalBreak?.Invoke();
     }
 }

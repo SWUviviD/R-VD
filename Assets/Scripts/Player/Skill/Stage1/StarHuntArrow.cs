@@ -16,8 +16,11 @@ public partial class StarHuntArrow : Poolable
         //transform.SetParent(_parent);
 
         range = _range;
+        transform.rotation = _parent.rotation;
         rigib.Move(_parent.position, Quaternion.identity);
-        rigib.velocity = rigib.transform.forward * speed;
+        rigib.angularVelocity = Vector3.zero;
+        rigib.velocity = Vector3.zero;
+        rigib.velocity = _parent.forward * speed;
         startPosition = _parent.position;
     }
 
@@ -31,7 +34,7 @@ public partial class StarHuntArrow : Poolable
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == 1 << 9)
+        if(other.gameObject.layer == 9)
             returnToPool.Invoke(Defines.PoolDefines.PoolType.StarHunts, this);
     }
 }

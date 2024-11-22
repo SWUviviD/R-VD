@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
 {
@@ -10,6 +11,8 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
 
     [SerializeField] private Transform gimmick;
     [SerializeField] private Transform[] Rail;
+    [SerializeField] private GameObject railPrefab;
+    private List<List<Transform>> railList = new List<List<Transform>>();
     [SerializeField] private Rigidbody sphereRigid;
 
     private WaitForSeconds waitForSphereToRoll;
@@ -23,9 +26,15 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     private Vector3 endPoint = Vector3.zero;
     private Vector3 startPoint = Vector3.zero;
 
+    private Vector3 endRotPoint = new Vector3(360f, 0f, 0f);
+    private Vector3 startRotPoint = Vector3.zero;
+
     protected override void Init()
     {
         cristal.Init();
+
+        railList.Add(new List<Transform>());
+        railList.Add(new List<Transform>());
 
         sense.OnCristalBreak.RemoveListener(OnCristalBreak);
         sense.OnCristalBreak.AddListener(OnCristalBreak);
@@ -61,15 +70,35 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         sphereRigid.transform.LookAt(endPoint);
 
         bool isLeft = false;
-        foreach(var r in Rail)
+        for(int i =0;i<2;++i)
         {
-            r.transform.localPosition = startPoint;
-            r.transform.LookAt(endPoint);
-            r.transform.localScale =
-                new Vector3(r.transform.localScale.x, r.transform.localScale.y,
-                (endPoint - startPoint).magnitude * 0.5f + GimmickData.SphereSize);
-            r.transform.localPosition += new Vector3(gimmickData.SphereSize / 2 * (isLeft ? -1 : 1), 0f, -GimmickData.SphereSize * 0.5f);
+            SetRail(ref Rail[i], isLeft);
             isLeft = true;
+        }
+    }
+
+    Vector3 railPosition = Vector3.zero;
+    private void SetRail(ref Transform _rail, bool _isLeft)
+    {
+        _rail.localPosition = startPoint;
+        _rail.LookAt(endPoint);
+        _rail.localPosition += new Vector3(gimmickData.SphereSize / 2 * (_isLeft ? -1 : 1), 0f, -GimmickData.SphereSize * 0.5f);
+
+        int railLength = Mathf.CeilToInt((endPoint - startPoint).magnitude * 0.5f + GimmickData.SphereSize);
+        int radiListIndex = _isLeft ? 0 : 1;
+        for (int i = 0; i < railLength; ++i)
+        {
+            railPosition = new Vector3(0f, 0f, 0.9f + 1.95f * i - 0.5f);
+            if ( i < railList[radiListIndex].Count)
+            {
+                railList[radiListIndex][i].localPosition = railPosition;
+            }
+            else
+            {
+                Transform newRail = Instantiate(railPrefab, _rail).transform;
+                newRail.localPosition = railPosition;
+                railList[radiListIndex].Add(newRail);
+            }
         }
     }
 
@@ -91,6 +120,7 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     public void ActivateGimmick()
     {
         gimmick.gameObject.SetActive(true);
+        sphereRigid.gameObject.SetActive(true);
     }
 
     private IEnumerator CoStopSphere()
@@ -102,15 +132,23 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     private IEnumerator CoStartRolling()
     {
         float elapsedTime = 0f;
+        float elapsedRotTime = 0f;
         float endTime = gimmickData.SphereMoveTime;
-
-        sphereRigid.angularVelocity = transform.right * gimmickData.SphereRotateSpeed;
+        float endRotTime = 360 / gimmickData.SphereRotateSpeed;
 
         while(true)
         {
+            elapsedRotTime += Time.deltaTime;
             elapsedTime += Time.deltaTime;
             Vector3 newPosition = Vector3.Lerp(startPoint, endPoint, elapsedTime / endTime);
+            Vector3 newRotation = Vector3.Slerp(startRotPoint, endRotPoint, elapsedRotTime / endRotTime);
+            if(elapsedRotTime > endRotTime)
+            {
+                elapsedRotTime -= endRotTime;
+            }
+
             sphereRigid.MovePosition(newPosition);
+            sphereRigid.MoveRotation(Quaternion.Euler(newRotation));
 
             if (elapsedTime >= endTime)
             {
@@ -126,6 +164,10 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         Vector3 temp = endPoint;
         endPoint = startPoint;
         startPoint = temp;
+
+        temp = endRotPoint;
+        endRotPoint = startRotPoint;
+        startRotPoint = temp;
 
         sphereRigid.velocity = Vector3.zero;
         sphereRigid.angularVelocity = Vector3.zero;

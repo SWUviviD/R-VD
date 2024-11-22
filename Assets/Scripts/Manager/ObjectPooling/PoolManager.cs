@@ -53,6 +53,7 @@ public class PoolManager : MonoSingleton<PoolManager>
         Poolable clone = poolOrigin[poolType].Create(ReturnToPool);
         clone.gameObject.SetActive(false);
         pools[poolType].Enqueue(clone);
+        clone.name += pools[poolType].Count.ToString();
     }
 
     private void ReturnToPool(PoolDefines.PoolType type, Poolable obj)

@@ -12,13 +12,17 @@ namespace LocalData
     {
         [MemoryPackInclude] public List<LDBlinkBoardData> BlinkBoardDataList { get; set; }
         [MemoryPackInclude] public List<LDGalaxyGimmickData> GalaxyGimmickDataList { get; set; }
+        [MemoryPackInclude] public List<LDRunandgunGimmickData> RunandgunGimmickDataList { get; set; }
+        [MemoryPackInclude] public List<LDChasingGimmickData> ChasingGimmickDataList { get; set; }
+
         [MemoryPackInclude] public List<CameraPathPoint> CameraPathList { get; set; }
 
         public LDMapData()
         {
             BlinkBoardDataList = new List<LDBlinkBoardData>();
             GalaxyGimmickDataList = new List<LDGalaxyGimmickData>();
-
+            RunandgunGimmickDataList = new List<LDRunandgunGimmickData>();
+            ChasingGimmickDataList = new List<LDChasingGimmickData>();
         }
     }
 }

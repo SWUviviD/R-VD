@@ -18,6 +18,6 @@ namespace LocalData
         public float KnockbackForce { get; set; } = 120f;
 
         [MemoryPackInclude]
-        public float Damage { get; set; } = 20f;
+        public int Damage { get; set; } = 2;
     }
 }

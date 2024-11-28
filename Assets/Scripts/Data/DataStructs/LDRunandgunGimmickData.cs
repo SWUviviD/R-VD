@@ -12,7 +12,7 @@ namespace LocalData
     public partial class LDRunandgunGimmickData : LDGimmickDataBase
     {
         [MemoryPackInclude]
-        public float DamageAmount { get; set; } = 10f; // 데미지 존에서 틱당 감소되는 체력 양
+        public int DamageAmount { get; set; } = 1; // 데미지 존에서 틱당 감소되는 체력 양
 
         [MemoryPackInclude]
         public float HealAmount { get; set; } = 100f; // 힐 존에서 회복되는 체력 양

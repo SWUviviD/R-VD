@@ -91,9 +91,10 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     private void OnCollisionEnter(Collision collision)
     {
         // 플레이어와 충돌했을 때
-        if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
+        if (collision.gameObject.TryGetComponent(out PlayerHp playerHp))
         {
-            playerStatus.Damage(gimmickData.Damage); // 데미지
+            playerHp.Damage(gimmickData.Damage); // 데미지
+            PlayerStatus playerStatus = collision.gameObject.GetComponent<PlayerStatus>();
 
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
             if (playerRb != null)

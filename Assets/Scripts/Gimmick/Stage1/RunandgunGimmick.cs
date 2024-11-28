@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInteractive
 {
-    private PlayerStatus playerStatus;
+    private PlayerHp playerHp;
     private Coroutine damageCoroutine;
 
     /// <summary>
@@ -11,7 +11,6 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInterac
     /// </summary>
     protected override void Init()
     {
-        playerStatus = FindObjectOfType<PlayerStatus>();
     }
 
     public override void SetGimmick()
@@ -31,16 +30,18 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInterac
     {
         while (true)
         {
-            playerStatus.Damage(GimmickData.DamageAmount);
+            playerHp?.Damage(GimmickData.DamageAmount);
             yield return new WaitForSeconds(GimmickData.DamageTickInterval);
         }
     }
 
     public void InteractStart(GameObject player)
     {
+        playerHp = player.GetComponent<PlayerHp>();
+
         if (gameObject.tag == "Heal")
         {
-            playerStatus.FullHeal();
+            playerHp?.FullHeal();
         }
         else if (damageCoroutine == null)
         {

@@ -19,7 +19,7 @@ public class ChasingGimmickData : GimmickDataBase
 
     [GimmickData("충돌 시 플레이어의 데미지량")]
     [field: SerializeField]
-    public float Damage { get; set; } = 20;
+    public int Damage { get; set; } = 2;
 
     [GimmickData("넉백 세기 (기본 120f)")]
     [field: SerializeField]

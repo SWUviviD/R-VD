@@ -115,7 +115,7 @@ public class ChasingStarProp : GimmickDataBase
         // 플레이어와 충돌했을 때
         if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
         {
-            playerStatus.Damage(Data.Damage); // 데미지
+            collision.gameObject.GetComponent<PlayerHp>().Damage(Data.Damage); // 데미지
 
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
             if (playerRb != null)

@@ -17,6 +17,8 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     [ContextMenu("SetMenu")]
     public override void SetGimmick()
     {
+        bubbleObject.transform.localScale = Vector3.one * gimmickData.BubbleSize;
+
         resetSeconds = new WaitForSeconds(gimmickData.ResetOffsetTime);
 
         StopAllCoroutines();

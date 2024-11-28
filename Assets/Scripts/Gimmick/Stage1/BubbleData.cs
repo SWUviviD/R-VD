@@ -12,6 +12,10 @@ public class BubbleData : GimmickDataBase
     [field: SerializeField]
     public float ResetOffsetTime;
 
+    [GimmickData("방울의 크기")]
+    [field: SerializeField]
+    public float BubbleSize;
+
     [GimmickData("방울에 의해 점프 되는 힘")]
     [field: SerializeField]
     [Range(50f, float.MaxValue)]

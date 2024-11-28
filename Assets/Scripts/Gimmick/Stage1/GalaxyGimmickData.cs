@@ -13,9 +13,9 @@ public class GalaxyGimmickData : GimmickDataBase
     [field: SerializeField]
     public float KnockbackForce { get; set; } = 120f;
 
-    [GimmickData("데미지량 (기본 20f)")]
+    [GimmickData("데미지량 (기본 2)")]
     [field: SerializeField]
-    public float Damage { get; set; } = 20f;
+    public int Damage { get; set; } = 2;
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {

@@ -18,5 +18,5 @@ public class CheckpointData : GimmickDataBase
 
     [GimmickData("추락 시 플레이어가 받는 데미지")]
     [field: SerializeField]
-    public float DropDamage { get; set; } = 20f;
+    public int DropDamage { get; set; } = 2;
 }

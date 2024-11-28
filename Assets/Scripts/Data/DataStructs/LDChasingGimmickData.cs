@@ -21,7 +21,7 @@ namespace LocalData
         public int TotalNum { get; set; } = 4;
 
         [MemoryPackInclude]
-        public float Damage { get; set; } = 20;
+        public int Damage { get; set; } = 2;
 
         [MemoryPackInclude]
         public float KnockbackForce { get; set; } = 120f;

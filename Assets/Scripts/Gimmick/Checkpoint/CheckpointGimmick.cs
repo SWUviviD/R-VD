@@ -22,7 +22,7 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
     /// <summary> 플레이어 레이어마스크 </summary>
     [SerializeField] private LayerMask playerMask;
     /// <summary> 플레이어 스테이터스 </summary>
-    private PlayerStatus playerStatus;
+    private PlayerHp playerStatus;
 
     private const string RespawnPointName = "RespawnPoint";
 
@@ -56,8 +56,8 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
         {
             if (playerStatus == null)
             {
-                playerStatus = other.GetComponentInParent<PlayerStatus>();
-                playerStatus.SetRespawnPoint(respawnPoint.position);
+                playerStatus = other.GetComponentInParent <PlayerHp>();
+                playerStatus.RespawnPoint = respawnPoint.position;
             }
         }
     }

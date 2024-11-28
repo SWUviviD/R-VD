@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using Defines;
 using UnityEngine.Assertions.Must;
 using System.Net.NetworkInformation;
+using UnityEngine.Events;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float mininumAngle = -46f;
     [SerializeField] private float addMaxRadio = 1.5f;
     [SerializeField] private float addMinRadio = -1f;
+
     
     public Vector3 MoveDirection { get; private set; }
     public Vector3 CurrentFeetPosition { get; private set; }
@@ -29,6 +31,9 @@ public class PlayerMove : MonoBehaviour
 
     private GameObject currentFloor;
     private IFloorInteractive currentFloorInteractive;
+
+    public UnityEvent OnInteractWithFloorStart { get; private set; } = new UnityEvent();
+    public UnityEvent OnInteractWithFloorEnd { get; private set; } = new UnityEvent();
 
     private void OnEnable()
     {
@@ -107,12 +112,14 @@ public class PlayerMove : MonoBehaviour
             if(currentFloorInteractive != null)
             {
                 currentFloorInteractive.InteractEnd(gameObject);
+                OnInteractWithFloorEnd?.Invoke();
             }
 
             currentFloorInteractive = currentFloor.GetComponentInChildren<IFloorInteractive>();
             if(currentFloorInteractive != null)
             {
                 currentFloorInteractive.InteractStart(gameObject);
+                OnInteractWithFloorStart?.Invoke();
                 return;
             }
 
@@ -120,6 +127,7 @@ public class PlayerMove : MonoBehaviour
             if (currentFloorInteractive != null)
             {
                 currentFloorInteractive.InteractStart(gameObject);
+                OnInteractWithFloorStart?.Invoke();
             }
         }
     }
@@ -131,6 +139,7 @@ public class PlayerMove : MonoBehaviour
         if (currentFloorInteractive != null)
         {
             currentFloorInteractive.InteractEnd(gameObject);
+            OnInteractWithFloorEnd?.Invoke();
             currentFloorInteractive = null;
         }
     }

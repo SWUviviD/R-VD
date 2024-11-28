@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 512464082732337944}
   - component: {fileID: 3010588022041336495}
   - component: {fileID: 573848819944701192}
+  - component: {fileID: 8762566378822032502}
   - component: {fileID: 4350681127592723824}
   - component: {fileID: 6796862284092498013}
   m_Layer: 6
@@ -371,8 +372,7 @@ MonoBehaviour:
   <IsDashing>k__BackingField: 0
   <DashSpeed>k__BackingField: 30
   <DashTime>k__BackingField: 1
-  maxHealth: 100
-  currentHealth: 0
+  <HP>k__BackingField: 10
 --- !u!114 &573848819944701192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +388,19 @@ MonoBehaviour:
   rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
   dashCoolTime: 1.5
+--- !u!114 &8762566378822032502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191573275404387913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f22585c5ea8c24fa8f107434b1e661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status: {fileID: 3010588022041336495}
 --- !u!54 &4350681127592723824
 Rigidbody:
   m_ObjectHideFlags: 0

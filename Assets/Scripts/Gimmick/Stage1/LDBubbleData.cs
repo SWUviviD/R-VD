@@ -8,21 +8,21 @@ namespace LocalData
 {
     [MemoryPackable]
     [Serializable]
-    public partial class LDCristalData : LDGimmickDataBase
+    public partial class LDBubbleData : LDGimmickDataBase
     {
         [MemoryPackInclude]
-        public int CristalType { get; set; }
-
-
+        public float PopOffsetTime;
 
         [MemoryPackInclude]
-        public float BlinkShowTime { get; set; } = 3f;
+        public float ResetOffsetTime;
 
         [MemoryPackInclude]
-        public float BlinkHideTime { get; set; } = 3f;
-
+        public float BubbleSize;
 
         [MemoryPackInclude]
-        public float MoveMoveTime { get; set; } = 3f;
+        public float JumpForce = 150f;
+
     }
+
 }
+

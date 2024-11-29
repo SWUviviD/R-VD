@@ -15,6 +15,12 @@ namespace LocalData
         [MemoryPackInclude] public List<LDRunandgunGimmickData> RunandgunGimmickDataList { get; set; }
         [MemoryPackInclude] public List<LDChasingGimmickData> ChasingGimmickDataList { get; set; }
 
+        [MemoryPackInclude] public List<LDBalancePlateData> BalancePlateDataList { get; set; }
+        [MemoryPackInclude] public List<LDCristalData> CristalGimmickDataList { get; set; }
+        [MemoryPackInclude] public List<LDBlueCristalGimmickData> BlueCristalGimmickDataList { get; set; }
+        [MemoryPackInclude] public List<LDGreenCristalGimmickData> GreenCristalGimmickDataList { get; set; }
+        [MemoryPackInclude] public List<LDBubbleData> BubbleDataList { get; set; }
+
         [MemoryPackInclude] public List<CameraPathPoint> CameraPathList { get; set; }
 
         public LDMapData()
@@ -23,6 +29,12 @@ namespace LocalData
             GalaxyGimmickDataList = new List<LDGalaxyGimmickData>();
             RunandgunGimmickDataList = new List<LDRunandgunGimmickData>();
             ChasingGimmickDataList = new List<LDChasingGimmickData>();
+
+            BalancePlateDataList = new List<LDBalancePlateData>();
+            CristalGimmickDataList = new List<LDCristalData>();
+            BlueCristalGimmickDataList = new List<LDBlueCristalGimmickData>();
+            GreenCristalGimmickDataList = new List<LDGreenCristalGimmickData> ();
+            BubbleDataList = new List<LDBubbleData>();
         }
     }
 }

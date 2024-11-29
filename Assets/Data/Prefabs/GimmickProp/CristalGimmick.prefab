@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1398363206800387745}
   - component: {fileID: 2766138148410831987}
-  - component: {fileID: 3151129922817165576}
   - component: {fileID: 1594154444556935449}
   - component: {fileID: 2599744076399179277}
+  - component: {fileID: 4326786700285348666}
   m_Layer: 0
   m_Name: Cristal
   m_TagString: Untagged
@@ -44,29 +44,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41887231142241988}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!136 &3151129922817165576
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 41887231142241988}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1594154444556935449
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,7 +67,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -106,9 +83,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4a465ac673eb547b1114accd05ca48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer:
+--- !u!135 &4326786700285348666
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41887231142241988}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2006959685183187465
 GameObject:
   m_ObjectHideFlags: 0

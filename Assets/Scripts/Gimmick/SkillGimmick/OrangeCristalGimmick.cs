@@ -20,6 +20,7 @@ public class OrangeCristalGimmick : GimmickBase<CristalData>
         sense.OnCristalBreak.AddListener(OnCristalBreak);
     }
 
+    [ContextMenu("SetMenu")]
     public override void SetGimmick()
     {
         cristal.SetGimmick();

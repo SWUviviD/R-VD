@@ -29,6 +29,11 @@ public class PlayerHPUI : MonoBehaviour
 
     private void Awake()
     {
+        if(player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+
         playerHP = player.GetComponent<PlayerHp>();
         playerMove = player.GetComponent <PlayerMove>();
         starHunt = player.GetComponent<StarHunt>();

@@ -25,6 +25,11 @@ public class RunandgunGimmickData : GimmickDataBase
         sdRunandgunData.HealAmount = HealAmount;
         sdRunandgunData.DamageTickInterval = DamageTickInterval;
 
+        foreach (var kvPoint in DictPoint)
+        {
+            sdRunandgunData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
+        }
+
         sdRunandgunData.Position = trGimmick.position;
         sdRunandgunData.Rotation = trGimmick.rotation.eulerAngles;
         sdRunandgunData.Scale = trGimmick.localScale;

@@ -25,6 +25,11 @@ public class GalaxyGimmickData : GimmickDataBase
         sdGalaxyData.KnockbackForce = KnockbackForce;
         sdGalaxyData.Damage = Damage;
 
+        foreach (var kvPoint in DictPoint)
+        {
+            sdGalaxyData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
+        }
+
         sdGalaxyData.Position = trGimmick.position;
         sdGalaxyData.Rotation = trGimmick.rotation.eulerAngles;
         sdGalaxyData.Scale = trGimmick.localScale;

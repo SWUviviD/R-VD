@@ -39,6 +39,11 @@ public class ChasingGimmickData : GimmickDataBase
         sdChasingData.Damage = Damage;
         sdChasingData.KnockbackForce = KnockbackForce;
 
+        foreach(var kvPoint in DictPoint)
+        {
+            sdChasingData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
+        }
+
         sdChasingData.Position = trGimmick.position;
         sdChasingData.Rotation = trGimmick.rotation.eulerAngles;
         sdChasingData.Scale = trGimmick.localScale;

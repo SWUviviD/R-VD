@@ -70,7 +70,10 @@ public class PlayerHPUI : MonoBehaviour
 
     private void OnDamaged(int _currentHP)
     {
-        if(_currentHP == currentShowStarCount)
+        StopAllCoroutines();
+        ShowStar();
+
+        if (_currentHP == currentShowStarCount)
         {
             return;
         }    
@@ -93,9 +96,6 @@ public class PlayerHPUI : MonoBehaviour
         {
             RestoreStar(bigStar);
         }
-
-        StopAllCoroutines();
-        ShowStar();
     }
 
     private void OnDeath()

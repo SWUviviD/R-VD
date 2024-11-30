@@ -11,13 +11,12 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = GameObject.FindAnyObjectByType<T>();
-            }
-
-            if (_instance == null)
-            {
-                GameObject go = new GameObject();
-                _instance = go.AddComponent<T>();
+                _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject();
+                    _instance = go.AddComponent<T>();
+                }
             }
 
             return _instance;

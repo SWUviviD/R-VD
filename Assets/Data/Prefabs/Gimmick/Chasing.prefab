@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 2540230214560819396}
   - component: {fileID: 2111666981973869314}
   - component: {fileID: 4481171837403596673}
-  m_Layer: 20
+  m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 4481171837403596673}
-  panel: {fileID: 4567813066823308848}
   starList: []
   currentStarIndex: 0
 --- !u!114 &4481171837403596673
@@ -175,7 +174,8 @@ MonoBehaviour:
   <StarFallSpeed>k__BackingField: 2
   <ResponeTime>k__BackingField: 2
   <TotalNum>k__BackingField: 4
-  <PlayerDamage>k__BackingField: 20
+  <Damage>k__BackingField: 2
+  <KnockbackForce>k__BackingField: 120
   starListPrefab:
   - {fileID: 9167598856513470239}
   - {fileID: 8939567310061029733}

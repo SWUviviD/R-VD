@@ -15,6 +15,7 @@ namespace LevelEditor
         [Header("Components")]
         [SerializeField] private ObjectDatabase database = new ObjectDatabase();
         [SerializeField] private GameObject checkpointArea;
+        [SerializeField] private GameObject placedArea;
 
         [Header("Systems")]
         [SerializeField] private PlacementInputSystem inputSystem;
@@ -44,6 +45,7 @@ namespace LevelEditor
         private IBuildingState currentState;
         private IBuildingState modifyState;
 
+        private Transform[] transforms;
         private Renderer[] renderers;
         private Bounds totalBounds;
 
@@ -88,7 +90,10 @@ namespace LevelEditor
                 objectID++;
                 objectIDs[prefabAddress] = objectID;
 
-                prefabSize = CalculatePrefabSize(prefab);
+                if (TryGetPlacedAreaSize(prefab, out prefabSize) == false)
+                {
+                    prefabSize = CalculatePrefabSize(prefab);
+                }
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
             }
 
@@ -198,6 +203,21 @@ namespace LevelEditor
             return Vector3.zero;
         }
 
+        private bool TryGetPlacedAreaSize(GameObject prefab, out Vector3 areaSize)
+        {
+            areaSize = Vector3.zero;
+            transforms = prefab.GetComponentsInChildren<Transform>();
+            foreach (var obj in transforms)
+            {
+                if (obj.gameObject.layer == placedArea.layer)
+                {
+                    areaSize = obj.localScale;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// 그리드 형태로 오브젝트 배치 설정
         /// </summary>
@@ -245,7 +265,10 @@ namespace LevelEditor
                 objectIDs[gimmickName] = objectID;
                 objectID++;
 
-                prefabSize = CalculatePrefabSize(prefab);
+                if (TryGetPlacedAreaSize(prefab, out prefabSize) == false)
+                {
+                    prefabSize = CalculatePrefabSize(prefab);
+                }
                 database.objectData.Add(new ObjectData(gimmickName, objectID, prefabSize, prefab));
             }
 
@@ -278,18 +301,6 @@ namespace LevelEditor
                                               database.objectData[objectIDs[gimmickName]].ID);
 
             }
-
-
-            //var instance = Instantiate(prefab);
-            //instance.transform.position = position;
-            //instance.transform.rotation = Quaternion.Euler(rotation);
-            //instance.transform.localScale = scale;
-
-            //if (instance.TryGetComponent(out IGimmickBase gimmickBase))
-            //{
-            //    var statusData = new GimmickStatusData(gimmickName, gimmick, gimmickBase.SetGimmick);
-            //    GridData.Instance.AddObjectAt(statusData, position, rotation, scale, objectIDs[gimmickName]);
-            //}
         }
     }
 }

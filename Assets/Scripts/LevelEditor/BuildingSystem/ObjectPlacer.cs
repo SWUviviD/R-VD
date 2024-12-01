@@ -27,6 +27,7 @@ namespace LevelEditor
         private Dictionary<GameObject, Collider> placedAreaColliders = new Dictionary<GameObject, Collider>();
 
         private List<Renderer> placedAreaRenderers = new List<Renderer>();
+        private Transform[] transforms;
         private GameObject newObject;
         private GameObject areaObject;
         private bool isShowArea;
@@ -42,17 +43,25 @@ namespace LevelEditor
             }
 
             newObject = Instantiate(prefab);
-            newObject.transform.position = position - center + new Vector3(0f, objScale.y / 2f, 0f);
+            newObject.transform.position = position;// - center + new Vector3(0f, objScale.y / 2f, 0f);
             newObject.transform.rotation = Quaternion.Euler(rotation);
             newObject.transform.localScale = scale;
             PlacedGameObjects.Add(newObject);
 
-            areaObject = Instantiate(placedArea);
-            areaObject.transform.position = position;
-            areaObject.transform.localScale = objScale;
-            placedAreaRenderers.Add(areaObject.GetComponentInChildren<Renderer>());
-            placedAreaRenderers[PlacedGameObjects.Count - 1].enabled = isShowArea;
-            areaObject.transform.SetParent(newObject.transform);
+            if (TryGetPlacedAreaTransform(newObject, out Transform objectTR))
+            {
+                placedAreaRenderers.Add(objectTR.GetComponentInChildren<Renderer>());
+                placedAreaRenderers[PlacedGameObjects.Count - 1].enabled = isShowArea;
+            }
+            else
+            {
+                areaObject = Instantiate(placedArea);
+                areaObject.transform.position = position;
+                areaObject.transform.localScale = objScale;
+                placedAreaRenderers.Add(areaObject.GetComponentInChildren<Renderer>());
+                placedAreaRenderers[PlacedGameObjects.Count - 1].enabled = isShowArea;
+                areaObject.transform.SetParent(newObject.transform);
+            }
 
             if (name == checkpointArea.name)
             {
@@ -113,6 +122,21 @@ namespace LevelEditor
                 if (checkpoint == null) continue;
                 checkpoint.SetActive(active);
             }
+        }
+
+        private bool TryGetPlacedAreaTransform(GameObject prefab, out Transform areaTR)
+        {
+            transforms = prefab.GetComponentsInChildren<Transform>();
+            foreach (var objectTR in transforms)
+            {
+                if (objectTR.gameObject.layer == placedArea.layer)
+                {
+                    areaTR = objectTR;
+                    return true;
+                }
+            }
+            areaTR = null;
+            return false;
         }
     }
 }

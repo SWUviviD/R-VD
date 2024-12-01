@@ -75,9 +75,9 @@ namespace LevelEditor
                                                        database.objectData[selectedObjectIndex].Size,
                                                        totalBounds.center);
 
-            gridSizeX = database.objectData[selectedObjectIndex].Size.x;
-            gridSizeY = database.objectData[selectedObjectIndex].Size.y;
-            gridSizeZ = database.objectData[selectedObjectIndex].Size.z;
+            gridSizeX = Mathf.Min(gridSize, database.objectData[selectedObjectIndex].Size.x);
+            gridSizeY = Mathf.Min(gridSize, database.objectData[selectedObjectIndex].Size.y);
+            gridSizeZ = Mathf.Min(gridSize, database.objectData[selectedObjectIndex].Size.z);
         }
 
         public void EndState()
@@ -100,10 +100,10 @@ namespace LevelEditor
             {
                 // 위치 보정
                 position = GetFixedPosition(position, database.objectData[selectedObjectIndex].Size);
-                if (CheckPlacementValidity(position, selectedObjectIndex) == false)
-                {
-                    return;
-                }
+                //if (CheckPlacementValidity(position, selectedObjectIndex) == false)
+                //{
+                //    return;
+                //}
             }
 
             // 오브젝트 배치 및 데이터 추가
@@ -158,11 +158,11 @@ namespace LevelEditor
             if (!isPlacementValid)
             {
                 position = GetFixedPosition(position, database.objectData[selectedObjectIndex].Size);
-                isPlacementValid = CheckPlacementValidity(position, selectedObjectIndex);
+                //isPlacementValid = CheckPlacementValidity(position, selectedObjectIndex);
             }
 
             // 미리보기 오브젝트 갱신
-            previewSystem.UpdatePosition(position, isPlacementValid);
+            previewSystem.UpdatePosition(position, true);
         }
 
         /// <summary>
@@ -170,7 +170,6 @@ namespace LevelEditor
         /// </summary>
         private Vector3 GetFixedPosition(Vector3 position, Vector3 size)
         {
-            position += Vector3.down * size.y / 2f;
             position = GetFixedPositionY(position, size);
             position = GetFixedPositionXZ(position, size);
 
@@ -224,6 +223,9 @@ namespace LevelEditor
                 return position;
             }
 
+            Vector3 oldPosition = position;
+            bool isLeft = false, isRight = false;
+            bool isBackward = false, isForward = false;
             moveMaxX = 0f;
             moveMaxZ = 0f;
             foreach (Transform objectTransform in transforms)
@@ -251,16 +253,26 @@ namespace LevelEditor
                 distanceZ = objectTransform.position.z - position.z;
                 moveZ = (size.z + collisionedScale.z) / 2 - Mathf.Abs(distanceZ);
                 moveMaxZ = Mathf.Max(moveMaxZ, moveZ);
+
+                if (distanceX < 0)
+                    isLeft = true;
+                else
+                    isRight = true;
+
+                if (distanceZ < 0)
+                    isBackward = true;
+                else
+                    isForward = true;
             }
 
             // 보정된 위치로 위치 이동
             if (isGridMod) // 그리드 모드 (O)
             {
-                if (moveX < moveZ && moveMaxX > 0)
+                if (moveMaxX < moveMaxZ && moveMaxX > 0)
                 {
                     position.x += distanceX < 0 ? moveMaxX : -moveMaxX;
                 }
-                else if (moveX > moveZ && moveMaxZ > 0)
+                else if (moveMaxX > moveMaxZ && moveMaxZ > 0)
                 {
                     position.z += distanceZ < 0 ? moveMaxZ : -moveMaxZ;
                 }
@@ -275,6 +287,15 @@ namespace LevelEditor
                 {
                     position.z += distanceZ < 0 ? moveMaxZ : -moveMaxZ;
                 }
+            }
+
+            if (isLeft && isRight)
+            {
+                position.x = oldPosition.x;
+            }
+            if (isBackward && isForward)
+            {
+                position.z = oldPosition.z;
             }
 
             return position;

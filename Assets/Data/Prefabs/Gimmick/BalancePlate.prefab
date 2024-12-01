@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 824001734807737239}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -86,7 +86,7 @@ Transform:
   m_GameObject: {fileID: 1017684337038856997}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 3290931143736578813}
+  prefabName: BalancePlate
   plate: {fileID: 824001734807737239}
 --- !u!114 &3290931143736578813
 MonoBehaviour:
@@ -156,11 +157,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointList:
   - {fileID: 7637865286271670759}
-  Radius: 3
-  ReturnToNormalTime: 3
-  Level1_Roate: 5
-  Level2_Roate: 10
-  Level3_Roate: 20
+  <Radius>k__BackingField: 0
+  <ReturnToNormalTime>k__BackingField: 0
+  <Level1_Roate>k__BackingField: 0
+  <Level2_Roate>k__BackingField: 0
+  <Level3_Roate>k__BackingField: 0
 --- !u!1001 &2925619196153241725
 PrefabInstance:
   m_ObjectHideFlags: 0

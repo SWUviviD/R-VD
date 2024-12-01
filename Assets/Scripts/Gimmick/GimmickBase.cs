@@ -28,6 +28,7 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     /// 반드시 가지고 있어야 하며, 변수의 이름은 gimmickData에서 변경되면 안된다.
     /// </summary>
     [SerializeField] protected T gimmickData;
+    [SerializeField] protected string prefabName;
 
     public T GimmickData => gimmickData;
 
@@ -62,7 +63,7 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     /// </summary>
     protected virtual string GetAddress()
     {
-        return "";
+        return $"Assets/Data/Prefabs/Gimmick/{prefabName}.prefab";
     }
 
     /// <summary> 기믹의 실제 동작은 각 자식 클래스에서 정의 </summary>

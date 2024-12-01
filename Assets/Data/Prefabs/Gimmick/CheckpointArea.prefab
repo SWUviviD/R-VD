@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 4066203611918533238}
+  prefabName: CheckpointArea
   checkpointArea: {fileID: 6147512504692176325}
   boxCollider: {fileID: 6614099210484188703}
   cubeArea: {fileID: 7082300981058434848}
@@ -188,6 +189,8 @@ MonoBehaviour:
   - {fileID: 8273239160218160176}
   <AreaSize>k__BackingField: {x: 5, y: 3, z: 5}
   <RespawnPoint>k__BackingField: {x: 0, y: 0, z: 0}
+  <DropRespawnHeight>k__BackingField: -10
+  <DropDamage>k__BackingField: 2
 --- !u!65 &6614099210484188703
 BoxCollider:
   m_ObjectHideFlags: 0

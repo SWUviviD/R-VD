@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 280470651755463732}
   - component: {fileID: 295657242161796289}
   - component: {fileID: 6801320988545377723}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2047456908135825631}
   - component: {fileID: 6270285093998765621}
   - component: {fileID: 1776335975524689435}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 2337343358774069317}
   - component: {fileID: 6264933822804930595}
   - component: {fileID: 3955779707060927702}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 2653057666926368470}
   - component: {fileID: 3349432398127427094}
   - component: {fileID: 650762918168096253}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_soil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 99640085735098763}
   - component: {fileID: 1294330818771488958}
   - component: {fileID: 3182182638421379872}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,8 +424,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3745125860238676836}
-  m_Layer: 0
-  m_Name: 1_Test_Block3
+  - component: {fileID: -3810504110468727771}
+  - component: {fileID: -7827754429644342269}
+  m_Layer: 7
+  m_Name: Block3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -446,8 +448,37 @@ Transform:
   m_Children:
   - {fileID: 7230206644344199615}
   - {fileID: 4556842370468222163}
+  - {fileID: 400463566105201136}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3810504110468727771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3193300527096454599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c48221a0f87524c923af4312efdf4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gimmickData: {fileID: -7827754429644342269}
+  prefabName: Block3
+  editorObject: {fileID: 7741999604416082629}
+--- !u!114 &-7827754429644342269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3193300527096454599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e7ab55769b97a4680b74df17a388f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointList: []
 --- !u!1 &3554244386079874424
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7230206644344199615}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BasicBlock1_baked
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +504,7 @@ Transform:
   m_GameObject: {fileID: 3554244386079874424}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.35, y: 1.5, z: -0.12}
+  m_LocalPosition: {x: -0.35, y: 1.483, z: -0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -503,7 +534,7 @@ GameObject:
   - component: {fileID: 6261742703686604765}
   - component: {fileID: 5007732766332113515}
   - component: {fileID: 6674458339972634761}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,6 +606,59 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4702352480132483767
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400463566105201136}
+  - component: {fileID: 781719180203095661}
+  m_Layer: 7
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400463566105201136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4702352480132483767}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3745125860238676836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &781719180203095661
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4702352480132483767}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3921738, y: 2.2223709, z: 2.2723224}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5190788529620123942
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +670,7 @@ GameObject:
   - component: {fileID: 7834737827825584086}
   - component: {fileID: 5495271935580843818}
   - component: {fileID: 7556731636215430936}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +753,7 @@ GameObject:
   - component: {fileID: 3656430732620009884}
   - component: {fileID: 8498886188827543442}
   - component: {fileID: 8068180330717330640}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +836,7 @@ GameObject:
   - component: {fileID: 294673712603649923}
   - component: {fileID: 5391720255988635325}
   - component: {fileID: 2990291508241605163}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -835,7 +919,7 @@ GameObject:
   - component: {fileID: 5688035644885407481}
   - component: {fileID: 8066164360603589796}
   - component: {fileID: 6115232902279233488}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -918,7 +1002,7 @@ GameObject:
   - component: {fileID: 1993558628641630761}
   - component: {fileID: 8177997603829995892}
   - component: {fileID: 3023371261366326033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1085,7 @@ GameObject:
   - component: {fileID: 8486569313045624306}
   - component: {fileID: 4883730630979488070}
   - component: {fileID: 8752120886869267050}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1084,7 +1168,7 @@ GameObject:
   - component: {fileID: 5059371367243062288}
   - component: {fileID: 5525222911665419658}
   - component: {fileID: 3427947727070671669}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: block1_grass_art3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1169,6 +1253,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlacedArea
       objectReference: {fileID: 0}
+    - target: {fileID: 218333942386157196, guid: 7424e4501ae0a16438819921b4685d26,
+        type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5938986859716499749, guid: 7424e4501ae0a16438819921b4685d26,
         type: 3}
       propertyPath: m_Enabled
@@ -1239,6 +1328,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6726489186064278887, guid: 7424e4501ae0a16438819921b4685d26,
+        type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1247,6 +1341,12 @@ PrefabInstance:
 --- !u!4 &4556842370468222163 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6290281770487906458, guid: 7424e4501ae0a16438819921b4685d26,
+    type: 3}
+  m_PrefabInstance: {fileID: 7527404003915273289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7741999604416082629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 218333942386157196, guid: 7424e4501ae0a16438819921b4685d26,
     type: 3}
   m_PrefabInstance: {fileID: 7527404003915273289}
   m_PrefabAsset: {fileID: 0}

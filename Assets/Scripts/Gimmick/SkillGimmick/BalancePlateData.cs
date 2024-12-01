@@ -8,23 +8,23 @@ public class BalancePlateData : GimmickDataBase
 {
     [GimmickData("판의 반지름")]
     [field: SerializeField]
-    public float Radius;
+    public float Radius { get; set; }
 
     [GimmickData("판의 반지름")]
     [field: SerializeField]
-    public float ReturnToNormalTime;
+    public float ReturnToNormalTime { get; set; }
 
     [GimmickData("1단계 초당 기울기")]
     [field: SerializeField]
-    public float Level1_Roate;
-    
+    public float Level1_Roate { get; set; }
+
     [GimmickData("2단계 초당 기울기")]
     [field: SerializeField]
-    public float Level2_Roate;
-    
+    public float Level2_Roate { get; set; }
+
     [GimmickData("3단계 초당 기울기")]
     [field: SerializeField]
-    public float Level3_Roate;
+    public float Level3_Roate { get; set; }
 
 
     public override void SaveGimmickData(in LDMapData _mapData)

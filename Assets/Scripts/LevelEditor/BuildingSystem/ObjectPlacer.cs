@@ -52,6 +52,7 @@ namespace LevelEditor
             {
                 placedAreaRenderers.Add(objectTR.GetComponentInChildren<Renderer>());
                 placedAreaRenderers[PlacedGameObjects.Count - 1].enabled = isShowArea;
+                areaObject = objectTR.gameObject;
             }
             else
             {

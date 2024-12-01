@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 148781212076278096}
   - component: {fileID: 3404461182241078810}
   - component: {fileID: 2079382098686242758}
-  m_Layer: 0
+  - component: {fileID: 1179853965919105070}
+  m_Layer: 20
   m_Name: block4_grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,6 +88,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1179853965919105070
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4218548592537999399}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3921738, y: 2.2223709, z: 2.2723224}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7611935016329443270
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,8 +118,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7127181971404107132}
-  m_Layer: 0
-  m_Name: 1_Test_Block2
+  - component: {fileID: -2622286510881137339}
+  - component: {fileID: -7658120386175409621}
+  m_Layer: 20
+  m_Name: Block2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,10 +140,38 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 148781212076278096}
   - {fileID: 9135903305129737619}
+  - {fileID: 148781212076278096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2622286510881137339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611935016329443270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c48221a0f87524c923af4312efdf4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gimmickData: {fileID: -7658120386175409621}
+  prefabName: Block2
+  editorObject: {fileID: 3063859278248500101}
+--- !u!114 &-7658120386175409621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611935016329443270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e7ab55769b97a4680b74df17a388f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointList: []
 --- !u!1001 &2991144793488178441
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132,6 +184,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlacedArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 218333942386157196, guid: 7424e4501ae0a16438819921b4685d26,
+        type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5938986859716499749, guid: 7424e4501ae0a16438819921b4685d26,
         type: 3}
@@ -203,11 +260,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6726489186064278887, guid: 7424e4501ae0a16438819921b4685d26,
+        type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7424e4501ae0a16438819921b4685d26, type: 3}
+--- !u!1 &3063859278248500101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 218333942386157196, guid: 7424e4501ae0a16438819921b4685d26,
+    type: 3}
+  m_PrefabInstance: {fileID: 2991144793488178441}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9135903305129737619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6290281770487906458, guid: 7424e4501ae0a16438819921b4685d26,

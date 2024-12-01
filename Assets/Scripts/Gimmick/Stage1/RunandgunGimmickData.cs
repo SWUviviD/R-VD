@@ -33,6 +33,7 @@ public class RunandgunGimmickData : GimmickDataBase
         sdRunandgunData.Position = trGimmick.position;
         sdRunandgunData.Rotation = trGimmick.rotation.eulerAngles;
         sdRunandgunData.Scale = trGimmick.localScale;
+        sdRunandgunData.Address = address;
 
         _mapData.RunandgunGimmickDataList.Add(sdRunandgunData);
     }

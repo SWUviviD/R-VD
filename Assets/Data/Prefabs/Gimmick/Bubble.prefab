@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 909839957532661152}
+  prefabName: Bubble
   bubbleObject: {fileID: 1545915695280756850}
   bubbleCollider: {fileID: 1036824286267096938}
 --- !u!114 &909839957532661152
@@ -64,10 +65,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointList: []
-  PopOffsetTime: 0.3
-  ResetOffsetTime: 5
-  BubbleSize: 0
-  JumpForce: 150
+  <PopOffsetTime>k__BackingField: 0
+  <ResetOffsetTime>k__BackingField: 0
+  <BubbleSize>k__BackingField: 0
+  <JumpForce>k__BackingField: 150
 --- !u!54 &4158668495589603186
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -277,6 +278,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5117700066308340382, guid: 72b0fe06e5804e4478e853dbfb02f8c5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -5117700066308340382, guid: 72b0fe06e5804e4478e853dbfb02f8c5,
         type: 3}

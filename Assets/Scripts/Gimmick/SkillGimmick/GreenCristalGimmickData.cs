@@ -32,8 +32,6 @@ public class GreenCristalGimmickData : ColoredCristalData
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {
-        base.SaveGimmickData(_mapData);
-
         var sdGreenCristalGimmickData = new LDGreenCristalGimmickData();
 
         sdGreenCristalGimmickData.Position = trGimmick.position;
@@ -69,8 +67,6 @@ public class GreenCristalGimmickData : ColoredCristalData
 
     public override void Set(LDGimmickDataBase _ldData)
     {
-        base.Set(_ldData);
-
         var sdGreenCristalGimmickData = (LDGreenCristalGimmickData)_ldData;
 
         trGimmick.position = sdGreenCristalGimmickData.Position;

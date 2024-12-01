@@ -7,20 +7,19 @@ public class BubbleData : GimmickDataBase
 {
     [GimmickData("방울이 사라지는 시간")]
     [field: SerializeField]
-    public float PopOffsetTime;
+    public float PopOffsetTime {  get; set; }
 
     [GimmickData("방울이 다시 보여지는 시간")]
     [field: SerializeField]
-    public float ResetOffsetTime;
+    public float ResetOffsetTime { get; set; }
 
     [GimmickData("방울의 크기")]
     [field: SerializeField]
-    public float BubbleSize;
+    public float BubbleSize { get; set; }
 
     [GimmickData("방울에 의해 점프 되는 힘")]
     [field: SerializeField]
-    [Range(50f, float.MaxValue)]
-    public float JumpForce = 150f;
+    public float JumpForce { get; set; } = 150f;
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {

@@ -24,7 +24,6 @@ public class BlueCristalGimmickData : ColoredCristalData
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {
-        base.SaveGimmickData(_mapData);
 
         var sdBlueCristalGimmickData = new LDBlueCristalGimmickData();
 
@@ -57,8 +56,6 @@ public class BlueCristalGimmickData : ColoredCristalData
 
     public override void Set(LDGimmickDataBase _ldData)
     {
-        base.Set(_ldData);
-
         var sdBlueCristalGimmickData = (LDBlueCristalGimmickData)_ldData;
 
         trGimmick.position = sdBlueCristalGimmickData.Position;

@@ -6,6 +6,8 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInterac
     private PlayerHp playerHp;
     private Coroutine damageCoroutine;
 
+    [SerializeField] private GameObject editorObj;
+
     /// <summary>
     /// 초기화
     /// </summary>
@@ -16,11 +18,7 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInterac
     public override void SetGimmick()
     {
         // 필요 시 추가 구현
-    }
-
-    protected override string GetAddress()
-    {
-        return "Assets/Data/Prefabs/Gimmick/RunandGun/DamageZone.prefab";
+        editorObj.SetActive(false);
     }
 
     /// <summary>

@@ -6,6 +6,8 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     [SerializeField] private float rotationSpeed;  // 회전 속도
     [SerializeField] private float minDisappearTime; // 사라지는 최소 시간
     [SerializeField] private float maxDisappearTime; // 사라지는 최대 시간
+    [SerializeField] GameObject GalaxyObject;
+
 
     private Rigidbody rb;
     private Renderer galRenderer;
@@ -19,7 +21,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
 
     public override void SetGimmick()
     {
-        rotationSpeed = 30f; 
+        rotationSpeed = 10f; 
         minDisappearTime = 2f; 
         maxDisappearTime = 5f; 
     }
@@ -59,7 +61,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     /// </summary>
     private void FixedUpdate()
     {
-        rb.angularVelocity = Vector3.back * rotationSpeed; // z축을 기준으로 회전
+        transform.Rotate(0f, -rotationSpeed, 0f, Space.Self);
     }
 
 
@@ -77,6 +79,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
             yield return new WaitForSeconds(gimmickData.VisibleDuration);
 
             // 오브젝트 비가시화, 충돌 x
+            // 하위 렌더러 전체 비가시화 처리 필요함
             galRenderer.enabled = false;
             galCollider.enabled = false;
             yield return new WaitForSeconds(Random.Range(2, 6));

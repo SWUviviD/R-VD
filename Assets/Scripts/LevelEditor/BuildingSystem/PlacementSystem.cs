@@ -90,10 +90,7 @@ namespace LevelEditor
                 objectID++;
                 objectIDs[prefabAddress] = objectID;
 
-                if (TryGetPlacedAreaSize(prefab, out prefabSize) == false)
-                {
-                    prefabSize = CalculatePrefabSize(prefab);
-                }
+                prefabSize = GetPlacedAreaSize(prefab);
                 database.objectData.Add(new ObjectData(prefabAddress, objectID, prefabSize, prefab));
             }
 
@@ -203,19 +200,17 @@ namespace LevelEditor
             return Vector3.zero;
         }
 
-        private bool TryGetPlacedAreaSize(GameObject prefab, out Vector3 areaSize)
+        private Vector3 GetPlacedAreaSize(GameObject prefab)
         {
-            areaSize = Vector3.zero;
             transforms = prefab.GetComponentsInChildren<Transform>();
             foreach (var obj in transforms)
             {
                 if (obj.gameObject.layer == placedArea.layer)
                 {
-                    areaSize = obj.localScale;
-                    return true;
+                    return obj.localScale;
                 }
             }
-            return false;
+            return CalculatePrefabSize(prefab);
         }
 
         /// <summary>
@@ -265,10 +260,7 @@ namespace LevelEditor
                 objectIDs[gimmickName] = objectID;
                 objectID++;
 
-                if (TryGetPlacedAreaSize(prefab, out prefabSize) == false)
-                {
-                    prefabSize = CalculatePrefabSize(prefab);
-                }
+                prefabSize = GetPlacedAreaSize(prefab);
                 database.objectData.Add(new ObjectData(gimmickName, objectID, prefabSize, prefab));
             }
 
@@ -299,7 +291,6 @@ namespace LevelEditor
                                               rotation,
                                               scale,
                                               database.objectData[objectIDs[gimmickName]].ID);
-
             }
         }
     }

@@ -35,6 +35,8 @@ public class PlayerMove : MonoBehaviour
     public UnityEvent OnInteractWithFloorStart { get; private set; } = new UnityEvent();
     public UnityEvent OnInteractWithFloorEnd { get; private set; } = new UnityEvent();
 
+    public UnityEvent<bool> OnMove { get; private set; } = new UnityEvent<bool>();
+
     private void OnEnable()
     {
         currentFloor = null;
@@ -85,6 +87,11 @@ public class PlayerMove : MonoBehaviour
             rigid.velocity = realMovement;
             realMovement.y = 0.0f;
             transform.rotation = Quaternion.LookRotation(realMovement);
+            OnMove?.Invoke(true);
+        }
+        else
+        {
+            OnMove?.Invoke(false);
         }
         rigid.velocity *= 0.9f;
 

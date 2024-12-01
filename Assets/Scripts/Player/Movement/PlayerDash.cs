@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerDash : MonoBehaviour
@@ -15,6 +16,8 @@ public class PlayerDash : MonoBehaviour
     private float dashCoolTime = 1.5f;
     private float elaspedTime = 0.0f;
     private bool canDash = true;
+
+    public UnityEvent<bool> OnDashEvent = new UnityEvent<bool>();
 
     private void Start()
     {
@@ -63,6 +66,7 @@ public class PlayerDash : MonoBehaviour
             return;
 
         status.IsDashing = true;
+        OnDashEvent?.Invoke(true);
         canDash = false;
 
         dashDirection = rigid.transform.forward * status.DashSpeed;
@@ -75,6 +79,7 @@ public class PlayerDash : MonoBehaviour
     {
         yield return waitForDashSeconds;
         status.IsDashing = false;
+        OnDashEvent?.Invoke(false);
         rigid.velocity = Vector3.zero;
     }
 }

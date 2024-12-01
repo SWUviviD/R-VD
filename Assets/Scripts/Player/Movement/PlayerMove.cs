@@ -201,4 +201,9 @@ public class PlayerMove : MonoBehaviour
     {
         MoveDirection = obj.ReadValue<Vector2>();
     }
+
+    public void SetPosition(Vector3 _newPos)
+    {
+        transform.position = _newPos + Vector3.up * rayLength;
+    }
 }

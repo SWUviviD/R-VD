@@ -32,7 +32,7 @@ public class SaveLoadView : MonoBehaviour
     {
         if (inputFileName.text == string.Empty) return;
 
-        MapLoadManager.Instance.LoadMap(FileName);
+        MapLoadManager.Instance.LoadMapInEditor(FileName);
 
         //if (SerializeManager.Instance.IsFileExist(FileName) == false) return;
 

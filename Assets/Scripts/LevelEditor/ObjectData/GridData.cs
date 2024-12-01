@@ -148,13 +148,9 @@ namespace LevelEditor
             List<GimmickDataBase> result = new List<GimmickDataBase>();
             foreach (var obj in placedObjects)
             {
-                if (obj.GimmickStatusData != null)
+                if (obj != null && obj.GimmickStatusData != null)
                 {
                     result.Add(obj.GimmickStatusData.GimmickDataBase);
-                }
-                else
-                {
-                    // 기믹이 아닌 기본 블록들
                 }
             }
 

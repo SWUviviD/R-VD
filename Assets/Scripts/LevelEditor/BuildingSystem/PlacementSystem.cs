@@ -257,20 +257,21 @@ namespace LevelEditor
             {
                 prefab = AddressableAssetsManager.Instance.SyncLoadObject(address, address) as GameObject;
 
-                objectIDs[gimmickName] = objectID;
                 objectID++;
+                objectIDs[gimmickName] = objectID;
 
                 prefabSize = GetPlacedAreaSize(prefab);
                 database.objectData.Add(new ObjectData(gimmickName, objectID, prefabSize, prefab));
             }
 
-            prefab = database.objectData[objectIDs[gimmickName]].Prefab;
+            int selectedObjectIndex = database.objectData.FindIndex(data => data.ID == objectIDs[gimmickName]);
+            prefab = database.objectData[selectedObjectIndex].Prefab;
             int index = objectPlacer.PlaceObject(gimmickName,
                                                  position,
                                                  rotation,
                                                  scale,
                                                  totalBounds.center,
-                                                 database.objectData[objectIDs[gimmickName]].Size,
+                                                 database.objectData[selectedObjectIndex].Size,
                                                  prefab);
 
             if (index != -1)
@@ -290,7 +291,7 @@ namespace LevelEditor
                                               position,
                                               rotation,
                                               scale,
-                                              database.objectData[objectIDs[gimmickName]].ID);
+                                              database.objectData[selectedObjectIndex].ID);
             }
         }
     }

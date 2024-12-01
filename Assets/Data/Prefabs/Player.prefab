@@ -463,6 +463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 363087976228707313}
+  trSpine: {fileID: 3071359191036189828}
 --- !u!1001 &6080817441331701344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -560,6 +561,12 @@ PrefabInstance:
 --- !u!95 &363087976228707313 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: e2bcccf204302d54b82997dac0ef5614,
+    type: 3}
+  m_PrefabInstance: {fileID: 6080817441331701344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3071359191036189828 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -72954969040045340, guid: e2bcccf204302d54b82997dac0ef5614,
     type: 3}
   m_PrefabInstance: {fileID: 6080817441331701344}
   m_PrefabAsset: {fileID: 0}

@@ -23,7 +23,17 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach(var galaxy in mapData.GalaxyGimmickDataList)
+        foreach (var levelObject in mapData.LevelEditObjectList)
+        {
+            // 인스턴스 생성
+            LevelEditObject instance = CreateGimmick<LevelEditObject>(levelObject.Address);
+            // 인스턴스에 데이터 세팅
+            instance.GimmickData.Set(levelObject);
+            // 기믹이 동작할 수 있도록 생성
+            instance.SetGimmick();
+        }
+
+        foreach (var galaxy in mapData.GalaxyGimmickDataList)
         {
             // 인스턴스 생성
             GalaxyGimmick instance = CreateGimmick<GalaxyGimmick>(galaxy.Address);
@@ -111,14 +121,10 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-
-        foreach (var levelObject in mapData.LevelEditObjectList)
+        if(mapData.PlayerPositionSettor != null)
         {
-            // 인스턴스 생성
-            LevelEditObject instance = CreateGimmick<LevelEditObject>(levelObject.Address);
-            // 인스턴스에 데이터 세팅
-            instance.GimmickData.Set(levelObject);
-            // 기믹이 동작할 수 있도록 생성
+            PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(mapData.PlayerPositionSettor.Address);
+            instance.GimmickData.Set(mapData.PlayerPositionSettor);
             instance.SetGimmick();
         }
     }

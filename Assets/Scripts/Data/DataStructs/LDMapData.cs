@@ -25,6 +25,8 @@ namespace LocalData
 
         [MemoryPackInclude] public List<LDLevelEditObject> LevelEditObjectList { get; set; }
 
+        [MemoryPackInclude] public LDPlayerPositionSettor PlayerPositionSettor { get; set; }    
+
         public LDMapData()
         {
             BlinkBoardDataList = new List<LDBlinkBoardData>();

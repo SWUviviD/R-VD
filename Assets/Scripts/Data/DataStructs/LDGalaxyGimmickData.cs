@@ -19,5 +19,18 @@ namespace LocalData
 
         [MemoryPackInclude]
         public int Damage { get; set; } = 2;
+
+        [MemoryPackInclude]
+        public float Size { get; set; } = 1f;
+
+
+        [MemoryPackInclude]
+        public float RotationSpeed { get; set; } = 10f;
+
+        [MemoryPackInclude]
+        public float MinDisappearTime { get; set; } = 2f;
+
+        [MemoryPackInclude]
+        public float MaxDisappearTime { get; set; } = 5f;
     }
 }

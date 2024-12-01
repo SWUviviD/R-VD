@@ -28,61 +28,6 @@ public class ChasingStarProp : GimmickDataBase
     /// </summary>
     public void SetPosition()
     {
-        if (sc.starList.Length == 1)
-        {
-            transform.position = new Vector3(panel.transform.position.x, transform.position.y, panel.transform.position.z);
-        }
-        else if (sc.starList.Length == 2)
-        {
-            if (sc.currentStarIndex == 0)
-            {
-                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
-            }
-
-            else if (sc.currentStarIndex == 1)
-            {
-                transform.position = new Vector3(panel.transform.position.x - 2 * move, transform.position.y, panel.transform.position.z - 2 * move);
-            }
-        }
-        else if (sc.starList.Length == 3)
-        {
-            if (sc.currentStarIndex == 0)
-            {
-                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
-            }
-
-            else if (sc.currentStarIndex == 1)
-            {
-                transform.position = new Vector3(panel.transform.position.x - 2 * move, transform.position.y, panel.transform.position.z - 2 * move);
-            }
-
-            else if (sc.currentStarIndex == 2)
-            { 
-                transform.position = new Vector3(panel.transform.position.x - 2 * move, panel.transform.position.y, panel.transform.position.z + 2 * move);
-            }
-        }
-        else if (sc.starList.Length == 4)
-        {
-            if (sc.currentStarIndex == 0)
-            {
-                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z + move);
-            }
-
-            else if (sc.currentStarIndex == 1)
-            {
-                transform.position = new Vector3(panel.transform.position.x - move, transform.position.y, panel.transform.position.z + move);
-            }
-
-            else if (sc.currentStarIndex == 2)
-            {
-                transform.position = new Vector3(panel.transform.position.x + move, transform.position.y, panel.transform.position.z - move);
-            }
-
-            else if (sc.currentStarIndex == 3)
-            {
-                transform.position = new Vector3(panel.transform.position.x - move, transform.position.y, panel.transform.position.z - move);
-            }
-        }
     }
 
     public void StartFalling(float speed, float playerDamage)
@@ -101,7 +46,7 @@ public class ChasingStarProp : GimmickDataBase
     {
         if (isFalling)
         {
-            transform.position += Vector3.down * Time.deltaTime * 10 * Data.StarFallSpeed;
+            //transform.position += Vector3.down * Time.deltaTime * 10 * Data.StarFallSpeed;
         }
     }
 
@@ -112,32 +57,32 @@ public class ChasingStarProp : GimmickDataBase
     /// <param name="other"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        // 플레이어와 충돌했을 때
-        if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
-        {
-            collision.gameObject.GetComponent<PlayerHp>().Damage(Data.Damage); // 데미지
+        //// 플레이어와 충돌했을 때
+        //if (collision.gameObject.TryGetComponent(out PlayerStatus playerStatus))
+        //{
+        //    collision.gameObject.GetComponent<PlayerHp>().Damage(Data.Damage); // 데미지
 
-            Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
-            if (playerRb != null)
-            {
-                // 넉백 방향 계산
-                Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
+        //    Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+        //    if (playerRb != null)
+        //    {
+        //        // 넉백 방향 계산
+        //        Vector3 knockbackDir = (collision.transform.position - transform.position).normalized;
 
-                knockbackDir.y = 0;
-                knockbackDir.Normalize();
+        //        knockbackDir.y = 0;
+        //        knockbackDir.Normalize();
 
-                // 대쉬 여부에 따른 넉백 거리
-                if (playerStatus.IsDashing) // 대쉬 상태면
-                {
-                    playerRb.AddForce(knockbackDir * (Data.KnockbackForce * 1.5f), ForceMode.Impulse); // 넉백 거리 증가
-                    playerStatus.IsDashing = false;
-                }
-                else // 대쉬 상태가 아니면
-                {
-                    playerRb.AddForce(knockbackDir * Data.KnockbackForce, ForceMode.Impulse); // 일반 넉백 거리
-                }
-            }
-        }
+        //        // 대쉬 여부에 따른 넉백 거리
+        //        if (playerStatus.IsDashing) // 대쉬 상태면
+        //        {
+        //            playerRb.AddForce(knockbackDir * (Data.KnockbackForce * 1.5f), ForceMode.Impulse); // 넉백 거리 증가
+        //            playerStatus.IsDashing = false;
+        //        }
+        //        else // 대쉬 상태가 아니면
+        //        {
+        //            playerRb.AddForce(knockbackDir * Data.KnockbackForce, ForceMode.Impulse); // 일반 넉백 거리
+        //        }
+        //    }
+        //}
         ResetStar();
     }
 

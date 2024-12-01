@@ -12,22 +12,48 @@ namespace LocalData
     public partial class LDChasingGimmickData : LDGimmickDataBase
     {
         [MemoryPackInclude]
-        public float StarFallSpeed { get; set; } = 4f;
+        public Vector3 ChaseFloorScale { get; set; } = Vector3.one;
+
 
         [MemoryPackInclude]
-        public float ResponeTime { get; set; } = 2f;
+        public int SmallStarCount { get; set; } = 3;
 
         [MemoryPackInclude]
-        public int TotalNum { get; set; } = 4;
+        public float SmallStarStartDelay { get; set; } = 0.5f;
 
         [MemoryPackInclude]
-        public int Damage { get; set; } = 2;
+        public float SmallStarFallingIntervalTime { get; set; } = 0.5f;
 
         [MemoryPackInclude]
-        public float KnockbackForce { get; set; } = 120f;
+        public float SmallStarCoolTime { get; set; } = 3f;
+
+
 
         [MemoryPackInclude]
-        public List<ChasingStarProp> starListPrefab;
+        public int MediumStarCount { get; set; } = 2;
+
+        [MemoryPackInclude]
+        public float MediumStarStartDelay { get; set; } = 2.5f;
+
+        [MemoryPackInclude]
+        public float MediumStarFallingIntervalTime { get; set; } = 1f;
+
+        [MemoryPackInclude]
+        public float MediumStarCoolTime { get; set; } = 4f;
+
+
+
+        [MemoryPackInclude]
+        public int BigStarCount { get; set; } = 1;
+
+        [MemoryPackInclude]
+        public float BigStarStartDelay { get; set; } = 5f;
+
+        [MemoryPackInclude]
+        public float BigStarFallingIntervalTime { get; set; } = 0f;
+
+        [MemoryPackInclude]
+        public float BigStarCoolTime { get; set; } = 5f;
     }
 
 }

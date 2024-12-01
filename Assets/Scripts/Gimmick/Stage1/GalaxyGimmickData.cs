@@ -17,6 +17,22 @@ public class GalaxyGimmickData : GimmickDataBase
     [field: SerializeField]
     public int Damage { get; set; } = 2;
 
+    [GimmickData("기믹 크기")]
+    [field: SerializeField]
+    public float Size { get; set; } = 1f;
+
+    [GimmickData("오브젝트 가시화 시간")]
+    [field: SerializeField]
+    public float RotationSpeed { get; set; } = 10f;
+
+    [GimmickData("오브젝트 가시화 시간")]
+    [field: SerializeField]
+    public float MinDisappearTime { get; set; } = 2f;
+
+    [GimmickData("오브젝트 가시화 시간")]
+    [field: SerializeField]
+    public float MaxDisappearTime { get; set; } = 5f;
+
     public override void SaveGimmickData(in LDMapData _mapData)
     {
         var sdGalaxyData = new LDGalaxyGimmickData();
@@ -24,6 +40,11 @@ public class GalaxyGimmickData : GimmickDataBase
         sdGalaxyData.VisibleDuration = VisibleDuration;
         sdGalaxyData.KnockbackForce = KnockbackForce;
         sdGalaxyData.Damage = Damage;
+        sdGalaxyData.Size = Size;
+
+        sdGalaxyData.RotationSpeed = RotationSpeed;
+        sdGalaxyData.MinDisappearTime = MinDisappearTime;
+        sdGalaxyData.MaxDisappearTime = MaxDisappearTime;
 
         foreach (var kvPoint in DictPoint)
         {
@@ -33,6 +54,7 @@ public class GalaxyGimmickData : GimmickDataBase
         sdGalaxyData.Position = trGimmick.position;
         sdGalaxyData.Rotation = trGimmick.rotation.eulerAngles;
         sdGalaxyData.Scale = trGimmick.localScale;
+        sdGalaxyData.Address = address;
 
         _mapData.GalaxyGimmickDataList.Add(sdGalaxyData);
     }
@@ -50,5 +72,11 @@ public class GalaxyGimmickData : GimmickDataBase
         VisibleDuration = sdGalaxyData.VisibleDuration;
         KnockbackForce = sdGalaxyData.KnockbackForce;
         Damage = sdGalaxyData.Damage;
+
+        Size = sdGalaxyData.Size;
+
+        RotationSpeed = sdGalaxyData.RotationSpeed;
+        MinDisappearTime = sdGalaxyData.MinDisappearTime;
+        MaxDisappearTime = sdGalaxyData.MaxDisappearTime;
     }
 }

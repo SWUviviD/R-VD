@@ -2,73 +2,186 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChasingGimmick : GimmickBase<ChasingGimmickData>
+public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
 {
-    [SerializeField] public ChasingStarProp[] starList;
-    public int currentStarIndex;
+    private enum StarSize
+    {
+        Small,
+        Medium,
+        Large
+    }
+
+    private enum WFSType
+    {
+        StartDelay,
+        IntervalTime,
+        CoolTime,
+    }
+
+    private struct ShootingStarData
+    {
+        public int Count { get; private set; }
+        public WaitForSeconds StartDelay { get; private set; }
+        public WaitForSeconds IntervalTime { get; private set; }
+        public WaitForSeconds CoolTime { get; private set; }
+
+        public ShootingStarData(int _count, float _startDelay, float _intervalTime, float _coolTime)
+        {
+            Count = _count;
+            StartDelay = new WaitForSeconds(_startDelay);
+            IntervalTime = new WaitForSeconds(_intervalTime);
+            CoolTime = new WaitForSeconds(_coolTime);
+        }
+    }
+
+    [SerializeField] private Transform coverArea;
+    [SerializeField] public GameObject[] starPrefab;
+
+    private List<ShootingStarData> WFSLists;
+    private List<List<FallingStar>> starLists;
+
+
+    private PlayerMove playerMove;
+    private Bounds bound;
 
     protected override void Init()
     {
-        // 별똥별 관리 배열 초기화
-        starList = new ChasingStarProp[gimmickData.TotalNum];
-
-        if (starList.Length == 1)
-        {
-            starList[0] = Instantiate(gimmickData.starListPrefab[0]);
-        }
-        else if (starList.Length == 2)
-        {
-            starList[0] = Instantiate(gimmickData.starListPrefab[1]);
-            starList[1] = Instantiate(gimmickData.starListPrefab[3]);
-        }
-        else if (starList.Length == 3)
-        {
-            starList[0] = Instantiate(gimmickData.starListPrefab[1]);
-            starList[1] = Instantiate(gimmickData.starListPrefab[3]);
-            starList[2] = Instantiate(gimmickData.starListPrefab[3]);
-        }
-        else if (starList.Length == 4)
-        {
-            starList[0] = Instantiate(gimmickData.starListPrefab[2]);
-            starList[1] = Instantiate(gimmickData.starListPrefab[2]);
-            starList[2] = Instantiate(gimmickData.starListPrefab[2]);
-            starList[3] = Instantiate(gimmickData.starListPrefab[2]);
-        }
-
-        // 프리팹 비가시화
-        for (int i = 0; i < starList.Length; i++)
-        {
-            starList[i].gameObject.SetActive(false);
-        }
     }
 
+    [ContextMenu("SetGimmick")]
     public override void SetGimmick()
     {
-        currentStarIndex = 0;
-    }
+        StopAllCoroutines();
 
-    protected override string GetAddress()
-    {
-        return "Assets/Data/Prefabs/Gimmick/Chasing.prefab";
-    }
+        coverArea.localScale = gimmickData.ChaseFloorScale;
+        coverArea.GetComponent<Renderer>().enabled = false;
+        bound = coverArea.GetComponent<Collider>().bounds;
 
-    private IEnumerator DropStars()
-    {
-        while (true)
+        PrepareStarList();
+
+        foreach (var list in starLists)
         {
-            starList[currentStarIndex].StartFalling(gimmickData.StarFallSpeed, gimmickData.Damage);
-            yield return new WaitForSeconds(gimmickData.ResponeTime);
-            currentStarIndex = (currentStarIndex + 1) % starList.Length;
-
-            if (currentStarIndex == 0)
+            foreach(var star in list)
             {
-                foreach (var star in starList) star.ResetStar();
+                star.SetGimmick();
             }
         }
     }
 
-    private void OnEnable()
+    private void PrepareStarList()
     {
-        StartCoroutine(DropStars());
+        ClearStarList();
+
+        int length = starPrefab.Length;
+
+        starLists = new List<List<FallingStar>>(length);
+        WFSLists = new List<ShootingStarData>(length);
+
+        StarSize size = StarSize.Small;
+
+        int starCount = 0;
+        for (int i = 0; i < length; ++i)
+        {
+            starLists.Add(new List<FallingStar>());
+
+            switch (size)
+            {
+                case StarSize.Small:
+                    {
+                        starCount = gimmickData.SmallStarCount * 2;
+
+                        WFSLists.Add(new ShootingStarData(
+                            gimmickData.SmallStarCount,
+                            gimmickData.SmallStarStartDelay,
+                            gimmickData.SmallStarFallingIntervalTime,
+                            gimmickData.SmallStarCoolTime));
+                        break;
+                    }
+                case StarSize.Medium:
+                    {
+                        starCount = gimmickData.MediumStarCount * 2;
+
+                        WFSLists.Add(new ShootingStarData(
+                            gimmickData.MediumStarCount,
+                            gimmickData.MediumStarStartDelay,
+                            gimmickData.MediumStarFallingIntervalTime,
+                            gimmickData.MediumStarCoolTime));
+                        break;
+                    }
+                case StarSize.Large:
+                    {
+                        starCount = gimmickData.BigStarCount * 2;
+
+                        WFSLists.Add(new ShootingStarData(
+                            gimmickData.BigStarCount,
+                            gimmickData.BigStarStartDelay,
+                            gimmickData.BigStarFallingIntervalTime,
+                            gimmickData.BigStarCoolTime));
+                        break;
+                    }
+            }
+
+            for(int j = 0; j < starCount; ++j)
+            {
+                GameObject newStar = Instantiate(starPrefab[(int)size], Vector3.zero, transform.rotation);
+                newStar.transform.parent = transform;
+                FallingStar star = newStar.GetComponent<FallingStar>();
+                star.Init();
+                starLists[i].Add(star);
+            }
+
+            ++size;
+        }
+    }
+
+    private void ClearStarList()
+    {
+        if (starLists == null)
+            return;
+
+        for(int i = 0, length = starPrefab.Length; i< length; ++i)
+        {
+            foreach(FallingStar newStar in starLists[i])
+            {
+                Destroy(newStar);
+            }
+        }
+    }
+
+    private IEnumerator CoStartShootingStars(StarSize _starSize)
+    {
+        List<FallingStar> list = starLists[(int)_starSize];
+        ShootingStarData data = WFSLists[(int)_starSize];
+
+        yield return data.StartDelay;
+
+        while(true)
+        {
+            for(int i = 0; i< data.Count; ++i)
+            {
+                list[i].StartFalling(playerMove.GetPosition(), bound);
+                yield return data.IntervalTime;
+            }
+
+            yield return data.CoolTime;
+        }
+    }
+
+    public void InteractStart(GameObject player)
+    {
+        playerMove = player.GetComponent<PlayerMove>();
+        if (playerMove == null)
+            return;
+
+        for(int i = 0, length = starPrefab.Length; i < length; ++i)
+        {
+            StartCoroutine(CoStartShootingStars((StarSize) i));
+        }
+    }
+
+    public void InteractEnd(GameObject player)
+    {
+        playerMove = null;
+        StopAllCoroutines();
     }
 }

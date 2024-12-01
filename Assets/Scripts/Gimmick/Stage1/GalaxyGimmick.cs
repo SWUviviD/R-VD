@@ -1,50 +1,34 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
 {
-    [SerializeField] private float rotationSpeed;  // 회전 속도
-    [SerializeField] private float minDisappearTime; // 사라지는 최소 시간
-    [SerializeField] private float maxDisappearTime; // 사라지는 최대 시간
     [SerializeField] GameObject GalaxyObject;
 
 
     private Rigidbody rb;
-    private Renderer galRenderer;
+    private Renderer[] galRenderer;
     private Collider galCollider;
     private Coroutine disappearCoroutine;
 
     protected override void Init()
     {
-        // 추가 작업 없음
+        rb = GetComponent<Rigidbody>();
+        galCollider = GalaxyObject.GetComponent<Collider>();
+        galRenderer = GalaxyObject.GetComponentsInChildren<Renderer>();
     }
 
     public override void SetGimmick()
     {
-        rotationSpeed = 10f; 
-        minDisappearTime = 2f; 
-        maxDisappearTime = 5f; 
+        GalaxyObject.transform.localScale = Vector3.one * gimmickData.Size;
+
+        disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
     }
 
     protected override string GetAddress()
     {
         return "Assets/Data/Prefabs/Gimmick/Galaxy.prefab";
-    }
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        galRenderer = GetComponent<Renderer>();
-        galCollider = GetComponent<Collider>();
-    }
-
-
-    /// <summary>
-    /// 가시화-비가시화 상태의 코루틴 지정
-    /// </summary>
-    private void OnEnable()
-    {
-        disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
     }
 
     private void OnDisable()
@@ -61,7 +45,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
     /// </summary>
     private void FixedUpdate()
     {
-        transform.Rotate(0f, -rotationSpeed, 0f, Space.Self);
+        transform.Rotate(0f, 0f, -gimmickData.RotationSpeed, Space.Self);
     }
 
 
@@ -74,15 +58,15 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         while (true)
         {
             // 오브젝트 가시화, 충돌 처리
-            galRenderer.enabled = true;
+            galRenderer.ForEach(_ => _.enabled = true);
             galCollider.enabled = true;
             yield return new WaitForSeconds(gimmickData.VisibleDuration);
 
             // 오브젝트 비가시화, 충돌 x
             // 하위 렌더러 전체 비가시화 처리 필요함
-            galRenderer.enabled = false;
+            galRenderer.ForEach(_ => _.enabled = false);
             galCollider.enabled = false;
-            yield return new WaitForSeconds(Random.Range(2, 6));
+            yield return new WaitForSeconds(Random.Range(gimmickData.MinDisappearTime, gimmickData.MaxDisappearTime));
         }
     }
 

@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class PlayerHp : MonoBehaviour
 {
     [SerializeField] private PlayerStatus status;
+    [SerializeField] private PlayerMove move;
 
     public Vector3 RespawnPoint { get; set; }
     private int currentHp;
@@ -29,11 +30,12 @@ public class PlayerHp : MonoBehaviour
         //FullHeal();
 
         OnDeath?.Invoke();
-
-        // 플레이어 위치를 리스폰 지점으로 이동
-        transform.position = RespawnPoint;
     }
 
+    public void Respawn()
+    {
+        move.SetPosition(RespawnPoint);
+    }
 
     /// <summary>
     /// 일정량(amount) 체력 감소

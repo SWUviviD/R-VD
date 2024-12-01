@@ -5,39 +5,85 @@ using UnityEngine;
 
 public class ChasingGimmickData : GimmickDataBase
 {
-    [GimmickData("별똥별이 떨어지는 시간(s)")]
-    [field: SerializeField]
-    public float StarFallSpeed { get; set; } = 4f;
+    [GimmickData("추격 범위")]
+    [field :SerializeField]
+    public Vector3 ChaseFloorScale { get; set; } = Vector3.one;
 
-    [GimmickData("별똥별의 리스폰 간격(s)")]
-    [field: SerializeField]
-    public float ResponeTime { get; set; } = 2f;
+    
+    [GimmickData("작은 별이 연속으로 떨어지는 갯수")]
+    [field :SerializeField]
+    public int SmallStarCount { get; set; } = 3;
 
-    [GimmickData("전체 별똥별 개수(1~4개)")]
+    [GimmickData("작은 별이 떨어지기 시작한 시간")]
     [field: SerializeField]
-    public int TotalNum { get; set; } = 4;
+    public float SmallStarStartDelay { get; set; } = 0.5f;
 
-    [GimmickData("충돌 시 플레이어의 데미지량")]
-    [field: SerializeField]
-    public int Damage { get; set; } = 2;
+    [GimmickData("작은 별이 연속으로 떨어질 때 그 간격 시간")]
+    [field :SerializeField]
+    public float SmallStarFallingIntervalTime{ get; set; } = 0.5f;
 
-    [GimmickData("넉백 세기 (기본 120f)")]
-    [field: SerializeField]
-    public float KnockbackForce { get; set; } = 120f;
+    [GimmickData("작은 별들이 떨어진 후 쿨타임")]
+    [field :SerializeField]
+    public float SmallStarCoolTime{ get; set; } = 3f;
 
-    [GimmickData("! 건들지 말아주세요 !\n(별똥별 prefab 인식용 배열)")]
+    
+
+    [GimmickData("중간 별이 연속으로 떨어지는 갯수")]
+    [field :SerializeField]
+    public int MediumStarCount { get; set; } = 2;
+
+    [GimmickData("중간 별이 떨어지기 시작한 시간")]
     [field: SerializeField]
-    public List<ChasingStarProp> starListPrefab;
+    public float MediumStarStartDelay { get; set; } = 2.5f;
+
+    [GimmickData("중간 별이 연속으로 떨어질 때 그 간격 시간")]
+    [field :SerializeField]
+    public float MediumStarFallingIntervalTime { get; set; } = 1f;
+
+    [GimmickData("중간 별들이 떨어진 후 쿨타임")]
+    [field :SerializeField]
+    public float MediumStarCoolTime { get; set; } = 4f;
+
+    
+
+    [GimmickData("큰 별이 연속으로 떨어지는 갯수")]
+    [field :SerializeField]
+    public int BigStarCount { get; set; } = 1;
+
+    [GimmickData("큰 별이 떨어지기 시작한 시간")]
+    [field: SerializeField]
+    public float BigStarStartDelay { get; set; } = 5f;
+
+    [GimmickData("큰 별이 연속으로 떨어질 때 그 간격 시간")]
+    [field :SerializeField]
+    public float BigStarFallingIntervalTime { get; set; } = 0f;
+
+    [GimmickData("큰 별들이 떨어진 후 쿨타임")]
+    [field :SerializeField]
+    public float BigStarCoolTime { get; set; } = 5f;
+
+
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {
         var sdChasingData = new LDChasingGimmickData();
 
-        sdChasingData.StarFallSpeed = StarFallSpeed;
-        sdChasingData.ResponeTime = ResponeTime;
-        sdChasingData.TotalNum = TotalNum;
-        sdChasingData.Damage = Damage;
-        sdChasingData.KnockbackForce = KnockbackForce;
+        sdChasingData.ChaseFloorScale = ChaseFloorScale;
+
+        sdChasingData.SmallStarCount = SmallStarCount;
+        sdChasingData.SmallStarStartDelay = SmallStarStartDelay;
+        sdChasingData.SmallStarFallingIntervalTime = SmallStarFallingIntervalTime;
+        sdChasingData.SmallStarCoolTime = SmallStarCoolTime;
+
+        sdChasingData.MediumStarCount = MediumStarCount;
+        sdChasingData.MediumStarStartDelay = MediumStarStartDelay;
+        sdChasingData.MediumStarFallingIntervalTime = MediumStarFallingIntervalTime;
+        sdChasingData.MediumStarCoolTime = MediumStarCoolTime;
+
+        sdChasingData.BigStarCount = BigStarCount;
+        sdChasingData.BigStarStartDelay = BigStarStartDelay;
+        sdChasingData.BigStarFallingIntervalTime = BigStarFallingIntervalTime;
+        sdChasingData.BigStarCoolTime = BigStarCoolTime;
 
         foreach(var kvPoint in DictPoint)
         {
@@ -47,8 +93,7 @@ public class ChasingGimmickData : GimmickDataBase
         sdChasingData.Position = trGimmick.position;
         sdChasingData.Rotation = trGimmick.rotation.eulerAngles;
         sdChasingData.Scale = trGimmick.localScale;
-
-        sdChasingData.starListPrefab = new List<ChasingStarProp>(starListPrefab);
+        sdChasingData.Address = address;
 
         _mapData.ChasingGimmickDataList.Add(sdChasingData);
     }
@@ -63,12 +108,21 @@ public class ChasingGimmickData : GimmickDataBase
         trGimmick.rotation = Quaternion.Euler(sdChasingData.Rotation);
         trGimmick.localScale = sdChasingData.Scale;
 
-        StarFallSpeed = sdChasingData.StarFallSpeed;
-        ResponeTime = sdChasingData.ResponeTime;
-        TotalNum = sdChasingData.TotalNum;
-        Damage = sdChasingData.Damage;
-        KnockbackForce = sdChasingData.KnockbackForce;
+        ChaseFloorScale = sdChasingData.ChaseFloorScale;
 
-        starListPrefab = new List<ChasingStarProp>(sdChasingData.starListPrefab);
+        SmallStarCount = sdChasingData.SmallStarCount;
+        SmallStarStartDelay = sdChasingData.SmallStarStartDelay;
+        SmallStarFallingIntervalTime = sdChasingData.SmallStarFallingIntervalTime;
+        SmallStarCoolTime = sdChasingData.SmallStarCoolTime;
+
+        MediumStarCount = sdChasingData.MediumStarCount;
+        MediumStarStartDelay = sdChasingData.MediumStarStartDelay;
+        MediumStarFallingIntervalTime = sdChasingData.MediumStarFallingIntervalTime;
+        MediumStarCoolTime = sdChasingData.MediumStarCoolTime;
+
+        BigStarCount = sdChasingData.BigStarCount;
+        BigStarStartDelay = sdChasingData.BigStarStartDelay;
+        BigStarFallingIntervalTime = sdChasingData.BigStarFallingIntervalTime;
+        BigStarCoolTime = sdChasingData.BigStarCoolTime;
     }
 }

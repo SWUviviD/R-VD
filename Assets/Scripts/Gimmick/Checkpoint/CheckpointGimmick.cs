@@ -22,7 +22,8 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
     /// <summary> 플레이어 레이어마스크 </summary>
     [SerializeField] private LayerMask playerMask;
     /// <summary> 플레이어 스테이터스 </summary>
-    private PlayerHp playerStatus;
+    private PlayerHp playerHp;
+    private PlayerMove move;
 
     private const string RespawnPointName = "RespawnPoint";
 
@@ -54,26 +55,27 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
     {
         if (playerMask.value == (1 << other.gameObject.layer))
         {
-            if (playerStatus == null)
+            if (playerHp == null)
             {
-                playerStatus = other.GetComponentInParent <PlayerHp>();
-                playerStatus.RespawnPoint = respawnPoint.position;
+                playerHp = other.GetComponentInParent <PlayerHp>();
+                move = other.GetComponentInParent <PlayerMove>();
+                playerHp.RespawnPoint = respawnPoint.position;
             }
         }
     }
 
     private void Update()
     {
-        if (playerStatus == null)
+        if (playerHp == null)
         {
             return;
         }    
 
         // 플레이어 추락 시 데미지 및 리스폰 이동
-        if (playerStatus.transform.position.y < gimmickData.DropRespawnHeight)
+        if (playerHp.transform.position.y < gimmickData.DropRespawnHeight)
         {
-            playerStatus.Damage(gimmickData.DropDamage);
-            playerStatus.transform.position = respawnPoint.position;
+            playerHp.Damage(gimmickData.DropDamage);
+            move.SetPosition(respawnPoint.position);
         }
     }
 }

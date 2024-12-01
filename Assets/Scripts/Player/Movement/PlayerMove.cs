@@ -208,4 +208,9 @@ public class PlayerMove : MonoBehaviour
     {
         transform.position = _newPos + Vector3.up * rayLength;
     }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position - transform.up * heightLength;
+    }
 }

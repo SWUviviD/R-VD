@@ -8,7 +8,7 @@ public class LevelEditObject : GimmickBase<LevelEditObjectData>
 
     public override void SetGimmick()
     {
-        editorObject.SetActive(false);
+        //editorObject.SetActive(false);
     }
 
     protected override void Init()

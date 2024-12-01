@@ -18,7 +18,7 @@ public class RunandgunGimmick : GimmickBase<RunandgunGimmickData>, IFloorInterac
     public override void SetGimmick()
     {
         // 필요 시 추가 구현
-        editorObj.SetActive(false);
+        //editorObj.SetActive(false);
     }
 
     /// <summary>

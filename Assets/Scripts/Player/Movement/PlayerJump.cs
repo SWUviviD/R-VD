@@ -12,6 +12,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private PlayerStatus status;
     [SerializeField] private PlayerMove move;
     [SerializeField] AnimationCurve curveY = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+    [SerializeField] private PlayerAnimation playerAnimation;
 
     public bool IsJumping { get; private set; }
     private bool isFalling = false;
@@ -50,6 +51,11 @@ public class PlayerJump : MonoBehaviour
             Vector3 realFalling = rigid.velocity;
             realFalling.y -= status.FallingSpeed;
             rigid.velocity = realFalling;
+            if (realFalling.y < 0f && isFalling == false)
+            {
+                isFalling = true;
+                playerAnimation.SetFalling(true);
+            }
         }
     }
 
@@ -65,7 +71,9 @@ public class PlayerJump : MonoBehaviour
             return;
         }
         rigid.AddForce(Vector3.up * status.JumpHeight, ForceMode.Impulse);
-
+        playerAnimation.JumpStart();
+        playerAnimation.SetFalling(true);
+        isFalling = true;
     }
 
     public void Jump(float force)
@@ -75,6 +83,9 @@ public class PlayerJump : MonoBehaviour
             return;
         }
         rigid.AddForce(Vector3.up * force, ForceMode.Impulse);
+        playerAnimation.JumpStart();
+        playerAnimation.SetFalling(false);
+        isFalling = true;
     }
 
     private void OnDisable()

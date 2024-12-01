@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private PlayerStatus status;
     [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerAnimation playerAnimation;
     [SerializeField] private float maxVelocity;
 
     [Space]
@@ -58,6 +59,7 @@ public class PlayerMove : MonoBehaviour
             Rebound(ref hit);
             FloorInteract(ref hit);
             isSlope = AddSpeed(in hit);
+            playerAnimation.JumpEnd();
         }
         else
         {

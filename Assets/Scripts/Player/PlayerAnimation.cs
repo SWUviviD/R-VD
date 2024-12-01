@@ -90,6 +90,22 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetTrigger(OnDeathID);
     }
 
+    public void JumpStart()
+    {
+        animator.SetBool(IsJumpingID, true);
+    }
+
+    public void JumpEnd()
+    {
+        animator.SetBool(IsJumpingID, false);
+        animator.SetBool(IsFallingID, false);
+    }
+
+    public void SetFalling(bool isFalling)
+    {
+        animator.SetBool(IsFallingID, isFalling);
+    }
+
     private void LateUpdate()
     {
         if(isShooting) trSpine.localRotation = Quaternion.Euler(Vector3.up * 90f);

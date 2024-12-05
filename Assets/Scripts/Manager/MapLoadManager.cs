@@ -275,6 +275,8 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         {
             placementSystem.CreateGimmick(checkpoint.Address, checkpoint.Position, checkpoint.Rotation, checkpoint.Scale, checkpoint);
         }
+        
+        CameraPathInsertSystem.Instance.LoadPath(mapData.CameraPathList);
     }
 
     /// <summary>

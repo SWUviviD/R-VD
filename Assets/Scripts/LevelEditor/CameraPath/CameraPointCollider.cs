@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LocalData;
 using UnityEngine;
 
 /// <summary>
@@ -45,14 +46,6 @@ public class CameraPointCollider : MonoBehaviour
     
     private void Awake()
     {
-        CameraPathPoint = new CameraPathPoint();
-
-        CameraPathPoint.Position = transform.position;
-        CameraPathPoint.PointV1 = TrPointV1.position;
-        CameraPathPoint.PointV2 = TrPointV2.position;
-        CameraPathPoint.PointV3 = TrPointV3.position;
-        CameraPathPoint.PointV4 = TrPointV4.position;
-
         mainCamera = Camera.main;
     }
 
@@ -83,6 +76,26 @@ public class CameraPointCollider : MonoBehaviour
         pointV3HandleTarget.Set(pointV3Handle);
         pointV4HandleTarget.Set(pointV4Handle);
         handleTarget.Set(pointHandle);
+        
+        CameraPathPoint = new CameraPathPoint();
+
+        CameraPathPoint.Position = transform.position;
+        CameraPathPoint.PointV1 = TrPointV1.position;
+        CameraPathPoint.PointV2 = TrPointV2.position;
+        CameraPathPoint.PointV3 = TrPointV3.position;
+        CameraPathPoint.PointV4 = TrPointV4.position;
+    }
+
+    public void Set(int _index, Action<Transform> _onClickHandle, LDCameraPointData _cameraPointData)
+    {
+        Set(_index, _onClickHandle);
+
+        TrPointV1.position = _cameraPointData.PointV1;
+        TrPointV2.position = _cameraPointData.PointV2;
+        TrPointV3.position = _cameraPointData.PointV3;
+        TrPointV4.position = _cameraPointData.PointV4;
+
+        Refresh();
     }
 
     public void Refresh()

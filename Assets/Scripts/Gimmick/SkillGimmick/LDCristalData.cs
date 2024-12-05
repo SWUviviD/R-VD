@@ -24,5 +24,9 @@ namespace LocalData
 
         [MemoryPackInclude]
         public float MoveMoveTime { get; set; } = 3f;
+
+
+        [MemoryPackInclude]
+        public float PlateSize { get; set; } = 1f;
     }
 }

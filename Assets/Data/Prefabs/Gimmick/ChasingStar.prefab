@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 1218714957963290656}
   - component: {fileID: 2235950860804591017}
   - component: {fileID: 4833471963325380763}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChasingStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,16 +172,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointList: []
-  <ChaseFloorScale>k__BackingField: {x: 1, y: 1, z: 5}
+  <ChaseFloorScale>k__BackingField: {x: 1, y: 1, z: 1}
   <SmallStarCount>k__BackingField: 3
   <SmallStarStartDelay>k__BackingField: 0.5
   <SmallStarFallingIntervalTime>k__BackingField: 0.3
-  <SmallStarCoolTime>k__BackingField: 4
+  <SmallStarCoolTime>k__BackingField: 1
   <MediumStarCount>k__BackingField: 2
   <MediumStarStartDelay>k__BackingField: 2.5
   <MediumStarFallingIntervalTime>k__BackingField: 1
-  <MediumStarCoolTime>k__BackingField: 7
+  <MediumStarCoolTime>k__BackingField: 3
   <BigStarCount>k__BackingField: 1
   <BigStarStartDelay>k__BackingField: 5
   <BigStarFallingIntervalTime>k__BackingField: 0
-  <BigStarCoolTime>k__BackingField: 9
+  <BigStarCoolTime>k__BackingField: 3.5

@@ -27,7 +27,7 @@ public class PlayerHPUI : MonoBehaviour
 
     private int currentShowStarCount = 0;
 
-    private void Awake()
+    private void Start()
     {
         if(player == null)
         {
@@ -66,11 +66,8 @@ public class PlayerHPUI : MonoBehaviour
         line.localScale = starHideScale;
         isStarShown = false;
         isStarShowing = false;
-    }
 
-    private void Start()
-    {
-        StartCoroutine (CoHpHide());
+        StartCoroutine(CoHpHide());
     }
 
     private void OnDamaged(int _currentHP)

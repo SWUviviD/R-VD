@@ -155,11 +155,13 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
 
         yield return data.StartDelay;
 
+        int currentIndex = 0;
         while(true)
         {
             for(int i = 0; i< data.Count; ++i)
             {
-                list[i].StartFalling(playerMove.GetPosition(), bound);
+                list[currentIndex].StartFalling(playerMove.GetPosition(), bound);
+                currentIndex = (currentIndex + 1) % list.Count;
                 yield return data.IntervalTime;
             }
 

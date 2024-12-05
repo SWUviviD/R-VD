@@ -24,6 +24,14 @@ public class CristalData : GimmickDataBase
     [field: SerializeField]
     public float MoveMoveTime { get; set; } = 3f;
 
+    
+    [GimmickData("움직이는 크리스탈: 좌에서 우로 이동하는 시간")]
+    [field: SerializeField]
+    public float PlateSize { get; set; } = 1f;
+
+
+
+
     public override void SaveGimmickData(in LDMapData _mapData)
     {
         base.SaveGimmickData(_mapData);
@@ -44,6 +52,7 @@ public class CristalData : GimmickDataBase
         sdCristalData.BlinkShowTime = BlinkShowTime;
         sdCristalData.BlinkHideTime = BlinkHideTime;
         sdCristalData.MoveMoveTime = MoveMoveTime;
+        sdCristalData.PlateSize = PlateSize;
 
         _mapData.CristalGimmickDataList.Add(sdCristalData);
     }
@@ -67,6 +76,6 @@ public class CristalData : GimmickDataBase
         BlinkShowTime = ldCristalData.BlinkShowTime;
         BlinkHideTime = ldCristalData.BlinkHideTime;
         MoveMoveTime = ldCristalData.MoveMoveTime;
-
+        PlateSize = ldCristalData.PlateSize;
     }
 }

@@ -1,6 +1,8 @@
+using LocalData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cristal;
 
 public class CheckpointData : GimmickDataBase
 {
@@ -19,4 +21,39 @@ public class CheckpointData : GimmickDataBase
     [GimmickData("추락 시 플레이어가 받는 데미지")]
     [field: SerializeField]
     public int DropDamage { get; set; } = 2;
+
+    public override void SaveGimmickData(in LDMapData _mapData)
+    {
+        base.SaveGimmickData(_mapData);
+
+        var sdCheckpointData = new LDCheckpointData();
+
+        sdCheckpointData.Position = trGimmick.position;
+        sdCheckpointData.Rotation = trGimmick.rotation.eulerAngles;
+        sdCheckpointData.Scale = trGimmick.localScale;
+        sdCheckpointData.Address = address;
+
+        sdCheckpointData.AreaSize = AreaSize;
+        sdCheckpointData.RespawnPoint = RespawnPoint;
+        sdCheckpointData.DropRespawnHeight = DropRespawnHeight;
+        sdCheckpointData.DropDamage = DropDamage;
+
+        _mapData.CheckpointList.Add(sdCheckpointData);
+    }
+
+    public override void Set(LDGimmickDataBase _ldData)
+    {
+        base.Set(_ldData);
+
+        var ldCheckpointData = (LDCheckpointData) _ldData;
+
+        trGimmick.position = ldCheckpointData.Position;
+        trGimmick.rotation = Quaternion.Euler(ldCheckpointData.Rotation);
+        trGimmick.localScale = ldCheckpointData.Scale;
+
+        AreaSize = ldCheckpointData.AreaSize;
+        RespawnPoint = ldCheckpointData.RespawnPoint;
+        DropRespawnHeight = ldCheckpointData.DropRespawnHeight;
+        DropDamage = ldCheckpointData.DropDamage;
+    }
 }

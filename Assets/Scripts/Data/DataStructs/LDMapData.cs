@@ -25,7 +25,9 @@ namespace LocalData
 
         [MemoryPackInclude] public List<LDLevelEditObject> LevelEditObjectList { get; set; }
 
-        [MemoryPackInclude] public LDPlayerPositionSettor PlayerPositionSettor { get; set; }    
+        [MemoryPackInclude] public LDPlayerPositionSettor PlayerPositionSettor { get; set; }
+
+        [MemoryPackInclude] public List<LDCheckpointData> CheckpointList { get; set; }
 
         public LDMapData()
         {
@@ -42,6 +44,8 @@ namespace LocalData
 
             CameraPathList = new List<CameraPathPoint>();
             LevelEditObjectList = new List<LDLevelEditObject>();
+
+            CheckpointList = new List<LDCheckpointData>();
         }
     }
 }

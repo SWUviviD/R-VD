@@ -127,6 +127,13 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.GimmickData.Set(mapData.PlayerPositionSettor);
             instance.SetGimmick();
         }
+
+        foreach(var checkpoint in mapData.CheckpointList)
+        {
+            CheckpointGimmick instance = CreateGimmick<CheckpointGimmick>(checkpoint.Address);
+            instance.GimmickData.Set(checkpoint);
+            instance.SetGimmick();
+        }
     }
 
     public void LoadMapInEditor(string _mapName)
@@ -262,6 +269,11 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(mapData.PlayerPositionSettor.Address);
             //instance.GimmickData.Set(mapData.PlayerPositionSettor);
             //instance.SetGimmick();
+        }
+
+        foreach (var checkpoint in mapData.CheckpointList)
+        {
+            placementSystem.CreateGimmick(checkpoint.Address, checkpoint.Position, checkpoint.Rotation, checkpoint.Scale, checkpoint);
         }
     }
 

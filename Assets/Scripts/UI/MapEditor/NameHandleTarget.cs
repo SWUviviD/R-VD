@@ -16,18 +16,15 @@ public class NameHandleTarget : MonoBehaviour
 
     private Camera mainCamera;
     private RectTransform rcCanvas;
-    
-    private void Awake()
+
+    public void Set(NameHandleData _data)
     {
         nameHandle = null;
         handleData = null;
         hasNameHandle = false;
         mainCamera = Camera.main;
         rcCanvas = NameHandleManager.Instance.CanvasRectTransform;
-    }
-
-    public void Set(NameHandleData _data)
-    {
+        
         handleData = _data;
     }
 

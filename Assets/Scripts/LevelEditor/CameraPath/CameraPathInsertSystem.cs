@@ -135,6 +135,19 @@ public class CameraPathInsertSystem : MonoSingleton<CameraPathInsertSystem>
         RefreshLineDrawer();
     }
 
+    public void LoadPath(List<LDCameraPointData> _cameraPointDatas)
+    {
+        foreach (LDCameraPointData ldCameraPoint in _cameraPointDatas)
+        {
+            var cameraPoint = Instantiate(prefabCameraPoint, ldCameraPoint.Position, Quaternion.identity, transform);
+        
+            cameraPoint.Set(CameraPointList.Count, OnClickPathHandle, ldCameraPoint);
+            CameraPointList.Add(cameraPoint);
+        }
+
+        RefreshLineDrawer();
+    }
+
     private void InsertPath(Vector3 _position)
     {
         

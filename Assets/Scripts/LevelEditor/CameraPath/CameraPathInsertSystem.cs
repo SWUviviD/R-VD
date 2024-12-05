@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Defines;
 using LevelEditor;
+using LocalData;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -40,6 +41,21 @@ public class CameraPathPoint
         Vector3 v2v3tov3v4 = v2v3 + (v3v4 - v2v3) * _t;
 
         return v1v2tov2v3 + (v2v3tov3v4 - v1v2tov2v3) * _t;
+    }
+
+    public LDCameraPointData ToLocalData()
+    {
+        LDCameraPointData result = new LDCameraPointData();
+
+        result.Position = Position;
+        result.PointV1 = PointV1;
+        result.PointV2 = PointV2;
+        result.PointV3 = PointV3;
+        result.PointV4 = PointV4;
+        result.RatioV1V2 = RatioV1V2;
+        result.RatioV2V3 = RatioV2V3;
+        result.RatioV3V4 = RatioV3V4;
+        return result;
     }
 }
 
@@ -81,9 +97,9 @@ public class CameraPathInsertSystem : MonoSingleton<CameraPathInsertSystem>
         }
     }
 
-    public List<CameraPathPoint> GetCameraPath()
+    public List<LDCameraPointData> GetCameraPath()
     {
-        return CameraPointList.ConvertAll(_ => _.CameraPathPoint);
+        return CameraPointList.ConvertAll(_ => _.CameraPathPoint.ToLocalData());
     }
 
     public void SetInsertMode(GimmickDefines.CameraPathInsertMode _insertMode)

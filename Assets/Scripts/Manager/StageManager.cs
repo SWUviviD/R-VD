@@ -22,7 +22,7 @@ public class StageManager : MonoSingleton<StageManager>
     /// <summary>
     /// 스테이지를 저장한다.
     /// </summary>
-    public void SaveStage(string _fileName, List<GimmickDataBase> _gimmickDataBases, List<CameraPathPoint> _cameraPath)
+    public void SaveStage(string _fileName, List<GimmickDataBase> _gimmickDataBases, List<LDCameraPointData> _cameraPath)
     {
         mapDatas.Clear();
         mapDatas.Add(new LDMapData());

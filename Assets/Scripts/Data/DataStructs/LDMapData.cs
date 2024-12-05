@@ -21,7 +21,7 @@ namespace LocalData
         [MemoryPackInclude] public List<LDGreenCristalGimmickData> GreenCristalGimmickDataList { get; set; }
         [MemoryPackInclude] public List<LDBubbleData> BubbleDataList { get; set; }
 
-        [MemoryPackInclude] public List<CameraPathPoint> CameraPathList { get; set; }
+        [MemoryPackInclude] public List<LDCameraPointData> CameraPathList { get; set; }
 
         [MemoryPackInclude] public List<LDLevelEditObject> LevelEditObjectList { get; set; }
 
@@ -42,7 +42,7 @@ namespace LocalData
             GreenCristalGimmickDataList = new List<LDGreenCristalGimmickData> ();
             BubbleDataList = new List<LDBubbleData>();
 
-            CameraPathList = new List<CameraPathPoint>();
+            CameraPathList = new List<LDCameraPointData>();
             LevelEditObjectList = new List<LDLevelEditObject>();
 
             CheckpointList = new List<LDCheckpointData>();

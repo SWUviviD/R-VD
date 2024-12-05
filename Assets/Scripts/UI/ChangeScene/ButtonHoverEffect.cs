@@ -12,7 +12,6 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Pointer Entered");
         transform.localScale = originalScale * 1.5f; // 크기를 1.5배로 키움
     }
 

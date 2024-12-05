@@ -45,7 +45,7 @@ public class CristalData : GimmickDataBase
 
         foreach (var kvPoint in DictPoint)
         {
-            sdCristalData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
+            sdCristalData.DictPoint.Add(kvPoint.Key, kvPoint.Value.localPosition);
         }
 
         sdCristalData.CristalType = CristalType;

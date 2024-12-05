@@ -66,7 +66,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
             // 하위 렌더러 전체 비가시화 처리 필요함
             galRenderer.ForEach(_ => _.enabled = false);
             galCollider.enabled = false;
-            yield return new WaitForSeconds(Random.Range(gimmickData.MinDisappearTime, gimmickData.MaxDisappearTime));
+            yield return new WaitForSeconds(gimmickData.MaxDisappearTime);
         }
     }
 

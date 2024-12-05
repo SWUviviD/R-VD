@@ -23,6 +23,9 @@ namespace LocalData
         [MemoryPackInclude]
         public int DropDamage { get; set; } = 2;
 
+        [MemoryPackInclude]
+        public bool FullHealWhenFirstTouched { get; set; } = true;
+
     }
 
 }

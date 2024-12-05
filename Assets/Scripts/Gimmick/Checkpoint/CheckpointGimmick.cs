@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckpointGimmick : GimmickBase<CheckpointData>
+public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
     [Header("Checkpoint Area")]
     /// <summary> 체크 포인트 영역 </summary>
@@ -27,17 +27,23 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private const string RespawnPointName = "RespawnPoint";
 
+    private int myIndex = -1;
+    private bool isActive = false;
+    private bool isFirst = false;
+
     protected override void Init()
     {
+        myIndex = CheckpointGimmick.AddCheckpoint(this);
+
         boxCollider.center = new Vector3(0f, gimmickData.AreaSize.y / 2f, 0f);
         boxCollider.size = gimmickData.AreaSize;
 
         cubeArea.SetActive(false);
         prevRespawnPoint.SetActive(false);
-#if UNITY_EDITOR
-        cubeArea.SetActive(true);
-        prevRespawnPoint.SetActive(true);
-#endif
+        //#if UNITY_EDITOR
+        //        cubeArea.SetActive(true);
+        //        prevRespawnPoint.SetActive(true);
+        //#endif
     }
 
     public override void SetGimmick()
@@ -53,20 +59,28 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (playerMask.value == (1 << other.gameObject.layer))
+        Transform parent = other.transform.parent;
+        if (parent.TryGetComponent<PlayerHp>(out var hp))
         {
             if (playerHp == null)
             {
-                playerHp = other.GetComponentInParent <PlayerHp>();
-                move = other.GetComponentInParent <PlayerMove>();
-                playerHp.RespawnPoint = respawnPoint.position;
+                playerHp = hp;
+                move = parent.GetComponentInParent <PlayerMove>();
+            }
+            playerHp.RespawnPoint = respawnPoint.position;
+            isActive = true;
+
+            if(gimmickData.FullHealWhenFirstTouched == true && isFirst == false)
+            {
+                playerHp.FullHeal();
+                isFirst = true;
             }
         }
     }
 
     private void Update()
     {
-        if (playerHp == null)
+        if (isActive == false)
         {
             return;
         }    
@@ -77,5 +91,32 @@ public class CheckpointGimmick : GimmickBase<CheckpointData>
             playerHp.Damage(gimmickData.DropDamage);
             move.SetPosition(respawnPoint.position);
         }
+    }
+
+    private void CheckPointDisable()
+    {
+        isActive = false;
+    }
+}
+
+public partial class CheckpointGimmick : GimmickBase<CheckpointData>
+{
+    private static List<CheckpointGimmick> checkpointList = new List<CheckpointGimmick>();
+    private static int currentCheckpointIndex = -1;
+
+    private static int AddCheckpoint(CheckpointGimmick _checkPoint)
+    {
+        checkpointList.Add(_checkPoint);
+        return checkpointList.Count - 1;
+    }
+
+    private static void SetCheckPoint(int _index)
+    {
+        if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpointList.Count)
+        {
+            checkpointList[currentCheckpointIndex].CheckPointDisable();
+        }
+
+        currentCheckpointIndex = _index;
     }
 }

@@ -22,6 +22,10 @@ public class CheckpointData : GimmickDataBase
     [field: SerializeField]
     public int DropDamage { get; set; } = 2;
 
+    [GimmickData("추락 시 플레이어가 받는 데미지")]
+    [field: SerializeField]
+    public bool FullHealWhenFirstTouched{ get; set; } = true;
+
     public override void SaveGimmickData(in LDMapData _mapData)
     {
         base.SaveGimmickData(_mapData);
@@ -37,6 +41,7 @@ public class CheckpointData : GimmickDataBase
         sdCheckpointData.RespawnPoint = RespawnPoint;
         sdCheckpointData.DropRespawnHeight = DropRespawnHeight;
         sdCheckpointData.DropDamage = DropDamage;
+        sdCheckpointData.FullHealWhenFirstTouched = FullHealWhenFirstTouched;
 
         _mapData.CheckpointList.Add(sdCheckpointData);
     }
@@ -55,5 +60,6 @@ public class CheckpointData : GimmickDataBase
         RespawnPoint = ldCheckpointData.RespawnPoint;
         DropRespawnHeight = ldCheckpointData.DropRespawnHeight;
         DropDamage = ldCheckpointData.DropDamage;
+        FullHealWhenFirstTouched = ldCheckpointData.FullHealWhenFirstTouched;
     }
 }

@@ -65,7 +65,7 @@ public class CristalData : GimmickDataBase
 
         foreach (var kv in ldCristalData.DictPoint)
         {
-            DictPoint[kv.Key].position = kv.Value;
+            DictPoint[kv.Key].localPosition = kv.Value;
         }
 
         trGimmick.position = ldCristalData.Position;

@@ -43,6 +43,13 @@ public class CameraPathPoint
         return v1v2tov2v3 + (v2v3tov3v4 - v1v2tov2v3) * _t;
     }
 
+    public void DrawGizmo()
+    {
+        Gizmos.DrawLine(PointV1, PointV2);
+        Gizmos.DrawLine(PointV2, PointV3);
+        Gizmos.DrawLine(PointV3, PointV4);
+    }
+
     public LDCameraPointData ToLocalData()
     {
         LDCameraPointData result = new LDCameraPointData();

@@ -28,5 +28,23 @@ namespace LocalData
         public float RatioV2V3 { get; set; }
         [MemoryPackInclude]
         public float RatioV3V4 { get; set; }
+
+        public CameraPathPoint ToCameraPathPoint()
+        {
+            CameraPathPoint result = new CameraPathPoint();
+
+            result.Position = Position;
+            
+            result.PointV1 = PointV1;
+            result.PointV2 = PointV2;
+            result.PointV3 = PointV3;
+            result.PointV4 = PointV4;
+            
+            result.RatioV1V2 = RatioV1V2;
+            result.RatioV2V3 = RatioV2V3;
+            result.RatioV3V4 = RatioV3V4;
+            
+            return result;
+        }
     }
 }

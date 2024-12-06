@@ -9,6 +9,7 @@ public class PlayerPositionSettor : GimmickBase<PlayerPositionSettorData>
 
     private const string playerPrefabAddress = "Assets/Data/Prefabs/Player.prefab";
     private GameObject player;
+    public GameObject Player => player;
     private PlayerMove move;
 
     protected override void Init()

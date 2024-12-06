@@ -51,6 +51,8 @@ public class CameraController : MonoSingleton<CameraController>
     /// <summary> 카메라 기능을 동작시킨다 </summary>
     public void Play()
     {
+        if (CameraPointList.Count <= 0)
+            return;
         isInit = true;
     }
     

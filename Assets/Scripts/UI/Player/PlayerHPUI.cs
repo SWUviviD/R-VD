@@ -29,10 +29,9 @@ public class PlayerHPUI : MonoBehaviour
 
     private void Start()
     {
-        if(player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-        }
+        player = GameManager.Instance.Player?.transform;
+        if (player == null)
+            gameObject.SetActive(false);
 
         playerHP = player.GetComponent<PlayerHp>();
         playerMove = player.GetComponent <PlayerMove>();

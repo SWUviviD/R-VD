@@ -10,7 +10,7 @@ using UnityEngine;
 public class MapLoadManager : MonoSingleton<MapLoadManager>
 {
     public LDMapData MapData { get; private set; }
-    public void LoadMap(string _mapName)
+    public GameObject LoadMap(string _mapName)
     {
         MapData = StageManager.Instance.LoadStage(_mapName);
 
@@ -122,11 +122,14 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
+        GameObject player = null;
         if (MapData.PlayerPositionSettor != null)
         {
             PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(MapData.PlayerPositionSettor.Address);
             instance.GimmickData.Set(MapData.PlayerPositionSettor);
             instance.SetGimmick();
+
+            player = instance.Player;
         }
 
         foreach(var checkpoint in MapData.CheckpointList)
@@ -135,6 +138,8 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.GimmickData.Set(checkpoint);
             instance.SetGimmick();
         }
+
+        return player;
     }
 
     public void LoadMapInEditor(string _mapName)

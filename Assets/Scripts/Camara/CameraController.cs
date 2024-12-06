@@ -9,12 +9,12 @@ using UnityEngine;
 /// 경로는 직선이기 때문에 원이 닿으면 교점이 두 개가 생긴다. 두 교점중에 더 멀리(플레이어의 뒤) 있는 교점이 카메라의 위치가 된다.
 /// 경로에 원이 닿았는지 검사는 2D 형태로 이루어진다. 이는 위에서 아래를 내려다 봤을때 기준으로 이루어져 있기 때문에, X축과 Z축을 기준으로 검사한다. 
 /// </summary>
-public class CameraController : MonoBehaviour
+public class CameraController : MonoSingleton<CameraController>
 {
     /// <summary>
     /// 플레이어의 트랜스폼
     /// </summary>
-    [SerializeField] private Transform trPlayerPoint;
+    private Transform trPlayerPoint;
     /// <summary>
     /// 플레이어에서부터 카메라까지의 거리
     /// </summary>
@@ -27,13 +27,17 @@ public class CameraController : MonoBehaviour
 
     private bool isInit = false;
 
+    public void SetPlayer(Transform _trPlayer)
+    {
+        trPlayerPoint = _trPlayer;
+    }
+
     /// <summary>
     /// 경로를 입력받는다. 카메라가 실질적으로 동작한다.
     /// </summary>
     public void Set(List<CameraPathPoint> _path)
     {
         CameraPointList = _path;
-        isInit = true;
     }
 
     /// <summary>
@@ -43,15 +47,36 @@ public class CameraController : MonoBehaviour
     {
         isInit = false;
     }
+
+    /// <summary> 카메라 기능을 동작시킨다 </summary>
+    public void Play()
+    {
+        isInit = true;
+    }
     
-    private void Update()
+    private void LateUpdate()
     {
         if (isInit == false) return;
 
         // 카메라의 위치를 계속 갱신한다.
         Camera.main.transform.position = GetCameraPosition(trPlayerPoint.position, cameraDist);
+        Camera.main.transform.forward = (trPlayerPoint.position - Camera.main.transform.position).normalized;
     }
 
+    private void OnDrawGizmos()
+    {
+        if (isInit == false) return;
+        
+        CameraPointList[0].DrawGizmo();
+        for (int i = 1, count = CameraPointList.Count; i < count; ++i)
+        {
+            Gizmos.DrawLine(CameraPointList[i - 1].PointV4, CameraPointList[i].PointV1);
+            CameraPointList[i].DrawGizmo();
+        }
+        
+        Gizmos.DrawSphere(trPlayerPoint.position, cameraDist);
+    }
+    
     /// <summary>
     /// 플레이어의 위치와 거리에 따른 카메라의 위치를 계산하는 함수. 
     /// </summary>

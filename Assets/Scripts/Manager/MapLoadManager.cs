@@ -9,11 +9,12 @@ using UnityEngine;
 /// </summary>
 public class MapLoadManager : MonoSingleton<MapLoadManager>
 {
+    public LDMapData MapData { get; private set; }
     public void LoadMap(string _mapName)
     {
-        var mapData = StageManager.Instance.LoadStage(_mapName);
+        MapData = StageManager.Instance.LoadStage(_mapName);
 
-        foreach (var blinkBoard in mapData.BlinkBoardDataList)
+        foreach (var blinkBoard in MapData.BlinkBoardDataList)
         {
             // 인스턴스 생성
             BlinkBoardGimmick instance = CreateGimmick<BlinkBoardGimmick>(blinkBoard.Address);
@@ -23,7 +24,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var levelObject in mapData.LevelEditObjectList)
+        foreach (var levelObject in MapData.LevelEditObjectList)
         {
             // 인스턴스 생성
             LevelEditObject instance = CreateGimmick<LevelEditObject>(levelObject.Address);
@@ -33,7 +34,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var galaxy in mapData.GalaxyGimmickDataList)
+        foreach (var galaxy in MapData.GalaxyGimmickDataList)
         {
             // 인스턴스 생성
             GalaxyGimmick instance = CreateGimmick<GalaxyGimmick>(galaxy.Address);
@@ -43,7 +44,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var runandgun in mapData.RunandgunGimmickDataList)
+        foreach (var runandgun in MapData.RunandgunGimmickDataList)
         {
             // 인스턴스 생성
             GameObject instance = CreateGimmickObj(runandgun.Address);
@@ -59,7 +60,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             }
         }
 
-        foreach (var chasingGimmick in mapData.ChasingGimmickDataList)
+        foreach (var chasingGimmick in MapData.ChasingGimmickDataList)
         {
             // 인스턴스 생성
             ChasingGimmick instance = CreateGimmick<ChasingGimmick>(chasingGimmick.Address);
@@ -71,7 +72,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
 
 
 
-        foreach (var balancePlate in mapData.BalancePlateDataList)
+        foreach (var balancePlate in MapData.BalancePlateDataList)
         {
             // 인스턴스 생성
             BalancePlate instance = CreateGimmick<BalancePlate>(balancePlate.Address);
@@ -81,7 +82,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var orangeCristal in mapData.CristalGimmickDataList)
+        foreach (var orangeCristal in MapData.CristalGimmickDataList)
         {
             // 인스턴스 생성
             OrangeCristalGimmick instance = CreateGimmick<OrangeCristalGimmick>(orangeCristal.Address);
@@ -91,7 +92,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var blueCristal in mapData.BlueCristalGimmickDataList)
+        foreach (var blueCristal in MapData.BlueCristalGimmickDataList)
         {
             // 인스턴스 생성
             BlueCristalGimmick instance = CreateGimmick<BlueCristalGimmick>(blueCristal.Address);
@@ -101,7 +102,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var greenCristal in mapData.GreenCristalGimmickDataList)
+        foreach (var greenCristal in MapData.GreenCristalGimmickDataList)
         {
             // 인스턴스 생성
             GreenCristalGimmick instance = CreateGimmick<GreenCristalGimmick>(greenCristal.Address);
@@ -111,7 +112,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        foreach (var Bubble in mapData.BubbleDataList)
+        foreach (var Bubble in MapData.BubbleDataList)
         {
             // 인스턴스 생성
             Bubble instance = CreateGimmick<Bubble>(Bubble.Address);
@@ -121,14 +122,14 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             instance.SetGimmick();
         }
 
-        if (mapData.PlayerPositionSettor != null)
+        if (MapData.PlayerPositionSettor != null)
         {
-            PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(mapData.PlayerPositionSettor.Address);
-            instance.GimmickData.Set(mapData.PlayerPositionSettor);
+            PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(MapData.PlayerPositionSettor.Address);
+            instance.GimmickData.Set(MapData.PlayerPositionSettor);
             instance.SetGimmick();
         }
 
-        foreach(var checkpoint in mapData.CheckpointList)
+        foreach(var checkpoint in MapData.CheckpointList)
         {
             CheckpointGimmick instance = CreateGimmick<CheckpointGimmick>(checkpoint.Address);
             instance.GimmickData.Set(checkpoint);
@@ -139,9 +140,9 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
     public void LoadMapInEditor(string _mapName)
     {
         var placementSystem = FindObjectOfType<PlacementSystem>();
-        var mapData = StageManager.Instance.LoadStage(_mapName);
+        MapData = StageManager.Instance.LoadStage(_mapName);
 
-        foreach (var blinkBoard in mapData.BlinkBoardDataList)
+        foreach (var blinkBoard in MapData.BlinkBoardDataList)
         {
             placementSystem.CreateGimmick(blinkBoard.Address, blinkBoard.Position, blinkBoard.Rotation, blinkBoard.Scale, blinkBoard);
             //// 인스턴스 생성
@@ -152,7 +153,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var levelObject in mapData.LevelEditObjectList)
+        foreach (var levelObject in MapData.LevelEditObjectList)
         {
             placementSystem.CreateGimmick(levelObject.Address, levelObject.Position, levelObject.Rotation, levelObject.Scale, levelObject);
             //// 인스턴스 생성
@@ -163,7 +164,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var galaxy in mapData.GalaxyGimmickDataList)
+        foreach (var galaxy in MapData.GalaxyGimmickDataList)
         {
             placementSystem.CreateGimmick(galaxy.Address, galaxy.Position, galaxy.Rotation, galaxy.Scale, galaxy);
             //// 인스턴스 생성
@@ -174,7 +175,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var runandgun in mapData.RunandgunGimmickDataList)
+        foreach (var runandgun in MapData.RunandgunGimmickDataList)
         {
             placementSystem.CreateGimmick(runandgun.Address, runandgun.Position, runandgun.Rotation, runandgun.Scale, runandgun);
             //// 인스턴스 생성
@@ -191,7 +192,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //}
         }
 
-        foreach (var chasingGimmick in mapData.ChasingGimmickDataList)
+        foreach (var chasingGimmick in MapData.ChasingGimmickDataList)
         {
             placementSystem.CreateGimmick(chasingGimmick.Address, chasingGimmick.Position, chasingGimmick.Rotation, chasingGimmick.Scale, chasingGimmick);
             //// 인스턴스 생성
@@ -204,7 +205,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
 
 
 
-        foreach (var balancePlate in mapData.BalancePlateDataList)
+        foreach (var balancePlate in MapData.BalancePlateDataList)
         {
             placementSystem.CreateGimmick(balancePlate.Address, balancePlate.Position, balancePlate.Rotation, balancePlate.Scale, balancePlate);
             //// 인스턴스 생성
@@ -215,7 +216,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var orangeCristal in mapData.CristalGimmickDataList)
+        foreach (var orangeCristal in MapData.CristalGimmickDataList)
         {
             placementSystem.CreateGimmick(orangeCristal.Address, orangeCristal.Position, orangeCristal.Rotation, orangeCristal.Scale, orangeCristal);
             //// 인스턴스 생성
@@ -226,7 +227,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var blueCristal in mapData.BlueCristalGimmickDataList)
+        foreach (var blueCristal in MapData.BlueCristalGimmickDataList)
         {
             placementSystem.CreateGimmick(blueCristal.Address, blueCristal.Position, blueCristal.Rotation, blueCristal.Scale, blueCristal);
             //// 인스턴스 생성
@@ -237,7 +238,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var greenCristal in mapData.GreenCristalGimmickDataList)
+        foreach (var greenCristal in MapData.GreenCristalGimmickDataList)
         {
             placementSystem.CreateGimmick(greenCristal.Address, greenCristal.Position, greenCristal.Rotation, greenCristal.Scale, greenCristal);
             //// 인스턴스 생성
@@ -248,7 +249,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        foreach (var Bubble in mapData.BubbleDataList)
+        foreach (var Bubble in MapData.BubbleDataList)
         {
             placementSystem.CreateGimmick(Bubble.Address, Bubble.Position, Bubble.Rotation, Bubble.Scale, Bubble);
             //// 인스턴스 생성
@@ -259,24 +260,24 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //instance.SetGimmick();
         }
 
-        if (mapData.PlayerPositionSettor != null)
+        if (MapData.PlayerPositionSettor != null)
         {
-            placementSystem.CreateGimmick(mapData.PlayerPositionSettor.Address,
-                                          mapData.PlayerPositionSettor.Position,
-                                          mapData.PlayerPositionSettor.Rotation,
-                                          mapData.PlayerPositionSettor.Scale,
-                                          mapData.PlayerPositionSettor);
+            placementSystem.CreateGimmick(MapData.PlayerPositionSettor.Address,
+                                          MapData.PlayerPositionSettor.Position,
+                                          MapData.PlayerPositionSettor.Rotation,
+                                          MapData.PlayerPositionSettor.Scale,
+                                          MapData.PlayerPositionSettor);
             //PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(mapData.PlayerPositionSettor.Address);
             //instance.GimmickData.Set(mapData.PlayerPositionSettor);
             //instance.SetGimmick();
         }
 
-        foreach (var checkpoint in mapData.CheckpointList)
+        foreach (var checkpoint in MapData.CheckpointList)
         {
             placementSystem.CreateGimmick(checkpoint.Address, checkpoint.Position, checkpoint.Rotation, checkpoint.Scale, checkpoint);
         }
         
-        CameraPathInsertSystem.Instance.LoadPath(mapData.CameraPathList);
+        CameraPathInsertSystem.Instance.LoadPath(MapData.CameraPathList);
     }
 
     /// <summary>

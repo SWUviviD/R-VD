@@ -12,7 +12,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
-
+    [SerializeField] private AudioSource backgroundSFX;
 
     private void Awake()
     {
@@ -33,11 +33,11 @@ public class GameManager : MonoSingleton<GameManager>
             Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
         }
 
-        IsGamePlaying = true;
         OnGameStart();
+        ResumeGame();
     }
 
-    private void OnGameStart()
+    public void OnGameStart()
     {
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
@@ -107,11 +107,19 @@ public class GameManager : MonoSingleton<GameManager>
     {
         IsGamePlaying = true;
         Time.timeScale = 0f;
+        if (backgroundSFX != null)
+        {
+            backgroundSFX.Pause();
+        }
     }
 
     public void ResumeGame()
     {
         IsGamePlaying = false;
         Time.timeScale = 1f;
+        if (backgroundSFX != null)
+        {
+            backgroundSFX.Play();
+        }
     }
 }

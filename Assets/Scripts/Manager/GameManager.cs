@@ -11,8 +11,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
-
-
+    
     private void Awake()
     {
         // 맵을 로드한다.

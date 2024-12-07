@@ -41,6 +41,8 @@ public class CameraController : MonoSingleton<CameraController>
     /// </summary>
     public List<CameraPathPoint> CameraPointList { get; private set; }
 
+    public Camera MainCamera => mainCamera;
+
     private bool isInit = false;
 
     /// <summary> 카메라가 이동하고자 하는 위치 </summary>

@@ -74,7 +74,15 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(bool isSlope, in RaycastHit hit)
     {
-        Vector3 move = new Vector3(MoveDirection.x, 0f, MoveDirection.y);
+        Vector3 cameraForward = CameraController.Instance.MainCamera.transform.forward;
+        Vector3 cameraRight = CameraController.Instance.MainCamera.transform.right;
+
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        Vector3 move = (cameraRight * MoveDirection.x + cameraForward * MoveDirection.y).normalized;
         Vector3 gravity = Vector3.zero;
         if(isSlope && jump.IsJumping == false)
         {

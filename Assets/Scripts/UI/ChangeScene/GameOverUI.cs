@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public class GameOverUI : MonoBehaviour
 {
     public Image blackOverlay; // 검은 화면
-    public Text gameOverText;  // "Game Over" 텍스트
+    public Image stageText;
+    public Image gameOverText;  // "Game Over" 텍스트
     public Button restartButton, exitButton; // 버튼
     public float fadeSpeed = 1.0f; // 페이드 속도
 
@@ -14,9 +15,13 @@ public class GameOverUI : MonoBehaviour
     private void Start()
     {
         // 텍스트를 처음엔 투명하게 설정
-        Color textColor = gameOverText.color;
-        textColor.a = 0;
-        gameOverText.color = textColor;
+        Color textColor2 = stageText.color;
+        textColor2.a = 0;
+        stageText.color = textColor2;
+
+        Color textColor1 = gameOverText.color;
+        textColor1.a = 0;
+        gameOverText.color = textColor1;
 
         // 버튼 초기 비활성화
         restartButton.gameObject.SetActive(false);
@@ -50,9 +55,12 @@ public class GameOverUI : MonoBehaviour
                 restartButton.gameObject.SetActive(true);
                 exitButton.gameObject.SetActive(true);
 
-                Color textColor = gameOverText.color;
-                textColor.a = 1;
-                gameOverText.color = textColor;
+                Color textColor1 = gameOverText.color;
+                textColor1.a = 1;
+                gameOverText.color = textColor1;
+                Color textColor2 = stageText.color;
+                textColor2.a = 1;
+                stageText.color = textColor2;
             }
         }
     }

@@ -788,6 +788,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8762566378822032502, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
+        type: 3}
+      propertyPath: respawnEffectPrefab
+      value: 
+      objectReference: {fileID: 363095760465021734, guid: 0ae60a1da63daeb4f95f95618a0ad14b,
+        type: 3}
     - target: {fileID: 8771609232296961868, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
         type: 3}
       propertyPath: m_IsTrigger
@@ -884,7 +890,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7481622447196467269, guid: ce88eddfdafaf5b4f9a8d3b901839d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1667947828}
   m_SourcePrefab: {fileID: 100100000, guid: ce88eddfdafaf5b4f9a8d3b901839d9e, type: 3}
 --- !u!1 &380158346
 GameObject:
@@ -1945,6 +1955,33 @@ MonoBehaviour:
   zoomOutMaxTime: 1
   maxZoomOutDistance: 10
   zoomInReturnTime: 0.2
+--- !u!1 &827144626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8701768670318916710, guid: 071a6f8fd9481a84bad32b31af965ad4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1831012909}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &827144627
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827144626}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1025625405
 GameObject:
   m_ObjectHideFlags: 3
@@ -2105,7 +2142,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1036563647}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1482129882
@@ -2328,7 +2366,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1036563647}
   - {fileID: 1706599655}
   - {fileID: 1891312891}
   m_Father: {fileID: 0}
@@ -2480,6 +2517,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8eaba436f9a01a847b3c5e13bd2c46d3, type: 3}
+--- !u!1 &1667947827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7481622447196467269, guid: ce88eddfdafaf5b4f9a8d3b901839d9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 290710085}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1667947828
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667947827}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1688586777
 GameObject:
   m_ObjectHideFlags: 0
@@ -2785,7 +2849,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8701768670318916710, guid: 071a6f8fd9481a84bad32b31af965ad4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 827144627}
   m_SourcePrefab: {fileID: 100100000, guid: 071a6f8fd9481a84bad32b31af965ad4, type: 3}
 --- !u!1 &1849696550
 GameObject:
@@ -3469,7 +3537,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1604082120}
+    m_TransformParent: {fileID: 1193732141}
     m_Modifications:
     - target: {fileID: 1715844447186923847, guid: a2b38149ff80eb64ebc665bbb130f47a,
         type: 3}

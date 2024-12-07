@@ -10,6 +10,7 @@ public class PlayerHp : MonoBehaviour
 
     [SerializeField] private GameObject damageEffectPrefab;
     [SerializeField] private GameObject healEffectPrefab;
+    [SerializeField] private GameObject respawnEffectPrefab;
 
     public Vector3 RespawnPoint { get; set; }
     private int currentHp;
@@ -38,6 +39,12 @@ public class PlayerHp : MonoBehaviour
     public void Respawn()
     {
         move.SetPosition(RespawnPoint);
+        // 이펙트 출력
+        if (damageEffectPrefab != null)
+        {
+            GameObject respawnEffect = Instantiate(respawnEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(respawnEffect, 5f);
+        }
     }
 
     /// <summary>
@@ -51,7 +58,8 @@ public class PlayerHp : MonoBehaviour
         // 이펙트 출력
         if (damageEffectPrefab != null)
         {
-            Instantiate(damageEffectPrefab, transform.position, Quaternion.identity);
+            GameObject damageEffect = Instantiate(damageEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(damageEffect, 5f);
         }
 
         // 사망 처리
@@ -79,6 +87,7 @@ public class PlayerHp : MonoBehaviour
         {
             GameObject healEffect = Instantiate(healEffectPrefab, transform.position, Quaternion.identity);
             healEffect.transform.SetParent(transform);
+            Destroy(healEffect, 5f);
         }
     }
 
@@ -96,6 +105,7 @@ public class PlayerHp : MonoBehaviour
         {
             GameObject healEffect = Instantiate(healEffectPrefab, transform.position, Quaternion.identity);
             healEffect.transform.SetParent(transform);
+            Destroy(healEffect, 5f);
         }
     }
 }

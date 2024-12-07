@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 /// <summary>
 /// 경로를 따라 캐릭터를 따라가는 카메라 컨트롤러.
@@ -37,6 +40,12 @@ public class CameraController : MonoSingleton<CameraController>
     [SerializeField] private float cameraMoveSpeedPerSec;
     
     /// <summary>
+    /// 카메라 높이 오프셋
+    /// </summary>
+    [Header("카메라 높이 오프셋")]
+    [SerializeField] private float cameraHeightOffset;
+    
+    /// <summary>
     /// 카메라 경로 리스트
     /// </summary>
     public List<CameraPathPoint> CameraPointList { get; private set; }
@@ -47,6 +56,11 @@ public class CameraController : MonoSingleton<CameraController>
 
     /// <summary> 카메라가 이동하고자 하는 위치 </summary>
     private Vector3 desiredCameraPosition;
+
+    /// <summary>
+    /// 실제 카메라의 포지션
+    /// </summary>
+    private Vector3 cameraPosition;
 
     public void SetPlayer(Transform _trPlayer)
     {
@@ -73,8 +87,8 @@ public class CameraController : MonoSingleton<CameraController>
     public void Play()
     {
         if (CameraPointList.IsNullOrEmpty()) return;
-        
-        mainCamera.transform.position = GetCameraPosition(trPlayerPoint.position);
+
+        cameraPosition = GetCameraPosition(trPlayerPoint.position);
         isInit = true;
     }
     
@@ -85,15 +99,17 @@ public class CameraController : MonoSingleton<CameraController>
         // 카메라의 위치를 계속 갱신한다.
         desiredCameraPosition = GetCameraPosition(trPlayerPoint.position);
         float moveSpeed = cameraMoveSpeedPerSec * Time.deltaTime;
-        Vector3 toDesired = desiredCameraPosition - mainCamera.transform.position;
+        Vector3 toDesired = desiredCameraPosition - cameraPosition;
         if (toDesired.magnitude > moveSpeed)
         {
-            mainCamera.transform.position += toDesired.normalized * moveSpeed;
+            cameraPosition += toDesired.normalized * moveSpeed;
         }
         else
         {
-            mainCamera.transform.position = desiredCameraPosition;
+            cameraPosition = desiredCameraPosition;
         }
+
+        mainCamera.transform.position = cameraPosition + -mainCamera.transform.forward * cameraDistance + Vector3.down * cameraHeightOffset;
         mainCamera.transform.forward = (trPlayerPoint.position - mainCamera.transform.position).normalized;
     }
 
@@ -107,8 +123,6 @@ public class CameraController : MonoSingleton<CameraController>
             Gizmos.DrawLine(CameraPointList[i - 1].PointV4, CameraPointList[i].PointV1);
             CameraPointList[i].DrawGizmo();
         }
-        
-        Gizmos.DrawSphere(trPlayerPoint.position, cameraDetectRange);
     }
     
     /// <summary>
@@ -153,7 +167,7 @@ public class CameraController : MonoSingleton<CameraController>
             }
         }
 
-        return mainCamera.transform.position;
+        return cameraPosition;
     }
     
     /// <summary>

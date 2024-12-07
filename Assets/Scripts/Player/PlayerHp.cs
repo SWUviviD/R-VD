@@ -40,6 +40,8 @@ public class PlayerHp : MonoBehaviour
     public void Respawn()
     {
         move.SetPosition(RespawnPoint);
+        CameraController.Instance.Reset();
+        CameraController.Instance.Play();
         // 이펙트 출력
         if (damageEffectPrefab != null)
         {

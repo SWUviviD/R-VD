@@ -7,6 +7,8 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
 {
     [SerializeField] GameObject bubbleObject;
     [SerializeField] Collider bubbleCollider;
+    [SerializeField] private Transform deco;
+    [SerializeField] private float decoRotateSpeed = 180f;
 
     private WaitForSeconds resetSeconds;
 
@@ -18,12 +20,21 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     public override void SetGimmick()
     {
         bubbleObject.transform.localScale = Vector3.one * gimmickData.BubbleSize;
+        deco.transform.localScale = Vector3.one * gimmickData.BubbleSize;
 
         resetSeconds = new WaitForSeconds(gimmickData.ResetOffsetTime);
 
         StopAllCoroutines();
         bubbleObject.SetActive(true);
         bubbleCollider.enabled = true;
+    }
+
+    private void Update()
+    {
+        if (deco == null)
+            return;
+
+        deco.transform.Rotate(Vector3.up * decoRotateSpeed * Time.deltaTime);
     }
 
     private IEnumerator BubblePop()

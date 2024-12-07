@@ -8,17 +8,19 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     public GameObject Player { get; private set; }
+    public bool IsGamePlaying { get; private set; }
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
-    
+
+
     private void Awake()
     {
         // 맵을 로드한다.
         Player = MapLoadManager.Instance.LoadMap("map");
         LDMapData mapData = MapLoadManager.Instance.MapData;
 
-        if(Player != null)
+        if (Player != null)
         {
             var cameraController = CameraController.Instance;
             // 카메라가 플레이어를 따라가도록 한다.
@@ -31,6 +33,7 @@ public class GameManager : MonoSingleton<GameManager>
             Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
         }
 
+        IsGamePlaying = true;
         OnGameStart();
     }
 
@@ -38,22 +41,22 @@ public class GameManager : MonoSingleton<GameManager>
     {
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions, 
+                InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Move),
             true);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions, 
+                InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Jump),
             true);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions, 
+                InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Dash),
             true);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions, 
+                InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Magic),
             true);
     }
@@ -98,5 +101,17 @@ public class GameManager : MonoSingleton<GameManager>
             Destroy(clearEffect1, 10f);
             Destroy(clearEffect2, 13f);
         }
+    }
+
+    public void StopGame()
+    {
+        IsGamePlaying = true;
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        IsGamePlaying = false;
+        Time.timeScale = 1f;
     }
 }

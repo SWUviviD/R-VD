@@ -27,13 +27,15 @@ public class SettingUI : MonoBehaviour
         {
             isActive = !isActive;
             panel.SetActive(isActive);
+            if (isActive)
+            {
+                GameManager.Instance.StopGame();
+            }
+            else
+            {
+                GameManager.Instance.ResumeGame();
+            }
         }
-    }
-
-    private void OnClose()
-    {
-        isActive = false;
-        panel.SetActive(isActive);
     }
 
     private void OnRestart()

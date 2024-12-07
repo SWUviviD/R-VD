@@ -9,17 +9,19 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private KeyCode settingKey = KeyCode.Escape;
     [SerializeField] private Button RestartBtn;
     [SerializeField] private Button ExitBtn;
-    [SerializeField] private GameObject panel;
+    [SerializeField] private GameObject background;
+    [SerializeField] private GameObject settingPanel;
     [SerializeField] private AudioSource panelSFX;
 
     private bool isActive = false;
 
     private void Start()
     {
-        UIHelper.OnClick(RestartBtn, OnRestart);
-        UIHelper.OnClick(ExitBtn, OnExit);
+        UIHelper.OnClick(RestartBtn, GameManager.Instance.GameRestart);
+        UIHelper.OnClick(ExitBtn, GameManager.Instance.GameExit);
 
-        panel.SetActive(false);
+        background.SetActive(isActive);
+        settingPanel.SetActive(isActive);
     }
 
     private void Update()
@@ -27,7 +29,8 @@ public class SettingUI : MonoBehaviour
         if (Input.GetKeyDown(settingKey))
         {
             isActive = !isActive;
-            panel.SetActive(isActive);
+            background.SetActive(isActive);
+            settingPanel.SetActive(isActive);
             panelSFX.Play();
             if (isActive)
             {
@@ -38,15 +41,5 @@ public class SettingUI : MonoBehaviour
                 GameManager.Instance.ResumeGame();
             }
         }
-    }
-
-    private void OnRestart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    private void OnExit()
-    {
-        Application.Quit();
     }
 }

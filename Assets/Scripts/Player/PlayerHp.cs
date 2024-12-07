@@ -43,7 +43,7 @@ public class PlayerHp : MonoBehaviour
         CameraController.Instance.Reset();
         CameraController.Instance.Play();
         // 이펙트 출력
-        if (damageEffectPrefab != null)
+        if (respawnEffectPrefab != null)
         {
             GameObject respawnEffect = Instantiate(respawnEffectPrefab, transform.position, Quaternion.identity);
             Destroy(respawnEffect, 5f);

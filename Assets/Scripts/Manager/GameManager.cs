@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using Defines;
 using LocalData;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
     public GameObject Player { get; private set; }
     public bool IsGamePlaying { get; private set; }
+    public bool IsGameOver { get; private set; }
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
@@ -16,24 +18,24 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Awake()
     {
-        // 맵을 로드한다.
-        Player = MapLoadManager.Instance.LoadMap("map");
-        LDMapData mapData = MapLoadManager.Instance.MapData;
+        //// 맵을 로드한다.
+        //Player = MapLoadManager.Instance.LoadMap("map");
+        //LDMapData mapData = MapLoadManager.Instance.MapData;
 
-        if (Player != null)
-        {
-            var cameraController = CameraController.Instance;
-            // 카메라가 플레이어를 따라가도록 한다.
-            cameraController.SetPlayer(Player.transform);
-            // 카메라 경로를 넣고 동작시킨다.
-            cameraController.Set(mapData.CameraPathList.ConvertAll(_ => _.ToCameraPathPoint()));
-            cameraController.Play();
+        //if (Player != null)
+        //{
+        //    var cameraController = CameraController.Instance;
+        //    // 카메라가 플레이어를 따라가도록 한다.
+        //    cameraController.SetPlayer(Player.transform);
+        //    // 카메라 경로를 넣고 동작시킨다.
+        //    cameraController.Set(mapData.CameraPathList.ConvertAll(_ => _.ToCameraPathPoint()));
+        //    cameraController.Play();
 
-            Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
-            Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
-        }
+        //    Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
+        //    Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
+        //}
 
-        OnGameStart();
+        //OnGameStart();
         ResumeGame();
     }
 
@@ -107,7 +109,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void StopGame()
     {
+        if (IsGameOver) return;
+
         IsGamePlaying = true;
+        IsGameOver = false;
         Time.timeScale = 0f;
         if (backgroundSFX != null)
         {
@@ -117,11 +122,30 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void ResumeGame()
     {
+        if (IsGameOver) return;
+
         IsGamePlaying = false;
+        IsGameOver = false;
         Time.timeScale = 1f;
         if (backgroundSFX != null)
         {
             backgroundSFX.Play();
         }
+    }
+
+    public void GameRestart()
+    {
+        IsGameOver = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GameExit()
+    {
+        Application.Quit();
+    }
+
+    public void GameOver()
+    {
+        IsGameOver = true;
     }
 }

@@ -12,6 +12,12 @@ public class GameOverUI : MonoBehaviour
 
     public bool isGameOver = false;
 
+    private void Awake()
+    {
+        UIHelper.OnClick(restartButton, GameManager.Instance.GameRestart);
+        UIHelper.OnClick(exitButton, GameManager.Instance.GameExit);
+    }
+
     private void Start()
     {
         // 텍스트를 처음엔 투명하게 설정
@@ -30,15 +36,10 @@ public class GameOverUI : MonoBehaviour
 
     private void Update()
     {
-        if (isGameOver)
+        if (GameManager.Instance.IsGameOver)
         {
             HandleBlackOverlayFade();
         }
-    }
-
-    public void TriggerGameOver()
-    {
-        isGameOver = true;
     }
 
     private void HandleBlackOverlayFade()
@@ -63,19 +64,5 @@ public class GameOverUI : MonoBehaviour
                 stageText.color = textColor2;
             }
         }
-    }
-
-    public void RestartGame()
-    {
-        // 재시작 처리
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        GameManager gamemng = new GameManager();
-        gamemng.OnGameStart();
-    }
-
-    public void ExitGame()
-    {
-        // 게임 종료
-        Application.Quit();
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// 경로를 따라 캐릭터를 따라가는 카메라 컨트롤러.
@@ -11,21 +13,40 @@ using UnityEngine;
 /// </summary>
 public class CameraController : MonoSingleton<CameraController>
 {
+    [SerializeField] private Camera mainCamera;
     /// <summary>
     /// 플레이어의 트랜스폼
     /// </summary>
     private Transform trPlayerPoint;
     /// <summary>
-    /// 플레이어에서부터 카메라까지의 거리
+    /// 플레이어의 위치에서 카메라 경로를 감지하는 범위
     /// </summary>
-    [SerializeField] private float cameraDist;
+    [Header("플레이어의 위치에서 카메라 경로를 감지하는 범위")]
+    [SerializeField] private float cameraDetectRange;
+
+    /// <summary>
+    /// 플레이어와 카메라간의 거리
+    /// </summary>
+    [Header("플레이어와 카메라간의 거리")]
+    [SerializeField] private float cameraDistance;
+
+    /// <summary>
+    /// 카메라 초당 이동속도
+    /// </summary>
+    [Header("카메라 초당 이동속도")]
+    [SerializeField] private float cameraMoveSpeedPerSec;
     
     /// <summary>
     /// 카메라 경로 리스트
     /// </summary>
     public List<CameraPathPoint> CameraPointList { get; private set; }
 
+    public Camera MainCamera => mainCamera;
+
     private bool isInit = false;
+
+    /// <summary> 카메라가 이동하고자 하는 위치 </summary>
+    private Vector3 desiredCameraPosition;
 
     public void SetPlayer(Transform _trPlayer)
     {
@@ -51,8 +72,9 @@ public class CameraController : MonoSingleton<CameraController>
     /// <summary> 카메라 기능을 동작시킨다 </summary>
     public void Play()
     {
-        if (CameraPointList.Count <= 0)
-            return;
+        if (CameraPointList.IsNullOrEmpty()) return;
+        
+        mainCamera.transform.position = GetCameraPosition(trPlayerPoint.position);
         isInit = true;
     }
     
@@ -61,8 +83,18 @@ public class CameraController : MonoSingleton<CameraController>
         if (isInit == false) return;
 
         // 카메라의 위치를 계속 갱신한다.
-        Camera.main.transform.position = GetCameraPosition(trPlayerPoint.position, cameraDist);
-        Camera.main.transform.forward = (trPlayerPoint.position - Camera.main.transform.position).normalized;
+        desiredCameraPosition = GetCameraPosition(trPlayerPoint.position);
+        float moveSpeed = cameraMoveSpeedPerSec * Time.deltaTime;
+        Vector3 toDesired = desiredCameraPosition - mainCamera.transform.position;
+        if (toDesired.magnitude > moveSpeed)
+        {
+            mainCamera.transform.position += toDesired.normalized * moveSpeed;
+        }
+        else
+        {
+            mainCamera.transform.position = desiredCameraPosition;
+        }
+        mainCamera.transform.forward = (trPlayerPoint.position - mainCamera.transform.position).normalized;
     }
 
     private void OnDrawGizmos()
@@ -76,58 +108,83 @@ public class CameraController : MonoSingleton<CameraController>
             CameraPointList[i].DrawGizmo();
         }
         
-        Gizmos.DrawSphere(trPlayerPoint.position, cameraDist);
+        Gizmos.DrawSphere(trPlayerPoint.position, cameraDetectRange);
     }
     
     /// <summary>
     /// 플레이어의 위치와 거리에 따른 카메라의 위치를 계산하는 함수. 
     /// </summary>
-    public Vector3 GetCameraPosition(Vector3 _playerPosition, float _dist)
+    public Vector3 GetCameraPosition(Vector3 _playerPosition)
     {
-        int prevIndex = -1;
-        int currIndex = -1;
-
         Vector2 playerPoint = GetCameraPoint(_playerPosition);
+
+        Vector2 closestPoint;
         
         // 경로의 시작인덱스부터 경로가 플레이어의 범위 안에 들어왔는지 검사한다. 
-        for (int i = 0; i < CameraPointList.Count; ++i)
+        for (int i = 0, count = CameraPointList.Count; i < count; ++i)
         {
             var point = CameraPointList[i];
-            currIndex = i;
 
-            // 포인트가 플레이어의 범위안에 들어있는지 여부
-            if (IsInCircle(GetCameraStartPoint(point), playerPoint, _dist) == false &&
-                IsInCircle(GetCameraEndPoint(point), playerPoint, _dist))
+            Vector2 startPoint = GetCameraPoint(point.PointV1);
+            Vector2 endPoint = GetCameraPoint(point.PointV4);
+            
+            if (IsCircleLineCollided(startPoint, endPoint, playerPoint, cameraDetectRange, out closestPoint))
             {
-                // 카메라의 위치가 현재 카메라 포인트의 시작점과 끝점 사이에 있는 경우
-                if (IsInCircle(GetCameraPoint(point.PointV1), playerPoint, _dist) == false &&
-                    IsInCircle(GetCameraPoint(point.PointV2), playerPoint, _dist))
+                float ratio = (startPoint - closestPoint).magnitude / (startPoint - endPoint).magnitude;
+                if (ratio < 1.0f - float.Epsilon)
                 {
-                    return GetCameraPath(point.PointV1, point.PointV2, _playerPosition, _dist);
-                }
-                if (IsInCircle(GetCameraPoint(point.PointV2), playerPoint, _dist) == false &&
-                    IsInCircle(GetCameraPoint(point.PointV3), playerPoint, _dist))
-                {
-                    return GetCameraPath(point.PointV2, point.PointV3, _playerPosition, _dist);
-                }
-                if (IsInCircle(GetCameraPoint(point.PointV3), playerPoint, _dist) == false &&
-                    IsInCircle(GetCameraPoint(point.PointV4), playerPoint, _dist))
-                {
-                    return GetCameraPath(point.PointV3, point.PointV4, _playerPosition, _dist);
+                    Vector3 toBack = (point.PointV1 - point.PointV4).normalized * cameraDistance;
+                    return point.GetBezier(ratio) + toBack;
                 }
             }
 
-            if (prevIndex >= 0 && IsInCircle(GetCameraStartPoint(point), playerPoint, _dist))
+            if (i < count - 1)
             {
-                // 카메라가 이전 마지막 지점과 현재 첫 번째 지점 사이에 있는경우
-                var prevPoint = CameraPointList[prevIndex];
-                return GetCameraPath(prevPoint.PointV4, point.PointV1, _playerPosition, _dist);
+                var nextPoint = CameraPointList[i + 1];
+                Vector2 nextStartPoint = GetCameraPoint(nextPoint.PointV1);
+                if (IsCircleLineCollided(endPoint, nextStartPoint, playerPoint, cameraDetectRange, out closestPoint))
+                {
+                    if (closestPoint == nextStartPoint) continue;
+                    float ratio = (endPoint - closestPoint).magnitude / (endPoint - nextStartPoint).magnitude;
+                    if (ratio >= 1.0f - float.Epsilon) continue;
+                    Vector3 toBack = (point.PointV4 - nextPoint.PointV1).normalized * cameraDistance;
+                    return point.PointV4 + (nextPoint.PointV1 - point.PointV4) * ratio + toBack;
+                }
             }
-
-            prevIndex = currIndex;
         }
 
-        return CameraPointList[^1].PointV4;
+        return mainCamera.transform.position;
+    }
+    
+    /// <summary>
+    /// 원이 직선에 닿았는지 여부를 판단하고, 직선에서 가장 가까운 지점을 반환합니다.
+    /// </summary>
+    public static bool IsCircleLineCollided(Vector2 lineStartPosition, Vector2 lineEndPosition, Vector2 circlePosition, float radius, out Vector2 closestPoint)
+    {
+        Vector2 line = lineEndPosition - lineStartPosition;
+        float lineLengthSquared = line.sqrMagnitude;
+
+        // 직선의 길이가 0인 경우, 시작 지점만을 고려
+        if (lineLengthSquared == 0f)
+        {
+            closestPoint = lineStartPosition;
+            return Vector2.Distance(circlePosition, lineStartPosition) <= radius;
+        }
+
+        // 점 위치를 직선에 투영한 t 값 계산
+        float t = Vector2.Dot(circlePosition - lineStartPosition, line) / lineLengthSquared;
+
+        // t를 [0,1] 범위로 클램프하여 직선 구간 내의 점으로 제한
+        t = Mathf.Clamp01(t);
+
+        // 가장 가까운 지점 계산
+        closestPoint = lineStartPosition + t * line;
+
+        // 점과 가장 가까운 지점 간의 거리 계산
+        float distance = Vector2.Distance(circlePosition, closestPoint);
+
+        // 거리가 반지름 이하인지 확인
+        return distance <= radius;
     }
     
     /// <summary>
@@ -136,79 +193,5 @@ public class CameraController : MonoSingleton<CameraController>
     private Vector2 GetCameraPoint(Vector3 _point)
     {
         return new Vector2(_point.x, _point.z);
-    }
-    
-    private Vector3 GetCameraPath(Vector3 _start, Vector3 _end, Vector3 _circle, float _radius)
-    {
-        // 카메라가 이전 마지막 지점과 현재 첫 번째 지점 사이에 있는경우
-        var point1 = GetCameraPoint(_start);
-        var point2 = GetCameraPoint(_end);
-        var circle = GetCameraPoint(_circle);
-        float ratio = GetLineCircleIntersection(point1, point2, circle, _radius);
-        return _start + (_end - _start) * ratio;
-    }
-    
-    /// <summary>
-    /// 플레이어의 범위가 두 점 사이에 있다면 비율을 반환한다. 없다면 1을 반환한다. 
-    /// </summary>
-    private float GetLineCircleIntersection(Vector2 _point1, Vector2 _point2, Vector2 _circleCenter, float _circleRadius)
-    {
-        List<Vector2> intersections = new List<Vector2>();
-
-        // 직선의 방향 벡터
-        Vector2 d = _point2 - _point1;
-
-        // 이차방정식의 계수 계산
-        float dx = d.x;
-        float dy = d.y;
-
-        float A = dx * dx + dy * dy;
-        float B = 2 * (dx * (_point1.x - _circleCenter.x) + dy * (_point1.y - _circleCenter.y));
-        float C = (_point1.x - _circleCenter.x) * (_point1.x - _circleCenter.x) + (_point1.y - _circleCenter.y) * (_point1.y - _circleCenter.y) - _circleRadius * _circleRadius;
-
-        float discriminant = B * B - 4 * A * C;
-
-        if (discriminant == 0)
-        {
-            // 접점 하나
-            return -B / (2 * A);
-        }
-        
-        if(discriminant > 0)
-        {
-            // 교점 두 개
-            float sqrtDiscriminant = Mathf.Sqrt(discriminant);
-
-            float t1 = (-B + sqrtDiscriminant) / (2 * A);
-            float t2 = (-B - sqrtDiscriminant) / (2 * A);
-
-            return Mathf.Min(t1, t2);
-        }
-
-        return 1f;
-    }
-    
-    /// <summary>
-    /// 경로의 시작 포인트를 반환한다.
-    /// </summary>
-    private Vector2 GetCameraStartPoint(CameraPathPoint _pathPoint)
-    {
-        return GetCameraPoint(_pathPoint.PointV1);
-    }
-
-    /// <summary>
-    /// 경로의 끝 포인트를 반환한다.
-    /// </summary>
-    private Vector2 GetCameraEndPoint(CameraPathPoint _pathPoint)
-    {
-        return GetCameraPoint(_pathPoint.PointV4);
-    }
-    
-    /// <summary>
-    /// 어떤 포인트가 범위 안에 들어와있는지 여부 
-    /// </summary>
-    private bool IsInCircle(Vector2 _position, Vector2 _circleCenter, float _circleRadius)
-    {
-        return (_position - _circleCenter).magnitude < _circleRadius;
     }
 }

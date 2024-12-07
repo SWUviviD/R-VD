@@ -10,8 +10,6 @@ public class GameOverUI : MonoBehaviour
     public Button restartButton, exitButton; // 버튼
     public float fadeSpeed = 1.0f; // 페이드 속도
 
-    public bool isGameOver = false;
-
     private void Awake()
     {
         UIHelper.OnClick(restartButton, GameManager.Instance.GameRestart);

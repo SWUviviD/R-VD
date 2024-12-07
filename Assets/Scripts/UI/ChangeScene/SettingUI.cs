@@ -28,6 +28,8 @@ public class SettingUI : MonoBehaviour
     {
         if (Input.GetKeyDown(settingKey))
         {
+            if (GameManager.Instance.IsGameOver || GameManager.Instance.IsStageClear) return;
+
             isActive = !isActive;
             background.SetActive(isActive);
             settingPanel.SetActive(isActive);

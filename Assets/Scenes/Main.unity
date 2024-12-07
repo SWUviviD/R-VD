@@ -258,7 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f948bf6db045b47449cf8ab0b50fae8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraDist: 3
+  mainCamera: {fileID: 1344823254}
+  cameraDetectRange: 20
+  cameraDistance: 20
+  cameraMoveSpeedPerSec: 10
 --- !u!4 &31479168
 Transform:
   m_ObjectHideFlags: 0

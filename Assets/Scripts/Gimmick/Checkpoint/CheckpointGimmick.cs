@@ -91,8 +91,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         // 플레이어 추락 시 데미지 및 리스폰 이동
         if (playerHp.transform.position.y < gimmickData.DropRespawnHeight)
         {
-            playerHp.Damage(gimmickData.DropDamage);
-            move.SetPosition(respawnPoint.position);
+            playerHp.Fall(gimmickData.DropDamage);
         }
     }
 

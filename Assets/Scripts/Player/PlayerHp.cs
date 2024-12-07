@@ -74,6 +74,15 @@ public class PlayerHp : MonoBehaviour
         }
     }
 
+    public void Fall(int amount)
+    {
+        Damage(amount);
+        if(currentHp > 0f)
+        {
+            Respawn();
+        }
+    }
+
     /// <summary>
     /// 체력 회복
     /// </summary>

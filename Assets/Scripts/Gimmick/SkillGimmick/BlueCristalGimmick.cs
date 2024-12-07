@@ -110,6 +110,7 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         }
     }
 
+    [ContextMenu("CristalBreak")]
     public void OnCristalBreak()
     {
         isCristalBroke = true;

@@ -70,6 +70,7 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
         }
     }
 
+    [ContextMenu("CristalBreak")]
     public void OnCristalBreak()
     {
         isCristalBroke = true;
@@ -85,6 +86,7 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
 
     private IEnumerator CoStartLoop()
     {
+        currentPlateIndex = 0;
         while(true)
         {
             if (currentPlateIndex >= gimmickData.PlateCount)

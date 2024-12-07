@@ -59,14 +59,17 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private void OnTriggerEnter(Collider other)
     {
-        Transform parent = other.transform.parent;
-        if (parent.TryGetComponent<PlayerHp>(out var hp))
+        Transform parent = other.transform.parent.parent;
+        if (parent != null && parent.TryGetComponent<PlayerHp>(out var hp))
         {
             if (playerHp == null)
             {
                 playerHp = hp;
                 move = parent.GetComponentInParent <PlayerMove>();
             }
+
+            CheckpointGimmick.SetCheckPoint(myIndex);
+
             playerHp.RespawnPoint = respawnPoint.position;
             isActive = true;
 
@@ -112,6 +115,9 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private static void SetCheckPoint(int _index)
     {
+        if (currentCheckpointIndex == _index)
+            return;
+
         if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpointList.Count)
         {
             checkpointList[currentCheckpointIndex].CheckPointDisable();

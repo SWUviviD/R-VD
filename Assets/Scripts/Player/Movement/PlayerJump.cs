@@ -82,7 +82,7 @@ public class PlayerJump : MonoBehaviour
         {
             return;
         }
-        rigid.AddForce(Vector3.up * force, ForceMode.Impulse);
+        rigid.AddForce(transform.up * force, ForceMode.Impulse);
         playerAnimation.JumpStart();
         playerAnimation.SetFalling(false);
         isFalling = true;

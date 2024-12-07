@@ -69,6 +69,8 @@ public class GameOverUI : MonoBehaviour
     {
         // 재시작 처리
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager gamemng = new GameManager();
+        gamemng.OnGameStart();
     }
 
     public void ExitGame()

@@ -37,7 +37,7 @@ public class GameManager : MonoSingleton<GameManager>
         ResumeGame();
     }
 
-    private void OnGameStart()
+    public void OnGameStart()
     {
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(

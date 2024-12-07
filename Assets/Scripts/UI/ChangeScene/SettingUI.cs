@@ -10,6 +10,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Button RestartBtn;
     [SerializeField] private Button ExitBtn;
     [SerializeField] private GameObject panel;
+    [SerializeField] private AudioSource panelSFX;
 
     private bool isActive = false;
 
@@ -27,6 +28,7 @@ public class SettingUI : MonoBehaviour
         {
             isActive = !isActive;
             panel.SetActive(isActive);
+            panelSFX.Play();
             if (isActive)
             {
                 GameManager.Instance.StopGame();

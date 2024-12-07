@@ -57,12 +57,14 @@ public class GameManager : MonoSingleton<GameManager>
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
-                InputDefines.Magic),
+                InputDefines.SkillType.StarHunt.ToString()),
             true);
     }
 
     private void OnGameOver()
     {
+        StopGame();
+
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
@@ -81,7 +83,7 @@ public class GameManager : MonoSingleton<GameManager>
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
-                InputDefines.Magic),
+                InputDefines.SkillType.StarHunt.ToString()),
             false);
     }
 

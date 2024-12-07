@@ -76,6 +76,9 @@ public class PlayerHp : MonoBehaviour
 
     public void Fall(int amount)
     {
+        if (IsAlive == false)
+            return;
+
         Damage(amount);
         if(currentHp > 0f)
         {

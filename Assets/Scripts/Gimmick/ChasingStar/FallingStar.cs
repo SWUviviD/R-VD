@@ -7,6 +7,7 @@ public class FallingStar : MonoBehaviour
 {
     [SerializeField] private Transform star;
     [SerializeField] private Renderer starRenderer;
+    [SerializeField] private Transform starHitEffect;
     private Rigidbody starRigid;
 
     [SerializeField] private StarShadow shadow;
@@ -47,6 +48,8 @@ public class FallingStar : MonoBehaviour
         StopAllCoroutines();
         star.gameObject.SetActive(false);
         shadow.gameObject.SetActive(false);
+
+        starHitEffect.gameObject.SetActive(false);
     }
 
     [ContextMenu("SetPosition")]
@@ -73,6 +76,7 @@ public class FallingStar : MonoBehaviour
         shadow.gameObject.SetActive(true);
 
         shadow.SetTargetPosition(targetPos);
+        starHitEffect.position = targetPos;
         StartCoroutine(CoStarFall());
         shadow.StartFilling();
     }
@@ -99,6 +103,8 @@ public class FallingStar : MonoBehaviour
 
         starRigid.angularVelocity = Vector3.zero;
         starRigid.velocity = Vector3.zero;
+
+        starHitEffect.gameObject.SetActive(true);
 
         StartCoroutine(CoFadeOut());
     }

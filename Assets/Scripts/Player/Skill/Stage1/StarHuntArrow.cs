@@ -22,11 +22,12 @@ public partial class StarHuntArrow : Poolable
         rigib.angularVelocity = Vector3.zero;
         rigib.velocity = Vector3.zero;
         rigib.velocity = _parent.forward * speed;
-        transform.forward = rigib.velocity;
+        transform.forward = _parent.forward;
     }
 
     private void FixedUpdate()
     {
+        transform.forward = rigib.velocity;
         if ((rigib.transform.position - startPosition).magnitude >= range)
         {
             returnToPool.Invoke(Defines.PoolDefines.PoolType.StarHunts, this);

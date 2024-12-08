@@ -59,6 +59,9 @@ public class PlayerHp : MonoBehaviour
     /// </summary>
     public void Damage(int amount)
     {
+        if (IsAlive == false)
+            return;
+
         currentHp -= amount;
         LogManager.Log(currentHp.ToString());
 

@@ -132,6 +132,13 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             player = instance.Player;
         }
 
+        if(MapData.StageClearPoint != null)
+        {
+            StageClearPoint instance = CreateGimmick<StageClearPoint>(MapData.StageClearPoint.Address);
+            instance.GimmickData.Set(MapData.StageClearPoint);
+            instance.SetGimmick();
+        }
+
         foreach(var checkpoint in MapData.CheckpointList)
         {
             CheckpointGimmick instance = CreateGimmick<CheckpointGimmick>(checkpoint.Address);
@@ -275,6 +282,12 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
             //PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(mapData.PlayerPositionSettor.Address);
             //instance.GimmickData.Set(mapData.PlayerPositionSettor);
             //instance.SetGimmick();
+        }
+
+        if(MapData.StageClearPoint != null)
+        {
+            LDStageClearPointData pointData = MapData.StageClearPoint;
+            placementSystem.CreateGimmick(pointData.Address, pointData.Position, pointData.Rotation, pointData.Scale, pointData);
         }
 
         foreach (var checkpoint in MapData.CheckpointList)

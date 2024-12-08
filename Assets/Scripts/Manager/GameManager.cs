@@ -101,6 +101,7 @@ public class GameManager : MonoSingleton<GameManager>
     public void GameClear()
     {
         // 추가 동작 필요시 구현
+        StageClear();
 
         // 이펙트 출력
         if (clearEffectPrefab1 != null && clearEffectPrefab2 != null)

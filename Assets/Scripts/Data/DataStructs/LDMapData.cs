@@ -29,6 +29,8 @@ namespace LocalData
 
         [MemoryPackInclude] public List<LDCheckpointData> CheckpointList { get; set; }
 
+        [MemoryPackInclude] public LDStageClearPointData StageClearPoint { get; set; }
+
         public LDMapData()
         {
             BlinkBoardDataList = new List<LDBlinkBoardData>();

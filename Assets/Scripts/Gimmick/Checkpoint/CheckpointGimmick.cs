@@ -25,6 +25,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     private PlayerHp playerHp;
     private PlayerMove move;
 
+    [SerializeField] private AudioSource audioSource;
     private const string RespawnPointName = "RespawnPoint";
 
     private int myIndex = -1;
@@ -75,6 +76,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
             if(gimmickData.FullHealWhenFirstTouched == true && isFirst == false)
             {
+                audioSource.Play();
                 playerHp.FullHeal();
                 isFirst = true;
             }

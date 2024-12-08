@@ -41,7 +41,7 @@ public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>, IFloorInt
         audioSource.Play();
         if (gameObject.tag == "Heal")
         {
-            playerHp?.FullHeal();
+            playerHp?.Heal((int)GimmickData.HealAmount);
         }
         else if (damageCoroutine == null)
         {

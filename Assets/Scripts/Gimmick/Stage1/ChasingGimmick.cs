@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
+public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 {
     private enum StarSize
     {
@@ -88,7 +88,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
             {
                 case StarSize.Small:
                     {
-                        starCount = gimmickData.SmallStarCount * 2;
+                        starCount = gimmickData.SmallStarCount * 3;
 
                         WFSLists.Add(new ShootingStarData(
                             gimmickData.SmallStarCount,
@@ -99,7 +99,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
                     }
                 case StarSize.Medium:
                     {
-                        starCount = gimmickData.MediumStarCount * 2;
+                        starCount = gimmickData.MediumStarCount * 3;
 
                         WFSLists.Add(new ShootingStarData(
                             gimmickData.MediumStarCount,
@@ -110,7 +110,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
                     }
                 case StarSize.Large:
                     {
-                        starCount = gimmickData.BigStarCount * 2;
+                        starCount = gimmickData.BigStarCount * 3;
 
                         WFSLists.Add(new ShootingStarData(
                             gimmickData.BigStarCount,
@@ -169,21 +169,38 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>, IFloorInteractive
         }
     }
 
-    public void InteractStart(GameObject player)
+    private void OnTriggerEnter(Collider other)
     {
-        playerMove = player.GetComponent<PlayerMove>();
-        if (playerMove == null)
+        Transform parent = other.transform.parent;
+        if (parent == null)
             return;
 
-        for(int i = 0, length = starPrefab.Length; i < length; ++i)
+        if (parent.TryGetComponent<PlayerMove>(out var move) == true)
         {
-            StartCoroutine(CoStartShootingStars((StarSize) i));
+            playerMove = move;
+
+            for (int i = 0, length = starPrefab.Length; i < length; ++i)
+            {
+                StartCoroutine(CoStartShootingStars((StarSize)i));
+            }
         }
     }
 
-    public void InteractEnd(GameObject player)
+    private void OnTriggerExit(Collider other)
     {
-        playerMove = null;
-        StopAllCoroutines();
+        if (playerMove == null)
+            return;
+
+        Transform parent = other.transform.parent;
+        if (parent == null) return;
+
+        if (parent.TryGetComponent <PlayerMove>(out var move) == true)
+        {
+            if(playerMove == move)
+            {
+                playerMove = null;
+                StopAllCoroutines();
+            }
+        }
     }
 }

@@ -13,9 +13,9 @@ namespace LevelEditor
     public class PlacementSystem : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private ObjectDatabase database = new ObjectDatabase();
         [SerializeField] private GameObject checkpointArea;
         [SerializeField] private GameObject placedArea;
+        private ObjectDatabase database = new ObjectDatabase();
 
         [Header("Systems")]
         [SerializeField] private PlacementInputSystem inputSystem;

@@ -13,6 +13,7 @@ public class PlayerHp : MonoBehaviour
     [SerializeField] private GameObject damageEffectPrefab;
     [SerializeField] private GameObject healEffectPrefab;
     [SerializeField] private GameObject respawnEffectPrefab;
+    [SerializeField] private AudioSource audioSource;
 
     public Vector3 RespawnPoint { get; set; }
     private int currentHp;
@@ -40,6 +41,7 @@ public class PlayerHp : MonoBehaviour
 
     public void Respawn()
     {
+        audioSource.Play();
         move.SetPosition(RespawnPoint);
         CameraController.Instance.Reset();
         CameraController.Instance.Play();

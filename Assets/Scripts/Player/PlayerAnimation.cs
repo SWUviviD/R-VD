@@ -6,9 +6,20 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    [Header("애니메이션")]
     [SerializeField] private Animator animator;
     /// <summary> 화살 발사를 위한 스파인. 활을 쏘는 순간에 돌려야한다. </summary>
     [SerializeField] private Transform trSpine;
+
+    [Header("사운드")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip runSound;
+    [SerializeField] AudioClip dashSound;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip landSound;
+    [SerializeField] AudioClip chargeSound;
+    [SerializeField] AudioClip shotSound;
+    [SerializeField] AudioClip deathSound;
 
     private PlayerMove move;
     private PlayerDash dash;
@@ -54,8 +65,9 @@ public class PlayerAnimation : MonoBehaviour
     private bool isMoving = true;
     private void OnMove(bool _isMoving)
     {
-        if(isMoving != _isMoving)
+        if (isMoving != _isMoving)
         {
+            PlaySound(runSound, _isMoving);
             animator.SetBool(IsWalkingID, _isMoving);
             isMoving = _isMoving;
         }
@@ -64,8 +76,12 @@ public class PlayerAnimation : MonoBehaviour
     private bool isDashing;
     private void OnDash(bool _isDash)
     {
-        if(isDashing != _isDash)
+        if (isDashing != _isDash)
         {
+            if (_isDash)
+            {
+                PlaySound(dashSound, false);
+            }
             animator.SetBool(IsDashingID, _isDash);
             isDashing = _isDash;
         }
@@ -73,6 +89,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnShotStart()
     {
+        PlaySound(chargeSound, true);
         animator.SetTrigger(OnShotStartID);
         animator.SetBool(IsShotingID, true);
         isShooting = true;
@@ -80,6 +97,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnShotEnd()
     {
+        PlaySound(shotSound, false);
         animator.SetBool(IsShotingID, false);
         isShooting = false;
         trSpine.localRotation = Quaternion.identity;
@@ -87,16 +105,25 @@ public class PlayerAnimation : MonoBehaviour
 
     private void OnDeath()
     {
+        PlaySound(deathSound, false);
         animator.SetTrigger(OnDeathID);
     }
 
+    private bool isJump = false;
     public void JumpStart()
     {
+        isJump = true;
+        PlaySound(jumpSound, false);
         animator.SetBool(IsJumpingID, true);
     }
 
     public void JumpEnd()
     {
+        if (isJump)
+        {
+            isJump = false;
+            PlaySound(landSound, false);
+        }
         animator.SetBool(IsJumpingID, false);
         animator.SetBool(IsFallingID, false);
     }
@@ -106,8 +133,15 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool(IsFallingID, isFalling);
     }
 
+    private void PlaySound(AudioClip audioClip, bool isLoop)
+    {
+        audioSource.clip = audioClip;
+        audioSource.loop = isLoop;
+        audioSource.Play();
+    }
+
     private void LateUpdate()
     {
-        if(isShooting) trSpine.localRotation = Quaternion.Euler(Vector3.up * 90f);
+        if (isShooting) trSpine.localRotation = Quaternion.Euler(Vector3.up * 90f);
     }
 }

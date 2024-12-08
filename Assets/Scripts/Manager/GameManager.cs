@@ -17,8 +17,13 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] public GameObject clearEffectPrefab2;
     [SerializeField] private AudioSource backgroundSFX;
 
-    private void Awake()
+    private bool isInit = false;
+
+    private void OnEnable()
     {
+        if (isInit == true)
+            return;
+
 #if UNITY_EDITOR
         if (SceneManager.GetActiveScene().name != "LevelEditor")
         {
@@ -46,6 +51,8 @@ public class GameManager : MonoSingleton<GameManager>
 #endif
 
         ResumeGame();
+
+        isInit = true;
     }
 
     public void OnGameStart()

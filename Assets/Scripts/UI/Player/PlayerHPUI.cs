@@ -34,7 +34,7 @@ public class PlayerHPUI : MonoBehaviour
             gameObject.SetActive(false);
 
         playerHP = player.GetComponent<PlayerHp>();
-        playerMove = player.GetComponent <PlayerMove>();
+        playerMove = player.GetComponent<PlayerMove>();
         starHunt = player.GetComponent<StarHunt>();
 
         playerHP.OnDamaged.RemoveListener(OnDamaged);

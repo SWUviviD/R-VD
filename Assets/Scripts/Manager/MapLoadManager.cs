@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using LevelEditor;
+#endif
 using LocalData;
 using System.Collections;
 using System.Collections.Generic;
@@ -149,6 +151,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         return player;
     }
 
+#if UNITY_EDITOR
     public void LoadMapInEditor(string _mapName)
     {
         var placementSystem = FindObjectOfType<PlacementSystem>();
@@ -297,6 +300,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         
         CameraPathInsertSystem.Instance.LoadPath(MapData.CameraPathList);
     }
+#endif
 
     /// <summary>
     /// 기믹 인스턴스를 생성한다.

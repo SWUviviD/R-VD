@@ -11,6 +11,8 @@ public class InputManager : MonoSingleton<InputManager>
     protected override void Init()
     {
         base.Init();
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public bool AddInputEventFunction(InputDefines.InputActionName actionName, InputDefines.ActionPoint actionPoint, Action<InputAction.CallbackContext> instance)

@@ -10,8 +10,12 @@ using System.ComponentModel;
 using MemoryPack;
 using LocalData;
 
-public class CSVToJson : AssetPostprocessor
+public class CSVToJson
+#if UNITY_EDITOR
+    : AssetPostprocessor
+#endif
 {
+#if UNITY_EDITOR
     const string basePath = "Assets/Data/RawData/LocalData";
 
     void OnPreprocessAsset()
@@ -87,6 +91,7 @@ public class CSVToJson : AssetPostprocessor
 
 
     }
+#endif
 
     [System.Serializable]
     public partial class SerializableList<T> where T : DataBase, IMemoryPackable<T>

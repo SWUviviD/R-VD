@@ -80,9 +80,9 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     Vector3 railPosition = Vector3.zero;
     private void SetRail(ref Transform _rail, bool _isLeft)
     {
-        _rail.localPosition = startPoint;
+        _rail.position = startPoint;
         _rail.LookAt(endPoint);
-        _rail.localPosition += new Vector3(gimmickData.SphereSize / 2 * (_isLeft ? -1 : 1), 0f, -GimmickData.SphereSize * 0.5f);
+        _rail.localPosition += new Vector3(gimmickData.SphereSize / 2 * (_isLeft ? -1 : 1), 0f, -GimmickData.SphereSize);
 
         int railLength = Mathf.CeilToInt((endPoint - startPoint).magnitude * 0.5f + GimmickData.SphereSize);
         int radiListIndex = _isLeft ? 0 : 1;

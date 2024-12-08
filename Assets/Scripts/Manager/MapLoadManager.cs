@@ -29,7 +29,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var levelObject in MapData.LevelEditObjectList)
         {
             // 인스턴스 생성
-            LevelEditObject instance = CreateGimmick<LevelEditObject>(levelObject.Address);
+            LevelEditObject instance = CreateGimmick<LevelEditObject>(ChangeAddress(levelObject.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(levelObject);
             // 기믹이 동작할 수 있도록 생성
@@ -39,7 +39,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var galaxy in MapData.GalaxyGimmickDataList)
         {
             // 인스턴스 생성
-            GalaxyGimmick instance = CreateGimmick<GalaxyGimmick>(galaxy.Address);
+            GalaxyGimmick instance = CreateGimmick<GalaxyGimmick>(ChangeAddress(galaxy.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(galaxy);
             // 기믹이 동작할 수 있도록 생성
@@ -49,7 +49,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var runandgun in MapData.RunandgunGimmickDataList)
         {
             // 인스턴스 생성
-            GameObject instance = CreateGimmickObj(runandgun.Address);
+            GameObject instance = CreateGimmickObj(ChangeAddress(runandgun.Address));
             if(instance.TryGetComponent<RunandgunGimmick>(out var com1))
             {
                 com1.GimmickData.Set(runandgun);
@@ -65,7 +65,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var chasingGimmick in MapData.ChasingGimmickDataList)
         {
             // 인스턴스 생성
-            ChasingGimmick instance = CreateGimmick<ChasingGimmick>(chasingGimmick.Address);
+            ChasingGimmick instance = CreateGimmick<ChasingGimmick>(ChangeAddress(chasingGimmick.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(chasingGimmick);
             // 기믹이 동작할 수 있도록 생성
@@ -77,7 +77,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var balancePlate in MapData.BalancePlateDataList)
         {
             // 인스턴스 생성
-            BalancePlate instance = CreateGimmick<BalancePlate>(balancePlate.Address);
+            BalancePlate instance = CreateGimmick<BalancePlate>(ChangeAddress(balancePlate.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(balancePlate);
             // 기믹이 동작할 수 있도록 생성
@@ -87,7 +87,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var orangeCristal in MapData.CristalGimmickDataList)
         {
             // 인스턴스 생성
-            OrangeCristalGimmick instance = CreateGimmick<OrangeCristalGimmick>(orangeCristal.Address);
+            OrangeCristalGimmick instance = CreateGimmick<OrangeCristalGimmick>(ChangeAddress(orangeCristal.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(orangeCristal);
             // 기믹이 동작할 수 있도록 생성
@@ -97,7 +97,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var blueCristal in MapData.BlueCristalGimmickDataList)
         {
             // 인스턴스 생성
-            BlueCristalGimmick instance = CreateGimmick<BlueCristalGimmick>(blueCristal.Address);
+            BlueCristalGimmick instance = CreateGimmick<BlueCristalGimmick>(ChangeAddress(blueCristal.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(blueCristal);
             // 기믹이 동작할 수 있도록 생성
@@ -107,7 +107,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var greenCristal in MapData.GreenCristalGimmickDataList)
         {
             // 인스턴스 생성
-            GreenCristalGimmick instance = CreateGimmick<GreenCristalGimmick>(greenCristal.Address);
+            GreenCristalGimmick instance = CreateGimmick<GreenCristalGimmick>(ChangeAddress(greenCristal.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(greenCristal);
             // 기믹이 동작할 수 있도록 생성
@@ -117,7 +117,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         foreach (var Bubble in MapData.BubbleDataList)
         {
             // 인스턴스 생성
-            Bubble instance = CreateGimmick<Bubble>(Bubble.Address);
+            Bubble instance = CreateGimmick<Bubble>(ChangeAddress(Bubble.Address));
             // 인스턴스에 데이터 세팅
             instance.GimmickData.Set(Bubble);
             // 기믹이 동작할 수 있도록 생성
@@ -127,7 +127,7 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
         GameObject player = null;
         if (MapData.PlayerPositionSettor != null)
         {
-            PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(MapData.PlayerPositionSettor.Address);
+            PlayerPositionSettor instance = CreateGimmick<PlayerPositionSettor>(ChangeAddress(MapData.PlayerPositionSettor.Address));
             instance.GimmickData.Set(MapData.PlayerPositionSettor);
             instance.SetGimmick();
 
@@ -136,19 +136,26 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
 
         if(MapData.StageClearPoint != null)
         {
-            StageClearPoint instance = CreateGimmick<StageClearPoint>(MapData.StageClearPoint.Address);
+            StageClearPoint instance = CreateGimmick<StageClearPoint>(ChangeAddress(MapData.StageClearPoint.Address));
             instance.GimmickData.Set(MapData.StageClearPoint);
             instance.SetGimmick();
         }
 
         foreach(var checkpoint in MapData.CheckpointList)
         {
-            CheckpointGimmick instance = CreateGimmick<CheckpointGimmick>(checkpoint.Address);
+            CheckpointGimmick instance = CreateGimmick<CheckpointGimmick>(ChangeAddress(checkpoint.Address));
             instance.GimmickData.Set(checkpoint);
             instance.SetGimmick();
         }
 
         return player;
+    }
+
+    private string ChangeAddress(string address)
+    {
+        string header = address.Substring(0, 7);
+        string trailer = address.Substring(7);
+        return trailer.Split('.')[0];
     }
 
 #if UNITY_EDITOR

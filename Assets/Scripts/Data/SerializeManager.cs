@@ -9,8 +9,8 @@ using UnityEditor;
 
 public class SerializeManager : Singleton<SerializeManager>
 {
-    private const string folder_path = "Assets/Data/RawData/LocalData/Bytes";
-    private static readonly string folder_absoute_path = Path.Combine(Application.dataPath, "Data/RawData/LocalData/Bytes");
+    private const string folder_path = "Assets/Resources/Data/RawData/LocalData/Bytes";
+    private static readonly string folder_absoute_path = Path.Combine(Application.dataPath, "Resources/Data/RawData/LocalData/Bytes");
 
     public byte[] Serialize<T>(List<T> obj) where T : DataBase
     {

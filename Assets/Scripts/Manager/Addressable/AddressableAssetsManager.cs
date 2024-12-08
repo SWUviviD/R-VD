@@ -41,6 +41,9 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
     public object SyncLoadObject(string _path, string _key)
     {
+
+        return Resources.Load(_path);
+
         // 이미 로드되어 있는지 확인
         var pack = packList.Find(_ => _.Key == _key);
         if(pack != null)
@@ -57,7 +60,7 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
         var task = Addressables.LoadAssetAsync<object>(_path);
         newPack.SetAssets(task.WaitForCompletion());
-        Addressables.Release(task);
+        Addressables.Release(task); 
 
         return newPack.Assets;
     }
@@ -94,6 +97,6 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
     public string GetPrefabPath(string _folder, string _assetName)
     {
-        return $"Assets/Data/{_folder}/{_assetName}";
+        return $"Data/{_folder}/{_assetName}";
     }
 }

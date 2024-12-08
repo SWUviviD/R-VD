@@ -24,7 +24,7 @@ public class StarHunt : SkillBase
         try
         {
             var arrow = AddressableAssetsManager.Instance.SyncLoadObject(
-                AddressableAssetsManager.Instance.GetPrefabPath("Prefabs", "Arrow.prefab"), 
+                "Data/Prefabs/Arrow", 
                 Defines.PoolDefines.PoolType.StarHunts.ToString()) as GameObject;
             Poolable arrowPrefab = Instantiate(arrow).GetComponent<Poolable>();
             PoolManager.Instance.CreatePool(Defines.PoolDefines.PoolType.StarHunts, arrowPrefab, 3);

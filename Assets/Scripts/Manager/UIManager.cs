@@ -71,14 +71,12 @@ public class UIManager : MonoSingleton<UIManager>
         }
         else
         {
-            AddressableAssetsManager.Instance.LoadAsyncAssets(uiAddress, uiAddress, (obj) =>
-            {
-                var instance = Instantiate((GameObject)obj);
-                var uiBase = instance.GetComponent<UIBase>();
-                cachedUITable.TryAdd(uiAddress, uiBase);
-                OnLoadUI(uiBase);
-                cbOpen?.Invoke(uiBase);
-            });
+            var obj = AddressableAssetsManager.Instance.SyncLoadObject(uiAddress, uiAddress);
+            var instance = Instantiate((GameObject)obj);
+            var uiBase = instance.GetComponent<UIBase>();
+            cachedUITable.TryAdd(uiAddress, uiBase);
+            OnLoadUI(uiBase);
+            cbOpen?.Invoke(uiBase);
         }
     }
 

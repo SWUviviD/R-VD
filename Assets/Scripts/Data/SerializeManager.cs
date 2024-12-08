@@ -42,7 +42,7 @@ public class SerializeManager : Singleton<SerializeManager>
     {
         try
         {
-            FileStream fileStream = new FileStream(string.Format("{0}/{1}.bytes", folder_path, fileName), FileMode.Open, FileAccess.Read);
+            FileStream fileStream = new FileStream(Path.Combine(folder_absoute_path, $"{fileName}.bytes"), FileMode.Open, FileAccess.Read);
             byte[] data = new byte[fileStream.Length];
             fileStream.Read(data, 0, data.Length);
             fileStream.Close();

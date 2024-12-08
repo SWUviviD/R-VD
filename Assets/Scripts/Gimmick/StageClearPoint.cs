@@ -20,6 +20,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
 
         clearArea.localScale = gimmickData.AreaScale;
     }
+
     private void OnTriggerExit(Collider other)
     {
         Transform parent = other.transform.parent;

@@ -122,7 +122,7 @@ public class PlayerAnimation : MonoBehaviour
         if (isJump)
         {
             isJump = false;
-            PlaySound(landSound, false);
+            //PlaySound(landSound, false);
         }
         animator.SetBool(IsJumpingID, false);
         animator.SetBool(IsFallingID, false);

@@ -15,6 +15,8 @@ public class Cristal : MonoBehaviour
 
     /// <summary> 크리스탈 위치 </summary>
     [SerializeField] private Transform cristalTrs;
+    [SerializeField] private Transform cristalModel;
+    [SerializeField] private GameObject cristalBreakEffect;
 
     private const string CristalOriginalPoint = "OriginalPoint";
     private Vector3 CristalOriginalPosition => data.DictPoint[CristalOriginalPoint].position;
@@ -68,6 +70,8 @@ public class Cristal : MonoBehaviour
         }
 
         cristalTrs.gameObject.SetActive(true);
+        cristalModel.gameObject.SetActive(true);
+        cristalBreakEffect.SetActive(false);
 
         blinkCristal_ElapsedTime = 0f;
         blinkCristal_IsHide = false;
@@ -135,6 +139,7 @@ public class Cristal : MonoBehaviour
 
     public void OnCristalBreak()
     {
-        cristalTrs.gameObject.SetActive(false);
+        cristalModel.gameObject.SetActive(false);
+        cristalBreakEffect.SetActive(true);
     }
 }

@@ -145,7 +145,7 @@ public class PlayerHPUI : MonoBehaviour
         StopAllCoroutines();
         if(isStarShowing == true)
         {
-            StartCoroutine(CoShowStar(line.localScale, starHideScale, line.localScale.x / starHideScale.x, () => { isStarShown = false; }));
+            StartCoroutine(CoShowStar(line.localScale, starHideScale, 1 - (line.localScale.x / starShowScale.x), () => { isStarShown = false; }));
         }
         else
         {

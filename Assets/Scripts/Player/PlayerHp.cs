@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class PlayerHp : MonoBehaviour
 {
@@ -45,7 +46,8 @@ public class PlayerHp : MonoBehaviour
         // 이펙트 출력
         if (respawnEffectPrefab != null)
         {
-            GameObject respawnEffect = Instantiate(respawnEffectPrefab, transform.position, Quaternion.identity);
+            Vector3 spawnPosition = transform.position + new Vector3(0, -1.7f, 0);
+            GameObject respawnEffect = Instantiate(respawnEffectPrefab, spawnPosition, Quaternion.identity);
             Destroy(respawnEffect, 5f);
         }
     }

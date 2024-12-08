@@ -18,11 +18,11 @@ public partial class StarHuntArrow : Poolable
         range = _range;
         startPosition = _parent.position;
         transform.position = startPosition;
-        transform.rotation = _parent.rotation;
         rigib.Move(_parent.position, Quaternion.identity);
         rigib.angularVelocity = Vector3.zero;
         rigib.velocity = Vector3.zero;
         rigib.velocity = _parent.forward * speed;
+        transform.forward = rigib.velocity;
     }
 
     private void FixedUpdate()

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditor;
 using UnityEngine;
 
 public class BalancePlate : GimmickBase<BalancePlateData>, IFloorInteractive
 {
     [SerializeField] private GameObject plate;
     private Rigidbody plateRigid;
-
+    
     private float level1Dist;
     private float level2Dist;
     private float level3Dist;
@@ -64,16 +65,18 @@ public class BalancePlate : GimmickBase<BalancePlateData>, IFloorInteractive
                 return;
             }
 
-            plateRigid.angularVelocity = Vector3.zero;
+            //plateRigid.angularVelocity = Vector3.zero;
 
-            elapsedTime += Time.deltaTime;
-            currentRotation = plate.transform.rotation.eulerAngles;
-            currentRotation.Set(
-                currentRotation.x > 180f ? 360f - currentRotation.x : currentRotation.x,
-                currentRotation.y > 180f ? 360f - currentRotation.y : currentRotation.y,
-                currentRotation.z > 180f ? 360f - currentRotation.z : currentRotation.z);
-            newRotation = Vector3.Lerp(currentRotation, Vector3.zero, elapsedTime / gimmickData.ReturnToNormalTime);
-            plate.transform.rotation = Quaternion.Euler(newRotation);
+            // elapsedTime += Time.deltaTime;
+            // currentRotation = plate.transform.rotation.eulerAngles;
+            // currentRotation.Set(
+            //     currentRotation.x > 180f ? 360f - currentRotation.x : currentRotation.x,
+            //     currentRotation.y > 180f ? 360f - currentRotation.y : currentRotation.y,
+            //     currentRotation.z > 180f ? 360f - currentRotation.z : currentRotation.z);
+            // newRotation = Vector3.Lerp(currentRotation, Vector3.zero, elapsedTime / gimmickData.ReturnToNormalTime);
+            // plate.transform.rotation = Quaternion.Euler(newRotation);
+
+            plate.transform.up = Vector3.RotateTowards(plate.transform.up, Vector3.up, 5f * Mathf.Deg2Rad * Time.deltaTime, 0f);
         }
     }
 

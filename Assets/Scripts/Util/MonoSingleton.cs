@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
+    private static bool isInit = false;
     private static T _instance;
     public static T Instance
     {
@@ -25,14 +27,22 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance == null)
+        if (isInit)
         {
-            Init();
-        }
-        else if( _instance != this)
-        {
+            if (_instance == this) return;
+            
             Destroy(gameObject);
+            return;
         }
+        
+        isInit = true;
+        Init();
+    }
+
+    private void OnDestroy()
+    {
+        isInit = false;
+        _instance = null;
     }
 
     protected virtual void Init() { }

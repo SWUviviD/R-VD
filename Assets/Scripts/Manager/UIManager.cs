@@ -34,6 +34,7 @@ public class UIManager : MonoSingleton<UIManager>
 
     protected override void Init()
     {
+        base.Init();
         uiList = new List<UIBase>();
         cachedUIList = new List<UIBase>();
         cachedUITable = new Dictionary<string, UIBase>();

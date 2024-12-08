@@ -29,10 +29,10 @@ public abstract class SkillBase : MonoBehaviour
             InputDefines.ActionPoint.IsStarted, OnSkillStart);
         InputManager.Instance.RemoveInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, skillType.ToString()),
-            InputDefines.ActionPoint.IsPerformed, OnSkillStart);
+            InputDefines.ActionPoint.IsPerformed, OnSkill);
         InputManager.Instance.RemoveInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, skillType.ToString()),
-            InputDefines.ActionPoint.IsCanceled, OnSkillStart);
+            InputDefines.ActionPoint.IsCanceled, OnSkillStop);
     }
 
     /// <summary>

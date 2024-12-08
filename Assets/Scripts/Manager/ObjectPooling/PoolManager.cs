@@ -11,6 +11,7 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     protected override void Init()
     {
+        base.Init();
         poolOrigin = new Dictionary<PoolDefines.PoolType, Poolable>();
         pools = new Dictionary<PoolDefines.PoolType, Queue<Poolable>>();
     }

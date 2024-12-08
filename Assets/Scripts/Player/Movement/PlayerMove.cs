@@ -96,7 +96,8 @@ public class PlayerMove : MonoBehaviour
             realMovement.y = rigid.velocity.y;
             rigid.velocity = realMovement;
             realMovement.y = 0.0f;
-            transform.rotation = Quaternion.LookRotation(realMovement);
+            // 정확하게 위로 올라가고 있는 도중이라면 y가 0이되면 magnitude가 0으로 바뀜. 이럴땐 이동방향을 바라보면 안됨.
+            if(realMovement.magnitude > float.Epsilon) transform.rotation = Quaternion.LookRotation(realMovement);
             OnMove?.Invoke(true);
         }
         else

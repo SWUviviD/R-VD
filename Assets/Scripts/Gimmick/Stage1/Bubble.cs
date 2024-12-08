@@ -9,6 +9,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     [SerializeField] Collider bubbleCollider;
     [SerializeField] private Transform deco;
     [SerializeField] private float decoRotateSpeed = 180f;
+    [SerializeField] private AudioSource audioSource;
 
     private WaitForSeconds resetSeconds;
 
@@ -40,6 +41,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     private IEnumerator BubblePop()
     {
         // 여기에 터지는 애니메이션 세팅
+        audioSource.Play();
         bubbleObject.SetActive(false);
         bubbleCollider.enabled = false;
 

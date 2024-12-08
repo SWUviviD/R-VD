@@ -309,6 +309,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5563105139822006110}
   m_SourcePrefab: {fileID: 100100000, guid: 15e61174f0f1c634b8093182cf24ca64, type: 3}
+--- !u!82 &211024726658336111 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1045549629866870973, guid: 15e61174f0f1c634b8093182cf24ca64,
+    type: 3}
+  m_PrefabInstance: {fileID: 896000854384627154}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2236257023435662195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1398363206800387745, guid: 15e61174f0f1c634b8093182cf24ca64,
@@ -366,6 +372,7 @@ MonoBehaviour:
   gimmick: {fileID: 4032328209229952529}
   platePrefab: {fileID: 4086425583016371277, guid: ac011c43f31d84c4a85ad2cf30d85f64,
     type: 3}
+  audioSource: {fileID: 211024726658336111}
 --- !u!114 &5563105139822006110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +395,7 @@ MonoBehaviour:
   <BlinkShowTime>k__BackingField: 3
   <BlinkHideTime>k__BackingField: 3
   <MoveMoveTime>k__BackingField: 3
+  <PlateSize>k__BackingField: 1
   <ChangeValueTime>k__BackingField: 10
   <RandomMinValue>k__BackingField: 1
   <RandomMaxValue>k__BackingField: 3

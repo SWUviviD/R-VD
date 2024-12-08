@@ -9,6 +9,7 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
 
     [SerializeField] private Transform gimmick;
     [SerializeField] private GameObject platePrefab;
+    [SerializeField] private AudioSource audioSource;
 
     private const string GimmickStartPoint = "GimmickStartPoint";
     private const string GimmickEndPoint = "GimmickEndPoint";
@@ -74,6 +75,7 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
     public void OnCristalBreak()
     {
         isCristalBroke = true;
+        audioSource.Play();
         cristal.OnCristalBreak();
         ActivateGimmick();
     }

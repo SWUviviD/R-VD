@@ -7,6 +7,7 @@ public class OrangeCristalGimmick : GimmickBase<CristalData>
     [SerializeField] private Cristal cristal;
     [SerializeField] private CristalSense sense;
     [SerializeField] private Transform plate;
+    [SerializeField] private AudioSource audioSource;
 
     private string PlatePosition = "PlatePosition";
 
@@ -43,6 +44,7 @@ public class OrangeCristalGimmick : GimmickBase<CristalData>
     public void OnCristalBreak()
     {
         isCristalBroke = true;
+        audioSource.Play();
         cristal.OnCristalBreak();
         ActivateGimmick();
     }

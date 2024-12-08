@@ -7,6 +7,7 @@ public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>, IFloorInt
     private Coroutine damageCoroutine;
 
     [SerializeField] private GameObject editorObj;
+    [SerializeField] private AudioSource audioSource;
 
     /// <summary>
     /// 초기화
@@ -36,6 +37,8 @@ public class RunandgunGimmickHeal : GimmickBase<RunandgunGimmickData>, IFloorInt
     public void InteractStart(GameObject player)
     {
         playerHp = player.GetComponent<PlayerHp>();
+
+        audioSource.Play();
         if (gameObject.tag == "Heal")
         {
             playerHp?.FullHeal();

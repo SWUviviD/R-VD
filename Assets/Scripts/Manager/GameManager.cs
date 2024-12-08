@@ -66,7 +66,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void OnGameOver()
     {
-        StopGame();
+        GameOver();
 
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(

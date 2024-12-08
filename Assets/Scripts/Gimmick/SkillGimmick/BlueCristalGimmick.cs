@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
 {
@@ -14,6 +13,7 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     [SerializeField] private GameObject railPrefab;
     private List<List<Transform>> railList = new List<List<Transform>>();
     [SerializeField] private Rigidbody sphereRigid;
+    [SerializeField] private AudioSource audioSource;
 
     private WaitForSeconds waitForSphereToRoll;
 
@@ -114,6 +114,7 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     public void OnCristalBreak()
     {
         isCristalBroke = true;
+        audioSource.Play();
         cristal.OnCristalBreak();
         ActivateGimmick();
     }

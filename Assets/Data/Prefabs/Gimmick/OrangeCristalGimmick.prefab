@@ -602,6 +602,7 @@ MonoBehaviour:
   cristal: {fileID: 3217574545323482693}
   sense: {fileID: 5917291269252301197}
   plate: {fileID: 2302319017485270018}
+  audioSource: {fileID: 8685435565073415997}
 --- !u!114 &340884690489025466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,9 +624,16 @@ MonoBehaviour:
   <BlinkShowTime>k__BackingField: 3
   <BlinkHideTime>k__BackingField: 3
   <MoveMoveTime>k__BackingField: 3
+  <PlateSize>k__BackingField: 1
 --- !u!4 &7308690828211198241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1398363206800387745, guid: 15e61174f0f1c634b8093182cf24ca64,
+    type: 3}
+  m_PrefabInstance: {fileID: 8505703721907206016}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &8685435565073415997 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1045549629866870973, guid: 15e61174f0f1c634b8093182cf24ca64,
     type: 3}
   m_PrefabInstance: {fileID: 8505703721907206016}
   m_PrefabAsset: {fileID: 0}

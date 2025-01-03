@@ -84,7 +84,7 @@ namespace LevelEditor
             if (!objectIDs.ContainsKey(prefabAddress))
             {
                 prefab = AddressableAssetsManager.Instance.SyncLoadObject(
-                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}.prefab"),
+                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}"),
                     prefabAddress) as GameObject;
 
                 objectID++;

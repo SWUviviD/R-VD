@@ -4,9 +4,25 @@ using UnityEngine;
 
 public class WaterWall : GimmickBase<WaterWallData>
 {
+    [Header("References")]
+    [SerializeField] public Transform player; // 플레이어 Transform
+    [SerializeField] private WaterWallData waterwallData;
+    [SerializeField] private float interactionDistance = 10f; // 상호작용 거리
+
+    public bool isice;
+    public bool isbreak;
+
+    private Renderer wallRenderer;
+
     protected override void Init()
     {
-        
+        // 초기화
+        wallRenderer = GetComponent<MeshRenderer>();
+        UpdateBlockMaterial();
+        wallRenderer.material = waterwallData.blockMaterials[0];
+
+        isice = false;
+        isbreak = false;
     }
 
     public override void SetGimmick()
@@ -17,5 +33,42 @@ public class WaterWall : GimmickBase<WaterWallData>
     protected override string GetAddress()
     {
         return "Data/Prefabs/Gimmick/WaterWall";
+    }
+
+    void Update()
+    {
+        // 플레이어와의 거리 계산
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        // 거리 내에서 E 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E))
+        {
+            isice = true;
+            UpdateBlockMaterial();
+        }
+
+        // 거리 내에서 Q, W 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.W)))
+        {
+            isbreak = true;
+            UpdateBlockMaterial();
+        }
+    }
+
+    void UpdateBlockMaterial()
+    {
+        // 상태에 따라 Material 변경
+        if (isice)
+        {
+            wallRenderer.material = waterwallData.blockMaterials[1];
+        }
+        else if (isbreak)
+        {
+            wallRenderer.material = waterwallData.blockMaterials[2];
+        }
+        else
+        {
+            LogManager.LogWarning("Material 배열 부족");
+        }
     }
 }

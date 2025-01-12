@@ -10,7 +10,6 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     [SerializeField] private float interactionDistance = 10f; // 상호작용 거리
     [SerializeField] private WaterBlockData waterBlockData;
 
-    // 내부 상태 변수
     public bool isClear = false;
 
     public int remainingUsage = 0; // 남은 물 사용 가능 횟수

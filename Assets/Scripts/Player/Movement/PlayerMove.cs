@@ -5,7 +5,7 @@ using UnityEngine.Assertions.Must;
 using System.Net.NetworkInformation;
 using UnityEngine.Events;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MonoSingleton<GameManager>
 {
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private PlayerStatus status;
@@ -74,6 +74,13 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(bool isSlope, in RaycastHit hit)
     {
+        Camera mainCamera = CameraController.Instance?.MainCamera;
+        if (mainCamera == null)
+        {
+            LogManager.Log("MainCamera NULL");
+            return;
+        }
+
         Vector3 cameraForward = CameraController.Instance.MainCamera.transform.forward;
         Vector3 cameraRight = CameraController.Instance.MainCamera.transform.right;
 

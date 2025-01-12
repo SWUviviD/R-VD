@@ -21,6 +21,9 @@ namespace LocalData
         [MemoryPackInclude] public List<LDGreenCristalGimmickData> GreenCristalGimmickDataList { get; set; }
         [MemoryPackInclude] public List<LDBubbleData> BubbleDataList { get; set; }
 
+        [MemoryPackInclude] public List<LDWaterBlockData> WaterBlockDataList { get; set; }
+        [MemoryPackInclude] public List<LDWaterWallData> WaterWallDataList { get; set; }
+
         [MemoryPackInclude] public List<LDCameraPointData> CameraPathList { get; set; }
 
         [MemoryPackInclude] public List<LDLevelEditObject> LevelEditObjectList { get; set; }
@@ -43,6 +46,9 @@ namespace LocalData
             BlueCristalGimmickDataList = new List<LDBlueCristalGimmickData>();
             GreenCristalGimmickDataList = new List<LDGreenCristalGimmickData> ();
             BubbleDataList = new List<LDBubbleData>();
+
+            WaterBlockDataList = new List<LDWaterBlockData>();
+            WaterWallDataList = new List<LDWaterWallData>();
 
             CameraPathList = new List<LDCameraPointData>();
             LevelEditObjectList = new List<LDLevelEditObject>();

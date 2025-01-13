@@ -12,7 +12,7 @@ public class WaterBlockData : GimmickDataBase
 
     [GimmickData("실제 물 저장 용량")]
     [field: SerializeField]
-    public int WaterUsage = 3;
+    public int WaterUsage = 2;
 
     [GimmickData("블록 메테리얼")]
     [field: SerializeField]

@@ -10,6 +10,7 @@ public class WaterVaseControll : MonoBehaviour
     private void Start()
     {
         waterLevelOne = false; waterLevelTwo = false;
+        LogManager.Log("" + waterLevelOne + waterLevelTwo);
     }
 
     public void addWater()
@@ -22,6 +23,8 @@ public class WaterVaseControll : MonoBehaviour
         {
             waterLevelOne = true;
         }
+
+        LogManager.Log("" + waterLevelOne + waterLevelTwo);
     }
 
     public void removeWater()
@@ -34,5 +37,7 @@ public class WaterVaseControll : MonoBehaviour
         {
             waterLevelOne = false;
         }
+
+        LogManager.Log("" + waterLevelOne + waterLevelTwo);
     }
 }

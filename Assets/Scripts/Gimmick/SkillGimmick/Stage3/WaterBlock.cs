@@ -7,12 +7,13 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     [Header("References")]
     [SerializeField] public Transform player; // 플레이어 Transform
     [SerializeField] public WaterVaseControll vase;
-    [SerializeField] private float interactionDistance = 10f; // 상호작용 거리
+    [SerializeField] public Water_Door door;
+    [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
     [SerializeField] private WaterBlockData waterBlockData;
 
     public bool isClear = false;
 
-    public int remainingUsage = 0; // 남은 물 사용 가능 횟수
+    public int remainingUsage; // 남은 물 사용 가능 횟수
     private Renderer blockRenderer;
 
     protected override void Init()
@@ -21,6 +22,7 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         blockRenderer = GetComponent<MeshRenderer>();
         UpdateBlockMaterial();
         remainingUsage = waterBlockData.WaterUsage;
+        LogManager.Log("현재 물의 양: " + remainingUsage);
     }
 
     public override void SetGimmick()
@@ -43,20 +45,26 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         {
             InteractWithBlock();
         }
+
+        if (remainingUsage >= 3)
+        {
+            isClear = true;
+            door.OpenDoor();
+        }
     }
 
     void InteractWithBlock()
     {
         // 현재 상태에 따라 동작
-        if (remainingUsage > waterBlockData.maxWaterCapacity)
+        if (remainingUsage < waterBlockData.maxWaterCapacity && vase.waterLevelOne == true)
         {
             AddWater(); // 물 담기
-            vase.addWater();
+            vase.removeWater();
         }
-        else if (remainingUsage < 0)
+        else if (remainingUsage > 0 && vase.waterLevelTwo == false)
         {
             ScoupWater(); // 물 뜨기
-            vase.removeWater();
+            vase.addWater();
         }
         else
         {

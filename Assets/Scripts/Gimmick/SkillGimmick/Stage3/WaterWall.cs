@@ -7,7 +7,7 @@ public class WaterWall : GimmickBase<WaterWallData>
     [Header("References")]
     [SerializeField] public Transform player; // 플레이어 Transform
     [SerializeField] private WaterWallData waterwallData;
-    [SerializeField] private float interactionDistance = 10f; // 상호작용 거리
+    [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
 
     public bool isice;
     public bool isbreak;

@@ -25,7 +25,8 @@ public class GameManager : MonoSingleton<GameManager>
             return;
 
 #if UNITY_EDITOR
-        if (SceneManager.GetActiveScene().name != "LevelEditor")
+        if (SceneManager.GetActiveScene().name != "LevelEditor" &&
+            SceneManager.GetActiveScene().name != "GimmickTest")
         {
 #endif
             // 맵을 로드한다.
@@ -57,52 +58,37 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void OnGameStart()
     {
-        InputManager.Instance.EnableAction(
-            new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions,
-                InputDefines.Move),
-            true);
-        InputManager.Instance.EnableAction(
-            new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions,
-                InputDefines.Jump),
-            true);
-        InputManager.Instance.EnableAction(
-            new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions,
-                InputDefines.Dash),
-            true);
-        InputManager.Instance.EnableAction(
-            new Defines.InputDefines.InputActionName(
-                InputDefines.ActionMapType.PlayerActions,
-                InputDefines.SkillType.StarHunt.ToString()),
-            true);
+        SetMovementInput(true);
     }
 
     private void OnGameOver()
     {
         GameOver();
+        SetMovementInput(false);
+    }
 
+    public void SetMovementInput(bool active)
+    {
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Move),
-            false);
+            active);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Jump),
-            false);
+            active);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
                 InputDefines.Dash),
-            false);
+            active);
         InputManager.Instance.EnableAction(
             new Defines.InputDefines.InputActionName(
                 InputDefines.ActionMapType.PlayerActions,
                 InputDefines.SkillType.StarHunt.ToString()),
-            false);
+            active);
     }
 
     public void GameClear()

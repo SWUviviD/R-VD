@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2732836501551192909
+--- !u!1 &7547597562866269694
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6849323370542901665}
-  - component: {fileID: 3905127871749639395}
-  - component: {fileID: 6690107551250453444}
-  - component: {fileID: 9047827742588823137}
-  - component: {fileID: 7340897022129654457}
-  - component: {fileID: 6311376729906686543}
+  - component: {fileID: 522777062768936362}
+  - component: {fileID: 1741247866314914243}
+  - component: {fileID: 8421879251709091949}
+  - component: {fileID: 4180719499897718238}
+  - component: {fileID: 7518729583054469335}
+  - component: {fileID: 6162757074454147251}
   m_Layer: 0
-  m_Name: WaterWall
+  m_Name: WaterBlock clear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6849323370542901665
+--- !u!4 &522777062768936362
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
+  m_GameObject: {fileID: 7547597562866269694}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.68, y: 1.56, z: 12.59}
-  m_LocalScale: {x: 2, y: 3, z: 0.7}
+  m_LocalPosition: {x: 10.84, y: 0.59, z: 12.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3905127871749639395
+--- !u!33 &1741247866314914243
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
+  m_GameObject: {fileID: 7547597562866269694}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6690107551250453444
+--- !u!23 &8421879251709091949
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
+  m_GameObject: {fileID: 7547597562866269694}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -86,13 +86,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9047827742588823137
+--- !u!65 &4180719499897718238
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
+  m_GameObject: {fileID: 7547597562866269694}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,40 +107,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7340897022129654457
+--- !u!114 &7518729583054469335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
+  m_GameObject: {fileID: 7547597562866269694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501a5a8a93d56334c8ebabd350a85c09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gimmickData: {fileID: 6311376729906686543}
-  prefabName: 
-  player: {fileID: 0}
-  vase: {fileID: 0}
-  waterwallData: {fileID: 6311376729906686543}
-  interactionDistance: 2
-  isice: 0
-  isbreak: 0
---- !u!114 &6311376729906686543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2732836501551192909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6411fa136cfee64c98ee59e5b8e24a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6444610683b957d4e81ebfb2260a8d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pointList: []
+  maxWaterCapacity: 3
+  WaterUsage: 0
   blockMaterials:
-  - {fileID: 6151071871934886045, guid: f2ba4e1b3e2a38048bf5d76bba997a4d, type: 3}
-  - {fileID: -8612975695535684231, guid: f0eb5519b8d574a4c98da2ccb0ee5719, type: 3}
+  - {fileID: 6151071871934886045, guid: 4ecf5b09be8ba284e85a314dd4ef0595, type: 3}
+  - {fileID: 3976096569710541309, guid: dca1ce2e36cc812428d1565cf669971f, type: 3}
   - {fileID: -7730079208461156751, guid: 5b215231c735ce149b19f6b62eef826e, type: 3}
+  - {fileID: 6041409657588549234, guid: 265f7036b8ec3eb409a40df5a886bbdf, type: 3}
+--- !u!114 &6162757074454147251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7547597562866269694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6f7de39878fcd4c93389bee33c07e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gimmickData: {fileID: 7518729583054469335}
+  prefabName: 
+  player: {fileID: 0}
+  vase: {fileID: 0}
+  door: {fileID: 4900682034519632630, guid: 01dcf9f9edb4dee439391ed981653793, type: 3}
+  interactionDistance: 2
+  waterBlockData: {fileID: 7518729583054469335}
+  isClear: 0
+  remainingUsage: 0

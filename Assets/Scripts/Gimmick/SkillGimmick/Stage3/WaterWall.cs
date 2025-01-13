@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Searcher;
 using UnityEngine;
 
 public class WaterWall : GimmickBase<WaterWallData>
 {
     [Header("References")]
     [SerializeField] public Transform player; // 플레이어 Transform
+    [SerializeField] public WaterVaseControll vase;
     [SerializeField] private WaterWallData waterwallData;
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
 
@@ -18,7 +20,6 @@ public class WaterWall : GimmickBase<WaterWallData>
     {
         // 초기화
         wallRenderer = GetComponent<MeshRenderer>();
-        UpdateBlockMaterial();
         wallRenderer.material = waterwallData.blockMaterials[0];
 
         isice = false;
@@ -41,7 +42,7 @@ public class WaterWall : GimmickBase<WaterWallData>
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         // 거리 내에서 E 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E))
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E) && vase.waterLevelOne == true)
         {
             isice = true;
             UpdateBlockMaterial();
@@ -62,13 +63,9 @@ public class WaterWall : GimmickBase<WaterWallData>
         {
             wallRenderer.material = waterwallData.blockMaterials[1];
         }
-        else if (isbreak)
+        if (isbreak)
         {
             wallRenderer.material = waterwallData.blockMaterials[2];
-        }
-        else
-        {
-            LogManager.LogWarning("Material 배열 부족");
         }
     }
 }

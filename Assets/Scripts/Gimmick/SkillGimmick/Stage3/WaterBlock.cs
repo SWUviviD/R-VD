@@ -20,8 +20,8 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     {
         // 초기화
         blockRenderer = GetComponent<MeshRenderer>();
-        UpdateBlockMaterial();
         remainingUsage = waterBlockData.WaterUsage;
+        UpdateBlockMaterial();
         LogManager.Log("현재 물의 양: " + remainingUsage);
     }
 

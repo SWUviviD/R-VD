@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoSingleton<DialogueManager>
@@ -12,14 +13,21 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     [SerializeField] private Text nameText;                 // NPC Name
     [SerializeField] private Text dialogueText;             // NPC Dialogue
     [SerializeField] private RectTransform nextToggleRT;    // Next Toggle
+    [SerializeField] private DialogueContainer container;   // Dialogue Container
+    [SerializeField] private GameObject dialogueCamera;     // Dialogue Camera
 
     [Header("Settings")]
+    [SerializeField] private float fadePercent = 0.8f;
+    [SerializeField] private float fadeSpeed = 1.5f;
     [SerializeField] private float readSpeed = 0.05f;
     [SerializeField] private float readFast = 0.1f;
     [SerializeField] private float nextToggleSpeed = 5f;
     [SerializeField] private KeyCode dialogueKeyCode = KeyCode.C;
+
+    public bool IsDialogueActive => isDialogueActive;
     public KeyCode DialogueKeyCode => dialogueKeyCode;
 
+    private Dictionary<int, DialogueContainer.Chat> chats = new Dictionary<int, DialogueContainer.Chat>();
     private Vector3 originPosition;
     private string[] dialogue;
     private bool letterIsMultiplied = false;
@@ -37,13 +45,14 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
     private void Start()
     {
+        container.Dialogues.ForEach(dialogue => chats.Add(dialogue.DialogueID, dialogue));
         originPosition = nextToggleRT.GetComponent<RectTransform>().anchoredPosition;
         dialogueText.text = "";
     }
 
     private void Update()
     {
-        if (isDialogueActive && Input.GetKeyDown(dialogueKeyCode) && isLineEnded == false)
+        if (Input.GetKeyDown(dialogueKeyCode) && isDialogueActive && isLineEnded == false)
         {
             isSkip = true;
         }
@@ -59,13 +68,16 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         }
     }
 
-    public void StartDialogue(in string name, in string[] sentences)
+    public void StartDialogue(int dialogueID)
     {
         inRange = true;
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
-        dialogue = sentences;
-        nameText.text = name;
+        dialogueCamera.SetActive(true);
+
+        var chat = chats[dialogueID];
+        nameText.text = chat.NpcName;
+        dialogue = chat.Sentences;
 
         if (Input.GetKeyDown(dialogueKeyCode) && !isDialogueActive)
         {
@@ -109,6 +121,10 @@ public class DialogueManager : MonoSingleton<DialogueManager>
                 }
                 yield return null;
             }
+
+            // 1초 후 대화 종료
+            StartCoroutine(IFadeOutBackground());
+            yield return IWaitForUnscaledSeconds(1f);
 
             isLineEnded = false;
             isDialogueEnded = false;
@@ -187,6 +203,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         isDialogueActive = false;
         toChat.SetActive(true);
         dialoguePanel.SetActive(false);
+        dialogueCamera.SetActive(false);
         GameManager.Instance.SetMovementInput(true);
     }
 
@@ -200,8 +217,15 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             StopAllCoroutines();
             toChat.SetActive(false);
             dialoguePanel.SetActive(false);
+            dialogueCamera.SetActive(false);
         }
         GameManager.Instance.SetMovementInput(true);
+    }
+
+    public void SetCameraAngle(Vector3 position, Vector3 rotation)
+    {
+        dialogueCamera.transform.position = position;
+        dialogueCamera.transform.rotation = Quaternion.Euler(rotation);
     }
 
     private IEnumerator IFadeInBackground()
@@ -209,12 +233,31 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         Image panelImage = dialoguePanel.GetComponent<Image>();
         Color panelColor = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, 0f);
         Color nameColor = new Color(nameText.color.r, nameText.color.g, nameText.color.b, 0f);
+        float speed = 0.01f * fadeSpeed;
 
         panelImage.color = panelColor;
-        while (panelColor.a < 0.8f)
+        while (panelColor.a < fadePercent)
         {
-            panelColor.a += 0.01f;
-            nameColor.a += 0.01f;
+            panelColor.a += speed;
+            nameColor.a += speed;
+            panelImage.color = panelColor;
+            nameText.color = nameColor;
+            yield return null;
+        }
+    }
+
+    private IEnumerator IFadeOutBackground()
+    {
+        Image panelImage = dialoguePanel.GetComponent<Image>();
+        Color panelColor = new Color(panelImage.color.r, panelImage.color.g, panelImage.color.b, fadePercent);
+        Color nameColor = new Color(nameText.color.r, nameText.color.g, nameText.color.b, fadePercent);
+        float speed = 0.01f * fadeSpeed;
+
+        panelImage.color = panelColor;
+        while (panelColor.a > 0)
+        {
+            panelColor.a -= speed;
+            nameColor.a -= speed;
             panelImage.color = panelColor;
             nameText.color = nameColor;
             yield return null;

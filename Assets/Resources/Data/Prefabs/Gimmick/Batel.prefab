@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3520994736285758578}
-  - component: {fileID: 7732353367647610234}
-  - component: {fileID: 6078592446126897090}
   - component: {fileID: 4520622927146981970}
+  - component: {fileID: 5232820816334286476}
+  - component: {fileID: 380614360087611013}
+  - component: {fileID: 5546929101369285181}
   m_Layer: 0
   m_Name: Batel
   m_TagString: Untagged
@@ -36,34 +37,6 @@ Transform:
   - {fileID: 3999181525703881326}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7732353367647610234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956254220181791121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4c48221a0f87524c923af4312efdf4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gimmickData: {fileID: 6078592446126897090}
-  prefabName: Batel
-  editorObject: {fileID: 7148283573810238584}
---- !u!114 &6078592446126897090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956254220181791121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e7ab55769b97a4680b74df17a388f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pointList: []
 --- !u!114 &4520622927146981970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,6 +51,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trNeck: {fileID: 3671065808381787957}
   rotateLimit: 40
+--- !u!114 &5232820816334286476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956254220181791121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ffda1f24b944b4abd83d072cec693c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gimmickData: {fileID: 380614360087611013}
+  prefabName: Batel
+--- !u!114 &380614360087611013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956254220181791121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4389661ce05c8174aa79894f1eb4415e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointList: []
+  <DialogueID>k__BackingField: 0
+  <CameraPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <CameraRotation>k__BackingField: {x: 0, y: 0, z: 0}
+--- !u!135 &5546929101369285181
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956254220181791121}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 7
+  m_Center: {x: 0, y: 4, z: 0}
 --- !u!1001 &3543040728252875767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -580,12 +604,6 @@ PrefabInstance:
 --- !u!4 &3999181525703881326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6290281770487906458, guid: 7424e4501ae0a16438819921b4685d26,
-    type: 3}
-  m_PrefabInstance: {fileID: 6932275238783578868}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7148283573810238584 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 218333942386157196, guid: 7424e4501ae0a16438819921b4685d26,
     type: 3}
   m_PrefabInstance: {fileID: 6932275238783578868}
   m_PrefabAsset: {fileID: 0}

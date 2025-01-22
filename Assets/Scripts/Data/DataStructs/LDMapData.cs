@@ -34,6 +34,8 @@ namespace LocalData
 
         [MemoryPackInclude] public LDStageClearPointData StageClearPoint { get; set; }
 
+        [MemoryPackInclude] public List<LDDialogueData> DialogueList { get; set; }
+
         public LDMapData()
         {
             BlinkBoardDataList = new List<LDBlinkBoardData>();
@@ -44,7 +46,7 @@ namespace LocalData
             BalancePlateDataList = new List<LDBalancePlateData>();
             CristalGimmickDataList = new List<LDCristalData>();
             BlueCristalGimmickDataList = new List<LDBlueCristalGimmickData>();
-            GreenCristalGimmickDataList = new List<LDGreenCristalGimmickData> ();
+            GreenCristalGimmickDataList = new List<LDGreenCristalGimmickData>();
             BubbleDataList = new List<LDBubbleData>();
 
             WaterBlockDataList = new List<LDWaterBlockData>();
@@ -54,6 +56,8 @@ namespace LocalData
             LevelEditObjectList = new List<LDLevelEditObject>();
 
             CheckpointList = new List<LDCheckpointData>();
+
+            DialogueList = new List<LDDialogueData>();
         }
     }
 }

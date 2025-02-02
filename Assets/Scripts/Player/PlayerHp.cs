@@ -16,6 +16,7 @@ public class PlayerHp : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     public Vector3 RespawnPoint { get; set; }
+    public Vector3 RespawnRotation { get; set; }
     private int currentHp;
     public bool IsAlive { get => currentHp > 0; }
 
@@ -26,6 +27,7 @@ public class PlayerHp : MonoBehaviour
     {
         FullHeal();
         RespawnPoint = transform.position;
+        RespawnRotation = transform.rotation.eulerAngles;
     }
 
     private void Die()
@@ -43,6 +45,7 @@ public class PlayerHp : MonoBehaviour
     {
         audioSource.Play();
         move.SetPosition(RespawnPoint);
+        move.SetRotation(RespawnRotation);
         CameraController.Instance.Reset();
         CameraController.Instance.Play();
         // 이펙트 출력

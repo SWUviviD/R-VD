@@ -24,6 +24,7 @@ public class PlayerPositionSettor : GimmickBase<PlayerPositionSettorData>
             SetPlayer();
 
         move.SetPosition(transform.position);
+        move.SetRotation(transform.rotation.eulerAngles);
         player.transform.rotation = transform.rotation;
         player.SetActive(true);
     }

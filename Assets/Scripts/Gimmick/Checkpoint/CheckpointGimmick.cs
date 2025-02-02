@@ -75,7 +75,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
                 move = parent.GetComponentInParent <PlayerMove>();
             }
 
-            CheckpointGimmick.SetCheckPoint(myIndex);
+            CheckpointGimmick.SetCheckpoint(myIndex);
 
             playerHp.RespawnPoint = respawnPoint.position;
             playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
@@ -108,12 +108,23 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     {
         isActive = false;
     }
+
+    protected void LoadCheckpoint()
+    {
+        SetCheckpoint(myIndex);
+        isFirst = true;
+
+        playerHp = GameManager.Instance.Player.GetComponent<PlayerHp>();
+        playerHp.RespawnPoint = respawnPoint.position;
+        playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
+        playerHp.Respawn();
+    }
 }
 
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
     private static List<CheckpointGimmick> checkpointList = new List<CheckpointGimmick>();
-    private static int currentCheckpointIndex = -1;
+    public static int CurrentCheckpointIndex { get; private set; } = -1;
 
     private static int AddCheckpoint(CheckpointGimmick _checkPoint)
     {
@@ -121,16 +132,22 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         return checkpointList.Count - 1;
     }
 
-    private static void SetCheckPoint(int _index)
+    private static void SetCheckpoint(int _index)
     {
-        if (currentCheckpointIndex == _index)
+        if (CurrentCheckpointIndex == _index)
             return;
 
-        if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpointList.Count)
+        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex < checkpointList.Count)
         {
-            checkpointList[currentCheckpointIndex].CheckPointDisable();
+            checkpointList[CurrentCheckpointIndex].CheckPointDisable();
         }
 
-        currentCheckpointIndex = _index;
+        CurrentCheckpointIndex = _index;
+    }
+
+    public static void LoadCheckpoint(int _index)
+    {
+        CurrentCheckpointIndex = _index;
+        checkpointList[CurrentCheckpointIndex].LoadCheckpoint();
     }
 }

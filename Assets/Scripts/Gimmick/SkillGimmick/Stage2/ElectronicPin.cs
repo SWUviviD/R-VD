@@ -20,7 +20,6 @@ public class ElectronicPin : ShockableObj, IFusionable
         Right = 3
     }
 
-    [SerializeField] private ElectronicPin[] pins = new ElectronicPin[4];
     public State CurrentState;
 
     private Renderer render;
@@ -65,12 +64,6 @@ public class ElectronicPin : ShockableObj, IFusionable
     public override void OnShocked(ShockableObj _obj)
     {
         preShockedObj = _obj;
-
-        foreach (var pin in pins)
-        {
-
-
-        }
     }
 
     public override void ShockFailed()

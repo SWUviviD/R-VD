@@ -17,10 +17,13 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     [SerializeField] private Transform respawnPoint;
     /// <summary> 플레이어 리스폰 위치를 나타내는 임시 오브젝트 </summary>
     [SerializeField] private GameObject prevRespawnPoint;
+    /// <summary> 배치된 영역 오브젝트 </summary>
+    [SerializeField] private GameObject placedArea;
 
     [Header("Player Data")]
     /// <summary> 플레이어 레이어마스크 </summary>
     [SerializeField] private LayerMask playerMask;
+
     /// <summary> 플레이어 스테이터스 </summary>
     private PlayerHp playerHp;
     private PlayerMove move;
@@ -41,10 +44,10 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
         cubeArea.SetActive(false);
         prevRespawnPoint.SetActive(false);
-        //#if UNITY_EDITOR
-        //        cubeArea.SetActive(true);
-        //        prevRespawnPoint.SetActive(true);
-        //#endif
+#if UNITY_EDITOR
+        cubeArea.SetActive(true);
+        prevRespawnPoint.SetActive(true);
+#endif
     }
 
     public override void SetGimmick()
@@ -52,10 +55,13 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         // 체크 포인트 크기 및 위치 설정
         checkpointArea.localScale = gimmickData.AreaSize;
         respawnPoint.localPosition = gimmickData.RespawnPoint;
+        respawnPoint.localRotation = Quaternion.Euler(gimmickData.RespawnRotation);
 
         // 박스 콜라이더 크기 및 위치 설정
         boxCollider.center = new Vector3(0f, gimmickData.AreaSize.y / 2f, 0f);
         boxCollider.size = gimmickData.AreaSize;
+
+        placedArea.transform.localScale = gimmickData.AreaSize;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,9 +75,10 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
                 move = parent.GetComponentInParent <PlayerMove>();
             }
 
-            CheckpointGimmick.SetCheckPoint(myIndex);
+            CheckpointGimmick.SetCheckpoint(myIndex);
 
             playerHp.RespawnPoint = respawnPoint.position;
+            playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
             isActive = true;
 
             if(gimmickData.FullHealWhenFirstTouched == true && isFirst == false)
@@ -101,12 +108,23 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     {
         isActive = false;
     }
+
+    protected void LoadCheckpoint()
+    {
+        SetCheckpoint(myIndex);
+        isFirst = true;
+
+        playerHp = GameManager.Instance.Player.GetComponent<PlayerHp>();
+        playerHp.RespawnPoint = respawnPoint.position;
+        playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
+        playerHp.Respawn();
+    }
 }
 
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
     private static List<CheckpointGimmick> checkpointList = new List<CheckpointGimmick>();
-    private static int currentCheckpointIndex = -1;
+    public static int CurrentCheckpointIndex { get; private set; } = -1;
 
     private static int AddCheckpoint(CheckpointGimmick _checkPoint)
     {
@@ -114,16 +132,22 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         return checkpointList.Count - 1;
     }
 
-    private static void SetCheckPoint(int _index)
+    private static void SetCheckpoint(int _index)
     {
-        if (currentCheckpointIndex == _index)
+        if (CurrentCheckpointIndex == _index)
             return;
 
-        if (currentCheckpointIndex >= 0 && currentCheckpointIndex < checkpointList.Count)
+        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex < checkpointList.Count)
         {
-            checkpointList[currentCheckpointIndex].CheckPointDisable();
+            checkpointList[CurrentCheckpointIndex].CheckPointDisable();
         }
 
-        currentCheckpointIndex = _index;
+        CurrentCheckpointIndex = _index;
+    }
+
+    public static void LoadCheckpoint(int _index)
+    {
+        CurrentCheckpointIndex = _index;
+        checkpointList[CurrentCheckpointIndex].LoadCheckpoint();
     }
 }

@@ -229,4 +229,14 @@ public class PlayerMove : MonoSingleton<GameManager>
     {
         return transform.position - transform.up * heightLength;
     }
+
+    public void SetRotation(Vector3 _newRot)
+    {
+        transform.rotation = Quaternion.Euler(_newRot);
+    }
+
+    public Vector3 GetRotation()
+    {
+        return transform.rotation.eulerAngles;
+    }
 }

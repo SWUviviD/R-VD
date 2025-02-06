@@ -43,7 +43,9 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
     public override void SetGimmick()
     {
-
+        dialogueID = gimmickData.DialogueID;
+        cameraPosition = gimmickData.CameraPosition;
+        cameraRotation = gimmickData.CameraRotation;
     }
 
     protected override void Init()

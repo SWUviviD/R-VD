@@ -18,6 +18,9 @@ namespace LocalData
         public Vector3 RespawnPoint { get; set; } = Vector3.zero;
 
         [MemoryPackInclude]
+        public Vector3 RespawnRotation { get; set; } = Vector3.zero;
+
+        [MemoryPackInclude]
         public float DropRespawnHeight { get; set; } = -10f;
 
         [MemoryPackInclude]

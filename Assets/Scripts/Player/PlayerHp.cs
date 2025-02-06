@@ -16,8 +16,9 @@ public class PlayerHp : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     public Vector3 RespawnPoint { get; set; }
-    private int currentHp;
-    public bool IsAlive { get => currentHp > 0; }
+    public Vector3 RespawnRotation { get; set; }
+    public int CurrentHp { get; private set; }
+    public bool IsAlive { get => CurrentHp > 0; }
 
     public UnityEvent<int> OnDamaged { get; set; } = new UnityEvent<int>();
     public UnityEvent OnDeath { get; set; } = new UnityEvent();
@@ -26,6 +27,7 @@ public class PlayerHp : MonoBehaviour
     {
         FullHeal();
         RespawnPoint = transform.position;
+        RespawnRotation = transform.rotation.eulerAngles;
     }
 
     private void Die()
@@ -43,6 +45,7 @@ public class PlayerHp : MonoBehaviour
     {
         audioSource.Play();
         move.SetPosition(RespawnPoint);
+        move.SetRotation(RespawnRotation);
         CameraController.Instance.Reset();
         CameraController.Instance.Play();
         // 이펙트 출력
@@ -62,8 +65,8 @@ public class PlayerHp : MonoBehaviour
         if (IsAlive == false)
             return;
 
-        currentHp -= amount;
-        LogManager.Log(currentHp.ToString());
+        CurrentHp -= amount;
+        LogManager.Log(CurrentHp.ToString());
 
         // 이펙트 출력
         if (damageEffectPrefab != null)
@@ -73,13 +76,13 @@ public class PlayerHp : MonoBehaviour
         }
 
         // 사망 처리
-        if (currentHp <= 0f)
+        if (CurrentHp <= 0f)
         {
             Die();
         }
         else
         {
-            OnDamaged?.Invoke(currentHp);
+            OnDamaged?.Invoke(CurrentHp);
         }
     }
 
@@ -89,7 +92,7 @@ public class PlayerHp : MonoBehaviour
             return;
 
         Damage(amount);
-        if(currentHp > 0f)
+        if(CurrentHp > 0f)
         {
             Respawn();
         }
@@ -100,9 +103,9 @@ public class PlayerHp : MonoBehaviour
     /// </summary>
     public void FullHeal()
     {
-        currentHp = status.HP;
-        OnDamaged?.Invoke(currentHp);
-        LogManager.Log(currentHp.ToString());
+        CurrentHp = status.HP;
+        OnDamaged?.Invoke(CurrentHp);
+        LogManager.Log(CurrentHp.ToString());
 
         // 이펙트 출력
         if (healEffectPrefab != null)
@@ -115,11 +118,11 @@ public class PlayerHp : MonoBehaviour
 
     public void Heal(int amount)
     {
-        LogManager.Log(currentHp.ToString());
-        currentHp += amount;
-        if (currentHp > status.HP)
+        LogManager.Log(CurrentHp.ToString());
+        CurrentHp += amount;
+        if (CurrentHp > status.HP)
         {
-            currentHp = status.HP;
+            CurrentHp = status.HP;
         }
 
         // 이펙트 출력

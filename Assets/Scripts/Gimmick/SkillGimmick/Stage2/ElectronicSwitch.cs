@@ -15,7 +15,7 @@ public class ElectronicSwitch : ShockableObj
     [SerializeField] protected ShockableObj[] shockObj;
 
     // temp Effect
-    [SerializeField] private Renderer render;
+    [SerializeField] protected Renderer render;
 
     protected void Start()
     {
@@ -23,11 +23,10 @@ public class ElectronicSwitch : ShockableObj
         render.material.color = Color.white;
     }
 
-    public override void OnShocked(ShockableObj _obj)
+    public override void OnShocked(ShockableObj obj)
     {
         if (currentState != State.Stopped) return;
 
-        preShockedObj = _obj;
         currentState = State.Generating;
 
         // Play Animation & Sound
@@ -35,7 +34,7 @@ public class ElectronicSwitch : ShockableObj
         StartCoroutine(CoGenerating());
     }
 
-    private IEnumerator CoGenerating()
+    protected virtual IEnumerator CoGenerating()
     {
         // temp effect
         yield return new WaitForSeconds(0.5f);
@@ -47,7 +46,7 @@ public class ElectronicSwitch : ShockableObj
         }
     }
 
-    public override void ShockFailed()
+    public override void ShockFailed(ShockableObj obj = null)
     {
         if (currentState != State.Generating) return;
 
@@ -57,12 +56,17 @@ public class ElectronicSwitch : ShockableObj
         StartCoroutine(CoStopped());
     }
 
-    private IEnumerator CoStopped()
+    protected virtual IEnumerator CoStopped()
     {
         // temp effect
         yield return new WaitForSeconds(0.2f);
 
         render.material.color = Color.white;
         //shockObj?.ShockFailed();
+    }
+
+    protected void StopGenerating()
+    {
+        ShockFailed();
     }
 }

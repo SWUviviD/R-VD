@@ -4,9 +4,11 @@ using UnityEngine;
 
 public abstract class ShockableObj : MonoBehaviour 
 {
-    protected ShockableObj preShockedObj;
+    public ShockableObj GiveShockObj { get; protected set; }
 
-    public abstract void OnShocked(ShockableObj _obj);
+    public virtual void SetForMap(ElectronicMap map, int index) { }
 
-    public abstract void ShockFailed();
+    public abstract void OnShocked(ShockableObj obj);
+
+    public abstract void ShockFailed(ShockableObj obj = null);
 }

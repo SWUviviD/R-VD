@@ -1,0 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ElectronicPipe : ShockableObj
+{
+    [SerializeField] private float shockSpeed = 0.02f;
+
+    [SerializeField] private ShockableObj[] attached;
+    private bool isSending = false;
+
+    public override void OnShocked(ShockableObj obj)
+    {
+        if (isSending == true)
+            return;
+
+        GiveShockObj = obj;
+        StartCoroutine(CoSendShock());
+    }
+
+    private IEnumerator CoSendShock()
+    {
+        isSending = true;
+        
+        yield return new WaitForSeconds(shockSpeed);
+
+        foreach(var shock in attached)
+        {
+            if (shock == GiveShockObj)
+                continue;
+            shock.OnShocked(this);
+        }
+
+        isSending = false;
+    }
+
+    public override void ShockFailed(ShockableObj obj = null)
+    {
+        if(isSending == true)
+        {
+            StopAllCoroutines();
+        }
+
+        GiveShockObj = null;
+        StartCoroutine(CoSendFail());
+    }
+
+    private IEnumerator CoSendFail()
+    {
+        isSending = true;
+
+        yield return new WaitForSeconds(shockSpeed);
+
+        foreach (var shock in attached)
+        {
+            shock.ShockFailed();
+        }
+
+        isSending = false;
+    }
+}

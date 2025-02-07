@@ -13,5 +13,11 @@ public class MovingRail : ShockableObj
         }
     }
 
-    public override void ShockFailed(ShockableObj obj = null) { } // 카트는 발전이 종료되어도 계속 이동한다.
+    public override void ShockFailed(ShockableObj obj = null)
+    {
+        foreach (var c in carts)
+        {
+            c.StopMoving();
+        }
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ElectronicMap : MonoBehaviour
 {
-    [SerializeField] private string MapInfo;
+    [SerializeField] private int mapIndex;
 
     [SerializeField] private Transform pinParent;
     [SerializeField] private GameObject pinPrefab;
@@ -41,19 +41,45 @@ public class ElectronicMap : MonoBehaviour
         {-1, 0 }    // Right
     };
 
+    private static List<List<LDPinMapData>> MapDatas;
+    private static void SetMapDatas()
+    {
+        MapDatas = new List<List<LDPinMapData>>();
+
+        List<LDPinMapData> mapDatas;
+        SerializeManager.Instance.LoadDataFile(out mapDatas, "LDPinMapData");
+        if (mapDatas.Count <= 0)
+            return;
+
+        int index = -1;
+        foreach(var data in mapDatas)
+        {
+            if(data.Index != index)
+            {
+                MapDatas.Add(new List<LDPinMapData>());
+                index = data.Index;
+            }
+
+            MapDatas[index].Add(data);
+        }
+    }
+
     public void Awake()
     {
+        if(MapDatas == null)
+        {
+            SetMapDatas();
+        }
+
         Init();
     }
 
     private void Init()
     {
-        if (MapInfo == string.Empty) return;
+        if (MapDatas.Count == 0) return;
+        if(mapIndex < 0 ||  mapIndex >= MapDatas.Count) return;
 
-        List<LDPinMapData> mapDatas;
-        SerializeManager.Instance.LoadDataFile(out mapDatas, MapInfo);
-        if (mapDatas.Count <= 0)
-            return;
+        List<LDPinMapData> mapDatas = MapDatas[mapIndex];
 
         int x = -1;
         foreach (var mapData in mapDatas)

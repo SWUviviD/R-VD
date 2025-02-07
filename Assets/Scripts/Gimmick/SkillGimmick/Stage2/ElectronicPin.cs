@@ -58,6 +58,7 @@ public class ElectronicPin : ShockableObj, IFusionable
     public void Init(ElectronicMap map, LDPinMapData data)
     {
         Data = data;
+        Debug.Log(Data.ToString());
 
         for (int i = 0; i < Pipes.Length; i++)
         {

@@ -20,6 +20,7 @@ public class ElectronicSwitchB : ElectronicSwitch
         GiveShockObj = obj;
 
         --currentUnShockedCount;
+        Debug.Log(currentUnShockedCount);
         if (currentUnShockedCount > 0)
             return;
 
@@ -32,5 +33,6 @@ public class ElectronicSwitchB : ElectronicSwitch
     {
         base.ShockFailed();
         ++currentUnShockedCount;
+        Debug.Log(currentUnShockedCount);
     }
 }

@@ -42,10 +42,10 @@ public class ElectronicPipe : ShockableObj
         }
 
         GiveShockObj = null;
-        StartCoroutine(CoSendFail());
+        StartCoroutine(CoSendFail(obj));
     }
 
-    private IEnumerator CoSendFail()
+    private IEnumerator CoSendFail(ShockableObj shockFailObj)
     {
         isSending = true;
 
@@ -53,7 +53,9 @@ public class ElectronicPipe : ShockableObj
 
         foreach (var shock in attached)
         {
-            shock.ShockFailed();
+            if(shock == shockFailObj)
+                continue;
+            shock.ShockFailed(this);
         }
 
         isSending = false;

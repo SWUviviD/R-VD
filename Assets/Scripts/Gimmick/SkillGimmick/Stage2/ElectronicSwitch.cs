@@ -62,7 +62,10 @@ public class ElectronicSwitch : ShockableObj
         yield return new WaitForSeconds(0.2f);
 
         render.material.color = Color.white;
-        //shockObj?.ShockFailed();
+        foreach (var shockObj in shockObj)
+        {
+            shockObj?.ShockFailed(this);
+        }
     }
 
     protected void StopGenerating()

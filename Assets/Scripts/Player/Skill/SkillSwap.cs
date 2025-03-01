@@ -23,7 +23,7 @@ public class SkillSwap : MonoBehaviour
     void HandleKeyRelease(KeyCode releasedKey, KeyCode blockKey1, KeyCode blockKey2)
     {
         lastReleasedKey = releasedKey;
-        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, 2.0f));
+        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, 3.0f));
     }
 
     IEnumerator BlockInputForDuration(KeyCode blockKey1, KeyCode blockKey2, float duration)

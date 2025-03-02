@@ -48,12 +48,14 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         cubeArea.SetActive(true);
         prevRespawnPoint.SetActive(true);
 #endif
+
+        SetGimmick();
     }
 
     public override void SetGimmick()
     {
         // 체크 포인트 크기 및 위치 설정
-        checkpointArea.localScale = gimmickData.AreaSize;
+        //checkpointArea.localScale = gimmickData.AreaSize;
         respawnPoint.localPosition = gimmickData.RespawnPoint;
         respawnPoint.localRotation = Quaternion.Euler(gimmickData.RespawnRotation);
 

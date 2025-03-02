@@ -27,6 +27,8 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
 
         sense.OnCristalBreak.RemoveListener(OnCristalBreak);
         sense.OnCristalBreak.AddListener(OnCristalBreak);
+
+        SetGimmick();
     }
 
     [ContextMenu("SetMenu")]

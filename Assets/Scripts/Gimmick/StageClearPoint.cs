@@ -9,6 +9,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
 
     protected override void Init()
     {
+        SetGimmick();
     }
 
     public override void SetGimmick()
@@ -18,7 +19,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
             c.isTrigger = true;
         }
 
-        clearArea.localScale = gimmickData.AreaScale;
+        //clearArea.localScale = gimmickData.AreaScale;
     }
 
     private void OnTriggerExit(Collider other)

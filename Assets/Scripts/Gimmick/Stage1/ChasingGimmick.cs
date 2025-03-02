@@ -46,6 +46,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 
     protected override void Init()
     {
+        SetGimmick();
     }
 
     [ContextMenu("SetGimmick")]
@@ -53,7 +54,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
     {
         StopAllCoroutines();
 
-        coverArea.localScale = gimmickData.ChaseFloorScale;
+        //coverArea.localScale = gimmickData.ChaseFloorScale;
         coverArea.GetComponent<Renderer>().enabled = false;
         bound = coverArea.GetComponent<Collider>().bounds;
 

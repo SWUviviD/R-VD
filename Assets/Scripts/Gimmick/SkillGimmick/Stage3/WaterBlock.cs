@@ -43,22 +43,10 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         // 플레이어와의 거리 계산
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (Input.GetKeyUp(KeyCode.Q)) HandleKeyRelease(KeyCode.Q, KeyCode.W, KeyCode.E);
-        if (Input.GetKeyUp(KeyCode.W)) HandleKeyRelease(KeyCode.W, KeyCode.Q, KeyCode.E);
-        if (Input.GetKeyUp(KeyCode.E)) HandleKeyRelease(KeyCode.E, KeyCode.Q, KeyCode.W);
-
-        if (!ignoreInput)
+        // 거리 내에서 E 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.Q));
-            if (Input.GetKeyDown(KeyCode.W));
-            if (Input.GetKeyDown(KeyCode.E))
-                {
-                // 거리 내에서 E 키 입력으로 상호작용
-                if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E))
-                {
-                    InteractWithBlock();
-                }
-                };
+            InteractWithBlock();
         }
 
         if (remainingUsage >= 3)
@@ -66,19 +54,6 @@ public class WaterBlock : GimmickBase<WaterBlockData>
             isClear = true;
             door.OpenDoor();
         }
-    }
-
-    void HandleKeyRelease(KeyCode releasedKey, KeyCode blockKey1, KeyCode blockKey2)
-    {
-        lastReleasedKey = releasedKey;
-        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, ignoretime));
-    }
-
-    IEnumerator BlockInputForDuration(KeyCode blockKey1, KeyCode blockKey2, float duration)
-    {
-        ignoreInput = true;
-        yield return new WaitForSeconds(duration);
-        ignoreInput = false;
     }
 
     void InteractWithBlock()

@@ -49,7 +49,8 @@ public class WaterWall : GimmickBase<WaterWallData>
         }
 
         // 거리 내에서 Q, W 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.W)))
+        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.W)) 
+            && isice)
         {
             isbreak = true;
             UpdateBlockMaterial();
@@ -66,6 +67,7 @@ public class WaterWall : GimmickBase<WaterWallData>
         if (isbreak)
         {
             wallRenderer.material = waterwallData.blockMaterials[2];
+            Destroy(gameObject, 2.0f);
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class SkillSwap : MonoBehaviour
 {
     private bool ignoreInput = false;
+    private float ignoretime = 3.0f;
     private KeyCode lastReleasedKey;
 
     void Update()
@@ -23,7 +24,7 @@ public class SkillSwap : MonoBehaviour
     void HandleKeyRelease(KeyCode releasedKey, KeyCode blockKey1, KeyCode blockKey2)
     {
         lastReleasedKey = releasedKey;
-        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, 3.0f));
+        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, ignoretime));
     }
 
     IEnumerator BlockInputForDuration(KeyCode blockKey1, KeyCode blockKey2, float duration)

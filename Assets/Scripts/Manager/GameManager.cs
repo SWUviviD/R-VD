@@ -1,15 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using Defines;
-using LocalData;
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public GameObject Player { get; private set; }
+    [field: SerializeField] public GameObject Player { get; private set; }
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
     public bool IsStageClear { get; private set; }
@@ -18,17 +15,37 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] public GameObject clearEffectPrefab2;
     [SerializeField] private AudioSource backgroundSFX;
 
-    private GameData gameData = new GameData();
-    private int stageIndex = 0;
+    public GameData GameData { get; private set; } = new GameData();
     private string savedDataPath;
     private bool isInit = false;
+
+    private void Awake()
+    {
+        savedDataPath = Application.persistentDataPath + "/save";
+        FileInfo fileInfo = new FileInfo(savedDataPath);
+        if (fileInfo.Exists)
+        {
+            GameData = JsonUtility.FromJson<GameData>(File.ReadAllText(savedDataPath));
+        }
+        else
+        {
+            GameData.stageID = 0;
+            GameData.checkpointID = -1;
+            GameData.playerHealth = 10;
+            File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
+        }
+
+        if (Player != null)
+        {
+            Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
+            Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
+        }
+    }
 
     private void OnEnable()
     {
         if (isInit == true)
             return;
-
-        savedDataPath = Application.persistentDataPath + "/save";
 
 #if UNITY_EDITOR
         if (SceneManager.GetActiveScene().name != "LevelEditor" &&
@@ -38,23 +55,22 @@ public class GameManager : MonoSingleton<GameManager>
         {
 #endif
             // 맵을 로드한다.
-            Player = MapLoadManager.Instance.LoadMap("map");
-            LDMapData mapData = MapLoadManager.Instance.MapData;
+            //Player = MapLoadManager.Instance.LoadMap("map");
+            //LDMapData mapData = MapLoadManager.Instance.MapData;
 
-            if (Player != null)
-            {
-                Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
-                Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
-            }
-
-            OnGameStart();
 #if UNITY_EDITOR
         }
 #endif
 
-        ResumeGame();
+        if (Player != null)
+        {
+            Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
+            Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
+            OnGameStart();
+        }
 
         isInit = true;
+        ResumeGame();
     }
 
     public void OnGameStart()
@@ -141,13 +157,18 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    public void GameStart()
+    public void NewGameStart()
     {
         IsPaused = false;
         IsGameOver = false;
         IsStageClear = false;
-        // TODO: 1스테이지 처음으로 시작 필요
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        GameData.stageID = 0;
+        GameData.checkpointID = -1;
+        GameData.playerHealth = 10;
+        File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
+
+        SceneManager.LoadScene("Stage1");
     }
 
     public void GameRestart()
@@ -155,33 +176,47 @@ public class GameManager : MonoSingleton<GameManager>
         IsPaused = false;
         IsGameOver = false;
         IsStageClear = false;
-        // TODO: 스테이지 인덱스로 수정 필요
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        LoadData();
     }
 
     public void SaveData()
     {
         // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
-        gameData.stageID = stageIndex;
-        gameData.checkpointID = CheckpointGimmick.CurrentCheckpointIndex;
-        gameData.playerHealth = Player.GetComponent<PlayerHp>().CurrentHp;
+        GameData.stageID = SceneManager.GetActiveScene().buildIndex;
+        GameData.checkpointID = CheckpointGimmick.CurrentCheckpointIndex;
+        GameData.playerHealth = Player ? Player.GetComponent<PlayerHp>().CurrentHp : 10;
 
         // 스테이지, 체크포인트, 현재 체력 저장
-        File.WriteAllText(savedDataPath, JsonUtility.ToJson(gameData));
+        File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
     }
 
     public void LoadData()
     {
         // 스테이지, 체크포인트, 현재 체력 불러오기
-        gameData = JsonUtility.FromJson<GameData>(File.ReadAllText(savedDataPath));
+        GameData = JsonUtility.FromJson<GameData>(File.ReadAllText(savedDataPath));
 
         // 게임 시작 및 씬 로드
-        OnGameStart();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (GameData.stageID != SceneManager.GetActiveScene().buildIndex)
+        {
+            SceneManager.LoadScene(GameData.stageID);
+        }
 
-        // TODO: 스테이지 변경 테스트 필요
-        //SceneManager.LoadScene(gameData.stageID);
-        CheckpointGimmick.LoadCheckpoint(gameData.checkpointID);
+        if (GameData.checkpointID != -1)
+        {
+            StartCoroutine(IWaitCheckpoint());
+        }
+    }
+
+    private IEnumerator IWaitCheckpoint()
+    {
+        while (CheckpointGimmick.CheckpointList.Count == 0)
+        {
+            yield return null;
+        }
+        CheckpointGimmick.LoadCheckpoint(GameData.checkpointID);
+        Player.GetComponent<PlayerHp>().SetHealth(GameData.playerHealth);
+        yield return null;
     }
 
     public void GameExit()

@@ -38,6 +38,20 @@ public class StageClearUI : MonoBehaviour
         {
             HandleBlackOverlayFade();
         }
+        else if (whiteOverlay.color.a != 0)
+        {
+            Color overlayColor = whiteOverlay.color;
+            overlayColor.a = 0;
+            whiteOverlay.color = overlayColor;
+
+            nextButton.gameObject.SetActive(false);
+            Color textColor1 = stageClearText.color;
+            textColor1.a = 0;
+            stageClearText.color = textColor1;
+            Color textColor2 = stageText.color;
+            textColor2.a = 0;
+            stageText.color = textColor2;
+        }
     }
 
     private void HandleBlackOverlayFade()

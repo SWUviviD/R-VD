@@ -254,10 +254,11 @@ public class CameraController : MonoSingleton<CameraController>
 
     private void Update()
     {
+        if (GameManager.Instance.IsPaused || GameManager.Instance.IsGameOver || GameManager.Instance.IsStageClear) return;
         if (IsActive == false) return;
 
-        Cursor.visible = false; // Invisible mouse cursor
-        Cursor.lockState = CursorLockMode.Locked; // Locked mouse cursor
+        //Cursor.visible = false; // Invisible mouse cursor
+        //Cursor.lockState = CursorLockMode.Locked; // Locked mouse cursor
 
         // Mouse X & Mouse Y
         x += Input.GetAxis("Mouse X") * xMoveSpeed * Time.deltaTime;

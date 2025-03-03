@@ -131,4 +131,9 @@ public class PlayerHp : MonoBehaviour
             Destroy(healEffect, 5f);
         }
     }
+
+    public void SetHealth(int amount)
+    {
+        CurrentHp = amount;
+    }
 }

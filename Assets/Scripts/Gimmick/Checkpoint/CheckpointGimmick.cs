@@ -68,13 +68,14 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private void OnTriggerEnter(Collider other)
     {
-        Transform parent = other.transform.parent.parent;
-        if (parent != null && parent.TryGetComponent<PlayerHp>(out var hp))
+        //Transform parent = other.transform.parent.parent;
+        //if (parent != null && parent.TryGetComponent<PlayerHp>(out var hp))
+        if (other.TryGetComponent<PlayerHp>(out var hp))
         {
             if (playerHp == null)
             {
                 playerHp = hp;
-                move = parent.GetComponentInParent <PlayerMove>();
+                move = other.GetComponentInParent <PlayerMove>();
             }
 
             CheckpointGimmick.SetCheckpoint(myIndex);
@@ -87,6 +88,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
             {
                 audioSource.Play();
                 playerHp.FullHeal();
+                GameManager.Instance.SaveData();
                 isFirst = true;
             }
         }
@@ -125,13 +127,13 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
-    private static List<CheckpointGimmick> checkpointList = new List<CheckpointGimmick>();
+    public static List<CheckpointGimmick> CheckpointList { get; private set; } = new List<CheckpointGimmick>();
     public static int CurrentCheckpointIndex { get; private set; } = -1;
 
     private static int AddCheckpoint(CheckpointGimmick _checkPoint)
     {
-        checkpointList.Add(_checkPoint);
-        return checkpointList.Count - 1;
+        CheckpointList.Add(_checkPoint);
+        return CheckpointList.Count - 1;
     }
 
     private static void SetCheckpoint(int _index)
@@ -139,9 +141,9 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         if (CurrentCheckpointIndex == _index)
             return;
 
-        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex < checkpointList.Count)
+        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex < CheckpointList.Count)
         {
-            checkpointList[CurrentCheckpointIndex].CheckPointDisable();
+            CheckpointList[CurrentCheckpointIndex].CheckPointDisable();
         }
 
         CurrentCheckpointIndex = _index;
@@ -150,6 +152,6 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     public static void LoadCheckpoint(int _index)
     {
         CurrentCheckpointIndex = _index;
-        checkpointList[CurrentCheckpointIndex].LoadCheckpoint();
+        CheckpointList[CurrentCheckpointIndex].LoadCheckpoint();
     }
 }

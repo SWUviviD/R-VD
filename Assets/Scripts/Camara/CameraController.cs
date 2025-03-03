@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -207,5 +208,109 @@ public class CameraController : MonoSingleton<CameraController>
     private Vector2 GetCameraPoint(Vector3 _point)
     {
         return new Vector2(_point.x, _point.z);
+    }
+}
+*/
+
+using Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraController : MonoSingleton<CameraController>
+{
+    [Header("Cinemachine Camera")]
+    [SerializeField] private Transform cinemachineBrainTR;    // Cinemachine brain
+    [SerializeField] private Transform playerFollowCameraTR;  // Player follow camera
+    [SerializeField] private Transform dialogueCameraTR;      // Dialogue camera
+
+    [Header("Camera Settings")]
+    [SerializeField] private Transform target;          // Target (Player)
+    [SerializeField] private float minDistance = 3;     // Camera & Target distatnce (min)
+    [SerializeField] private float maxDistance = 30;    // Camera & Target distatnce (max)
+    [SerializeField] private float wheelSpeed = 500;    // Mouse wheel speed
+    [SerializeField] private float xMoveSpeed = 500;    // Camera Y speed
+    [SerializeField] private float yMoveSpeed = 250;    // Camera X speed
+
+    private float yMinLimit = 5;    // Camera X rotate limit (min)
+    private float yMaxLimit = 80;   // Camera X rotate limit (max)
+    private float x, y;             // Mouse movement value
+    private float distance;         // Camera & Target distance
+
+    public bool IsActive {  get; private set; }
+
+    private void Awake()
+    {
+        // Init distance
+        //target = GameManager.Instance.Player.transform;
+        IsActive = true;
+        distance = Vector3.Distance(transform.position, target.position);
+
+        // Init angles
+        Vector3 angles = transform.eulerAngles;
+        x = angles.y;
+        y = angles.x;
+    }
+
+    private void Update()
+    {
+        if (IsActive == false) return;
+
+        Cursor.visible = false; // Invisible mouse cursor
+        Cursor.lockState = CursorLockMode.Locked; // Locked mouse cursor
+
+        // Mouse X & Mouse Y
+        x += Input.GetAxis("Mouse X") * xMoveSpeed * Time.deltaTime;
+        y -= Input.GetAxis("Mouse Y") * yMoveSpeed * Time.deltaTime;
+
+        // Clamp Angle Y
+        y = ClampAngle(y, yMinLimit, yMaxLimit);
+
+        // Camera Rotation
+        transform.rotation = Quaternion.Euler(y, x, 0);
+
+        // Mouse wheel = distance
+        distance -= Input.GetAxis("Mouse ScrollWheel") * wheelSpeed * Time.deltaTime;
+
+        // Clamp distance
+        distance = Mathf.Clamp(distance, minDistance, maxDistance);
+    }
+
+    private void LateUpdate()
+    {
+        if (target == null) return;
+        if (IsActive == false) return;
+
+        // Camera Position (+ distance)
+        transform.position = transform.rotation * new Vector3(0, 0, -distance) + target.position;
+    }
+
+    private float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360) angle += 360;
+        if (angle > 360) angle -= 360;
+
+        return Mathf.Clamp(angle, min, max);
+    }
+
+    public void SetMainCameraActive(bool active)
+    {
+        if (active)
+        {
+            StartCoroutine(IActive(1f));
+        }
+        else
+        {
+            IsActive = active;
+            playerFollowCameraTR.SetPositionAndRotation(transform.position, transform.rotation);
+            transform.SetPositionAndRotation(cinemachineBrainTR.position, cinemachineBrainTR.rotation);
+        }
+    }
+
+    private IEnumerator IActive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        IsActive = true;
+        yield return null;
     }
 }

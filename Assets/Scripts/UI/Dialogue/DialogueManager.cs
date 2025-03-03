@@ -33,6 +33,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private bool letterIsMultiplied = false;
     private bool isDialogueActive = false;
     private bool isDialogueEnded = false;
+    private bool isActive = false;
     private bool isLineEnded = false;
     private bool inRange = false;
     private bool isSkip = false;
@@ -74,6 +75,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
         dialogueCamera.SetActive(true);
+        CameraController.Instance.SetMainCameraActive(false);
 
         var chat = chats[dialogueID];
         nameText.text = chat.NpcName;
@@ -129,6 +131,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             isLineEnded = false;
             isDialogueEnded = false;
             isDialogueActive = false;
+            isActive = false;
             OutOfRange();
         }
     }
@@ -204,6 +207,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         toChat.SetActive(true);
         dialoguePanel.SetActive(false);
         dialogueCamera.SetActive(false);
+        CameraController.Instance.SetMainCameraActive(true);
         GameManager.Instance.SetMovementInput(true);
     }
 
@@ -218,6 +222,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             toChat.SetActive(false);
             dialoguePanel.SetActive(false);
             dialogueCamera.SetActive(false);
+            CameraController.Instance.SetMainCameraActive(true);
         }
         GameManager.Instance.SetMovementInput(true);
     }

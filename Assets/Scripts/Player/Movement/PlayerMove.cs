@@ -74,15 +74,15 @@ public class PlayerMove : MonoSingleton<GameManager>
 
     private void Move(bool isSlope, in RaycastHit hit)
     {
-        Camera mainCamera = CameraController.Instance?.MainCamera;
+        Camera mainCamera = Camera.main;
         if (mainCamera == null)
         {
             LogManager.Log("MainCamera NULL");
             return;
         }
 
-        Vector3 cameraForward = CameraController.Instance.MainCamera.transform.forward;
-        Vector3 cameraRight = CameraController.Instance.MainCamera.transform.right;
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
 
         cameraForward.y = 0f;
         cameraRight.y = 0f;

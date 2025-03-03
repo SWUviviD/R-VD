@@ -46,8 +46,6 @@ public class PlayerHp : MonoBehaviour
         audioSource.Play();
         move.SetPosition(RespawnPoint);
         move.SetRotation(RespawnRotation);
-        CameraController.Instance.Reset();
-        CameraController.Instance.Play();
         // 이펙트 출력
         if (respawnEffectPrefab != null)
         {

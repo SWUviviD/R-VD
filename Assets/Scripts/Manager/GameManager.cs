@@ -33,7 +33,8 @@ public class GameManager : MonoSingleton<GameManager>
 #if UNITY_EDITOR
         if (SceneManager.GetActiveScene().name != "LevelEditor" &&
             SceneManager.GetActiveScene().name != "TitleScene" &&
-            SceneManager.GetActiveScene().name != "GimmickTest")
+            SceneManager.GetActiveScene().name != "GimmickTest" &&
+            SceneManager.GetActiveScene().name != "kyh")
         {
 #endif
             // 맵을 로드한다.
@@ -42,13 +43,6 @@ public class GameManager : MonoSingleton<GameManager>
 
             if (Player != null)
             {
-                var cameraController = CameraController.Instance;
-                // 카메라가 플레이어를 따라가도록 한다.
-                cameraController.SetPlayer(Player.transform);
-                // 카메라 경로를 넣고 동작시킨다.
-                cameraController.Set(mapData.CameraPathList.ConvertAll(_ => _.ToCameraPathPoint()));
-                cameraController.Play();
-
                 Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
                 Player.GetComponent<PlayerHp>().OnDeath.AddListener(OnGameOver);
             }
@@ -121,6 +115,9 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (IsGameOver || IsStageClear) return;
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         IsPaused = true;
         Time.timeScale = 0f;
         if (backgroundSFX != null)
@@ -132,6 +129,9 @@ public class GameManager : MonoSingleton<GameManager>
     public void ResumeGame()
     {
         if (IsGameOver || IsStageClear) return;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         IsPaused = false;
         Time.timeScale = 1f;

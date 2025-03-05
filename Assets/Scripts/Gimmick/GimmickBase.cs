@@ -63,7 +63,7 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     /// </summary>
     protected virtual string GetAddress()
     {
-        return $"Assets/Data/Prefabs/Gimmick/{prefabName}.prefab";
+        return $"Data/Prefabs/Gimmick/{prefabName}";
     }
 
     /// <summary> 기믹의 실제 동작은 각 자식 클래스에서 정의 </summary>

@@ -13,9 +13,9 @@ namespace LevelEditor
     public class PlacementSystem : MonoBehaviour
     {
         [Header("Components")]
-        [SerializeField] private ObjectDatabase database = new ObjectDatabase();
         [SerializeField] private GameObject checkpointArea;
         [SerializeField] private GameObject placedArea;
+        private ObjectDatabase database = new ObjectDatabase();
 
         [Header("Systems")]
         [SerializeField] private PlacementInputSystem inputSystem;
@@ -84,7 +84,7 @@ namespace LevelEditor
             if (!objectIDs.ContainsKey(prefabAddress))
             {
                 prefab = AddressableAssetsManager.Instance.SyncLoadObject(
-                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}.prefab"),
+                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}"),
                     prefabAddress) as GameObject;
 
                 objectID++;

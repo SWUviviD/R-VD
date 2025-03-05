@@ -41,8 +41,11 @@ public class PlayerJump : MonoBehaviour
 
     private void OnGUI()
     {
+#if UNITY_EDITOR
         curveY = EditorGUILayout.CurveField(" ", curveY);
+#endif
     }
+
 
     private void FixedUpdate()
     {

@@ -9,10 +9,15 @@ using UnityEngine.Assertions;
 using System.ComponentModel;
 using MemoryPack;
 using LocalData;
+using StaticData;
 
-public class CSVToJson : AssetPostprocessor
+public class CSVToJson
+#if UNITY_EDITOR
+    : AssetPostprocessor
+#endif
 {
-    const string basePath = "Assets/Data/RawData/LocalData";
+#if UNITY_EDITOR
+    const string basePath = "Assets/Resources/Data/RawData/LocalData";
 
     void OnPreprocessAsset()
     {
@@ -31,14 +36,25 @@ public class CSVToJson : AssetPostprocessor
 
             // 파일 이름을 통해 해당 클래스 인스턴스 생성
             string fileName = (assetPath.Split('/')[^1]).Split('.')[0];
-            var inst = Activator.CreateInstance(Type.GetType($"StaticData.{fileName}"));
+            Type t = null;
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var s in a.GetTypes())
+                {
+                    if (s.Name == fileName)
+                    {
+                        t = a.GetType(s.FullName);
+                    }
+                }
+            }
+            var inst = Activator.CreateInstance(t);
 
             // 클래스의 프로퍼티 타입 가져오기
             List<Type> types = new List<Type>();
             foreach (var _ in headers)
             {
                 // 해당 프로퍼티 없음
-                var propertyInfo = Type.GetType($"StaticData.{fileName}").GetProperty(_);
+                var propertyInfo = t.GetProperty(_);
                 if (propertyInfo == null)
                 {
                     types.Add(null);
@@ -49,13 +65,13 @@ public class CSVToJson : AssetPostprocessor
 
             // 타입 기준으로 세팅
             var listType = typeof(List<>);
-            var concreteType = listType.MakeGenericType(Type.GetType($"StaticData.{fileName}"));
+            var concreteType = listType.MakeGenericType(t);
             //var jsonList = (IList)Activator.CreateInstance(concreteType);
             List<DataBase> list = new List<DataBase>();
 
             for (int i = 1; i < csvLines.Length; i++)
             {
-                var newInstance = Activator.CreateInstance(Type.GetType($"StaticData.{fileName}"));
+                var newInstance = Activator.CreateInstance(t);
                 var values = csvLines[i].Split(',');
                 for (int j = 0; j < types.Count; j++)
                 {
@@ -65,7 +81,7 @@ public class CSVToJson : AssetPostprocessor
                     var converter = TypeDescriptor.GetConverter(types[j]);
                     var value = converter.ConvertFromString(values[j]);
 
-                    Type.GetType($"StaticData.{fileName}").GetProperty(headers[j]).SetValue(newInstance, value);
+                    t.GetProperty(headers[j]).SetValue(newInstance, value);
                 }
 
                 //jsonList.Add(newInstance);
@@ -76,9 +92,18 @@ public class CSVToJson : AssetPostprocessor
             //var serializedJsonList = Activator.CreateInstance(serializableList);
             //serializedJsonList.GetType().GetProperty("list")?.SetValue(serializedJsonList, list);
 
-
-
             var byteArray = MemoryPackSerializer.Serialize(list);
+            if (fileName == "LDPinMapData")
+            {
+                List<LDPinMapData> pin = new List<LDPinMapData>();
+                foreach (var d in list)
+                {
+                    pin.Add(d as LDPinMapData);
+                }
+
+                byteArray = MemoryPackSerializer.Serialize(pin);
+            }
+
             SerializeManager.Instance.SaveDataFile(fileName, byteArray);
 
             var data = JsonUtility.ToJson(list, true);
@@ -87,6 +112,7 @@ public class CSVToJson : AssetPostprocessor
 
 
     }
+#endif
 
     [System.Serializable]
     public partial class SerializableList<T> where T : DataBase, IMemoryPackable<T>

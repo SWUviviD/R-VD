@@ -38,6 +38,22 @@ public class GameOverUI : MonoBehaviour
         {
             HandleBlackOverlayFade();
         }
+        else if (blackOverlay.color.a != 0)
+        {
+            Color overlayColor = blackOverlay.color;
+            overlayColor.a = 0;
+            blackOverlay.color = overlayColor;
+
+            restartButton.gameObject.SetActive(false);
+            exitButton.gameObject.SetActive(false);
+
+            Color textColor1 = gameOverText.color;
+            textColor1.a = 0;
+            gameOverText.color = textColor1;
+            Color textColor2 = stageText.color;
+            textColor2.a = 0;
+            stageText.color = textColor2;
+        }
     }
 
     private void HandleBlackOverlayFade()

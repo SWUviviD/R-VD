@@ -80,6 +80,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StarFusion"",
+                    ""type"": ""Button"",
+                    ""id"": ""e89d7a47-84b3-4522-9665-f59702484f6b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -97,7 +106,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""6303ec6b-8dc2-4dac-96ca-da5fe7962f5e"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -108,7 +117,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""764e1965-8b24-4081-990a-30064cc000f1"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -119,7 +128,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""2b6c5e5d-28d2-404d-b06a-9e2739074166"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -130,7 +139,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""68efc805-f3e7-4b5c-90e5-a9b92802ab26"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
@@ -214,6 +223,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""StarHunt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e8f9082-8cb5-4e3d-b1e5-30f309fde797"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StarFusion"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -273,6 +293,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_Magic = m_PlayerActions.FindAction("Magic", throwIfNotFound: true);
         m_PlayerActions_CameraRotation = m_PlayerActions.FindAction("CameraRotation", throwIfNotFound: true);
         m_PlayerActions_StarHunt = m_PlayerActions.FindAction("StarHunt", throwIfNotFound: true);
+        m_PlayerActions_StarFusion = m_PlayerActions.FindAction("StarFusion", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -343,6 +364,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Magic;
     private readonly InputAction m_PlayerActions_CameraRotation;
     private readonly InputAction m_PlayerActions_StarHunt;
+    private readonly InputAction m_PlayerActions_StarFusion;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -353,6 +375,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Magic => m_Wrapper.m_PlayerActions_Magic;
         public InputAction @CameraRotation => m_Wrapper.m_PlayerActions_CameraRotation;
         public InputAction @StarHunt => m_Wrapper.m_PlayerActions_StarHunt;
+        public InputAction @StarFusion => m_Wrapper.m_PlayerActions_StarFusion;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -380,6 +403,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarHunt.started += instance.OnStarHunt;
             @StarHunt.performed += instance.OnStarHunt;
             @StarHunt.canceled += instance.OnStarHunt;
+            @StarFusion.started += instance.OnStarFusion;
+            @StarFusion.performed += instance.OnStarFusion;
+            @StarFusion.canceled += instance.OnStarFusion;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -402,6 +428,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarHunt.started -= instance.OnStarHunt;
             @StarHunt.performed -= instance.OnStarHunt;
             @StarHunt.canceled -= instance.OnStarHunt;
+            @StarFusion.started -= instance.OnStarFusion;
+            @StarFusion.performed -= instance.OnStarFusion;
+            @StarFusion.canceled -= instance.OnStarFusion;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -482,6 +511,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnMagic(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnStarHunt(InputAction.CallbackContext context);
+        void OnStarFusion(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

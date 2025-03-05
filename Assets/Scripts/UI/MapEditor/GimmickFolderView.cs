@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class GimmickFolderView : MonoBehaviour
 {
     public static string GimmickFolderAbsolutePath = Path.Combine(Application.dataPath, GimmickFolderPath);
-    private const string GimmickFolderPath = "Data/Prefabs/Gimmick";
+    private const string GimmickFolderPath = "Resources/Data/Prefabs/Gimmick";
 
     private const string ParentFolderName = "../";
     

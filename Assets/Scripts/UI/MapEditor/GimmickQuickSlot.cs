@@ -1,14 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using LevelEditor;
+#endif
 using UnityEngine;
 
 public class GimmickQuickSlot : MonoBehaviour
 {
     private const int QuickSlotMaxCount = 10;
 
+#if UNITY_EDITOR
     [SerializeField] private PlacementSystem placementSystem;
+#endif
     [SerializeField] private GimmickFolderView folderView;
     
     /// <summary>
@@ -76,7 +80,9 @@ public class GimmickQuickSlot : MonoBehaviour
         {
             currentIconIndex = 1;
             SelectIcon(null);
+#if UNITY_EDITOR
             placementSystem.StartRemoving();
+#endif
         }
     }
 
@@ -85,8 +91,10 @@ public class GimmickQuickSlot : MonoBehaviour
         currentIcon?.Select(false);
         currentIcon = _icon;
         currentIcon?.Select(true);
-        
+
+#if UNITY_EDITOR
         placementSystem.StartPlacement(_icon?.PrefabAddress);
+#endif
     }
 
     private void OnClickSlotIcon(GimmickQuickSlotIcon _icon)

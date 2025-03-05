@@ -36,7 +36,7 @@ public class BlinkBoardGimmick : GimmickBase<BlinkBoardData>
 
     protected override string GetAddress()
     {
-        return "Assets/Data/Prefabs/Gimmick/BlinkBoardGimmick.prefab";
+        return "Data/Prefabs/Gimmick/BlinkBoardGimmick";
     }
 
     public override void SetGimmick()

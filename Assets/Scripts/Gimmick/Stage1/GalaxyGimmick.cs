@@ -28,7 +28,7 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
 
     protected override string GetAddress()
     {
-        return "Assets/Data/Prefabs/Gimmick/Galaxy.prefab";
+        return "Data/Prefabs/Gimmick/Galaxy";
     }
 
     private void OnDisable()

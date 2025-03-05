@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Defines;
+#if UNITY_EDITOR
 using LevelEditor;
+#endif
 using LocalData;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -70,8 +72,10 @@ public class CameraPathInsertSystem : MonoSingleton<CameraPathInsertSystem>
 {
     [SerializeField] private CameraPathInputSystem inputSystem;
     [SerializeField] private CameraPointCollider prefabCameraPoint;
+#if UNITY_EDITOR
     [SerializeField] private EditingTransformPosition editingTransform; 
-    
+#endif
+
     [SerializeField] private LineRenderer pathRenderer;
     
     [SerializeField] private Text txtState;
@@ -165,7 +169,9 @@ public class CameraPathInsertSystem : MonoSingleton<CameraPathInsertSystem>
     /// </summary>
     private void OnClickPathHandle(Transform _transform)
     {
+#if UNITY_EDITOR
         editingTransform.SetObjectTransform(_transform, RefreshLineDrawer);
+#endif
     }
 
     /// <summary>

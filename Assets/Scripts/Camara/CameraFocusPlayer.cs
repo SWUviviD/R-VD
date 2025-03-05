@@ -80,8 +80,13 @@ public class CameraFocusPlayer : MonoBehaviour
 
     private void Update()
     {
-        HandleCameraDistance();
-        HandleZoomInOnPlayerStop();
+        //HandleCameraDistance();
+        //HandleZoomInOnPlayerStop();
+    }
+
+    private void LateUpdate()
+    {
+        transform.SetPositionAndRotation(Camera.main.transform.position, Camera.main.transform.rotation);
     }
 
     /// <summary>

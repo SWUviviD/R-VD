@@ -7,7 +7,7 @@ public class PlayerPositionSettor : GimmickBase<PlayerPositionSettorData>
     [SerializeField] private GameObject posPointer;
 
 
-    private const string playerPrefabAddress = "Assets/Data/Prefabs/Player.prefab";
+    private const string playerPrefabAddress = "Data/Prefabs/Player";
     private GameObject player;
     public GameObject Player => player;
     private PlayerMove move;
@@ -24,6 +24,7 @@ public class PlayerPositionSettor : GimmickBase<PlayerPositionSettorData>
             SetPlayer();
 
         move.SetPosition(transform.position);
+        move.SetRotation(transform.rotation.eulerAngles);
         player.transform.rotation = transform.rotation;
         player.SetActive(true);
     }

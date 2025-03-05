@@ -2947,7 +2947,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1765399633}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621650934}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdd0ac42bb7db5846989c1cb6d4a16c1, type: 3}
@@ -5603,11 +5603,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f948bf6db045b47449cf8ab0b50fae8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 301507603}
-  cameraDetectRange: 0
-  cameraDistance: 0
-  cameraMoveSpeedPerSec: 0
-  cameraHeightOffset: 0
+  cinemachineBrainTR: {fileID: 0}
+  playerFollowCameraTR: {fileID: 0}
+  dialogueCameraTR: {fileID: 0}
+  target: {fileID: 0}
+  minDistance: 3
+  maxDistance: 30
+  wheelSpeed: 500
+  xMoveSpeed: 500
+  yMoveSpeed: 250
 --- !u!4 &1306028034
 Transform:
   m_ObjectHideFlags: 0
@@ -5992,37 +5996,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1115755125}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1488362196
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1488362197}
-  m_Layer: 6
-  m_Name: StarFusion
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1488362197
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488362196}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 840186827}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1522178426 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3815911923030400301, guid: 5a0fae57516ceae41a32323d594ae4f4,
@@ -6315,27 +6288,6 @@ Transform:
   - {fileID: 1472573055}
   m_Father: {fileID: 521711055}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1621650934 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5191573275404387913, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1765399633}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1621650943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621650934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8650bb5e2efad34dab64964ec6146b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 1
-  fusionPos: {fileID: 1488362197}
-  radius: 1
 --- !u!1001 &1644697638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6952,16 +6904,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8235526216619956373, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1488362197}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5191573275404387913, guid: 16ffe4d9dc72e7f40bc47024f6d758dd,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1621650943}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16ffe4d9dc72e7f40bc47024f6d758dd, type: 3}
 --- !u!1 &1776998627
 GameObject:

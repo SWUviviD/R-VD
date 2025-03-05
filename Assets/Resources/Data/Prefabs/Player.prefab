@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2412473648595947420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6881359659938398974}
+  m_Layer: 6
+  m_Name: StarFusion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6881359659938398974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2412473648595947420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8235526216619956373}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2667753991582737395
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,6 +188,7 @@ GameObject:
   - component: {fileID: 6796862284092498013}
   - component: {fileID: 2062211234468059524}
   - component: {fileID: -5062413039439626110}
+  - component: {fileID: 8739253096078379996}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -180,6 +212,7 @@ Transform:
   - {fileID: 5947897825476552715}
   - {fileID: 6046608357021581707}
   - {fileID: 2140095181611648064}
+  - {fileID: 6881359659938398974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8199604404254181693
@@ -495,6 +528,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8739253096078379996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191573275404387913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8650bb5e2efad34dab64964ec6146b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillType: 1
+  fusionPos: {fileID: 6881359659938398974}
+  radius: 1
 --- !u!1 &7312801828550597135
 GameObject:
   m_ObjectHideFlags: 0

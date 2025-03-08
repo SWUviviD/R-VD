@@ -314,4 +314,13 @@ public class CameraController : MonoSingleton<CameraController>
         IsActive = true;
         yield return null;
     }
+
+    public void Respawn(Vector3 _position, Vector3 _rotation)
+    {
+        transform.rotation = Quaternion.Euler(new Vector3(30f, _rotation.y, 0f));
+        transform.position = transform.rotation * new Vector3(0, 0, -distance) + _position;
+
+        x = transform.eulerAngles.y;
+        y = transform.eulerAngles.x;
+    }
 }

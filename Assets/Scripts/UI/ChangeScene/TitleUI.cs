@@ -14,7 +14,7 @@ public class TitleUI : MonoBehaviour
     private void Start()
     {
         UIHelper.OnClick(StartBtn, GameManager.Instance.NewGameStart);
-        UIHelper.OnClick(ContinueBtn, GameManager.Instance.GameRestart);
+        UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
         UIHelper.OnClick(ExitBtn, GameManager.Instance.GameExit);
 
         gameData = GameManager.Instance.GameData;

@@ -10,6 +10,7 @@ public class GameManager : MonoSingleton<GameManager>
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
     public bool IsStageClear { get; private set; }
+    public bool IsLastScene => SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1;
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
@@ -30,8 +31,9 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             GameData.stageID = 0;
-            GameData.checkpointID = -1;
             GameData.playerHealth = 10;
+            GameData.playerPosition = Vector3.zero;
+            GameData.playerRotation = Vector3.zero;
             File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
         }
 
@@ -48,8 +50,8 @@ public class GameManager : MonoSingleton<GameManager>
             return;
 
 #if UNITY_EDITOR
-        if (SceneManager.GetActiveScene().name != "LevelEditor" &&
-            SceneManager.GetActiveScene().name != "TitleScene" &&
+        if (SceneManager.GetActiveScene().name != "TitleScene" && 
+            SceneManager.GetActiveScene().name != "LevelEditor" &&
             SceneManager.GetActiveScene().name != "GimmickTest" &&
             SceneManager.GetActiveScene().name != "kyh")
         {
@@ -62,6 +64,8 @@ public class GameManager : MonoSingleton<GameManager>
         }
 #endif
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         if (Player != null)
         {
             Player.GetComponent<PlayerHp>().OnDeath.RemoveListener(OnGameOver);
@@ -71,6 +75,20 @@ public class GameManager : MonoSingleton<GameManager>
 
         isInit = true;
         ResumeGame();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "TitleScene") return;
+        if (SceneManager.GetActiveScene().buildIndex != GameData.stageID) return;
+
+        Player = GameObject.FindWithTag("Player");
+        Player.transform.position = GameData.playerPosition;
+        Player.transform.rotation = Quaternion.Euler(GameData.playerRotation);
+        Player.GetComponent<PlayerHp>().SetHealth(GameData.playerHealth);
+
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        cameraController.Respawn(GameData.playerPosition, GameData.playerRotation);
     }
 
     public void OnGameStart()
@@ -164,8 +182,10 @@ public class GameManager : MonoSingleton<GameManager>
         IsStageClear = false;
 
         GameData.stageID = 0;
-        GameData.checkpointID = -1;
         GameData.playerHealth = 10;
+        GameData.playerPosition = Vector3.zero;
+        GameData.playerRotation = Vector3.zero;
+
         File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
 
         SceneManager.LoadScene("Stage1");
@@ -176,6 +196,7 @@ public class GameManager : MonoSingleton<GameManager>
         IsPaused = false;
         IsGameOver = false;
         IsStageClear = false;
+        SetMovementInput(false);
 
         LoadData();
     }
@@ -184,8 +205,9 @@ public class GameManager : MonoSingleton<GameManager>
     {
         // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
         GameData.stageID = SceneManager.GetActiveScene().buildIndex;
-        GameData.checkpointID = CheckpointGimmick.CurrentCheckpointIndex;
         GameData.playerHealth = Player ? Player.GetComponent<PlayerHp>().CurrentHp : 10;
+        GameData.playerPosition = Player ? Player.GetComponent<PlayerHp>().RespawnPoint : Vector3.zero;
+        GameData.playerRotation = Player ? Player.GetComponent<PlayerHp>().RespawnRotation : Vector3.zero;
 
         // 스테이지, 체크포인트, 현재 체력 저장
         File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
@@ -196,27 +218,7 @@ public class GameManager : MonoSingleton<GameManager>
         // 스테이지, 체크포인트, 현재 체력 불러오기
         GameData = JsonUtility.FromJson<GameData>(File.ReadAllText(savedDataPath));
 
-        // 게임 시작 및 씬 로드
-        if (GameData.stageID != SceneManager.GetActiveScene().buildIndex)
-        {
-            SceneManager.LoadScene(GameData.stageID);
-        }
-
-        if (GameData.checkpointID != -1)
-        {
-            StartCoroutine(IWaitCheckpoint());
-        }
-    }
-
-    private IEnumerator IWaitCheckpoint()
-    {
-        while (CheckpointGimmick.CheckpointList.Count == 0)
-        {
-            yield return null;
-        }
-        CheckpointGimmick.LoadCheckpoint(GameData.checkpointID);
-        Player.GetComponent<PlayerHp>().SetHealth(GameData.playerHealth);
-        yield return null;
+        SceneManager.LoadScene(GameData.stageID);
     }
 
     public void GameExit()
@@ -235,11 +237,31 @@ public class GameManager : MonoSingleton<GameManager>
         IsPaused = false;
         IsStageClear = true;
     }
+
+    public void NextStage()
+    {
+        SetMovementInput(false);
+
+        GameData.stageID = SceneManager.GetActiveScene().buildIndex + 1;
+        GameData.playerHealth = Player ? Player.GetComponent<PlayerHp>().CurrentHp : 10;
+        GameData.playerPosition = Vector3.zero;
+        GameData.playerRotation = Vector3.zero;
+        File.WriteAllText(savedDataPath, JsonUtility.ToJson(GameData));
+
+        SceneManager.LoadScene(GameData.stageID);
+    }
+
+    public void LoadTitle()
+    {
+        SetMovementInput(false);
+        SceneManager.LoadScene(0);
+    }
 }
 
 public class GameData
 {
     public int stageID;
-    public int checkpointID;
     public int playerHealth;
+    public Vector3 playerPosition;
+    public Vector3 playerRotation;
 }

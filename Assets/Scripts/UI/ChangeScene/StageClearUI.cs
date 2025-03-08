@@ -7,14 +7,15 @@ public class StageClearUI : MonoBehaviour
     public Image stageText;
     public Image stageClearText;  // "Clear" 텍스트
     public Button nextButton; // 버튼
+    public Button quitButton; // 버튼
     public float fadeSpeed = 1.0f; // 페이드 속도
     public float backgroundAlpha = 0.7f;
 
     private void Awake()
     {
         // TODO: 다음 스테이지 연결
-        //UIHelper.OnClick(nextButton, GameManager.Instance.NextStage);
-        UIHelper.OnClick(nextButton, GameManager.Instance.GameRestart);
+        UIHelper.OnClick(nextButton, GameManager.Instance.NextStage);
+        UIHelper.OnClick(quitButton, GameManager.Instance.LoadTitle);
     }
 
     private void Start()
@@ -65,7 +66,10 @@ public class StageClearUI : MonoBehaviour
 
             if (overlayColor.a >= backgroundAlpha - 0.2f && !nextButton.gameObject.activeSelf)
             {
-                nextButton.gameObject.SetActive(true);
+                if (!GameManager.Instance.IsLastScene)
+                    nextButton.gameObject.SetActive(true);
+                else
+                    quitButton.gameObject.SetActive(true);
 
                 Color textColor1 = stageClearText.color;
                 textColor1.a = 1;

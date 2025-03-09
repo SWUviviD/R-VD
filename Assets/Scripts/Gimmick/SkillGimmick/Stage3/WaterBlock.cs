@@ -102,7 +102,6 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         if (remainingUsage > 0 && vase.waterLevelTwo == false)
         {
             remainingUsage--;
-            LogManager.Log("현재 물의 양: " + remainingUsage);
             UpdateBlockMaterial();
         }
         else if (remainingUsage == 0)

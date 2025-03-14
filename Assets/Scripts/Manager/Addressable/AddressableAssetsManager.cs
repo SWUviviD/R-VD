@@ -64,6 +64,10 @@ public class AddressableAssetsManager : MonoSingleton<AddressableAssetsManager>
 
         return newPack.Assets;
     }
+    public T SyncLoadObject<T>(string _path, string _key) where T : UnityEngine.Object
+    {
+        return Resources.Load<T>(_path);
+    }
 
     public void LoadAsyncAssets(string _path, string _key, Action<object> _callback)
     {

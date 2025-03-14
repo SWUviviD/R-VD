@@ -103,11 +103,34 @@ public class CSVToJson
 
                 byteArray = MemoryPackSerializer.Serialize(pin);
             }
+            else if(fileName == "CutSceneInfo")
+            {
+                List<CutSceneInfo> cut = new List<CutSceneInfo>();
+                foreach(var c in list)
+                {
+                    cut.Add(c as CutSceneInfo);
+                }
+
+                byteArray = MemoryPackSerializer.Serialize(cut);
+            }
+            else if(fileName == "DialogInfo")
+            {
+                List<DialogInfo> cut = new List<DialogInfo>();
+                foreach (var c in list)
+                {
+                    cut.Add(c as DialogInfo);
+                }
+
+                byteArray = MemoryPackSerializer.Serialize(cut);
+
+            }
 
             SerializeManager.Instance.SaveDataFile(fileName, byteArray);
 
             var data = JsonUtility.ToJson(list, true);
             File.WriteAllText(basePath + "/Json/" + fileName + ".json", data);
+
+            Debug.Log("CSV File Change Complete");
         }
 
 

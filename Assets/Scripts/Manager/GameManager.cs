@@ -124,6 +124,11 @@ public class GameManager : MonoSingleton<GameManager>
                 InputDefines.ActionMapType.PlayerActions,
                 InputDefines.SkillType.StarHunt.ToString()),
             active);
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                InputDefines.SkillType.StarFusion.ToString()),
+            active);
     }
 
     public void GameClear()

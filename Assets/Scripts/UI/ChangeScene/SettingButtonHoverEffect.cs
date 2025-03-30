@@ -19,12 +19,12 @@ public class SettingButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPo
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = originalScale * hoverScale;
-        btnImage.sprite = hoveredSprite;
+        if (btnImage) btnImage.sprite = hoveredSprite;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = originalScale;
-        btnImage.sprite = defaultSprite;
+        if (btnImage) btnImage.sprite = defaultSprite;
     }
 }

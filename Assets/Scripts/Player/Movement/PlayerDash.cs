@@ -37,6 +37,7 @@ public class PlayerDash : MonoBehaviour
     {
         if ((status.IsDashing) == true)
         {
+            dashDirection.y = 0f;
             rigid.velocity = dashDirection;
         }
         rigid.velocity *= 0.5f;

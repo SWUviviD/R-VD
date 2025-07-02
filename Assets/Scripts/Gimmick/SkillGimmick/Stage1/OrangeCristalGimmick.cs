@@ -31,7 +31,7 @@ public class OrangeCristalGimmick : GimmickBase<CristalData>
         isCristalBroke = false;
 
         plate.position = gimmickData.DictPoint[PlatePosition].position;
-        //plate.localScale = Vector3.one * gimmickData.PlateSize;
+        plate.localScale = (Vector3.right + Vector3.forward) * gimmickData.PlateSize;
         plate.gameObject.SetActive(false);
     }
 

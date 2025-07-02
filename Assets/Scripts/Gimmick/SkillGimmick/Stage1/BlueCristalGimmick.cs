@@ -44,6 +44,18 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         SetGimmick();
     }
 
+    private void Start()
+    {
+        // 세팅 문제로 이동
+        bool isLeft = false;
+        for (int i = 0; i < 2; ++i)
+        {
+            SetRail(ref Rail[i], isLeft);
+            isLeft = true;
+        }
+        railPrefab.SetActive(false);
+    }
+
     [ContextMenu("SetGimmick")]
     public override void SetGimmick()
     {
@@ -70,13 +82,6 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         //    Vector3.one * gimmickData.SphereSize;
         sphereRigid.transform.position = startPoint;
         sphereRigid.transform.LookAt(endPoint);
-
-        bool isLeft = false;
-        for(int i =0;i<2;++i)
-        {
-            SetRail(ref Rail[i], isLeft);
-            isLeft = true;
-        }
     }
 
     Vector3 railPosition = Vector3.zero;

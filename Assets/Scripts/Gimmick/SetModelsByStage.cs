@@ -38,6 +38,7 @@ public class SetModelsByStage : MonoBehaviour
         foreach(var model in stagelModels)
         {
             model.SetModels(s == stageNum);
+            ++s;
         }
     }
 }

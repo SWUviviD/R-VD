@@ -45,6 +45,7 @@ public abstract class GimmickBase<T> : MonoBehaviour, IGimmickBase where T : Gim
     private void Awake()
     {
         gimmickData.Init(transform, GetAddress());
+        SetGimmick();
         Init();
     }
 

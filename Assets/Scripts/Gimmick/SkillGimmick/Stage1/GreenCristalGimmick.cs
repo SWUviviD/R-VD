@@ -63,6 +63,8 @@ public class GreenCristalGimmick : GimmickBase<GreenCristalGimmickData>
                 plateList[i].SetGimmick(this, position, Vector3.one);
             }
         }
+
+        platePrefab.SetActive(false);
     }
 
     private void Update()

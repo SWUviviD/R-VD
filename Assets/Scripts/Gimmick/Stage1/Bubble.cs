@@ -29,6 +29,9 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
         StopAllCoroutines();
         bubbleObject.SetActive(true);
         bubbleCollider.enabled = true;
+
+        bubbleObject.transform.localScale = Vector3.one * gimmickData.BubbleSize;
+        deco.transform.localScale = Vector3.one * gimmickData.BubbleSize;
     }
 
     private void Update()

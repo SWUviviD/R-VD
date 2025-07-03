@@ -78,8 +78,8 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
 
         gimmick.LookAt(endPoint);
 
-        //sphereRigid.transform.localScale = 
-        //    Vector3.one * gimmickData.SphereSize;
+        sphereRigid.transform.localScale = 
+            Vector3.one * gimmickData.SphereSize;
         sphereRigid.transform.position = startPoint;
         sphereRigid.transform.LookAt(endPoint);
     }

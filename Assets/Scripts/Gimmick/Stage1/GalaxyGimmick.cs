@@ -31,6 +31,14 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         return "Data/Prefabs/Gimmick/Galaxy";
     }
 
+    private void OnEnable()
+    {
+        if (disappearCoroutine != null)
+            return;
+
+        disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
+    }
+
     private void OnDisable()
     {
         if (disappearCoroutine != null)

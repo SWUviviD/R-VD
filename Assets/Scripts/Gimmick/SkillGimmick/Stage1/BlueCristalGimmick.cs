@@ -26,8 +26,9 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
     private Vector3 endPoint = Vector3.zero;
     private Vector3 startPoint = Vector3.zero;
 
-    private Vector3 endRotPoint = new Vector3(360f, 0f, 0f);
-    private Vector3 startRotPoint = Vector3.zero;
+    private Vector3 rotatingAxis;
+    private Quaternion endRotPoint;
+    private Quaternion startRotPoint;
 
     protected override void Init()
     {
@@ -81,7 +82,10 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         sphereRigid.transform.localScale = 
             Vector3.one * gimmickData.SphereSize;
         sphereRigid.transform.position = startPoint;
-        sphereRigid.transform.LookAt(endPoint);
+        //sphereRigid.transform.LookAt(endPoint);
+        sphereRigid.rotation = rotation;
+
+        rotatingAxis = Vector3.Cross(Vector3.up, (endPoint - startPoint).normalized);
     }
 
     Vector3 railPosition = Vector3.zero;
@@ -143,21 +147,19 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         float elapsedTime = 0f;
         float elapsedRotTime = 0f;
         float endTime = gimmickData.SphereMoveTime;
-        float endRotTime = 360 / gimmickData.SphereRotateSpeed;
+        Quaternion currentRot = sphereRigid.rotation;
 
-        while(true)
+        while (true)
         {
             elapsedRotTime += Time.deltaTime;
             elapsedTime += Time.deltaTime;
             Vector3 newPosition = Vector3.Lerp(startPoint, endPoint, elapsedTime / endTime);
-            Vector3 newRotation = Vector3.Slerp(startRotPoint, endRotPoint, elapsedRotTime / endRotTime);
-            if(elapsedRotTime > endRotTime)
-            {
-                elapsedRotTime -= endRotTime;
-            }
+
+            Quaternion deltaRot = Quaternion.AngleAxis(gimmickData.SphereRotateSpeed * Time.deltaTime, rotatingAxis);
+            currentRot = deltaRot * currentRot;
 
             sphereRigid.MovePosition(newPosition);
-            sphereRigid.MoveRotation(Quaternion.Euler(newRotation));
+            sphereRigid.MoveRotation(currentRot);
 
             if (elapsedTime >= endTime)
             {
@@ -174,9 +176,7 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
         endPoint = startPoint;
         startPoint = temp;
 
-        temp = endRotPoint;
-        endRotPoint = startRotPoint;
-        startRotPoint = temp;
+        rotatingAxis = rotatingAxis * -1f;
 
         sphereRigid.velocity = Vector3.zero;
         sphereRigid.angularVelocity = Vector3.zero;
@@ -185,4 +185,68 @@ public class BlueCristalGimmick : GimmickBase<BlueCristalGimmickData>
 
         StartCoroutine(CoStopSphere());
     }
+
+    //private IEnumerator CoStartRolling()
+    //{
+    //    float duration = gimmickData.SphereMoveTime;
+    //    float elapsed = 0f;
+
+    //    Vector3 dir = (endPoint - startPoint).normalized;
+    //    float totalDistance = Vector3.Distance(startPoint, endPoint);
+    //    float radius = sphereRigid.transform.localScale.x * 0.5f;
+
+    //    Vector3 prevPos = startPoint;
+    //    Quaternion currentRot = sphereRigid.rotation;
+    //    Vector3 currentPos = startPoint;
+
+    //    float maxRotateSpeed = gimmickData.SphereRotateSpeed; // deg/sec
+
+    //    while (elapsed < duration)
+    //    {
+    //        float deltaTime = Time.deltaTime;
+    //        elapsed += deltaTime;
+
+    //        float t = Mathf.Clamp01(elapsed / duration);
+
+    //        // 이동 위치 계산
+    //        Vector3 nextPos = Vector3.Lerp(startPoint, endPoint, t);
+    //        Vector3 moveDelta = nextPos - prevPos;
+
+    //        float distanceMoved = moveDelta.magnitude;
+
+    //        if (distanceMoved > 0.0001f)
+    //        {
+    //            Vector3 rotationAxis = Vector3.Cross(Vector3.up, moveDelta.normalized); // ✅ 방향 반전함
+    //            float idealAngleDeg = (distanceMoved / radius) * Mathf.Rad2Deg;
+
+    //            // ✅ 회전 속도 제한 적용
+    //            float maxAngleDeg = maxRotateSpeed * deltaTime;
+    //            float clampedAngleDeg = Mathf.Min(idealAngleDeg, maxAngleDeg);
+
+    //            Quaternion deltaRot = Quaternion.AngleAxis(clampedAngleDeg, rotationAxis);
+    //            currentRot = deltaRot * currentRot;
+    //        }
+
+    //        sphereRigid.MovePosition(nextPos);
+    //        sphereRigid.MoveRotation(currentRot);
+
+    //        prevPos = nextPos;
+
+    //        yield return null;
+    //    }
+
+    //    // 보정
+    //    sphereRigid.MovePosition(endPoint);
+    //    sphereRigid.velocity = Vector3.zero;
+    //    sphereRigid.angularVelocity = Vector3.zero;
+
+    //    // 반전
+    //    isReturnToStartPoint = !isReturnToStartPoint;
+
+    //    Vector3 temp = startPoint;
+    //    startPoint = endPoint;
+    //    endPoint = temp;
+
+    //    StartCoroutine(CoStopSphere());
+    //}
 }

@@ -7,6 +7,8 @@ public class WaterVaseControll : MonoBehaviour
     public bool waterLevelOne;
     public bool waterLevelTwo;
 
+    public GameObject waterMoveEffect;
+
     private void Start()
     {
         waterLevelOne = false; waterLevelTwo = false;
@@ -14,6 +16,8 @@ public class WaterVaseControll : MonoBehaviour
 
     public void addWater()
     {
+        GameObject watermove = Instantiate(waterMoveEffect);
+
         if (waterLevelOne)
         {
             waterLevelTwo = true;

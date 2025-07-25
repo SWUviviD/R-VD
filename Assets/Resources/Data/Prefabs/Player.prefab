@@ -43,8 +43,9 @@ GameObject:
   - component: {fileID: 8341306192925410489}
   - component: {fileID: 3364671648926579210}
   - component: {fileID: 6166920260744866634}
+  - component: {fileID: 3302864362539505846}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: VASE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 2667753991582737395}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.705, y: -0.042, z: 0.068}
+  m_LocalPosition: {x: 0.38, y: -0.28, z: -0.41}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -138,6 +139,22 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3302864362539505846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2667753991582737395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 522d494ec9986a140a2ee7954f674b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterLevelOne: 0
+  waterLevelTwo: 0
+  waterMoveEffect: {fileID: 6441873369525384307, guid: d5e7117930b36ad4089841bc4b8c43f1,
+    type: 3}
 --- !u!1 &3179223563415434176
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +166,7 @@ GameObject:
   - component: {fileID: 5947897825476552715}
   m_Layer: 6
   m_Name: Project
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -297,7 +314,7 @@ MonoBehaviour:
   <AdditionalMoveSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <ProjectileSpeed>k__BackingField: 0
-  <JumpHeight>k__BackingField: 100
+  <JumpHeight>k__BackingField: 50
   <JumpSpeed>k__BackingField: 10
   <FallingSpeed>k__BackingField: 3
   <IsDashing>k__BackingField: 0

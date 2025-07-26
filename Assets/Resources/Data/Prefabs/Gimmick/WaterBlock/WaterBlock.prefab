@@ -121,11 +121,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointList: []
-  maxWaterCapacity: 3
-  WaterUsage: 0
+  maxWaterCapacity: 2
+  WaterUsage: 2
   blockMaterials:
   - {fileID: 6151071871934886045, guid: 4ecf5b09be8ba284e85a314dd4ef0595, type: 3}
-  - {fileID: 3976096569710541309, guid: dca1ce2e36cc812428d1565cf669971f, type: 3}
+  - {fileID: 3976096569710541309, guid: 6afd2902492f02440bd6a76985845175, type: 3}
   - {fileID: -7730079208461156751, guid: 5b215231c735ce149b19f6b62eef826e, type: 3}
   - {fileID: 6041409657588549234, guid: 265f7036b8ec3eb409a40df5a886bbdf, type: 3}
 --- !u!114 &5740580675795885424
@@ -144,9 +144,11 @@ MonoBehaviour:
   prefabName: 
   player: {fileID: 0}
   vase: {fileID: 0}
-  door: {fileID: 4900682034519632630, guid: 01dcf9f9edb4dee439391ed981653793, type: 3}
+  door: {fileID: 0}
   interactionDistance: 2
   waterBlockData: {fileID: 5562188991780432305}
+  waterMoveEffect: {fileID: 6441873369525384307, guid: 0f3d407feb92ebb49b98d0157de5008a,
+    type: 3}
   isClear: 0
   remainingUsage: 0
 --- !u!114 &583611152563988080

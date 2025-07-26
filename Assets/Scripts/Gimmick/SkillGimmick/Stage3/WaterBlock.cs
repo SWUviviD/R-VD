@@ -11,6 +11,8 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
     [SerializeField] private WaterBlockData waterBlockData;
 
+    public GameObject waterMoveEffect;
+
     public bool isClear = false;
 
     public int remainingUsage; // 남은 물 사용 가능 횟수
@@ -79,8 +81,9 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     {
         if (remainingUsage < waterBlockData.maxWaterCapacity && vase.waterLevelOne == true) 
         {
+            GameObject watermove = Instantiate(waterMoveEffect, transform.position, Quaternion.identity);
             remainingUsage++;
-            LogManager.Log("현재 물의 양: " + remainingUsage);
+            // LogManager.Log("현재 물의 양: " + remainingUsage);
             if (vase.waterLevelTwo == true)
             {
                 vase.waterLevelTwo = false;

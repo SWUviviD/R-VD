@@ -10,6 +10,9 @@ public class WaterWall : GimmickBase<WaterWallData>
     [SerializeField] private WaterWallData waterwallData;
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
 
+    public GameObject makeIceEffect;
+    public GameObject breakeIceEffect;
+
     public bool isice;
     public bool isbreak;
 
@@ -44,6 +47,10 @@ public class WaterWall : GimmickBase<WaterWallData>
         if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E) && vase.waterLevelOne == true)
         {
             isice = true;
+
+            GameObject makeice = Instantiate(makeIceEffect, transform.position, Quaternion.identity);
+            Destroy(makeice, 2f);
+
             UpdateBlockMaterial();
         }
 
@@ -52,6 +59,10 @@ public class WaterWall : GimmickBase<WaterWallData>
             && isice)
         {
             isbreak = true;
+
+            GameObject breakice = Instantiate(breakeIceEffect, transform.position, Quaternion.identity);
+            Destroy(breakice, 2f);
+
             UpdateBlockMaterial();
         }
     }

@@ -82,6 +82,8 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         if (remainingUsage < waterBlockData.maxWaterCapacity && vase.waterLevelOne == true) 
         {
             GameObject watermove = Instantiate(waterMoveEffect, transform.position, Quaternion.identity);
+            Destroy(watermove, 2f);
+
             remainingUsage++;
             // LogManager.Log("현재 물의 양: " + remainingUsage);
             if (vase.waterLevelTwo == true)

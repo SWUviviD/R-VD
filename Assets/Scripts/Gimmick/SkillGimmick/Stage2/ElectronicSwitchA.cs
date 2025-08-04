@@ -15,6 +15,7 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         mapObjIndex = index;
     }
 
+    [ContextMenu("Activate")]
     public bool Activate(Transform player)
     {
         if(currentState == State.Stopped)

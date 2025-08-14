@@ -8,6 +8,8 @@ public class ElectronicSwitchB : ElectronicSwitch
 
     private int currentUnShockedCount;
 
+    public GameObject ellectricEffect;
+
     public void Awake()
     {
         currentUnShockedCount = connectCount;
@@ -32,6 +34,10 @@ public class ElectronicSwitchB : ElectronicSwitch
     public override void ShockFailed(ShockableObj obj = null)
     {
         base.ShockFailed();
+
+        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+        Destroy(ellectric, 1f);
+
         ++currentUnShockedCount;
         Debug.Log(currentUnShockedCount);
     }

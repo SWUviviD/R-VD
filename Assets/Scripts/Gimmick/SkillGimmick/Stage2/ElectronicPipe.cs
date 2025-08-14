@@ -9,6 +9,8 @@ public class ElectronicPipe : ShockableObj
     [SerializeField] private ShockableObj[] attached;
     private bool isSending = false;
 
+    public GameObject ellectricEffect;
+
     public override void OnShocked(ShockableObj obj)
     {
         if (isSending == true)
@@ -40,6 +42,9 @@ public class ElectronicPipe : ShockableObj
         {
             StopAllCoroutines();
         }
+
+        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+        Destroy(ellectric, 1f);
 
         GiveShockObj = null;
         StartCoroutine(CoSendFail(obj));

@@ -8,6 +8,8 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
     private bool isConnectToMap = false;
     private int mapObjIndex = -1;
 
+    public GameObject ellectricEffect;
+
     public override void SetForMap(ElectronicMap map, int index)
     {
         this.map = map;
@@ -22,6 +24,9 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
             OnShocked(null);
         else if(currentState == State.Generating)
             StopGenerating();
+
+        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+        Destroy(ellectric, 1f);
 
         return true;
     }
@@ -55,6 +60,8 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         foreach (var item in shockObj)
         {
             item.ShockFailed();
+            GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+            Destroy(ellectric, 1f);
         }
     }
 }

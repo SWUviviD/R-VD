@@ -50,9 +50,12 @@ public class ElectronicPin : ShockableObj, IFusionable
     [Header("Pipe")]
     [SerializeField] private Transform PipePos;
     [SerializeField] private GameObject[] Pipes;
+
     [SerializeField] private float PipeTurnSpeed = 0.5f;
 
     public Vector2Int PinPos { get; set; }
+
+    public GameObject ellectricEffect;
 
 
     public void Init(ElectronicMap map, LDPinMapData data)
@@ -85,6 +88,8 @@ public class ElectronicPin : ShockableObj, IFusionable
         if(CurrentState == State.Inactive)
         {
             prevState = State.Inactive;
+            GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+            Destroy(ellectric, 1f);
             StartCoroutine(CoTurnPipe());
             return true;
         }
@@ -218,6 +223,9 @@ public class ElectronicPin : ShockableObj, IFusionable
         prevState = State.Inactive;
         CurrentState = State.Inactive;
         StartCoroutine(CoInactivate());
+
+        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
+        Destroy(ellectric, 1f);
     }
 
     private void ShockFailToOther()

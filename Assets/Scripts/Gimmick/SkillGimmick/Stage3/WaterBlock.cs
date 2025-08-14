@@ -45,8 +45,8 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         // 플레이어와의 거리 계산
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // 거리 내에서 E 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E))
+        // 거리 내에서 R 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.R))
         {
             InteractWithBlock();
         }

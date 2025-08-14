@@ -43,8 +43,8 @@ public class WaterWall : GimmickBase<WaterWallData>
         // 플레이어와의 거리 계산
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // 거리 내에서 E 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E) && vase.waterLevelOne == true)
+        // 거리 내에서 R 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.R) && vase.waterLevelOne == true)
         {
             isice = true;
 
@@ -54,8 +54,8 @@ public class WaterWall : GimmickBase<WaterWallData>
             UpdateBlockMaterial();
         }
 
-        // 거리 내에서 Q, W 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.W)) 
+        // 거리 내에서 Q, E 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) 
             && isice)
         {
             isbreak = true;

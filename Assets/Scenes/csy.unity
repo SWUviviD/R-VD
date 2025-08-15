@@ -1029,6 +1029,7 @@ GameObject:
   - component: {fileID: 301507601}
   - component: {fileID: 301507603}
   - component: {fileID: 301507602}
+  - component: {fileID: 301507604}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1110,6 +1111,32 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &301507604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301507600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a454436203088b438e0396132669025, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 840186827}
+  focusOffset: {x: 0, y: 1.6, z: 0}
+  distance: 10
+  height: 6
+  yawSensitivity: 0.15
+  invertX: 0
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  collisionBuffer: 0.1
+  minDistance: 1
+  positionDamping: 12
+  rotationDamping: 20
+  lockCursor: 1
 --- !u!1001 &313359478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3841,6 +3868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shockObj: []
   render: {fileID: 1062674538}
+  ellectricEffect: {fileID: 0}
 --- !u!65 &1062674537
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5602,6 +5630,7 @@ MonoBehaviour:
   shockObj: []
   render: {fileID: 1322810261}
   connectCount: 1
+  ellectricEffect: {fileID: 0}
 --- !u!23 &1322810261
 MeshRenderer:
   m_ObjectHideFlags: 0

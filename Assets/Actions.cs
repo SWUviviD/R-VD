@@ -89,6 +89,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera"",
+                    ""type"": ""Value"",
+                    ""id"": ""db443ceb-c0e6-4839-b64e-c17fd4c649bc"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -234,6 +243,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""StarFusion"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""099eb03c-95fe-4b5a-bdcb-9bc74227a31a"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -294,6 +314,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_CameraRotation = m_PlayerActions.FindAction("CameraRotation", throwIfNotFound: true);
         m_PlayerActions_StarHunt = m_PlayerActions.FindAction("StarHunt", throwIfNotFound: true);
         m_PlayerActions_StarFusion = m_PlayerActions.FindAction("StarFusion", throwIfNotFound: true);
+        m_PlayerActions_Camera = m_PlayerActions.FindAction("Camera", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -365,6 +386,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_CameraRotation;
     private readonly InputAction m_PlayerActions_StarHunt;
     private readonly InputAction m_PlayerActions_StarFusion;
+    private readonly InputAction m_PlayerActions_Camera;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -376,6 +398,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @CameraRotation => m_Wrapper.m_PlayerActions_CameraRotation;
         public InputAction @StarHunt => m_Wrapper.m_PlayerActions_StarHunt;
         public InputAction @StarFusion => m_Wrapper.m_PlayerActions_StarFusion;
+        public InputAction @Camera => m_Wrapper.m_PlayerActions_Camera;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -406,6 +429,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarFusion.started += instance.OnStarFusion;
             @StarFusion.performed += instance.OnStarFusion;
             @StarFusion.canceled += instance.OnStarFusion;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -431,6 +457,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarFusion.started -= instance.OnStarFusion;
             @StarFusion.performed -= instance.OnStarFusion;
             @StarFusion.canceled -= instance.OnStarFusion;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -512,6 +541,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnStarHunt(InputAction.CallbackContext context);
         void OnStarFusion(InputAction.CallbackContext context);
+        void OnCamera(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

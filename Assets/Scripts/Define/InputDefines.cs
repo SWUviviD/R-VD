@@ -43,5 +43,7 @@ namespace Defines
         public readonly static string Magic = "Magic";
 
         public readonly static string CameraRotation = "CameraRotation";
+
+        public readonly static string Camera = "Camera";
     }
 }

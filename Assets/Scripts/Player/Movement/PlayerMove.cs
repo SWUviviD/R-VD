@@ -93,25 +93,35 @@ public class PlayerMove : MonoSingleton<GameManager>
         Vector3 gravity = Vector3.zero;
         if(isSlope && jump.IsJumping == false)
         {
-            move = Vector3.ProjectOnPlane(move, hit.normal);
-            gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
+            move = Vector3.ProjectOnPlane(move, hit.normal).normalized;
+            //gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
         }
 
         if (move.sqrMagnitude > 0)
         {
-            Vector3 realMovement = move.normalized * (status.MoveSpeed + status.AdditionalMoveSpeed) + gravity ;
-            realMovement.y = rigid.velocity.y;
-            rigid.velocity = realMovement;
-            realMovement.y = 0.0f;
-            // 정확하게 위로 올라가고 있는 도중이라면 y가 0이되면 magnitude가 0으로 바뀜. 이럴땐 이동방향을 바라보면 안됨.
-            if(realMovement.magnitude > float.Epsilon) transform.rotation = Quaternion.LookRotation(realMovement);
+            Vector3 realMovement = move * (status.MoveSpeed + status.AdditionalMoveSpeed);
+            Vector3 newVal = realMovement;
+            newVal.y = rigid.velocity.y;
+
+            rigid.velocity = newVal;
+
+            Vector3 faceDir = new Vector3(realMovement.x, 0f, realMovement.z);
+            if(faceDir.sqrMagnitude > 1e-6f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(faceDir, Vector3.up);
+                float degPerSec = 720f;
+                Quaternion step = Quaternion.RotateTowards(rigid.rotation, targetRot, degPerSec * Time.fixedDeltaTime);
+                rigid.MoveRotation(step);
+            }
+            //// 정확하게 위로 올라가고 있는 도중이라면 y가 0이되면 magnitude가 0으로 바뀜. 이럴땐 이동방향을 바라보면 안됨.
+            //if (realMovement.magnitude > float.Epsilon) transform.rotation = Quaternion.LookRotation(realMovement);
             OnMove?.Invoke(true);
         }
         else
         {
             OnMove?.Invoke(false);
         }
-        rigid.velocity *= 0.9f;
+        //rigid.velocity *= 0.9f;
 
         CurrentFeetPosition = hit.point;
     }

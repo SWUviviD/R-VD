@@ -131,6 +131,15 @@ public class GameManager : MonoSingleton<GameManager>
             active);
     }
 
+    public void SetCameraInput(bool active)
+    {
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                InputDefines.Camera),
+            active);
+    }
+
     public void GameClear()
     {
         // 추가 동작 필요시 구현

@@ -11,7 +11,11 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
     [SerializeField] private WaterBlockData waterBlockData;
 
-    public GameObject waterMoveEffect;
+    [Header("Source")]
+    [SerializeField] private GameObject waterMoveEffect;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioClip addWaterAudio;
+    [SerializeField] private AudioClip scoupWaterAudio;
 
     public bool isClear = false;
 
@@ -63,11 +67,13 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         // 현재 상태에 따라 동작
         if (remainingUsage < waterBlockData.maxWaterCapacity && vase.waterLevelOne == true)
         {
+            PlaySound(addWaterAudio);
             AddWater(); // 물 담기
             vase.removeWater();
         }
         else if (remainingUsage > 0 && vase.waterLevelTwo == false)
         {
+            PlaySound(scoupWaterAudio);
             ScoupWater(); // 물 뜨기
             vase.addWater();
         }
@@ -126,5 +132,11 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         {
             LogManager.LogWarning("블록 Material 배열 부족");
         }
+    }
+
+    private void PlaySound(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 }

@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Water_Door : MonoBehaviour
 {
+    [Header("Source")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioClip openDoorAudio;
+
     // Update is called once per frame
     public void OpenDoor()
     {
+        PlaySound(openDoorAudio);
         StartCoroutine(MoveOverTime(-2.6f, 5f));
     }
 
@@ -25,5 +30,11 @@ public class Water_Door : MonoBehaviour
         }
 
         transform.position = endPosition;
+    }
+
+    private void PlaySound(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 }

@@ -10,8 +10,12 @@ public class WaterWall : GimmickBase<WaterWallData>
     [SerializeField] private WaterWallData waterwallData;
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
 
-    public GameObject makeIceEffect;
-    public GameObject breakeIceEffect;
+    [Header("Source")]
+    [SerializeField] private GameObject makeIceEffect;
+    [SerializeField] private GameObject breakeIceEffect;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioClip makeIceAuido;
+    [SerializeField] private AudioClip breakeIceAuido;
 
     public bool isice;
     public bool isbreak;
@@ -48,6 +52,7 @@ public class WaterWall : GimmickBase<WaterWallData>
         {
             isice = true;
 
+            PlaySound(makeIceAuido);
             GameObject makeice = Instantiate(makeIceEffect, transform.position, Quaternion.identity);
             Destroy(makeice, 2f);
 
@@ -60,6 +65,7 @@ public class WaterWall : GimmickBase<WaterWallData>
         {
             isbreak = true;
 
+            PlaySound(breakeIceAuido);
             GameObject breakice = Instantiate(breakeIceEffect, transform.position, Quaternion.identity);
             Destroy(breakice, 2f);
 
@@ -79,5 +85,11 @@ public class WaterWall : GimmickBase<WaterWallData>
             wallRenderer.material = waterwallData.blockMaterials[2];
             Destroy(gameObject, 2.0f);
         }
+    }
+
+    private void PlaySound(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 }

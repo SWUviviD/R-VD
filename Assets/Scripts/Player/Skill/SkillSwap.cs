@@ -3,34 +3,53 @@ using UnityEngine;
 
 public class SkillSwap : MonoBehaviour
 {
-    private bool ignoreInput = false;
-    private float ignoretime = 3.0f;
-    private KeyCode lastReleasedKey;
+    [Header("Transform")]
+    [SerializeField] private Transform holdPoint;
+
+    [Header("SkillObject")]
+    [SerializeField] private GameObject Bow;
+    [SerializeField] private GameObject Sword;
+    [SerializeField] private GameObject Vase;
+
+    private GameObject currentItem;          // 현재 들고 있는 아이템
+    private GameObject currentPrefab;        // 현재 아이템의 원본 프리팹을 저장
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Q)) HandleKeyRelease(KeyCode.Q, KeyCode.W, KeyCode.E);
-        if (Input.GetKeyUp(KeyCode.W)) HandleKeyRelease(KeyCode.W, KeyCode.Q, KeyCode.E);
-        if (Input.GetKeyUp(KeyCode.E)) HandleKeyRelease(KeyCode.E, KeyCode.Q, KeyCode.W);
-
-        if (!ignoreInput)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (Input.GetKeyDown(KeyCode.Q)) LogManager.Log("Q Pressed");
-            if (Input.GetKeyDown(KeyCode.W)) LogManager.Log("W Pressed");
-            if (Input.GetKeyDown(KeyCode.E)) LogManager.Log("E Pressed");
+            EquipItem(Bow);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            EquipItem(Sword);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            EquipItem(Vase);
         }
     }
 
-    void HandleKeyRelease(KeyCode releasedKey, KeyCode blockKey1, KeyCode blockKey2)
+    private void EquipItem(GameObject prefab)
     {
-        lastReleasedKey = releasedKey;
-        StartCoroutine(BlockInputForDuration(blockKey1, blockKey2, ignoretime));
-    }
+        // 이미 같은 프리팹을 들고 있으면 아무 것도 하지 않음
+        if (currentPrefab == prefab)
+        {
+            return;
+        }
 
-    IEnumerator BlockInputForDuration(KeyCode blockKey1, KeyCode blockKey2, float duration)
-    {
-        ignoreInput = true;
-        yield return new WaitForSeconds(duration);
-        ignoreInput = false;
+        // 다른 아이템을 들고 있다면 제거
+        if (currentItem != null)
+        {
+            Destroy(currentItem);
+        }
+
+        // 새 아이템 생성 후 holdPoint에 붙임
+        currentItem = Instantiate(prefab, holdPoint);
+        currentItem.transform.localPosition = Vector3.zero;
+        currentItem.transform.localRotation = Quaternion.identity;
+
+        // 현재 아이템 프리팹 기록
+        currentPrefab = prefab;
     }
 }

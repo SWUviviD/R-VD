@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4180719499897718238}
   - component: {fileID: 7518729583054469335}
   - component: {fileID: 6162757074454147251}
-  - component: {fileID: 4383765954965405062}
   - component: {fileID: 6308369392994179475}
   m_Layer: 0
   m_Name: WaterBlock clear
@@ -144,7 +143,7 @@ MonoBehaviour:
   gimmickData: {fileID: 7518729583054469335}
   prefabName: 
   player: {fileID: 0}
-  vase: {fileID: 0}
+  vase: {fileID: 8306037152624306996, guid: f7c8b5406bbb6e046b1bb117764e8cec, type: 3}
   door: {fileID: 0}
   interactionDistance: 2
   waterBlockData: {fileID: 7518729583054469335}
@@ -154,18 +153,6 @@ MonoBehaviour:
   scoupWaterAudio: {fileID: 8300000, guid: 36ba106e7ce8da4469e318a63d9d064a, type: 3}
   isClear: 0
   remainingUsage: 0
---- !u!114 &4383765954965405062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7547597562866269694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20b66541a0f1e0a4ea86da4a038b0ecf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &6308369392994179475
 AudioSource:
   m_ObjectHideFlags: 0

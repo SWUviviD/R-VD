@@ -59,9 +59,8 @@ public class WaterWall : GimmickBase<WaterWallData>
             UpdateBlockMaterial();
         }
 
-        // 거리 내에서 Q, E 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E)) 
-            && isice)
+        // 거리 내에서 E 키 입력으로 상호작용
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E) && isice)
         {
             isbreak = true;
 
@@ -70,6 +69,22 @@ public class WaterWall : GimmickBase<WaterWallData>
             Destroy(breakice, 2f);
 
             UpdateBlockMaterial();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isice && other.TryGetComponent<StarHuntArrow>(out var arrow))
+        {
+            isbreak = true;
+
+            PlaySound(breakeIceAuido);
+            GameObject breakice = Instantiate(breakeIceEffect, transform.position, Quaternion.identity);
+            Destroy(breakice, 2f);
+
+            UpdateBlockMaterial();
+
+            arrow.returnToPool.Invoke(Defines.PoolDefines.PoolType.StarHunts, arrow);
         }
     }
 

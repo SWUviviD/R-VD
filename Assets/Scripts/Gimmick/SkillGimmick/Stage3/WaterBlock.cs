@@ -112,6 +112,9 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     {
         if (remainingUsage > 0 && vase.waterLevelTwo == false)
         {
+            GameObject watermove = Instantiate(waterMoveEffect, transform.position, Quaternion.identity);
+            Destroy(watermove, 2f);
+
             remainingUsage--;
             UpdateBlockMaterial();
         }

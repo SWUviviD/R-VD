@@ -16,10 +16,6 @@ public class WaterVaseControll : MonoBehaviour
 
     public void addWater()
     {
-        GameObject watermove = Instantiate(waterMoveEffect, transform.position, Quaternion.identity);
-        watermove.transform.SetParent(transform);
-        Destroy(watermove, 2f);
-
         if (waterLevelOne)
         {
             waterLevelTwo = true;

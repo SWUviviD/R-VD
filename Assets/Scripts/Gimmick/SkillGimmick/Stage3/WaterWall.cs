@@ -74,7 +74,7 @@ public class WaterWall : GimmickBase<WaterWallData>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isice && other.TryGetComponent<StarHuntArrow>(out var arrow))
+        if (isice && other.GetComponentInParent<StarHuntArrow>())
         {
             isbreak = true;
 
@@ -83,8 +83,6 @@ public class WaterWall : GimmickBase<WaterWallData>
             Destroy(breakice, 2f);
 
             UpdateBlockMaterial();
-
-            arrow.returnToPool.Invoke(Defines.PoolDefines.PoolType.StarHunts, arrow);
         }
     }
 

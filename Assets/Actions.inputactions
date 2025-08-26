@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "WaterVase",
+                    "type": "Button",
+                    "id": "42799c12-aa04-452d-9dba-4f8b0f560553",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Camera",
                     "type": "Value",
                     "id": "db443ceb-c0e6-4839-b64e-c17fd4c649bc",
@@ -168,7 +177,7 @@
                 {
                     "name": "",
                     "id": "27cf3cec-349f-4520-ad34-a45cced70e49",
-                    "path": "<Keyboard>/f",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -250,6 +259,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraZoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "88fd3826-8e54-4b4a-86af-8e3cab8488fe",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WaterVase",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

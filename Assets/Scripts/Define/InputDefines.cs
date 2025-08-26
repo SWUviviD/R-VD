@@ -22,6 +22,7 @@ namespace Defines
         {
             StarHunt,
             StarFusion,
+            WaterVase,
             MAX
         }
 

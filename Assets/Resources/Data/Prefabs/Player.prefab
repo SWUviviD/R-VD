@@ -109,10 +109,11 @@ GameObject:
   - component: {fileID: 8762566378822032502}
   - component: {fileID: 4350681127592723824}
   - component: {fileID: 8976738224129279541}
-  - component: {fileID: 6796862284092498013}
   - component: {fileID: 2062211234468059524}
   - component: {fileID: -5062413039439626110}
+  - component: {fileID: 6796862284092498013}
   - component: {fileID: 8739253096078379996}
+  - component: {fileID: 5330819885286989951}
   - component: {fileID: 7680309239877785518}
   m_Layer: 6
   m_Name: Player
@@ -181,6 +182,17 @@ MonoBehaviour:
   rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
   move: {fileID: 8199604404254181693}
+  playerAnimation: {fileID: 2062211234468059524}
+  coyoteTime: 0.12
+  jumpBufferTime: 0.12
+  fallMultiplier: 3
+  lowJumpMultiplier: 2.6
+  riseHoldMultiplier: 1.2
+  airGravityBase: 1.15
+  maxFallSpeed: 20
+  useJumpBuffer: 1
+  useCoyoteTime: 1
+  clampFallSpeed: 1
   curveY:
     serializedVersion: 2
     m_Curve:
@@ -205,7 +217,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  playerAnimation: {fileID: 2062211234468059524}
 --- !u!114 &3010588022041336495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,23 +329,6 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 0.28, z: 0}
---- !u!114 &6796862284092498013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5191573275404387913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d2eaea6e386e1408349fd7cdea32a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 0
-  projectTrs: {fileID: 5947897825476552715}
-  minShotRange: 20
-  maxShotRange: 105
-  maxKeyPressedTime: 0.8
 --- !u!114 &2062211234468059524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +447,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6796862284092498013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191573275404387913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d2eaea6e386e1408349fd7cdea32a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectTrs: {fileID: 5947897825476552715}
+  minShotRange: 20
+  maxShotRange: 105
+  maxKeyPressedTime: 0.8
 --- !u!114 &8739253096078379996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,9 +475,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8650bb5e2efad34dab64964ec6146b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 1
   fusionPos: {fileID: 6881359659938398974}
   radius: 1
+--- !u!114 &5330819885286989951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191573275404387913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 522d494ec9986a140a2ee7954f674b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterLevelOne: 0
+  waterLevelTwo: 0
 --- !u!114 &7680309239877785518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,9 +504,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holdPoint: {fileID: 541089890627620212}
-  Bow: {fileID: 2481360491719179243, guid: a973298d294a7064683adae4e51710fa, type: 3}
-  Sword: {fileID: 1382313505877948051, guid: cd09c00e77657944bb1aabccf1b666d5, type: 3}
-  Vase: {fileID: 8905619180309696625, guid: f7c8b5406bbb6e046b1bb117764e8cec, type: 3}
+  skillInfos:
+  - skillBasePrefab: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    clip: {fileID: 0}
+  - skillBasePrefab: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    clip: {fileID: 0}
+  - skillBasePrefab: {fileID: 0}
+    modelPrefab: {fileID: 0}
+    clip: {fileID: 0}
 --- !u!1 &7312801828550597135
 GameObject:
   m_ObjectHideFlags: 0

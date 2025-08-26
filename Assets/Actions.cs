@@ -91,6 +91,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""WaterVase"",
+                    ""type"": ""Button"",
+                    ""id"": ""42799c12-aa04-452d-9dba-4f8b0f560553"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Camera"",
                     ""type"": ""Value"",
                     ""id"": ""db443ceb-c0e6-4839-b64e-c17fd4c649bc"",
@@ -190,7 +199,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""27cf3cec-349f-4520-ad34-a45cced70e49"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -274,6 +283,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""CameraZoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88fd3826-8e54-4b4a-86af-8e3cab8488fe"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WaterVase"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -334,6 +354,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_CameraRotation = m_PlayerActions.FindAction("CameraRotation", throwIfNotFound: true);
         m_PlayerActions_StarHunt = m_PlayerActions.FindAction("StarHunt", throwIfNotFound: true);
         m_PlayerActions_StarFusion = m_PlayerActions.FindAction("StarFusion", throwIfNotFound: true);
+        m_PlayerActions_WaterVase = m_PlayerActions.FindAction("WaterVase", throwIfNotFound: true);
         m_PlayerActions_Camera = m_PlayerActions.FindAction("Camera", throwIfNotFound: true);
         m_PlayerActions_CameraZoom = m_PlayerActions.FindAction("CameraZoom", throwIfNotFound: true);
         // UIActions
@@ -407,6 +428,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_CameraRotation;
     private readonly InputAction m_PlayerActions_StarHunt;
     private readonly InputAction m_PlayerActions_StarFusion;
+    private readonly InputAction m_PlayerActions_WaterVase;
     private readonly InputAction m_PlayerActions_Camera;
     private readonly InputAction m_PlayerActions_CameraZoom;
     public struct PlayerActionsActions
@@ -420,6 +442,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @CameraRotation => m_Wrapper.m_PlayerActions_CameraRotation;
         public InputAction @StarHunt => m_Wrapper.m_PlayerActions_StarHunt;
         public InputAction @StarFusion => m_Wrapper.m_PlayerActions_StarFusion;
+        public InputAction @WaterVase => m_Wrapper.m_PlayerActions_WaterVase;
         public InputAction @Camera => m_Wrapper.m_PlayerActions_Camera;
         public InputAction @CameraZoom => m_Wrapper.m_PlayerActions_CameraZoom;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
@@ -452,6 +475,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarFusion.started += instance.OnStarFusion;
             @StarFusion.performed += instance.OnStarFusion;
             @StarFusion.canceled += instance.OnStarFusion;
+            @WaterVase.started += instance.OnWaterVase;
+            @WaterVase.performed += instance.OnWaterVase;
+            @WaterVase.canceled += instance.OnWaterVase;
             @Camera.started += instance.OnCamera;
             @Camera.performed += instance.OnCamera;
             @Camera.canceled += instance.OnCamera;
@@ -483,6 +509,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @StarFusion.started -= instance.OnStarFusion;
             @StarFusion.performed -= instance.OnStarFusion;
             @StarFusion.canceled -= instance.OnStarFusion;
+            @WaterVase.started -= instance.OnWaterVase;
+            @WaterVase.performed -= instance.OnWaterVase;
+            @WaterVase.canceled -= instance.OnWaterVase;
             @Camera.started -= instance.OnCamera;
             @Camera.performed -= instance.OnCamera;
             @Camera.canceled -= instance.OnCamera;
@@ -570,6 +599,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnStarHunt(InputAction.CallbackContext context);
         void OnStarFusion(InputAction.CallbackContext context);
+        void OnWaterVase(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
     }

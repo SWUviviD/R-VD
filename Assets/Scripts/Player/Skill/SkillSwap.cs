@@ -87,10 +87,13 @@ public class SkillSwap : MonoBehaviour
     }
 
     /// <summary>
-    /// 선택 오브젝트만 보이게
+    /// 스킬 선택
     /// </summary>
     private void EquipItem(SkillType _newSkill)
     {
+        if (currentSkill == _newSkill)
+            return; 
+
         for (int i = 0; i < skillInfos.Length; i++)
         {
             if (skillInfos[i] != null && skillInfos[i].model != null)
@@ -101,6 +104,7 @@ public class SkillSwap : MonoBehaviour
         if (skillInfos[(int)currentSkill].model != null)
             skillInfos[(int)currentSkill].model.SetActive(true);
     }
+
 
     private void OnSkillStarted(InputAction.CallbackContext _ctx)
     {

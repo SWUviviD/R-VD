@@ -86,11 +86,11 @@ public class InputManager : MonoSingleton<InputManager>
         InputAction inputAction = GetInputActionMapByType(actionPoint);
         if (isEnable)
         {
-            inputAction.Enable();
+            inputAction?.Enable();
         }
         else
         {
-            inputAction.Disable();
+            inputAction?.Disable();
         }
     }
 

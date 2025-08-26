@@ -56,6 +56,16 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
         bubbleCollider.enabled = true;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        PlayerJump jump;
+        if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
+        {
+            jump.Jump(gimmickData.JumpForce);
+            StartCoroutine(BubblePop());
+        }
+    }
+
     public void InteractStart(GameObject player)
     {
         PlayerJump jump = player.GetComponent<PlayerJump>();

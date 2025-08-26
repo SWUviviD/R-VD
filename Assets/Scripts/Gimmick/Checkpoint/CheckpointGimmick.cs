@@ -20,6 +20,8 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     /// <summary> 배치된 영역 오브젝트 </summary>
     [SerializeField] private GameObject placedArea;
 
+
+
     [Header("Player Data")]
     /// <summary> 플레이어 레이어마스크 </summary>
     [SerializeField] private LayerMask playerMask;

@@ -45,5 +45,6 @@ namespace Defines
         public readonly static string CameraRotation = "CameraRotation";
 
         public readonly static string Camera = "Camera";
+        public readonly static string CameraZoom = "CameraZoom";
     }
 }

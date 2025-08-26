@@ -1,47 +1,42 @@
 using Defines;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Defines.InputDefines;
 
 public class OrbitCamera : MonoBehaviour
 {
     [Header("Target")]
-    public Transform target;                       // 따라갈 대상(플레이어)
-    public Vector3 focusOffset = new Vector3(0f, 1.6f, 0f); // 시선 중심(플레이어 머리 높이 등)
+    [SerializeField] private Transform target;                       // 따라갈 대상(플레이어)
+    private Vector3 focusOffset = new Vector3(0f, 1.6f, 0f); // 시선 중심(플레이어 머리 높이 등)
 
     [Header("Orbit (Yaw only)")]
-    public float distance = 6f;                    // 기본 거리(줌 없음)
-    public float height = 2f;                      // 카메라 높이(타깃 기준)
-    public float yawSensitivity = 0.15f;           // 마우스/스틱 입력 스케일 (픽셀/유닛당 각도)
-    public bool invertX = false;                   // 좌우 반전
+    [SerializeField] private float distance = 6f;                    // 기본 거리
+    [SerializeField] private float maxDistance = 20f;               // 최대 거리
+    [SerializeField] private float minDistance = 4f;                // 최소 거리
+    [SerializeField] private float height = 2f;                      // 카메라 높이(타깃 기준)
 
-    [Header("Input (New Input System)")]
-    //public InputActionReference lookAction;        // Value / Vector2 (예: <Mouse>/delta)
-    //public bool requireHoldToRotate = false;       // 버튼 누를 때만 회전할지(선택)
-    //public InputActionReference rotateHoldAction;  // Button (예: <Mouse>/rightButton)
-    //public bool manageActionsLifecycle = true;     // PlayerInput이 관리 중이면 false
+    [SerializeField] private float yawSensitivity = 0.15f;           // 마우스/스틱 입력 스케일 (픽셀/유닛당 각도)
+    [SerializeField] private float zoomSensitivity = 0.5f;           // 줌임 줌아웃 
+    [SerializeField] private bool invertX = false;                   // 좌우 반전
 
     [Header("Collision (Raycast)")]
-    public LayerMask collisionMask = ~0;           // 지형/벽 레이어
-    public float collisionBuffer = 0.10f;          // 벽에서 띄울 거리
-    public float minDistance = 1.0f;               // 너무 가까워지지 않도록 제한
+    [SerializeField] private LayerMask collisionMask = ~0;           // 지형/벽 레이어
+    [SerializeField] private float collisionBuffer = 0.10f;          // 벽에서 띄울 거리
+    [SerializeField] private float minCollisionDistance = 1.0f;               // 너무 가까워지지 않도록 제한
 
     [Header("Smoothing")]
-    public float positionDamping = 12f;            // 위치 보간 세기
-    public float rotationDamping = 20f;            // 회전 보간 세기
+    [SerializeField] private float positionDamping = 12f;            // 위치 보간 세기
+    [SerializeField] private float rotationDamping = 20f;            // 회전 보간 세기
 
-    [Header("Cursor")]
-    public bool lockCursor = true;                // 필요 시 커서 잠금/숨김
+    private float _yaw;            // 누적된 Yaw 각도(도)
+    private Vector3 _vel;          // SmoothDamp용
 
-    float _yaw;            // 누적된 Yaw 각도(도)
-    Vector3 _vel;          // SmoothDamp용
+    private bool _enable = false;
 
     void OnValidate()
     {
         distance = Mathf.Max(distance, 0.01f);
-        minDistance = Mathf.Clamp(minDistance, 0.05f, distance);
+        minCollisionDistance = Mathf.Clamp(minCollisionDistance, 0.05f, distance);
     }
 
     void Start()
@@ -60,27 +55,48 @@ public class OrbitCamera : MonoBehaviour
         if (dir.sqrMagnitude < 0.0001f) dir = Vector3.back; // 동일 위치 방지
         _yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
 
-        if (lockCursor)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
+        ConnectInputToFunc();
+    }
+
+    private void ConnectInputToFunc()
+    {
         InputManager.Instance.RemoveInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Camera),
             InputDefines.ActionPoint.IsPerformed, OnMouseInput);
         InputManager.Instance.AddInputEventFunction(
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Camera),
             InputDefines.ActionPoint.IsPerformed, OnMouseInput);
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
+            InputDefines.ActionPoint.IsPerformed, OnScroolInput);
+        InputManager.Instance.AddInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
+            InputDefines.ActionPoint.IsPerformed, OnScroolInput);
     }
 
     private void OnMouseInput(InputAction.CallbackContext _playerStatus)
     {
+        if (enabled == false)
+            return;
+
         // Vector2(x: 좌우, y: 상하) — 여기선 좌우(Yaw)만 사용
         Vector2 look = _playerStatus.action.ReadValue<Vector2>();
         float deltaX = look.x * (invertX ? -1f : 1f);
         _yaw += deltaX * yawSensitivity;      // 마우스 델타 기준이면 deltaTime 곱하지 않는 편이 자연스러움
         // Yaw는 제한 없음(0~360 래핑 자동)
+    }
+
+    private void OnScroolInput(InputAction.CallbackContext _playerStatus)
+    {
+        if (enabled == false)
+            return;
+
+        Vector2 delta = _playerStatus.action.ReadValue<Vector2>();
+        distance = Mathf.Clamp(distance + delta.y * zoomSensitivity, minDistance, maxDistance);
     }
 
     void OnEnable()
@@ -93,24 +109,9 @@ public class OrbitCamera : MonoBehaviour
         GameManager.Instance.SetCameraInput(false);
     }
 
-    void Update()
-    {
-        //if (!target) return;
-
-        //bool canRotate = !requireHoldToRotate || (rotateHoldAction && rotateHoldAction.action.IsPressed());
-
-        //if (canRotate && lookAction && lookAction.action.enabled)
-        //{
-        //    // Vector2(x: 좌우, y: 상하) — 여기선 좌우(Yaw)만 사용
-        //    Vector2 look = lookAction.action.ReadValue<Vector2>();
-        //    float deltaX = look.x * (invertX ? -1f : 1f);
-        //    _yaw += deltaX * yawSensitivity;      // 마우스 델타 기준이면 deltaTime 곱하지 않는 편이 자연스러움
-        //    // Yaw는 제한 없음(0~360 래핑 자동)
-        //}
-    }
-
     void LateUpdate()
     {
+        if (enabled == false) return;
         if (!target) return;
 
         Vector3 focus = target.position + focusOffset;
@@ -128,7 +129,7 @@ public class OrbitCamera : MonoBehaviour
         float adjustedDist = desiredDist;
         if (Physics.Raycast(focus, dir, out RaycastHit hit, desiredDist, collisionMask, QueryTriggerInteraction.Ignore))
         {
-            adjustedDist = Mathf.Max(hit.distance - collisionBuffer, minDistance);
+            adjustedDist = Mathf.Max(hit.distance - collisionBuffer, minCollisionDistance);
         }
         Vector3 finalPos = focus + dir * adjustedDist;
 

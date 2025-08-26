@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+    [field:SerializeField] public Transform Camera { get; private set; }
     [field: SerializeField] public GameObject Player { get; private set; }
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
@@ -83,12 +84,12 @@ public class GameManager : MonoSingleton<GameManager>
         if (SceneManager.GetActiveScene().buildIndex != GameData.stageID) return;
 
         Player = GameObject.FindWithTag("Player");
-        Player.transform.position = GameData.playerPosition;
-        Player.transform.rotation = Quaternion.Euler(GameData.playerRotation);
+        //Player.transform.position = GameData.playerPosition;
+        //Player.transform.rotation = Quaternion.Euler(GameData.playerRotation);
         Player.GetComponent<PlayerHp>().SetHealth(GameData.playerHealth);
 
-        CameraController cameraController = Camera.main.GetComponent<CameraController>();
-        cameraController.Respawn(GameData.playerPosition, GameData.playerRotation);
+        //CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        //cameraController.Respawn(GameData.playerPosition, GameData.playerRotation);
     }
 
     public void OnGameStart()

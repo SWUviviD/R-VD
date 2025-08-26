@@ -19,11 +19,14 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         galRenderer = GalaxyObject.GetComponentsInChildren<Renderer>();
     }
 
+    private void Start()
+    {
+        disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
+    }
+
     public override void SetGimmick()
     {
         GalaxyObject.transform.localScale = Vector3.one * gimmickData.Size;
-
-        disappearCoroutine = StartCoroutine(AppearDisappearRoutine());
     }
 
     protected override string GetAddress()
@@ -66,13 +69,13 @@ public class GalaxyGimmick : GimmickBase<GalaxyGimmickData>
         while (true)
         {
             // 오브젝트 가시화, 충돌 처리
-            galRenderer.ForEach(_ => _.enabled = true);
+            galRenderer?.ForEach(_ => _.enabled = true);
             galCollider.enabled = true;
             yield return new WaitForSeconds(gimmickData.VisibleDuration);
 
             // 오브젝트 비가시화, 충돌 x
             // 하위 렌더러 전체 비가시화 처리 필요함
-            galRenderer.ForEach(_ => _.enabled = false);
+            galRenderer?.ForEach(_ => _.enabled = false);
             galCollider.enabled = false;
             yield return new WaitForSeconds(gimmickData.MaxDisappearTime);
         }

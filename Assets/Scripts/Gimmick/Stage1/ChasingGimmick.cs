@@ -46,7 +46,6 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 
     protected override void Init()
     {
-        SetGimmick();
     }
 
     [ContextMenu("SetGimmick")]
@@ -172,11 +171,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
 
     private void OnTriggerEnter(Collider other)
     {
-        Transform parent = other.transform.parent;
-        if (parent == null)
-            return;
-
-        if (parent.TryGetComponent<PlayerMove>(out var move) == true)
+        if (other.attachedRigidbody.TryGetComponent<PlayerMove>(out var move) == true)
         {
             playerMove = move;
 
@@ -192,10 +187,7 @@ public class ChasingGimmick : GimmickBase<ChasingGimmickData>
         if (playerMove == null)
             return;
 
-        Transform parent = other.transform.parent;
-        if (parent == null) return;
-
-        if (parent.TryGetComponent <PlayerMove>(out var move) == true)
+        if (other.attachedRigidbody.TryGetComponent <PlayerMove>(out var move) == true)
         {
             if(playerMove == move)
             {

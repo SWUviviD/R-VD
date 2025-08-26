@@ -98,6 +98,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraZoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""69f08d9b-25b0-4cf6-b54d-e3636e871630"",
+                    ""expectedControlType"": ""Delta"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -254,6 +263,17 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Camera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""343518b6-bbff-48a7-9b49-0fa07942c830"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraZoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -315,6 +335,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_StarHunt = m_PlayerActions.FindAction("StarHunt", throwIfNotFound: true);
         m_PlayerActions_StarFusion = m_PlayerActions.FindAction("StarFusion", throwIfNotFound: true);
         m_PlayerActions_Camera = m_PlayerActions.FindAction("Camera", throwIfNotFound: true);
+        m_PlayerActions_CameraZoom = m_PlayerActions.FindAction("CameraZoom", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -387,6 +408,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_StarHunt;
     private readonly InputAction m_PlayerActions_StarFusion;
     private readonly InputAction m_PlayerActions_Camera;
+    private readonly InputAction m_PlayerActions_CameraZoom;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -399,6 +421,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @StarHunt => m_Wrapper.m_PlayerActions_StarHunt;
         public InputAction @StarFusion => m_Wrapper.m_PlayerActions_StarFusion;
         public InputAction @Camera => m_Wrapper.m_PlayerActions_Camera;
+        public InputAction @CameraZoom => m_Wrapper.m_PlayerActions_CameraZoom;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -432,6 +455,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Camera.started += instance.OnCamera;
             @Camera.performed += instance.OnCamera;
             @Camera.canceled += instance.OnCamera;
+            @CameraZoom.started += instance.OnCameraZoom;
+            @CameraZoom.performed += instance.OnCameraZoom;
+            @CameraZoom.canceled += instance.OnCameraZoom;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -460,6 +486,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @Camera.started -= instance.OnCamera;
             @Camera.performed -= instance.OnCamera;
             @Camera.canceled -= instance.OnCamera;
+            @CameraZoom.started -= instance.OnCameraZoom;
+            @CameraZoom.performed -= instance.OnCameraZoom;
+            @CameraZoom.canceled -= instance.OnCameraZoom;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -542,6 +571,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnStarHunt(InputAction.CallbackContext context);
         void OnStarFusion(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
+        void OnCameraZoom(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

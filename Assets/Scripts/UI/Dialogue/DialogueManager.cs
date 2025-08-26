@@ -136,7 +136,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
         dialogueCamera.SetActive(true);
-        CameraController.Instance.SetMainCameraActive(false);
+        //CameraController.Instance.SetMainCameraActive(false);
         GameManager.Instance.SetMovementInput(false);
 
         currentDialogNumber = dialogueID;
@@ -297,7 +297,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         dialoguePanel.SetActive(false);
         dialogueCamera.SetActive(false);
         optionsPanel.SetActive(false);
-        CameraController.Instance.SetMainCameraActive(true);
+        //CameraController.Instance.SetMainCameraActive(true);
         GameManager.Instance.SetMovementInput(true);
     }
 
@@ -311,7 +311,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             dialoguePanel.SetActive(false);
             dialogueCamera.SetActive(false);
             optionsPanel.SetActive(false);
-            CameraController.Instance.SetMainCameraActive(true);
+            //CameraController.Instance.SetMainCameraActive(true);
         }
         GameManager.Instance.SetMovementInput(true);
     }
@@ -380,7 +380,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         dialoguePanel.SetActive(false);
         dialogueCamera.SetActive(false);
         optionsPanel.SetActive(false);
-        CameraController.Instance.SetMainCameraActive(true);
+        //CameraController.Instance.SetMainCameraActive(true);
         GameManager.Instance.SetMovementInput(true);
     }
 }

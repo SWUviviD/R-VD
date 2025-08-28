@@ -48,7 +48,7 @@ public class WaterWall : GimmickBase<WaterWallData>
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         // 거리 내에서 R 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.R) && vase.waterLevelOne == true)
+        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.R))
         {
             isice = true;
 

@@ -6,43 +6,29 @@ using Defines;
 
 public class WaterVaseControll : SkillBase
 {
-    public bool waterLevelOne;
-    public bool waterLevelTwo;
+    public bool remainingUsage;
 
 
     private void Start()
     {
-        waterLevelOne = false;
-        waterLevelTwo = false;
+        remainingUsage = false;
     }
 
-    public void addWater()
+    public void watermove()
     {
-        if (waterLevelOne)
+        if (remainingUsage)
         {
-            waterLevelTwo = true;
+            remainingUsage = false;
         }
         else
         {
-            waterLevelOne = true;
-        }
-    }
-
-    public void removeWater()
-    {
-        if (waterLevelTwo)
-        {
-            waterLevelTwo = false;
-        }
-        else if (waterLevelOne)
-        {
-            waterLevelOne = false;
+            remainingUsage = true;
         }
     }
 
     public override void OnSkillStart(InputAction.CallbackContext _playerStatus)
     {
-        addWater();
+        //watermove();
     }
 
     public override void OnSkill(InputAction.CallbackContext _playerStatus)
@@ -52,6 +38,6 @@ public class WaterVaseControll : SkillBase
 
     public override void OnSkillStop(InputAction.CallbackContext _playerStatus)
     {
-        removeWater();
+        
     }
 }

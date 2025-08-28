@@ -1039,7 +1039,6 @@ GameObject:
   - component: {fileID: 782985231016562447}
   - component: {fileID: 8165472704559713546}
   - component: {fileID: 7895907789397981702}
-  - component: {fileID: 3121942564826972165}
   m_Layer: 0
   m_Name: VASE
   m_TagString: Untagged
@@ -1135,20 +1134,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3121942564826972165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982946959012579343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 522d494ec9986a140a2ee7954f674b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waterLevelOne: 0
-  waterLevelTwo: 0
 --- !u!1 &3081739303440149030
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,7 +1228,7 @@ GameObject:
   - component: {fileID: 5947897825476552715}
   m_Layer: 6
   m_Name: Project
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1856,19 +1841,19 @@ MonoBehaviour:
   fallMultiplier: 3
   lowJumpMultiplier: 2.6
   riseHoldMultiplier: 1.2
-  airGravityBase: 1.15
+  airGravityBase: 5
   maxFallSpeed: 20
   useJumpBuffer: 1
   useCoyoteTime: 1
-  clampFallSpeed: 1
+  clampFallSpeed: 0
   curveY:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 1
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -1876,7 +1861,7 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
+      inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
@@ -1901,7 +1886,7 @@ MonoBehaviour:
   <AdditionalMoveSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <ProjectileSpeed>k__BackingField: 0
-  <JumpHeight>k__BackingField: 50
+  <JumpHeight>k__BackingField: 70
   <JumpSpeed>k__BackingField: 10
   <FallingSpeed>k__BackingField: 3
   <IsDashing>k__BackingField: 0
@@ -1989,7 +1974,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

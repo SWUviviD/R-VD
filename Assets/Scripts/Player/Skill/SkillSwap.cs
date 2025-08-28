@@ -36,7 +36,7 @@ public class SkillSwap : MonoBehaviour
             new InputActionName(ActionMapType.PlayerActions, SkillType.WaterVase.ToString()),
             ActionPoint.IsStarted, OnSkillSwapToWaterVase);
 
-        // Magic Key → 좌클릭으로 스킬 사용
+        // 좌클릭으로 스킬 사용
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "Magic"),
             ActionPoint.IsStarted, OnSkillStarted);

@@ -45,17 +45,13 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     {
         if (InputManager.Instance == null)
         {
-            Debug.LogError("InputManager.Instance is NULL");
+            LogManager.Log("InputManager.Instance is NULL");
             return;
         }
 
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "Magic"),
             ActionPoint.IsStarted, OnSkillStarted);
-
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsPerformed, OnSkillStarted);
     }
 
     private void OnDisable()
@@ -65,10 +61,6 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         InputManager.Instance.RemoveInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "Magic"),
             ActionPoint.IsStarted, OnSkillStarted);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsPerformed, OnSkillStarted);
     }
 
 
@@ -79,6 +71,7 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         if (distanceToPlayer <= interactionDistance)
         {
             InteractWithBlock();
+            LogManager.Log($"{remainingUsage}");
         }
     }
 

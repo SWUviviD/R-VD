@@ -14,6 +14,11 @@ public class SkillSwap : MonoBehaviour
         public AnimationClip clip;    // 애니메이션
     }
 
+    [Header("Skill Key States")]
+    public bool isQPressed = false;
+    public bool isEPressed = false;
+    public bool isRPressed = false;
+
     [Header("SkillObject")]
     [SerializeField] private SkillInfo[] skillInfos = new SkillInfo[(int)SkillType.MAX];
 
@@ -73,16 +78,28 @@ public class SkillSwap : MonoBehaviour
 
     public void OnSkillSwapToStarHunt(InputAction.CallbackContext _ctx)
     {
+        isQPressed = true;
+        isEPressed = false;
+        isRPressed = false;
+
         EquipItem(SkillType.StarHunt);
     }
 
     public void OnSkillSwapToStarFusion(InputAction.CallbackContext _ctx)
     {
+        isQPressed = false;
+        isEPressed = true;
+        isRPressed = false;
+
         EquipItem(SkillType.StarFusion);
     }
 
     public void OnSkillSwapToWaterVase(InputAction.CallbackContext _ctx)
     {
+        isQPressed = false;
+        isEPressed = false;
+        isRPressed = true;
+
         EquipItem(SkillType.WaterVase);
     }
 
@@ -108,16 +125,31 @@ public class SkillSwap : MonoBehaviour
 
     private void OnSkillStarted(InputAction.CallbackContext _ctx)
     {
+        if (currentSkill == SkillType.MAX)
+        {
+            return;
+        }
+
         skillInfos[(int)currentSkill].skillBase?.OnSkillStart(_ctx);
     }
 
     private void OnSkill(InputAction.CallbackContext _ctx)
     {
+        if (currentSkill == SkillType.MAX)
+        {
+            return;
+        }
+
         skillInfos[(int)currentSkill].skillBase?.OnSkill(_ctx);
     }
 
     private void OnSkillStop(InputAction.CallbackContext _ctx)
     {
+        if (currentSkill == SkillType.MAX)
+        {
+            return;
+        }
+
         skillInfos[(int)currentSkill].skillBase?.OnSkillStop(_ctx);
     }
 }

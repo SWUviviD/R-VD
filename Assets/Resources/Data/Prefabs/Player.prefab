@@ -2142,8 +2142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 522d494ec9986a140a2ee7954f674b2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterLevelOne: 0
-  waterLevelTwo: 0
+  remainingUsage: 0
 --- !u!114 &7680309239877785518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2156,6 +2155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b66541a0f1e0a4ea86da4a038b0ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isQPressed: 0
+  isEPressed: 0
+  isRPressed: 0
   skillInfos:
   - skillBase: {fileID: 6796862284092498013}
     model: {fileID: 6105140287144714199}
@@ -3576,7 +3578,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -2845779275431937956, guid: b1ef57f335911c94dae80c34ee64804c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1ef57f335911c94dae80c34ee64804c, type: 3}

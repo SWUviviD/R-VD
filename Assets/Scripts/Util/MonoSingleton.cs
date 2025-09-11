@@ -30,13 +30,15 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         if (isInit)
         {
             if (_instance == this) return;
-            
+
+            Debug.Log("GM");
             Destroy(gameObject);
             return;
         }
         
         isInit = true;
         Init();
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()

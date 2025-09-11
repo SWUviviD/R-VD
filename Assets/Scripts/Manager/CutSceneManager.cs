@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
+using Defines;
 
 public class CutSceneManager : MonoSingleton<CutSceneManager>
 {
@@ -59,9 +59,10 @@ public class CutSceneManager : MonoSingleton<CutSceneManager>
         cutSceneUIPanel.SetActive(false);
     }
 
-    public void PlayCutScene(int _number, Action _callBack)
+    public void PlayCutScene(CutSceneDefines.CutSceneNumber _number, Action _callBack)
     {
-        if(_number < 0 ||  _number >= CutSceneData.Count)
+        int num = (int)_number;
+        if(num >= CutSceneData.Count)
         {
             _callBack?.Invoke();
             return;
@@ -86,7 +87,7 @@ public class CutSceneManager : MonoSingleton<CutSceneManager>
         button.gameObject.SetActive(false);
 
         // 데이터 선택
-        currentCutSecneData = CutSceneData[_number];
+        currentCutSecneData = CutSceneData[num];
         lineNum = 0;
 
         onCutFinished = _callBack;

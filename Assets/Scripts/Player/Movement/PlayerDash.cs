@@ -10,19 +10,19 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private PlayerStatus status;
 
     private Vector3 dashDirection;
-    private WaitForSeconds waitForDashSeconds;
+    private WaitForFixedUpdate waitForFixedUpate = new WaitForFixedUpdate();
 
     [SerializeField]
     private float dashCoolTime = 1.5f;
     private float elaspedTime = 0.0f;
     private bool canDash = true;
+    private float cachedY;
 
     public UnityEvent<bool> OnDashEvent = new UnityEvent<bool>();
 
     private void Start()
     {
         elaspedTime = 0.0f;
-        waitForDashSeconds = new WaitForSeconds(status.DashTime);
     }
 
     private void OnEnable()
@@ -37,10 +37,10 @@ public class PlayerDash : MonoBehaviour
     {
         if ((status.IsDashing) == true)
         {
-            dashDirection.y = 0f;
-            rigid.velocity = dashDirection;
+            Vector3 v = dashDirection * status.DashSpeed;
+            v.y = cachedY;
+            rigid.velocity = v;
         }
-        rigid.velocity *= 0.5f;
 
         if (canDash == false)
         {
@@ -66,21 +66,38 @@ public class PlayerDash : MonoBehaviour
         if (canDash == false)
             return;
 
-        status.IsDashing = true;
-        OnDashEvent?.Invoke(true);
         canDash = false;
 
-        dashDirection = rigid.transform.forward * status.DashSpeed;
-        dashDirection.y = 0f;
+        dashDirection = rigid.transform.forward; 
+        dashDirection.y = 0; 
+        dashDirection.Normalize();
+
+        cachedY = rigid.velocity.y;
 
         StartCoroutine(EndDashing());
     }
 
     private IEnumerator EndDashing()
     {
-        yield return waitForDashSeconds;
+        status.IsDashing = true;
+        OnDashEvent?.Invoke(true);
+
+        bool prevGravity = rigid.useGravity;
+        rigid.useGravity = false;
+
+        float t = 0f;
+        while(t < status.DashTime)
+        {
+            t += Time.deltaTime;
+            yield return waitForFixedUpate;
+        }
+
+        rigid.useGravity = prevGravity;
         status.IsDashing = false;
         OnDashEvent?.Invoke(false);
-        rigid.velocity = Vector3.zero;
+
+        var v = rigid.velocity;
+        v.y = cachedY;
+        rigid.velocity = v;
     }
 }

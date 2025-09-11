@@ -18,10 +18,15 @@ public class SettingUI : MonoBehaviour
     private void Start()
     {
         UIHelper.OnClick(RestartBtn, GameManager.Instance.GameRestart);
-        UIHelper.OnClick(ExitBtn, GameManager.Instance.GameExit);
+        UIHelper.OnClick(ExitBtn, Exit);
 
         background.SetActive(isActive);
         settingPanel.SetActive(isActive);
+    }
+
+    private void Exit()
+    {
+        GameManager.Instance.GameExit(true);
     }
 
     private void Update()

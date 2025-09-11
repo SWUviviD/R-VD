@@ -5,7 +5,7 @@ using UnityEngine.Assertions.Must;
 using System.Net.NetworkInformation;
 using UnityEngine.Events;
 
-public class PlayerMove : MonoSingleton<GameManager>
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private Rigidbody rigid;
     [SerializeField] private PlayerStatus status;

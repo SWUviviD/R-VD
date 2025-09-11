@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 
 public class StarHunt : SkillBase
 {
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform projectTrs;
+    [SerializeField] private PlayerMove playerMove;
 
     [SerializeField] private float minShotRange = 20f;
     [SerializeField] private float maxShotRange = 105;
@@ -46,12 +48,28 @@ public class StarHunt : SkillBase
             keyPressedTime = maxKeyPressedTime;
     }
 
+    private void FixedUpdate()
+    {
+        if (isKeyPressing == false)
+            return;
+
+        var q = GetCameraFloatLook();
+        if(q.HasValue)
+        {
+            rb.MoveRotation(q.Value);
+        }
+    }
+
     public override void OnSkill(InputAction.CallbackContext _playerStatus) { }
 
     public override void OnSkillStart(InputAction.CallbackContext _playerStatus)
     {
         isKeyPressing = true;
+        keyPressedTime = 0f;
         OnStarHuntKeyDown?.Invoke();
+
+        var q = GetCameraFloatLook();
+        if(q.HasValue) rb.MoveRotation(q.Value);
     }
 
     public override void OnSkillStop(InputAction.CallbackContext _playerStatus)
@@ -59,14 +77,28 @@ public class StarHunt : SkillBase
         OnStarHuntKeyUp?.Invoke();
         isKeyPressing = false;
 
-        float gapRange = maxShotRange - minShotRange;
-        float resultRange = 20 + gapRange * keyPressedTime;
+        float t01 = Mathf.Clamp01(keyPressedTime/maxKeyPressedTime);
+        float resultRange = Mathf.Lerp(minShotRange, maxShotRange, t01);
 
         var arrow = PoolManager.Instance.GetPoolObject(Defines.PoolDefines.PoolType.StarHunts);
-        StarHuntArrow arrowScript = arrow.GetComponent<StarHuntArrow>();
-        if (arrowScript != null)
+        if (arrow.TryGetComponent<StarHuntArrow>(out var arrowScript))
         {
             arrowScript.Project(projectTrs, resultRange);
         }
+    }
+
+    private Quaternion? GetCameraFloatLook()
+    {
+        Camera cam = CameraController.Instance.MainCamera;
+        if (cam == null)
+            return null;
+
+        Vector3 f = cam.transform.forward;
+        f.y = 0f;
+        if (f.sqrMagnitude < 1e-6f)
+            return null;
+
+        f.Normalize();
+        return Quaternion.LookRotation(f, Vector3.up);
     }
 }

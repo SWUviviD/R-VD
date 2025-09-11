@@ -62,7 +62,7 @@ public class CreditManager : MonoBehaviour
         if (fadeCanvas != null)
             yield return FadeCanvas(1f, fadeDuration);
 
-        SceneManager.LoadScene("TitleScene");
+        SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
     }
 
     private IEnumerator FadeCanvas(float targetAlpha, float duration)

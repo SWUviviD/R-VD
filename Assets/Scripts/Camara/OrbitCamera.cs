@@ -109,6 +109,17 @@ public class OrbitCamera : MonoBehaviour
         GameManager.Instance.SetCameraInput(false);
     }
 
+    private void OnDestroy()
+    {
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Camera),
+            InputDefines.ActionPoint.IsPerformed, OnMouseInput);
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
+            InputDefines.ActionPoint.IsPerformed, OnScroolInput);
+    }
+
     void LateUpdate()
     {
         if (enabled == false) return;

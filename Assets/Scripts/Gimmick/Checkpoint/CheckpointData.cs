@@ -18,6 +18,10 @@ public class CheckpointData : GimmickDataBase
     [field: SerializeField]
     public Vector3 RespawnRotation { get; set; } = Vector3.zero;
 
+    [GimmickData("카메라 방향")]
+    [field:SerializeField]
+    public Vector3 CamRotation { get; set; } = Vector3.zero;
+
     [GimmickData("추락 높이 (y좌표 값 0 기준)")]
     [field: SerializeField]
     public float DropRespawnHeight { get; set; } = -10f;

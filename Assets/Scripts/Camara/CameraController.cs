@@ -342,7 +342,7 @@ public class CameraController : MonoSingleton<CameraController>
         Orbit,
     }
 
-    [SerializeField] private Camera _cam;
+    [field: SerializeField] public Camera MainCamera { get; private set; }
 
     [Header("Scripts")]
     [SerializeField] private OrbitCamera _orbitCam;

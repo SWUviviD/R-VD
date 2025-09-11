@@ -7,22 +7,39 @@ public class TitleUI : MonoBehaviour
 {
     [SerializeField] private Button StartBtn;
     [SerializeField] private Button ContinueBtn;
+    [SerializeField] private Button CreditBtn;
     [SerializeField] private Button ExitBtn;
-
-    private GameData gameData;
 
     private void Start()
     {
-        UIHelper.OnClick(StartBtn, GameManager.Instance.NewGameStart);
-        UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
-        UIHelper.OnClick(ExitBtn, GameManager.Instance.GameExit);
+        UIHelper.OnClick(StartBtn, NewGameStart);
+        UIHelper.OnClick(ExitBtn, GameExit);
+        UIHelper.OnClick(CreditBtn, LoadCredit);
 
-        gameData = GameManager.Instance.GameData;
-        if (gameData != null && gameData.stageID != 0)
+        if (GameManager.Instance.GameDataManager.LoadGameData() == true)
         {
             ContinueBtn.GetComponent<Image>().raycastTarget = true;
             ContinueBtn.GetComponent<Image>().color = Color.white;
             ContinueBtn.GetComponentInChildren<Text>().color = Color.white;
         }
+
+        UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
+    }
+
+    private void NewGameStart()
+    {
+        CutSceneManager.Instance.PlayCutScene(
+            Defines.CutSceneDefines.CutSceneNumber.Intro,
+            GameManager.Instance.NewGameStart);
+    }
+
+    private void LoadCredit()
+    {
+        SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Credit);
+    }
+
+    private void GameExit()
+    {
+        GameManager.Instance.GameExit(false);
     }
 }

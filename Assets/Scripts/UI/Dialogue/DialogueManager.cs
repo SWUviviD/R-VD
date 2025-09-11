@@ -1,3 +1,4 @@
+using StaticData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,14 +57,31 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private void Start()
     {
         // CSV 파일 읽기: Resources.Load는 파일 확장자 없이 사용 (Resources/Data/RawData/DialogInfo.csv)
-        TextAsset csvFile = Resources.Load<TextAsset>(csvPath);
-        if (csvFile != null)
+        List<DialogInfo> dialogueDatas;
+        SerializeManager.Instance.LoadDataFile(out dialogueDatas, "DialogInfo");
+        if (dialogueDatas.Count > 0)
         {
-            ParseCSV(csvFile.text);
+            return;
         }
-        else
+
+        foreach(var dialogueData in dialogueDatas)
         {
-            Debug.LogError("CSV 파일을 찾을 수 없습니다: " + csvPath);
+            DialogueLine dialogueLine = new DialogueLine(
+                dialogueData.DialogNumber, 
+                dialogueData.TextNumber, 
+                dialogueData.Name,
+                dialogueData.Text, 
+                dialogueData.NextTextNumber, 
+                dialogueData.Op1Txt, 
+                dialogueData.Op1Num, 
+                dialogueData.Op2Txt, 
+                dialogueData.Op2Num);
+
+            if (!dialogues.ContainsKey(dialogueData.DialogNumber))
+            {
+                dialogues[dialogueData.DialogNumber] = new Dictionary<int, DialogueLine>();
+            }
+            dialogues[dialogueData.DialogNumber][dialogueData.TextNumber] = dialogueLine;
         }
 
         originPosition = nextToggleRT.GetComponent<RectTransform>().anchoredPosition;

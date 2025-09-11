@@ -55,9 +55,6 @@ public class OrbitCamera : MonoBehaviour
         if (dir.sqrMagnitude < 0.0001f) dir = Vector3.back; // 동일 위치 방지
         _yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         ConnectInputToFunc();
     }
 

@@ -13,7 +13,12 @@ public class GameOverUI : MonoBehaviour
     private void Awake()
     {
         UIHelper.OnClick(restartButton, GameManager.Instance.GameRestart);
-        UIHelper.OnClick(exitButton, () => GameManager.Instance.GameExit());
+        UIHelper.OnClick(exitButton, Exit);
+    }
+
+    private void Exit()
+    {
+        GameManager.Instance.GameExit();
     }
 
     private void Start()

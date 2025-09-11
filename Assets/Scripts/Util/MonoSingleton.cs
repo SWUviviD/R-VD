@@ -31,7 +31,6 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (_instance == this) return;
 
-            Debug.Log("GM");
             Destroy(gameObject);
             return;
         }

@@ -74,6 +74,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void OnGameOver()
     {
         GameOver();
+        StopGame();
         SetMovementInput(false);
     }
 
@@ -157,7 +158,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         GameManager.Instance.SetCameraInput(true);
 
-        Cursor.visible = false;
+        Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Locked;
 
         IsPaused = false;

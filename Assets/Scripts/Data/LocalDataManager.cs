@@ -19,7 +19,7 @@ public class LocalDataManager : Singleton<LocalDataManager>
         string key = string.Empty;
         try
         {
-            object obj = AddressableAssetsManager.Instance.SyncLoadObject(ASSET_PATH + _folderPath + "/" + _fileName, _fileName);
+            object obj = AssetLoadManager.Instance.SyncLoadObject(ASSET_PATH + _folderPath + "/" + _fileName, _fileName);
             TextAsset list = obj as TextAsset;
 
             var data = JsonUtility.FromJson<CSVToJson.SerializableList<sample>>(list.text);

@@ -83,8 +83,8 @@ namespace LevelEditor
 
             if (!objectIDs.ContainsKey(prefabAddress))
             {
-                prefab = AddressableAssetsManager.Instance.SyncLoadObject(
-                    AddressableAssetsManager.Instance.GetPrefabPath(path, $"{prefabAddress}"),
+                prefab = AssetLoadManager.Instance.SyncLoadObject(
+                    AssetLoadManager.Instance.GetPrefabPath(path, $"{prefabAddress}"),
                     prefabAddress) as GameObject;
 
                 objectID++;
@@ -255,7 +255,7 @@ namespace LevelEditor
 
             if (!objectIDs.ContainsKey(gimmickName))
             {
-                prefab = AddressableAssetsManager.Instance.SyncLoadObject(address, address) as GameObject;
+                prefab = AssetLoadManager.Instance.SyncLoadObject(address, address) as GameObject;
 
                 objectID++;
                 objectIDs[gimmickName] = objectID;

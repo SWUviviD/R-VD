@@ -47,8 +47,8 @@ public class UIManager : MonoSingleton<UIManager>
         });
 
         // 툴팁창 오브젝트 풀 생성
-        GameObject tooltip = AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("UI/Sample", "UISampleTooltip.prefab"),
+        GameObject tooltip = AssetLoadManager.Instance.SyncLoadObject(
+            AssetLoadManager.Instance.GetPrefabPath("UI/Sample", "UISampleTooltip.prefab"),
             PoolDefines.PoolType.UITooltip.ToString()) as GameObject;
 
         if (tooltip == null)
@@ -71,7 +71,7 @@ public class UIManager : MonoSingleton<UIManager>
         }
         else
         {
-            var obj = AddressableAssetsManager.Instance.SyncLoadObject(uiAddress, uiAddress);
+            var obj = AssetLoadManager.Instance.SyncLoadObject(uiAddress, uiAddress);
             var instance = Instantiate((GameObject)obj);
             var uiBase = instance.GetComponent<UIBase>();
             cachedUITable.TryAdd(uiAddress, uiBase);

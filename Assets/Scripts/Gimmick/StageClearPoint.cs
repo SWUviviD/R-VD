@@ -24,11 +24,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
 
     private void OnTriggerExit(Collider other)
     {
-        Transform parent = other.transform.parent;
-        if (parent == null)
-            return;
-
-        if (parent.TryGetComponent<PlayerHp>(out var hp) == true)
+        if (other.gameObject.TryGetComponent<PlayerHp>(out var hp) == true)
         {
             OnGameClear();
         }

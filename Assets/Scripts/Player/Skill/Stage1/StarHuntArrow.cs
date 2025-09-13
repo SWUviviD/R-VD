@@ -45,7 +45,7 @@ public partial class StarHuntArrow : Poolable
 { 
     public override Poolable Create(ReturnToPool _returnToPool)
     {
-        GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
+        GameObject platform = (AssetLoadManager.Instance.SyncLoadObject(
            "Data/Prefabs/Arrow",
            PoolDefines.PoolType.StarHunts.ToString())) as GameObject;
         if (platform == null)

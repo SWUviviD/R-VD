@@ -150,4 +150,32 @@ public class OrbitCamera : MonoBehaviour
         Quaternion lookRot = Quaternion.LookRotation(focus - transform.position, Vector3.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, tRot);
     }
+
+    public void SetCameraRotation(float relativeAngleDeg)
+    {
+        if (target == null)
+            return;
+
+        float playerYaw = target.eulerAngles.y;
+        _yaw = Mathf.Repeat(playerYaw + relativeAngleDeg, 360f);
+
+        Vector3 focus = target.position + focusOffset;
+        Quaternion yawRot = Quaternion.Euler(0, _yaw, 0);
+        Vector3 localOffset = new Vector3(0f, height, -distance);
+        Vector3 desiredPos = focus + yawRot * localOffset;
+
+        Vector3 toCam = desiredPos - focus;
+        float desiredDist = toCam.magnitude;
+        Vector3 dir = toCam.normalized;
+
+        float adjustedDist = desiredDist;
+        if(Physics.Raycast(focus, dir, out RaycastHit hit, desiredDist, collisionMask, QueryTriggerInteraction.Ignore))
+        {
+            adjustedDist = Mathf.Max(hit.distance - collisionBuffer, minCollisionDistance);
+        }
+        Vector3 finalPos = focus + dir * adjustedDist;
+
+        transform.position = finalPos;
+        transform.rotation = Quaternion.LookRotation(focus - transform.position, Vector3.up);
+    }
 }

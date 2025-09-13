@@ -31,7 +31,7 @@ public class PlayerPositionSettor : GimmickBase<PlayerPositionSettorData>
 
     private void SetPlayer()
     {
-        GameObject prefab = AddressableAssetsManager.Instance.SyncLoadObject(playerPrefabAddress, playerPrefabAddress) as GameObject;
+        GameObject prefab = AssetLoadManager.Instance.SyncLoadObject(playerPrefabAddress, playerPrefabAddress) as GameObject;
         player = Instantiate(prefab);
         player.SetActive(false);
         move = player.GetComponent<PlayerMove>();

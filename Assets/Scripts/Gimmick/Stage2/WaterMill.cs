@@ -21,8 +21,8 @@ public class WaterMill : MonoBehaviour
 
     private void Start()
     {
-        GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("Prefabs/Temp/Stage2", "watermillPlatform.prefab"), 
+        GameObject platform = (AssetLoadManager.Instance.SyncLoadObject(
+            AssetLoadManager.Instance.GetPrefabPath("Prefabs/Temp/Stage2", "watermillPlatform.prefab"), 
             PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
 
         if (platform == null)

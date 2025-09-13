@@ -136,8 +136,8 @@ public class CutSceneManager : MonoSingleton<CutSceneManager>
         }
         else
         {
-            Sprite nextBgSprite = AddressableAssetsManager.Instance.SyncLoadObject<Sprite>(
-            AddressableAssetsManager.Instance.GetPrefabPath("UI/CutScene", _nextImage),
+            Sprite nextBgSprite = AssetLoadManager.Instance.SyncLoadObject<Sprite>(
+            AssetLoadManager.Instance.GetPrefabPath("UI/CutScene", _nextImage),
             _nextImage);
 
             nextBg.sprite = nextBgSprite;

@@ -23,8 +23,8 @@ public partial class UISampleTooltip : UIClamp
 
     public override Poolable Create(ReturnToPool returnToPool)
     {
-        GameObject tooltip = AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("UI/Sample", "UISampleTooltip.prefab"),
+        GameObject tooltip = AssetLoadManager.Instance.SyncLoadObject(
+            AssetLoadManager.Instance.GetPrefabPath("UI/Sample", "UISampleTooltip.prefab"),
             PoolDefines.PoolType.UITooltip.ToString()) as GameObject;
         if (tooltip == null)
             return null;

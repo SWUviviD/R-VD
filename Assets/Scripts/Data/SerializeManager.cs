@@ -9,8 +9,7 @@ using UnityEditor;
 
 public class SerializeManager : Singleton<SerializeManager>
 {
-    private const string folder_path = "Assets/Resources/Data/RawData/LocalData/Bytes";
-    private static readonly string folder_absoute_path = Path.Combine(Application.dataPath, "Resources/Data/RawData/LocalData/Bytes");
+    private static readonly string folder_path = "Data/RawData/LocalData/Bytes";
 
     public byte[] Serialize<T>(List<T> obj) where T : DataBase
     {
@@ -25,7 +24,9 @@ public class SerializeManager : Singleton<SerializeManager>
     // 파일 저장 함수
     public void SaveDataFile(string fileName, byte[] data)
     {
-        string file = string.Format("{0}/{1}.bytes", folder_path, fileName);
+        #if UNITY_EDITOR
+        string file = string.Empty;
+        file = string.Format("Assets/Resources/{0}/{1}.bytes", folder_path, fileName);
 
         if (File.Exists(file))
         {
@@ -35,6 +36,11 @@ public class SerializeManager : Singleton<SerializeManager>
         FileStream fileStream = new FileStream(file, FileMode.Create, FileAccess.Write);
         fileStream.Write(data, 0, data.Length);
         fileStream.Close();
+        #else
+        if (!Directory.Exists(folder_path)) Directory.CreateDirectory(folder_path);
+        string path = Path.Combine(folder_path, $"{fileName}.bytes");
+        File.WriteAllBytes(path, data);
+        #endif
     }
 
     // 파일 불러오기 함수
@@ -42,11 +48,8 @@ public class SerializeManager : Singleton<SerializeManager>
     {
         try
         {
-            FileStream fileStream = new FileStream(Path.Combine(folder_absoute_path, $"{fileName}.bytes"), FileMode.Open, FileAccess.Read);
-            byte[] data = new byte[fileStream.Length];
-            fileStream.Read(data, 0, data.Length);
-            fileStream.Close();
-            list = MemoryPackSerializer.Deserialize<List<T>>(data);
+            TextAsset ta = AssetLoadManager.Instance.SyncLoadObject<TextAsset>(Path.Combine(folder_path, $"{fileName}"), fileName);
+            list = MemoryPackSerializer.Deserialize<List<T>>(ta.bytes);
             return true;
         }
         catch(System.Exception e)
@@ -58,7 +61,7 @@ public class SerializeManager : Singleton<SerializeManager>
 
     public bool IsFileExist(string _fileName)
     {
-        DirectoryInfo rootDirectory = new DirectoryInfo(Path.Combine(folder_absoute_path, _fileName));
+        DirectoryInfo rootDirectory = new DirectoryInfo(Path.Combine(folder_path, _fileName));
         return rootDirectory.Exists;
     }
 }

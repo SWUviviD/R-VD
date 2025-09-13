@@ -33,19 +33,21 @@ public class GameDataManager : MonoBehaviour
 
     public bool LoadGameData()
     {
-        FileInfo fileInfo = new FileInfo(SavedDataPath);
-        if (fileInfo.Exists)
+        List<GameData> list;
+        if (!SerializeManager.Instance.LoadDataFile(out list, FileName)
+            || list == null
+            || list.Count == 0
+            || list[0] == null)
         {
-            List<GameData> list;
-            if (SerializeManager.Instance.LoadDataFile<GameData>(out list, FileName) == false)
-            {
-                GameData = new GameData();
-                return false;
-            }
-
-            GameData = list[0];
+            Debug.LogWarning("[SaveSystem] LoadGameData: No valid data found. Creating new GameData.");
+            GameData = new GameData();
+            return false; // 새로 생성했음을 알림
         }
-        return true;
+        else
+        {
+            GameData = list[0];
+            return true;
+        }
     }
 
     public void SaveGameData(GameData newData = null)
@@ -76,10 +78,6 @@ public class GameDataManager : MonoBehaviour
         SaveGameData(GameData);
     }
 
-    public void RemoveGameData()
-    {
-        File.Delete(SavedDataPath + FileName);
-    }
 
     public void ResetGameData()
     {
@@ -87,8 +85,17 @@ public class GameDataManager : MonoBehaviour
         GameData.PlayerHealth = 10;
         GameData.PlayerPosition = Vector3.zero;
         GameData.PlayerRotation = Vector3.zero;
-        GameData.camRotation = Vector3.zero;
+        GameData.camRotation = Vector3.right * 180f;
 
         SaveGameData(GameData);
+    }
+
+    public void DeleteGameData()
+    {
+        List<GameData> list = new List<GameData>();
+
+        var byteArray = MemoryPackSerializer.Serialize(list);
+
+        SerializeManager.Instance.SaveDataFile(FileName, byteArray);
     }
 }

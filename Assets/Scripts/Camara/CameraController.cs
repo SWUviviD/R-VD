@@ -348,10 +348,12 @@ public class CameraController : MonoSingleton<CameraController>
     [SerializeField] private OrbitCamera _orbitCam;
     [SerializeField] private CameraEffector _effectCam;
 
-    private CameraMode _mode;
+    private CameraMode _mode = CameraMode.Orbit;
 
     public void OnLoadCameraSetting(Transform cam)
     {
+        MainCamera = cam.GetComponent<Camera>();
+
         _orbitCam = cam.GetComponent<OrbitCamera>();
         _effectCam = cam.GetComponent<CameraEffector>();
     }
@@ -367,12 +369,25 @@ public class CameraController : MonoSingleton<CameraController>
         }
     }
 
-    public void Respawn(Vector3 _position, Vector3 _rotation)
+    public void SetCameraPositionAndRotation(Vector3 rotation, Vector3 position)
     {
-        //transform.rotation = Quaternion.Euler(new Vector3(30f, _rotation.y, 0f));
-        //transform.position = transform.rotation * new Vector3(0, 0, -distance) + _position;
+        switch (_mode)
+        {
+            case CameraMode.Fixed:
+            case CameraMode.Cinematography:
+                {
+                    transform.position = position;
+                    transform.rotation = Quaternion.Euler(rotation);
+                    break;
+                }
 
-        //x = transform.eulerAngles.y;
-        //y = transform.eulerAngles.x;
+            case CameraMode.Orbit:
+                {
+                    _orbitCam.SetCameraRotation(rotation.x);
+                    break;
+                }
+
+            default: break;
+        }
     }
 }

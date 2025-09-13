@@ -45,8 +45,8 @@ public partial class WaterMillPlatform : Poolable
     [SerializeField] private PoolDefines.PoolType type;
     public override Poolable Create(Poolable.ReturnToPool returnToPool)
     {
-        GameObject platform = (AddressableAssetsManager.Instance.SyncLoadObject(
-            AddressableAssetsManager.Instance.GetPrefabPath("Prefabs/TempStage2", "watermillPlatform.prefab"),
+        GameObject platform = (AssetLoadManager.Instance.SyncLoadObject(
+            AssetLoadManager.Instance.GetPrefabPath("Prefabs/TempStage2", "watermillPlatform.prefab"),
             PoolDefines.PoolType.WaterMillPlatform.ToString())) as GameObject;
         if (platform == null)
             return null;

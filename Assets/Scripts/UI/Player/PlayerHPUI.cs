@@ -29,10 +29,6 @@ public class PlayerHPUI : MonoBehaviour
 
     private void Start()
     {
-        player = GameManager.Instance.Player?.transform;
-        if (player == null)
-            gameObject.SetActive(false);
-
         playerHP = player.GetComponent<PlayerHp>();
         playerMove = player.GetComponent<PlayerMove>();
         starHunt = player.GetComponent<StarHunt>();
@@ -66,7 +62,7 @@ public class PlayerHPUI : MonoBehaviour
         isStarShown = false;
         isStarShowing = false;
 
-        StartCoroutine(CoHpHide());
+        ShowStar();
     }
 
     private void OnDamaged(int _currentHP)

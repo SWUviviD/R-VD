@@ -7,7 +7,7 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    [field:SerializeField] public Transform Camera { get; private set; }
+    [field:SerializeField] public GameObject Camera { get; private set; }
     [field: SerializeField] public GameObject Player { get; private set; }
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
@@ -61,9 +61,18 @@ public class GameManager : MonoSingleton<GameManager>
             move.SetRotation(GameDataManager.GameData.PlayerRotation);
         }
 
+        Camera = FindFirstObjectByType<OrbitCamera>().gameObject;
+        if (Camera != null)
+        {
+            CameraController.Instance.OnLoadCameraSetting(Camera.transform);
+            CameraController.Instance.SetCameraMode(CameraController.CameraMode.Orbit);
+            CameraController.Instance.SetCameraPositionAndRotation(GameDataManager.GameData.camRotation, Vector3.zero);
+        }
 
         SetMovementInput(true);
+        ResumeGame();
         SetCameraInput(true);
+
     }
 
     public void OnGameStart()
@@ -74,8 +83,9 @@ public class GameManager : MonoSingleton<GameManager>
     private void OnGameOver()
     {
         GameOver();
-        StopGame();
         SetMovementInput(false);
+        SetCameraInput(false);
+        StopGame();
     }
 
     public void SetMovementInput(bool active)
@@ -121,6 +131,9 @@ public class GameManager : MonoSingleton<GameManager>
         // 추가 동작 필요시 구현
         StageClear();
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         // 이펙트 출력
         if (clearEffectPrefab1 != null && clearEffectPrefab2 != null)
         {
@@ -137,12 +150,12 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void StopGame()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         if (IsGameOver || IsStageClear) return;
 
         GameManager.Instance.SetCameraInput(false);
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
 
         IsPaused = true;
         Time.timeScale = 0f;
@@ -183,6 +196,9 @@ public class GameManager : MonoSingleton<GameManager>
         IsStageClear = false;
         SetMovementInput(false);
 
+        GameDataManager.SaveGameData(GameDataManager.GameData.StageID,
+            10, Vector3.zero, Vector3.zero, Vector3.zero);
+
         LoadData();
     }
 
@@ -197,7 +213,9 @@ public class GameManager : MonoSingleton<GameManager>
             Player ? playerHp.CurrentHp : 10,
             Player ? playerHp.RespawnPoint : Vector3.zero,
             Player ? playerHp.RespawnRotation : Vector3.zero,
-            CheckpointGimmick.CheckpointList[CheckpointGimmick.CurrentCheckpointIndex].GimmickData.CamRotation
+            CheckpointGimmick.CurrentCheckpointIndex > 0 ?
+                CheckpointGimmick.CheckpointList[CheckpointGimmick.CurrentCheckpointIndex].GimmickData.CamRotation :
+                Vector3.zero
             );
     }
 
@@ -236,7 +254,7 @@ public class GameManager : MonoSingleton<GameManager>
             playerHp ? playerHp.CurrentHp : 10,
             Vector3.zero,
             Vector3.zero,
-            Vector3.zero
+            Vector3.right * 180f
             );
 
         // Todo. 엔딩일 경우 처리 필요
@@ -248,7 +266,7 @@ public class GameManager : MonoSingleton<GameManager>
             SetMovementInput(false);
 
             // 게임 끝까지 완료한 경우 게임 데이터 완전 초기화(삭제) 필요
-            GameDataManager.RemoveGameData();
+            GameDataManager.DeleteGameData();
             SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
             return;
         }

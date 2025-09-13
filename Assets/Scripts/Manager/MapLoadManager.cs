@@ -315,14 +315,14 @@ public class MapLoadManager : MonoSingleton<MapLoadManager>
     /// </summary>
     private T CreateGimmick<T>(string _address) where T : IGimmickBase
     {
-        GameObject prefab = (GameObject)AddressableAssetsManager.Instance.SyncLoadObject(_address, _address);
+        GameObject prefab = (GameObject)AssetLoadManager.Instance.SyncLoadObject(_address, _address);
         T instance = Instantiate(prefab).GetComponent<T>();
         return instance;
     }
 
     private GameObject CreateGimmickObj(string _address)
     {
-        GameObject prefab = (GameObject)AddressableAssetsManager.Instance.SyncLoadObject(_address, _address);
+        GameObject prefab = (GameObject)AssetLoadManager.Instance.SyncLoadObject(_address, _address);
         GameObject instance = Instantiate(prefab);
         return instance;
     }

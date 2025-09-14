@@ -135,5 +135,6 @@ public class PlayerHp : MonoBehaviour
     public void SetHealth(int amount)
     {
         CurrentHp = amount;
+        OnDamaged?.Invoke(CurrentHp);
     }
 }

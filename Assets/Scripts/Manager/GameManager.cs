@@ -46,6 +46,11 @@ public class GameManager : MonoSingleton<GameManager>
         //ResumeGame();
     }
 
+    public int GetCurrentCheckPointNumber()
+    {
+        return GameDataManager.GameData.CheckPointID;
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Player = GameObject.FindWithTag("Player");
@@ -59,6 +64,17 @@ public class GameManager : MonoSingleton<GameManager>
             PlayerMove move = Player.GetComponent<PlayerMove>();
             move.SetPosition(GameDataManager.GameData.PlayerPosition);
             move.SetRotation(GameDataManager.GameData.PlayerRotation);
+        }
+
+        // todo 밖으로 빼기
+        LevitateAroundPlayer siro = GameObject.FindAnyObjectByType<LevitateAroundPlayer>();
+        if (siro != null)
+        {
+            int id = GameDataManager.GameData.CheckPointID;
+            if (id/ 100 == 1 && id % 100 > 0)
+            {
+                siro.SetTargetPlayer(Player.transform);
+            }
         }
 
         Camera = FindFirstObjectByType<OrbitCamera>().gameObject;
@@ -202,10 +218,17 @@ public class GameManager : MonoSingleton<GameManager>
         IsStageClear = false;
         SetMovementInput(false);
 
-        GameDataManager.SaveGameData(GameDataManager.GameData.StageID,
-            10, Vector3.zero, Vector3.zero, Vector3.zero);
+        ResetStageGameData();
 
         LoadData();
+    }
+
+    public void ResetStageGameData()
+    {
+        GameDataManager.SaveGameData(
+            SceneLoadManager.Instance.GetActiveStage(),
+            (int)SceneLoadManager.Instance.GetActiveStage() * 100,
+            10, Vector3.zero, Vector3.zero, Vector3.right * 180f);
     }
 
     public void SaveData()
@@ -216,12 +239,13 @@ public class GameManager : MonoSingleton<GameManager>
         // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
         GameDataManager.SaveGameData(
             SceneLoadManager.Instance.GetActiveStage(),
+            CheckpointGimmick.CurrentCheckpointIndex,
             Player ? playerHp.CurrentHp : 10,
             Player ? playerHp.RespawnPoint : Vector3.zero,
             Player ? playerHp.RespawnRotation : Vector3.zero,
-            CheckpointGimmick.CurrentCheckpointIndex > 0 ?
+            CheckpointGimmick.CheckpointList.ContainsKey(CheckpointGimmick.CurrentCheckpointIndex) == true ?
                 CheckpointGimmick.CheckpointList[CheckpointGimmick.CurrentCheckpointIndex].GimmickData.CamRotation :
-                Vector3.zero
+                Vector3.right * 180f
             );
     }
 
@@ -257,6 +281,7 @@ public class GameManager : MonoSingleton<GameManager>
         PlayerHp playerHp = Player?.GetComponent<PlayerHp>();
         GameDataManager.SaveGameData(
             SceneLoadManager.Instance.GetActiveStage() + 1,
+            (int) SceneLoadManager.Instance.GetActiveStage() * 100,
             playerHp ? playerHp.CurrentHp : 10,
             Vector3.zero,
             Vector3.zero,

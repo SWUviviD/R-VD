@@ -44,6 +44,20 @@ public class SerializeManager : Singleton<SerializeManager>
         #endif
     }
 
+    public void DeleteDataFile(string fileName, string folder_path = "")
+    {
+#if UNITY_EDITOR
+        string file = string.Empty;
+        file = string.Format("Assets/Resources/{0}/{1}.bytes",
+            folder_path.Length > 0 ? folder_path : SerializeManager.folder_path, fileName);
+
+        if (File.Exists(file))
+        {
+            File.Delete(file);
+        }
+#endif
+    }
+
     // 파일 불러오기 함수
     public bool LoadDataFile<T>(out List<T> list, string fileName, string folderPath = "")
     {

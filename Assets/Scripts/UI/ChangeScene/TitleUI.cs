@@ -62,7 +62,7 @@ public class TitleUI : MonoBehaviour
         bgPlayer.isLooping = false;
 
         StartCoroutine(CoPlayIntro());
-        //StartCoroutine(CoOnVideoEnd());
+        StartCoroutine(CoOnVideoEnd());
     }
 
     private void LoadCredit()

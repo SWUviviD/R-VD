@@ -27,7 +27,7 @@ public class PlayerHPUI : MonoBehaviour
 
     private int currentShowStarCount = 0;
 
-    private void Start()
+    private void Awake()
     {
         playerHP = player.GetComponent<PlayerHp>();
         playerMove = player.GetComponent<PlayerMove>();
@@ -44,7 +44,7 @@ public class PlayerHPUI : MonoBehaviour
 
         playerMove.OnInteractWithFloorEnd.AddListener(() =>
         {
-            StartCoroutine(CoHpHide());
+            //StartCoroutine(CoHpHide());
         });
 
         starHunt.OnStarHuntKeyDown.RemoveListener(ShowStar);
@@ -52,7 +52,7 @@ public class PlayerHPUI : MonoBehaviour
 
         starHunt.OnStarHuntKeyUp.AddListener(() =>
         {
-            StartCoroutine(CoHpHide());
+            //StartCoroutine(CoHpHide());
         });
 
         waitFor_Hide = new WaitForSeconds(hpHideTime);
@@ -61,7 +61,10 @@ public class PlayerHPUI : MonoBehaviour
         line.localScale = starHideScale;
         isStarShown = false;
         isStarShowing = false;
+    }
 
+    private void Start()
+    {
         ShowStar();
     }
 
@@ -135,6 +138,8 @@ public class PlayerHPUI : MonoBehaviour
 
     private void HideStar()
     {
+        return;
+
         if (isStarShown == false)
             return;
 

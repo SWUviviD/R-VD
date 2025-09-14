@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
+using System.Collections;
 
 public class GameOverUI : MonoBehaviour
 {
     public Image blackOverlay; // 검은 화면
     public Image stageText;
-    public Image gameOverText;  // "Game Over" 텍스트
+    public TextMeshProUGUI gameOverText;  // "Game Over" 텍스트
     public Button restartButton, exitButton; // 버튼
     public float fadeSpeed = 1.0f; // 페이드 속도
 
@@ -18,8 +20,10 @@ public class GameOverUI : MonoBehaviour
 
     private void Exit()
     {
-        GameManager.Instance.GameExit();
+        GameManager.Instance.ResetStageGameData();
+        GameManager.Instance.GameExit(false);
     }
+
 
     private void Start()
     {

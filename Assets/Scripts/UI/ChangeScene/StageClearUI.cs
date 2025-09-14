@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,7 @@ public class StageClearUI : MonoBehaviour
 {
     public Image whiteOverlay; // 하얀 화면
     public Image stageText;
-    public Image stageClearText;  // "Clear" 텍스트
+    public TextMeshProUGUI stageClearText;  // "Clear" 텍스트
     public Button nextButton; // 버튼
     public Button quitButton; // 버튼
     public float fadeSpeed = 1.0f; // 페이드 속도
@@ -14,11 +15,16 @@ public class StageClearUI : MonoBehaviour
     private void Awake()
     {
         // TODO: 다음 스테이지 연결
-        UIHelper.OnClick(nextButton, GameManager.Instance.NextStage);
+        UIHelper.OnClick(nextButton, ResetUI);//GameManager.Instance.NextStage);
         UIHelper.OnClick(quitButton, GameManager.Instance.LoadTitle);
     }
 
     private void Start()
+    {
+        ResetUI();
+    }
+
+    private void ResetUI()
     {
         // 텍스트를 처음엔 투명하게 설정
         Color textColor2 = stageText.color;

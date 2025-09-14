@@ -4,6 +4,8 @@ using UnityEngine;
 
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
+
+    [SerializeField, Range(0, 100)] private int checkPointNumber = 0;
     [Header("Checkpoint Area")]
     /// <summary> 체크 포인트 영역 </summary>
     [SerializeField] private Transform checkpointArea;
@@ -35,11 +37,11 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
     private int myIndex = -1;
     private bool isActive = false;
-    private bool isFirst = false;
+    private bool isVisited = false;
 
     protected override void Init()
     {
-        myIndex = CheckpointGimmick.AddCheckpoint(this);
+        myIndex = CheckpointGimmick.AddCheckpoint(this, checkPointNumber);
 
         boxCollider.center = new Vector3(0f, gimmickData.AreaSize.y / 2f, 0f);
         boxCollider.size = gimmickData.AreaSize;
@@ -50,6 +52,11 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         cubeArea.SetActive(true);
         prevRespawnPoint.SetActive(true);
 #endif
+
+        if (GameManager.Instance.GetCurrentCheckPointNumber() == myIndex)
+        {
+            isVisited = true;
+        }
 
         SetGimmick();
     }
@@ -86,12 +93,12 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
             playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
             isActive = true;
 
-            if(gimmickData.FullHealWhenFirstTouched == true && isFirst == false)
+            if(gimmickData.FullHealWhenFirstTouched == true && isVisited == false)
             {
                 audioSource.Play();
                 playerHp.FullHeal();
                 GameManager.Instance.SaveData();
-                isFirst = true;
+                isVisited = true;
             }
         }
     }
@@ -118,7 +125,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     protected void LoadCheckpoint()
     {
         SetCheckpoint(myIndex);
-        isFirst = true;
+        isVisited = true;
 
         playerHp = GameManager.Instance.Player.GetComponent<PlayerHp>();
         playerHp.RespawnPoint = respawnPoint.position;
@@ -129,13 +136,13 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
-    public static List<CheckpointGimmick> CheckpointList { get; private set; } = new List<CheckpointGimmick>();
+    public static Dictionary<int, CheckpointGimmick> CheckpointList { get; private set; } = new Dictionary<int, CheckpointGimmick>();
     public static int CurrentCheckpointIndex { get; private set; } = -1;
 
-    private static int AddCheckpoint(CheckpointGimmick _checkPoint)
+    private static int AddCheckpoint(CheckpointGimmick _checkPoint, int number)
     {
-        CheckpointList.Add(_checkPoint);
-        return CheckpointList.Count - 1;
+        CheckpointList[number + (int)SceneLoadManager.Instance.GetActiveStage() * 100] = _checkPoint;
+        return number + (int)SceneLoadManager.Instance.GetActiveStage() * 100;
     }
 
     private static void SetCheckpoint(int _index)

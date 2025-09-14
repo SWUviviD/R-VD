@@ -20,7 +20,7 @@ public class SettingUI : MonoBehaviour
     {
         UIHelper.OnClick(RestartBtn, GameManager.Instance.GameRestart);
         UIHelper.OnClick(ExitBtn, Exit);
-        UIHelper.OnClick(ResumeBtn, GameManager.Instance.ResumeGame);
+        UIHelper.OnClick(ResumeBtn, CloseUI);
 
         background.SetActive(isActive);
         settingPanel.SetActive(isActive);
@@ -37,18 +37,23 @@ public class SettingUI : MonoBehaviour
         {
             if (GameManager.Instance.IsGameOver || GameManager.Instance.IsStageClear) return;
 
-            isActive = !isActive;
-            background.SetActive(isActive);
-            settingPanel.SetActive(isActive);
-            panelSFX.Play();
-            if (isActive)
-            {
-                GameManager.Instance.StopGame();
-            }
-            else
-            {
-                GameManager.Instance.ResumeGame();
-            }
+            CloseUI();
+        }
+    }
+
+    private void CloseUI()
+    {
+        isActive = !isActive;
+        background.SetActive(isActive);
+        settingPanel.SetActive(isActive);
+        panelSFX.Play();
+        if (isActive)
+        {
+            GameManager.Instance.StopGame();
+        }
+        else
+        {
+            GameManager.Instance.ResumeGame();
         }
     }
 }

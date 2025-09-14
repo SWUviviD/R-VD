@@ -17,6 +17,7 @@ public enum StageID
 public partial class GameData
 {
     [MemoryPackInclude] public StageID StageID { get; set; }
+    [MemoryPackInclude] public int CheckPointID { get; set; }
     [MemoryPackInclude] public int PlayerHealth { get; set; }
     [MemoryPackInclude] public Vector3 PlayerPosition { get; set; }
     [MemoryPackInclude] public Vector3 PlayerRotation { get; set; }
@@ -108,11 +109,12 @@ public class GameDataManager : MonoBehaviour
 #endif
     }
 
-    public void SaveGameData(StageID stageID, int playerHealth,
+    public void SaveGameData(StageID stageID, int checkPointID, int playerHealth,
         Vector3 playerPosition, Vector3 playerRotation,
         Vector3 camRotation)
     {
         GameData.StageID = stageID;
+        GameData.CheckPointID = checkPointID;
         GameData.PlayerHealth = playerHealth;
         GameData.PlayerPosition = playerPosition;
         GameData.PlayerRotation = playerRotation;
@@ -125,6 +127,7 @@ public class GameDataManager : MonoBehaviour
     public void ResetGameData()
     {
         GameData.StageID = StageID.Stage1;
+        GameData.CheckPointID = 100;
         GameData.PlayerHealth = 10;
         GameData.PlayerPosition = Vector3.zero;
         GameData.PlayerRotation = Vector3.zero;
@@ -135,10 +138,21 @@ public class GameDataManager : MonoBehaviour
 
     public void DeleteGameData()
     {
-        List<GameData> list = new List<GameData>();
-
-        var byteArray = MemoryPackSerializer.Serialize(list);
-
-        SerializeManager.Instance.SaveDataFile(FileName, byteArray);
+#if UNITY_EDITOR
+        SerializeManager.Instance.DeleteDataFile(FileName);
+#else
+        try
+        {
+            if (File.Exists(BuildSavePath) == true)
+            {
+                Directory.CreateDirectory(BuildSavePath);
+                File.Delete(BuildSavePath);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Delete File Fail" + e);
+        }
+#endif
     }
 }

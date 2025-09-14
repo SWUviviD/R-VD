@@ -249,4 +249,9 @@ public class PlayerMove : MonoBehaviour
     {
         return transform.rotation.eulerAngles;
     }
+
+    public void StopMoving()
+    {
+        OnMove?.Invoke(false);
+    }
 }

@@ -94,6 +94,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UIChat",
+                    "type": "Button",
+                    "id": "5533fd1f-d6b1-4e7e-8ee0-4ca17099e5a5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UINext",
+                    "type": "Button",
+                    "id": "cfbd1d56-a21b-4739-8d73-3f8bf5b7e6d0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -270,6 +288,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "WaterVase",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dbc02af7-83d4-4123-8aca-1e655ddad804",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UIChat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33c327e5-4a2f-410b-a963-41a0c8bea2cd",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UINext",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

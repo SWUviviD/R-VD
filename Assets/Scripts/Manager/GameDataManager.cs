@@ -29,10 +29,16 @@ public class GameDataManager : MonoBehaviour
         Application.persistentDataPath + "/save";
     private static readonly string FileName = "GameData";
 
+    private static string BuildSavePath
+        => Path.Combine(Application.persistentDataPath, "Save");
+    private static string BuildSaveFilePath
+        => Path.Combine(BuildSavePath, "GameData.bytes");
+
     public GameData GameData { get; private set; }
 
     public bool LoadGameData()
     {
+#if UNITY_EDITOR
         List<GameData> list;
         if (!SerializeManager.Instance.LoadDataFile(out list, FileName)
             || list == null
@@ -48,6 +54,32 @@ public class GameDataManager : MonoBehaviour
             GameData = list[0];
             return true;
         }
+
+#else
+        if (Directory.Exists(BuildSavePath) == false)
+        {
+            Directory.CreateDirectory(BuildSavePath);
+        }
+
+        if (File.Exists(BuildSaveFilePath) == false)
+        {
+            GameData = new GameData();
+            return false;
+        }
+
+        byte[] bytes = File.ReadAllBytes(BuildSaveFilePath);
+        var list = MemoryPackSerializer.Deserialize<List<GameData>>(bytes);
+
+        if(list == null || list.Count <= 0)
+        {
+            GameData = new GameData();
+            return false;
+        }
+
+        GameData = list[0];
+        return true;
+
+#endif
     }
 
     public void SaveGameData(GameData newData = null)
@@ -57,12 +89,23 @@ public class GameDataManager : MonoBehaviour
             GameData = newData;
         }
 
-        List<GameData> list = new List<GameData>(1);
-        list.Add(GameData);
-
+#if UNITY_EDITOR
+        List<GameData> list = new List<GameData>(1) { GameData };
         var byteArray = MemoryPackSerializer.Serialize(list);
 
         SerializeManager.Instance.SaveDataFile(FileName, byteArray);
+#else
+        if (Directory.Exists(BuildSavePath) == false)
+        {
+            Directory.CreateDirectory(BuildSavePath);
+        }
+
+        List<GameData> list = new List<GameData>(1) { GameData };
+        var byteArray = MemoryPackSerializer.Serialize(list);
+
+        File.WriteAllBytes(BuildSaveFilePath, byteArray);
+        return;
+#endif
     }
 
     public void SaveGameData(StageID stageID, int playerHealth,

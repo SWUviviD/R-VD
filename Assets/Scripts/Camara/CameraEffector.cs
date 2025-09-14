@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CameraEffector : MonoBehaviour
 {
-    [SerializeField] private Transform cam;
     private Camera camScript;
     private float originalFOV;
 
@@ -13,7 +12,7 @@ public class CameraEffector : MonoBehaviour
 
     private void Awake()
     {
-        camScript = cam.GetComponent<Camera>();
+        camScript = transform.GetComponent<Camera>();
         if(camScript == null)
         {
             Debug.LogError("Cam is Not Valide");
@@ -21,6 +20,65 @@ public class CameraEffector : MonoBehaviour
 
         originalFOV = camScript.fieldOfView;
         currentScale = 1f;
+    }
+
+    public void StopAllEffect()
+    {
+        StopAllCoroutines();
+    }
+
+    public void SetFOV(float fov)
+    {
+        camScript.fieldOfView = originalFOV * fov;
+    }
+
+    public void Move(Vector3 _originalPos, Vector3 _endPos, float _changeTime = 0f, Action _callback = null)
+    {
+        StartCoroutine(CoMove(_originalPos, _endPos, _changeTime, _callback));
+    }
+
+    private IEnumerator CoMove(Vector3 _originalPos, Vector3 _endPos, float _changeTime = 0f, Action _callback = null)
+    {
+        transform.localPosition = _originalPos;
+        Vector3 pos = _originalPos;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < _changeTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            pos = Vector3.Lerp(_originalPos, _endPos, elapsedTime / _changeTime);
+            transform.localPosition = pos;
+            yield return null;
+        }
+
+        transform.localPosition = _endPos;
+        _callback?.Invoke();
+    }
+
+    public void Rotate(Vector3 _originalRot, Vector3 _endRot, float _changeTime = 0f, Action _callback = null)
+    {
+        StartCoroutine(CoRotate(Quaternion.Euler(_originalRot), 
+            Quaternion.Euler(_endRot), _changeTime, _callback));
+    }
+
+    private IEnumerator CoRotate(Quaternion _originalRot, Quaternion _endRot, float _changeTime = 0f, Action _callback = null)
+    {
+        transform.localRotation = _originalRot;
+        Quaternion rot = _originalRot;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < _changeTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            rot = Quaternion.Lerp(_originalRot, _endRot, elapsedTime / _changeTime);
+            transform.localRotation = rot;
+            yield return null;
+        }
+
+        transform.localRotation = _endRot;
+        _callback?.Invoke();
     }
 
     public void Zoom(float _originalScale, float _newScale, float _changeTime = 0f, Action _callback = null)
@@ -36,7 +94,10 @@ public class CameraEffector : MonoBehaviour
         float elapsedTime = 0f;
         while(elapsedTime < _changeTime)
         {
+            elapsedTime += Time.deltaTime;
+
             currentScale = Mathf.Lerp(_originalScale, _newScale, elapsedTime / _changeTime);
+            camScript.fieldOfView = originalFOV * currentScale;
             yield return null;
         }
 
@@ -51,19 +112,21 @@ public class CameraEffector : MonoBehaviour
 
     private IEnumerator CoShake(float _duration, float _magnitude)
     {
+        Vector3 baseLocal = transform.localPosition;
         float elapsedTime = 0f;
 
         while (elapsedTime < _duration)
         {
+            elapsedTime += Time.deltaTime;
+
             float offsetX = UnityEngine.Random.Range(-1f, 1f) * _magnitude;
             float offsetY = UnityEngine.Random.Range(-1f, 1f) * _magnitude;
 
-            cam.localPosition = new Vector3(offsetX, offsetY, 0f);
+            transform.localPosition = new Vector3(offsetX, offsetY, 0f);
 
-            elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        cam.localPosition = Vector3.zero;
+        transform.localPosition = baseLocal;
     }
 }

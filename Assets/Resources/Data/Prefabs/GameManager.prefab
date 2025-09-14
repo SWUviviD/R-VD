@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 29436678270602820}
   - component: {fileID: 3491783254815159613}
   - component: {fileID: 8350372812564612610}
+  - component: {fileID: 758030800136006022}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c9ef593d4be4f23a8a0bee135ade35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Camera>k__BackingField: {fileID: 0}
+  <Player>k__BackingField: {fileID: 0}
   clearEffectPrefab1: {fileID: 874244544889619525, guid: 1a342873e6909904399e576bb3ec5a5c,
     type: 3}
   clearEffectPrefab2: {fileID: 3576924614362489592, guid: 542a72078a5688544abeddc64e00c68c,
@@ -146,3 +149,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &758030800136006022
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027731959853884680}
+  m_Enabled: 1

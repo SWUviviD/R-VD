@@ -22,11 +22,12 @@ public class SerializeManager : Singleton<SerializeManager>
     }
 
     // 파일 저장 함수
-    public void SaveDataFile(string fileName, byte[] data)
+    public void SaveDataFile(string fileName, byte[] data, string folder_path = "")
     {
         #if UNITY_EDITOR
         string file = string.Empty;
-        file = string.Format("Assets/Resources/{0}/{1}.bytes", folder_path, fileName);
+        file = string.Format("Assets/Resources/{0}/{1}.bytes", 
+            folder_path.Length > 0 ? folder_path : SerializeManager.folder_path, fileName);
 
         if (File.Exists(file))
         {
@@ -44,11 +45,12 @@ public class SerializeManager : Singleton<SerializeManager>
     }
 
     // 파일 불러오기 함수
-    public bool LoadDataFile<T>(out List<T> list, string fileName)
+    public bool LoadDataFile<T>(out List<T> list, string fileName, string folderPath = "")
     {
         try
         {
-            TextAsset ta = AssetLoadManager.Instance.SyncLoadObject<TextAsset>(Path.Combine(folder_path, $"{fileName}"), fileName);
+            TextAsset ta = AssetLoadManager.Instance.SyncLoadObject<TextAsset>
+                (Path.Combine(folderPath.Length > 0 ? folderPath : folder_path, $"{fileName}"), fileName);
             list = MemoryPackSerializer.Deserialize<List<T>>(ta.bytes);
             return true;
         }

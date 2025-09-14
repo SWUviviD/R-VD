@@ -31,8 +31,6 @@ public class OrbitCamera : MonoBehaviour
     private float _yaw;            // 누적된 Yaw 각도(도)
     private Vector3 _vel;          // SmoothDamp용
 
-    private bool _enable = false;
-
     void OnValidate()
     {
         distance = Mathf.Max(distance, 0.01f);

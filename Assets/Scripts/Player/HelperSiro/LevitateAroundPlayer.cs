@@ -252,4 +252,9 @@ public class LevitateAroundPlayer : MonoBehaviour
     {
         transform.rotation = player.rotation * Quaternion.Euler(rotateOffset);
     }
+
+    public void SetTargetPlayer(Transform target)
+    {
+        player = target;
+    }
 }

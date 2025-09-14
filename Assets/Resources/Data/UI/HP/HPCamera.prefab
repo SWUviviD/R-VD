@@ -65,7 +65,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100
+  far clip plane: 40
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2119755992014641604}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BigStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 886160169449860543}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 648016095677434044}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 546744452704115571}
   - component: {fileID: 3287430120788871598}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,6 +316,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_small star 3 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: 87988cf50d68e984eb3ebaf0d713db75, type: 3}
@@ -390,6 +400,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ui_life_small star 2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -466,6 +486,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_small star 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: 26d6efa95c25a6744ba60fdc033629f8, type: 3}
@@ -540,6 +570,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ui_life_small star 3 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -616,6 +656,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_small star 1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: 26d6efa95c25a6744ba60fdc033629f8, type: 3}
@@ -691,6 +741,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_small star 3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 87988cf50d68e984eb3ebaf0d713db75,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: 87988cf50d68e984eb3ebaf0d713db75, type: 3}
@@ -765,6 +825,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ui_life_small star 1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: 26d6efa95c25a6744ba60fdc033629f8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -856,10 +926,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4934085280815059513, guid: f37880fafa1980043b56f6aa05cab1a3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f37880fafa1980043b56f6aa05cab1a3,
         type: 3}
       propertyPath: m_Name
       value: ui-HP background
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f37880fafa1980043b56f6aa05cab1a3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f37880fafa1980043b56f6aa05cab1a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -931,10 +1016,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7393682660495031519, guid: bf5ca2c98b875ad4fa6a0085fd3b5e8e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bf5ca2c98b875ad4fa6a0085fd3b5e8e,
         type: 3}
       propertyPath: m_Name
       value: ui_life_big star
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bf5ca2c98b875ad4fa6a0085fd3b5e8e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1011,6 +1106,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_small star 2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: b46eeeeae6de5ed4fbab1530abfdb66d, type: 3}
@@ -1086,6 +1191,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_life_bone
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2cd7f785dfbfebe42b9de32c54f63828,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5233112405309087440, guid: 2cd7f785dfbfebe42b9de32c54f63828,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: 2cd7f785dfbfebe42b9de32c54f63828, type: 3}
@@ -1160,6 +1275,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ui_life_small star 2 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501750747441194791, guid: b46eeeeae6de5ed4fbab1530abfdb66d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

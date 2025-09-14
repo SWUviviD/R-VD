@@ -116,6 +116,24 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""UIChat"",
+                    ""type"": ""Button"",
+                    ""id"": ""5533fd1f-d6b1-4e7e-8ee0-4ca17099e5a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UINext"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfbd1d56-a21b-4739-8d73-3f8bf5b7e6d0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -294,6 +312,28 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""WaterVase"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbc02af7-83d4-4123-8aca-1e655ddad804"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UIChat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33c327e5-4a2f-410b-a963-41a0c8bea2cd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UINext"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -357,6 +397,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_WaterVase = m_PlayerActions.FindAction("WaterVase", throwIfNotFound: true);
         m_PlayerActions_Camera = m_PlayerActions.FindAction("Camera", throwIfNotFound: true);
         m_PlayerActions_CameraZoom = m_PlayerActions.FindAction("CameraZoom", throwIfNotFound: true);
+        m_PlayerActions_UIChat = m_PlayerActions.FindAction("UIChat", throwIfNotFound: true);
+        m_PlayerActions_UINext = m_PlayerActions.FindAction("UINext", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -431,6 +473,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_WaterVase;
     private readonly InputAction m_PlayerActions_Camera;
     private readonly InputAction m_PlayerActions_CameraZoom;
+    private readonly InputAction m_PlayerActions_UIChat;
+    private readonly InputAction m_PlayerActions_UINext;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -445,6 +489,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @WaterVase => m_Wrapper.m_PlayerActions_WaterVase;
         public InputAction @Camera => m_Wrapper.m_PlayerActions_Camera;
         public InputAction @CameraZoom => m_Wrapper.m_PlayerActions_CameraZoom;
+        public InputAction @UIChat => m_Wrapper.m_PlayerActions_UIChat;
+        public InputAction @UINext => m_Wrapper.m_PlayerActions_UINext;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -484,6 +530,12 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @CameraZoom.started += instance.OnCameraZoom;
             @CameraZoom.performed += instance.OnCameraZoom;
             @CameraZoom.canceled += instance.OnCameraZoom;
+            @UIChat.started += instance.OnUIChat;
+            @UIChat.performed += instance.OnUIChat;
+            @UIChat.canceled += instance.OnUIChat;
+            @UINext.started += instance.OnUINext;
+            @UINext.performed += instance.OnUINext;
+            @UINext.canceled += instance.OnUINext;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -518,6 +570,12 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @CameraZoom.started -= instance.OnCameraZoom;
             @CameraZoom.performed -= instance.OnCameraZoom;
             @CameraZoom.canceled -= instance.OnCameraZoom;
+            @UIChat.started -= instance.OnUIChat;
+            @UIChat.performed -= instance.OnUIChat;
+            @UIChat.canceled -= instance.OnUIChat;
+            @UINext.started -= instance.OnUINext;
+            @UINext.performed -= instance.OnUINext;
+            @UINext.canceled -= instance.OnUINext;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -602,6 +660,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnWaterVase(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
+        void OnUIChat(InputAction.CallbackContext context);
+        void OnUINext(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

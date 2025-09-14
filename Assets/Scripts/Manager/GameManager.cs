@@ -88,6 +88,12 @@ public class GameManager : MonoSingleton<GameManager>
         StopGame();
     }
 
+    public void ShowCursor(bool isShow = true)
+    {
+        Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = isShow;
+    }
+
     public void SetMovementInput(bool active)
     {
         InputManager.Instance.EnableAction(

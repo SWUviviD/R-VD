@@ -116,6 +116,8 @@ GameObject:
   - component: {fileID: 5809193458476862856}
   - component: {fileID: 5642862888219648112}
   - component: {fileID: 8329838281910579518}
+  - component: {fileID: 2369636954477149718}
+  - component: {fileID: 2759117557786928658}
   m_Layer: 0
   m_Name: Dialogue
   m_TagString: Untagged
@@ -153,6 +155,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 8329838281910579518}
   prefabName: Dialogue
+  CamAnimName: DialogueCam1
+  isOnButtonPlay: 0
+  col: {fileID: 4861358200096393694}
+  OnDialogStart: []
+  OnDialogEnd: []
 --- !u!114 &8329838281910579518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,3 +176,140 @@ MonoBehaviour:
   <DialogueID>k__BackingField: -1
   <CameraPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <CameraRotation>k__BackingField: {x: 0, y: 0, z: 0}
+--- !u!114 &2369636954477149718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444179790449273039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b121110aab1e03a44a7a9e1f0ecca2c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationName: DialogueCam1
+  <Steps>k__BackingField:
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: 0.014, y: 0.0489, z: 0}
+      <LocalRotation>k__BackingField: {x: 21.011, y: 90, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: -0.2369924, y: 0.14100228, z: -0.48201522}
+      <LocalRotation>k__BackingField: {x: 22.114004, y: 0, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0.2
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: 0.014, y: 0.0489, z: 0}
+      <LocalRotation>k__BackingField: {x: 21.011, y: 90, z: 0}
+      <Zoom>k__BackingField: 0.8
+    - <LocalPosition>k__BackingField: {x: 0.014, y: 0.0489, z: 0}
+      <LocalRotation>k__BackingField: {x: 21.011, y: 90, z: 0}
+      <Zoom>k__BackingField: 1.2
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: -0.237, y: 0, z: 0}
+      <LocalRotation>k__BackingField: {x: 22.113997, y: 270, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: 0.014, y: 0.0489, z: 0}
+      <LocalRotation>k__BackingField: {x: 21.011, y: 90, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: -0.2369924, y: 0.1410023, z: -0.4820152}
+      <LocalRotation>k__BackingField: {x: 22.114, y: 0, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: 0.014, y: 0.0489, z: 0}
+      <LocalRotation>k__BackingField: {x: 21.011, y: 90, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0
+    <WaitForFinish>k__BackingField: 0
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: -0.237, y: 0, z: 0}
+      <LocalRotation>k__BackingField: {x: 22.113997, y: 270, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+  - <Mode>k__BackingField: 0
+    <MoveTime>k__BackingField: 0.5
+    <WaitForFinish>k__BackingField: 1
+    <CameraStates>k__BackingField:
+    - <LocalPosition>k__BackingField: {x: -0.237, y: 0, z: 0}
+      <LocalRotation>k__BackingField: {x: 22.113997, y: 270, z: 0}
+      <Zoom>k__BackingField: 1
+    - <LocalPosition>k__BackingField: {x: -1.9720001, y: 0.4196, z: 0.00000015894574}
+      <LocalRotation>k__BackingField: {x: 18.434996, y: 90, z: 0}
+      <Zoom>k__BackingField: 1
+    <Shack>k__BackingField: 0
+    <ShackTime>k__BackingField: 0
+    <IsLoop>k__BackingField: 0
+--- !u!54 &2759117557786928658
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444179790449273039}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

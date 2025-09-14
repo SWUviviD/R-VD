@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraEffector : MonoBehaviour
 {
+    [SerializeField]
+    private Image fadeInOutImage;
+
     private Camera camScript;
     private float originalFOV;
 
@@ -20,6 +24,23 @@ public class CameraEffector : MonoBehaviour
 
         originalFOV = camScript.fieldOfView;
         currentScale = 1f;
+    }
+
+    private void Start()
+    {
+        if(fadeInOutImage == null)
+        {
+            fadeInOutImage = GameObject.FindGameObjectWithTag("FadeInOutImage").GetComponent<Image>();
+            if (fadeInOutImage == null)
+                return;
+        }
+
+        fadeInOutImage.gameObject.SetActive(false);
+    }
+
+    public void SetFadeInOutImage(Image fadeInOutImage)
+    {
+        this.fadeInOutImage = fadeInOutImage;
     }
 
     public void StopAllEffect()
@@ -128,5 +149,39 @@ public class CameraEffector : MonoBehaviour
         }
 
         transform.localPosition = baseLocal;
+    }
+
+    public void SetFadeInOut(bool isActive)
+    {
+        fadeInOutImage?.gameObject.SetActive(isActive);
+    }
+
+    public void FadeInOut(bool isFadeIn, float _duration, Action _callback = null)
+    {
+        if (fadeInOutImage == null) return;
+        StartCoroutine(CoFadeInOut(isFadeIn, _duration, _callback));
+    }
+
+    private IEnumerator CoFadeInOut(bool isFadeIn, float _duration, Action _callback = null)
+    {
+        float elapsedTime = 0f;
+        float start = isFadeIn ? 1f : 0f;
+        float end = isFadeIn ? 0f : 1f;
+
+        fadeInOutImage.gameObject.SetActive(true);
+
+        Color color = fadeInOutImage.color;
+
+        while (elapsedTime < _duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            color.a = Mathf.Lerp(start, end, elapsedTime / _duration);
+            fadeInOutImage.color = color;
+
+            yield return null;
+        }
+
+        _callback?.Invoke();
     }
 }

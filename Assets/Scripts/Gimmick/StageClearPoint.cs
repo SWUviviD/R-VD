@@ -39,4 +39,10 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
 
         GameManager.Instance.GameClear();
     }
+
+    public void GameClearedAndMoveToNextStage()
+    {
+        CameraController.Instance.GetCameraEffector?.
+            FadeInOut(false, 2f, () => GameManager.Instance.NextStage());
+    }
 }

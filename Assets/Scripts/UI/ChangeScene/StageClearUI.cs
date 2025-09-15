@@ -12,6 +12,8 @@ public class StageClearUI : MonoBehaviour
     public float fadeSpeed = 1.0f; // 페이드 속도
     public float backgroundAlpha = 0.7f;
 
+    private bool isCleared = false;
+
     private void Awake()
     {
         // TODO: 다음 스테이지 연결
@@ -26,6 +28,8 @@ public class StageClearUI : MonoBehaviour
 
     private void ResetUI()
     {
+        whiteOverlay.color = new Color(whiteOverlay.color.r, whiteOverlay.color.g, whiteOverlay.color.b, 0f);
+
         // 텍스트를 처음엔 투명하게 설정
         Color textColor2 = stageText.color;
         textColor2.a = 0;
@@ -41,6 +45,9 @@ public class StageClearUI : MonoBehaviour
 
     private void Update()
     {
+        if (isCleared)
+            return;
+
         if (GameManager.Instance.IsStageClear)
         {
             HandleBlackOverlayFade();
@@ -72,10 +79,13 @@ public class StageClearUI : MonoBehaviour
 
             if (overlayColor.a >= backgroundAlpha - 0.2f && !nextButton.gameObject.activeSelf)
             {
-                if (!GameManager.Instance.IsLastScene)
-                    nextButton.gameObject.SetActive(true);
-                else
-                    quitButton.gameObject.SetActive(true);
+                //if (!GameManager.Instance.IsLastScene)
+                //    nextButton.gameObject.SetActive(true);
+                //else
+                //    quitButton.gameObject.SetActive(true);
+
+                isCleared = true;
+                nextButton.gameObject.SetActive(true);
 
                 Color textColor1 = stageClearText.color;
                 textColor1.a = 1;

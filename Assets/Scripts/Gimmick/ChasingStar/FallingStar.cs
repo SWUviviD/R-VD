@@ -133,16 +133,15 @@ public class FallingStar : MonoBehaviour
     public void OnPlayerSenced(Collider other)
     {
         // 플레이어와 충돌했을 때
-        Transform otherParent = other.transform.parent;
-        if (otherParent.TryGetComponent(out PlayerStatus playerStatus))
+        if (other.gameObject.TryGetComponent(out PlayerStatus playerStatus))
         {
-            otherParent.GetComponent<PlayerHp>().Damage(damage); // 데미지
+            other.gameObject.GetComponent<PlayerHp>().Damage(damage); // 데미지
 
-            Rigidbody playerRb = otherParent.GetComponent<Rigidbody>();
+            Rigidbody playerRb = other.gameObject.GetComponent<Rigidbody>();
             if (playerRb != null)
             {
                 // 넉백 방향 계산
-                Vector3 knockbackDir = (otherParent.GetComponent<PlayerMove>().GetPosition() - transform.position).normalized;
+                Vector3 knockbackDir = (other.gameObject.GetComponent<PlayerMove>().GetPosition() - transform.position).normalized;
 
                 knockbackDir.y = 0;
                 knockbackDir.Normalize();

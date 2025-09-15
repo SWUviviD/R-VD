@@ -1,3 +1,4 @@
+using CamAnim;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -42,12 +43,28 @@ public class DialogueGimmick : GimmickBase<DialogueData>
     private bool isTherePlayer = false;
     private GameObject player = null;
 
+    private CameraAnimationData data;
+
+    private void Start()
+    {
+        data = GetComponent<CameraAnimationData>();
+    }
+
     private void OnChatStart(InputAction.CallbackContext context)
     {
         if (isOnButtonPlay)
         {
-            DialogueManager.Instance.StartDialogue(dialogueID,
-                CamAnimName, transform, () => Invoke(OnDialogStart), () => Invoke(OnDialogEnd));
+            col.enabled = false;
+            if(data != null)
+            {
+                DialogueManager.Instance.StartDialogue(dialogueID,
+                    data, transform, () => Invoke(OnDialogStart), () => Invoke(OnDialogEnd));
+            }
+            else
+            {
+                DialogueManager.Instance.StartDialogue(dialogueID,
+                    CamAnimName, transform, () => Invoke(OnDialogStart), () => Invoke(OnDialogEnd));
+            }
         }
     }
 
@@ -57,14 +74,16 @@ public class DialogueGimmick : GimmickBase<DialogueData>
         {
             isTherePlayer = true;
 
-            if (isOnButtonPlay == false)
+            col.enabled = false;
+            if (data != null)
             {
-                col.enabled = false;
-
+                DialogueManager.Instance.StartDialogue(dialogueID,
+                    data, transform, () => Invoke(OnDialogStart), () => Invoke(OnDialogEnd));
+            }
+            else
+            {
                 DialogueManager.Instance.StartDialogue(dialogueID,
                     CamAnimName, transform, () => Invoke(OnDialogStart), () => Invoke(OnDialogEnd));
-
-                return;
             }
 
             DialogueManager.Instance.EnterRangeOfNPC();

@@ -58,12 +58,12 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
 
     private void OnCollisionEnter(Collision collision)
     {
-        PlayerJump jump;
-        if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
-        {
-            jump.Jump(gimmickData.JumpForce);
-            StartCoroutine(BubblePop());
-        }
+        //PlayerJump jump;
+        //if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
+        //{
+        //    jump.Jump(gimmickData.JumpForce);
+        //    StartCoroutine(BubblePop());
+        //}
     }
 
     public void InteractStart(GameObject player)

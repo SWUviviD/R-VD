@@ -23,31 +23,35 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         effector = cam.GetComponent<CameraEffector>();
     }
 
-    public void LoadCameraAnimation(string animaName)
+    public List<Step> LoadCameraAnimation(string animaName)
     {
         SerializeManager.Instance.LoadDataFile(out CamAnimData, animaName, "Data/RawData/DialogCamAnimation");
         if (CamAnimData?.Count <= 0)
         {
             isThereAnim = false;
-            return;
+            return null;
         }
 
         isThereAnim = true;
+        return CamAnimData;
     }
 
-    public bool LoadAndSetCamAnim(Transform baseTR, string animationName)
+    public bool SetCamAnim(Transform baseTR, List<Step> animaAnimData)
     {
         if (effector == null)
             return false;
 
-        LoadCameraAnimation(animationName);
+        if (animaAnimData == null)
+            return false;
 
-        if(isThereAnim == false || CamAnimData == null)
+        CamAnimData = animaAnimData;
+
+        if (isThereAnim == true || CamAnimData == null)
         {
             return false;
         }
 
-        if(isAnimPlaying == true)
+        if (isAnimPlaying == true)
         {
             StopAnimation();
         }
@@ -57,6 +61,11 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         SetCamState(CamAnimData[0].CameraStates[0]);
 
         return true;
+    }
+
+    public bool LoadAndSetCamAnim(Transform baseTR, string animationName)
+    {
+        return SetCamAnim(baseTR, LoadCameraAnimation(animationName));
     }
 
     public bool PlayAnimation(int index, Action OnAnimOver = null)
@@ -85,6 +94,7 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         if (s.CameraStates.Length < 2)
         {
             OnAnimOver?.Invoke();
+
             isAnimPlaying = false;
 
             return true;
@@ -93,6 +103,11 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         isAnimPlaying = true;
         PlayEffect(s, 0, OnAnimOver);
         return true;
+    }
+
+    public AchieveData GetAchieveData(int index)
+    {
+        return CamAnimData[index].AchieveData;
     }
 
     public bool StopAnimation(bool forceStop = false)
@@ -129,6 +144,7 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
 
         if (step.IsLoop == false && (step.CameraStates.Length - 1) <= index)
         {
+
             OnAnimOver?.Invoke();
             isAnimPlaying = false;
             return;
@@ -143,7 +159,10 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         // 콜백은 Move에서만 처리(중복 방지)
         effector.Move(curState.LocalPosition,
             nextState.LocalPosition,
-            moveTime, () => PlayEffect(step, index + 1, OnAnimOver));
+            moveTime, () =>
+            {
+                PlayEffect(step, index + 1, OnAnimOver);
+            });
 
         effector.Rotate(curState.LocalRotation,
             nextState.LocalRotation,

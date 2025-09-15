@@ -8,6 +8,8 @@ public class CameraEffector : MonoBehaviour
 {
     [SerializeField]
     private Image fadeInOutImage;
+    private Color noImageColor;
+    private Color yesImageColor;
 
     private Camera camScript;
     private float originalFOV;
@@ -35,7 +37,11 @@ public class CameraEffector : MonoBehaviour
                 return;
         }
 
-        fadeInOutImage.gameObject.SetActive(false);
+        yesImageColor = noImageColor = fadeInOutImage.color;
+        yesImageColor.a = 1f;
+        noImageColor.a = 0f;
+
+        SetFadeInOut(false);
     }
 
     public void SetFadeInOutImage(Image fadeInOutImage)
@@ -153,12 +159,19 @@ public class CameraEffector : MonoBehaviour
 
     public void SetFadeInOut(bool isActive)
     {
-        fadeInOutImage?.gameObject.SetActive(isActive);
+        if (fadeInOutImage == null)
+            return;
+
+        fadeInOutImage.color = isActive ? yesImageColor : noImageColor;
     }
 
     public void FadeInOut(bool isFadeIn, float _duration, Action _callback = null)
     {
-        if (fadeInOutImage == null) return;
+        if (fadeInOutImage == null)
+        {
+            _callback?.Invoke();
+            return;
+        }
         StartCoroutine(CoFadeInOut(isFadeIn, _duration, _callback));
     }
 

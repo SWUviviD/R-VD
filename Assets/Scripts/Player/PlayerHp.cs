@@ -44,6 +44,7 @@ public class PlayerHp : MonoBehaviour
     public void Respawn()
     {
         audioSource.Play();
+        move.StopMoving();
         move.SetPosition(RespawnPoint);
         move.SetRotation(RespawnRotation);
         // 이펙트 출력

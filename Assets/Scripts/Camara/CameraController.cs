@@ -30,6 +30,7 @@ public class CameraController : MonoSingleton<CameraController>
         currentCamera = MainCamera;
 
         _orbitCam = cam.GetComponent<OrbitCamera>();
+
     }
 
     public void SetDialogueCamera(Camera cam)

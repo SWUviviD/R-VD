@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static CamAnim.CameraAnimationData;
 
 namespace CamAnim
@@ -39,6 +40,8 @@ namespace CamAnim
         [MemoryPackInclude][field: SerializeField] public float ShackTime { get; set; }
 
         [MemoryPackInclude][field: SerializeField] public bool IsLoop { get; set; }
+
+        [MemoryPackIgnore][field: SerializeField] public AchieveData AchieveData { get; set; }
     }
 
     [Serializable]

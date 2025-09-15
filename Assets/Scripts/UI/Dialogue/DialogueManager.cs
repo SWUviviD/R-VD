@@ -1,3 +1,4 @@
+using CamAnim;
 using StaticData;
 using System;
 using System.Collections;
@@ -95,12 +96,48 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
     public void EnterRangeOfNPC()
     {
-        toChat.SetActive(true);
+        //toChat.SetActive(true);
     }
 
     public void OutOfRange()
     {
         toChat.SetActive(false);
+    }
+
+    public void StartDialogue(int dialogueID, CameraAnimationData cameraAnimationData,
+        Transform baseTR, Action OnDialogStart = null, Action OnDialogEndFuc = null)
+    {
+        if (dialogues.Count <= dialogueID)
+        {
+            Debug.LogError("대화 번호가 CSV에 없습니다: " + dialogueID);
+            return;
+        }
+
+        callback?.Invoke();
+        callback = OnDialogEndFuc;
+        StopAllCoroutines();
+
+        // UI 세팅
+        toChat.SetActive(false);
+        dialoguePanel.SetActive(true);
+
+        // 카메라 세팅
+        CameraController.Instance.SetCameraMode(CameraController.CameraMode.Dialog);
+        isCamReady = CameraAnimationConductor.Instance.SetCamAnim(baseTR, cameraAnimationData.Steps);
+
+        // 인풋 세팅
+        GameManager.Instance.SetMovementInput(false);
+        GameManager.Instance.SetCameraInput(false);
+        GameManager.Instance.ShowCursor(true);
+
+        PlayerMove move = GameManager.Instance.Player.GetComponent<PlayerMove>();
+        move?.StopMoving();
+
+        SetInput("UINext", true, OnSkip);
+
+        OnDialogStart?.Invoke();
+
+        StartDialog(dialogueID);
     }
 
     // dialogueID는 CSV에서의 DialogNumber에 해당
@@ -198,7 +235,12 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         currentLineNumber = index;
 
-        if(isCamReady) CameraAnimationConductor.Instance.PlayAnimation(currentLineNumber);
+        AchieveData data = null;
+        if (isCamReady)
+        {
+            CameraAnimationConductor.Instance.PlayAnimation(currentLineNumber);
+            data = CameraAnimationConductor.Instance.GetAchieveData(currentLineNumber);
+        }
         SetUI(dialogues[currentDialogNumber][index]);
 
         isOptionShowing = false;
@@ -210,7 +252,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         if (nextBtnCoroutine != null) StopCoroutine(nextBtnCoroutine);
         showTextCoroutine = StartCoroutine(
             CoShowText(dialogues[currentDialogNumber][index].Text,
-            OnTextAllShown));
+            () => OnTextAllShown(data)));
     }
 
     private void SkipText()
@@ -218,7 +260,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         StopCoroutine(showTextCoroutine);
         dialogueText.text = dialogues[currentDialogNumber][currentLineNumber].Text;
         isTextShowing = false;
-        OnTextAllShown();
+        OnTextAllShown(isCamReady ? CameraAnimationConductor.Instance.GetAchieveData(currentLineNumber) : null);
     }
 
     private IEnumerator CoShowText(string text, Action _callback = null)
@@ -263,7 +305,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         }
     }
 
-    private void OnTextAllShown()
+    private void OnTextAllShown(AchieveData data)
     {
         if (dialogues[currentDialogNumber][currentLineNumber].NextTextNumber <= -1)
         {
@@ -272,6 +314,12 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         else
         {
             ShowNextBtn();
+        }
+
+        if(data != null)
+        {
+            SetInput("UINext", false, OnSkip);
+            AchieveUI.Instance.ShowUI(data, () => SetInput("UINext", true, OnSkip));
         }
     }
 

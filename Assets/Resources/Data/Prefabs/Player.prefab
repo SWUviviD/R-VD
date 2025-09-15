@@ -1886,12 +1886,12 @@ MonoBehaviour:
   <AdditionalMoveSpeed>k__BackingField: 0
   <AttackRange>k__BackingField: 0
   <ProjectileSpeed>k__BackingField: 0
-  <JumpHeight>k__BackingField: 70
+  <JumpHeight>k__BackingField: 20
   <JumpSpeed>k__BackingField: 10
   <FallingSpeed>k__BackingField: 3
   <IsDashing>k__BackingField: 0
-  <DashSpeed>k__BackingField: 20
-  <DashTime>k__BackingField: 1
+  <DashSpeed>k__BackingField: 35
+  <DashTime>k__BackingField: 0.2
   <HP>k__BackingField: 10
 --- !u!114 &573848819944701192
 MonoBehaviour:
@@ -2112,7 +2112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d2eaea6e386e1408349fd7cdea32a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 4350681127592723824}
   projectTrs: {fileID: 5947897825476552715}
+  playerMove: {fileID: 0}
   minShotRange: 20
   maxShotRange: 105
   maxKeyPressedTime: 0.8

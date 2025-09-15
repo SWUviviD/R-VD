@@ -97,13 +97,28 @@ public class PlayerMove : MonoBehaviour
             //gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
         }
 
+        Vector3 v = rigid.velocity;
+
         if (move.sqrMagnitude > 0)
         {
-            Vector3 realMovement = move * (status.MoveSpeed + status.AdditionalMoveSpeed);
-            Vector3 newVal = realMovement;
-            newVal.y = rigid.velocity.y;
+            // 벽보정
+            Vector3 wallOrigin = transform.position + Vector3.up * heightLength * 0.5f;
+            float wallRadius = 0.25f;
+            float wallDistance = 0.5f;
+            if (move.sqrMagnitude > 0f &&
+                Physics.SphereCast(wallOrigin, wallRadius, move, out RaycastHit wallHit, 
+                wallDistance, ~0, QueryTriggerInteraction.Ignore))
+            {
+                float angleFromUp = Vector3.Angle(wallHit.normal, Vector3.up); 
+                if (angleFromUp > 80f) 
+                {
+                    move = Vector3.ProjectOnPlane(move, wallHit.normal).normalized;
+                }
+            }
 
-            rigid.velocity = newVal;
+            Vector3 realMovement = move * (status.MoveSpeed + status.AdditionalMoveSpeed);
+            v.x = realMovement.x;
+            v.z = realMovement.z;
 
             Vector3 faceDir = new Vector3(realMovement.x, 0f, realMovement.z);
             if(faceDir.sqrMagnitude > 1e-6f)
@@ -119,9 +134,22 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
+            if(IsGrounded && !jump.IsJumping)
+            {
+                const float groundDecel = 30f;
+                v.x = Mathf.MoveTowards(v.x, 0f, groundDecel * Time.fixedDeltaTime);
+                v.z = Mathf.MoveTowards(v.z, 0f, groundDecel * Time.fixedDeltaTime);
+
+                if(new Vector2(v.x, v.z).sqrMagnitude < 0.0004f)
+                {
+                    v.x = 0f; v.z = 0f;
+                }
+            }
             OnMove?.Invoke(false);
         }
-        //rigid.velocity *= 0.9f;
+
+        v.y = rigid.velocity.y;
+        rigid.velocity = v;
 
         CurrentFeetPosition = hit.point;
     }
@@ -252,6 +280,7 @@ public class PlayerMove : MonoBehaviour
 
     public void StopMoving()
     {
+        rigid.velocity = Vector3.up * rigid.velocity.y;
         OnMove?.Invoke(false);
     }
 }

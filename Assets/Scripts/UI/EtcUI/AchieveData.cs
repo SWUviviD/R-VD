@@ -1,15 +1,17 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 
 [Serializable]
 public class AchieveData : MonoBehaviour
 {
-    [SerializeField] public float duration;
-    [SerializeField] public Sprite image;
-    [SerializeField] public string type;
-    [SerializeField] public string title;
+    [field: SerializeField] public float duration { get; set; }
+    [field: SerializeField] public Sprite image { get; set; }
+    [field: SerializeField] public string type { get ; set; }
+    [field: SerializeField] public string title {  get; set; }
     [SerializeField] private string desc;
+    [field: SerializeField] public UnityEvent callback {  get; set; }
     public string Desc => desc.Replace("\\n", "\n");
 }

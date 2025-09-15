@@ -13,6 +13,8 @@ public class SkillSwap : MonoBehaviour
         public GameObject model;      // 손에 들릴 오브젝트
         public AnimationClip clip;    // 애니메이션
     }
+    [Header("Skill Unlocked")]
+    [field: SerializeField] public bool[] SkillUnlocked = new bool[(int)SkillType.MAX];
 
     [Header("Skill Key States")]
     public bool isQPressed = false;
@@ -51,6 +53,11 @@ public class SkillSwap : MonoBehaviour
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "Magic"),
             ActionPoint.IsCanceled, OnSkillStop);
+
+        GameData data = GameManager.Instance.GameDataManager.GameData;
+        SkillUnlocked[(int)SkillType.StarHunt] = data.IsSkill1_StarHuntUnlocked;
+        SkillUnlocked[(int)SkillType.StarFusion] = data.IsSkill2_StarFusionUnlocked;
+        SkillUnlocked[(int)SkillType.WaterVase] = data.IsSkill1_StarHuntUnlocked;
     }
 
     private void OnDisable()
@@ -78,6 +85,9 @@ public class SkillSwap : MonoBehaviour
 
     public void OnSkillSwapToStarHunt(InputAction.CallbackContext _ctx)
     {
+        if (SkillUnlocked[(int)SkillType.StarHunt] == false)
+            return;
+
         isQPressed = true;
         isEPressed = false;
         isRPressed = false;
@@ -87,6 +97,9 @@ public class SkillSwap : MonoBehaviour
 
     public void OnSkillSwapToStarFusion(InputAction.CallbackContext _ctx)
     {
+        if (SkillUnlocked[(int)SkillType.StarFusion] == false)
+            return;
+
         isQPressed = false;
         isEPressed = true;
         isRPressed = false;
@@ -96,6 +109,9 @@ public class SkillSwap : MonoBehaviour
 
     public void OnSkillSwapToWaterVase(InputAction.CallbackContext _ctx)
     {
+        if (SkillUnlocked[(int)SkillType.WaterVase] == false)
+            return;
+
         isQPressed = false;
         isEPressed = false;
         isRPressed = true;
@@ -151,5 +167,11 @@ public class SkillSwap : MonoBehaviour
         }
 
         skillInfos[(int)currentSkill].skillBase?.OnSkillStop(_ctx);
+    }
+
+    public void UnlockSkill(int skillNum)
+    {
+        Debug.Log($"{skillNum} is unlocked");
+        SkillUnlocked[skillNum] = true;
     }
 }

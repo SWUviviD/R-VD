@@ -22,6 +22,9 @@ public partial class GameData
     [MemoryPackInclude] public Vector3 PlayerPosition { get; set; }
     [MemoryPackInclude] public Vector3 PlayerRotation { get; set; }
     [MemoryPackInclude] public Vector3 camRotation { get; set; }
+    [MemoryPackInclude] public bool IsSkill1_StarHuntUnlocked {  get; set; }
+    [MemoryPackInclude] public bool IsSkill2_StarFusionUnlocked {  get; set; }
+    [MemoryPackInclude] public bool IsSkill3_StarFrozenUnlocked {  get; set; }
 }
 
 public class GameDataManager : MonoBehaviour
@@ -110,8 +113,8 @@ public class GameDataManager : MonoBehaviour
     }
 
     public void SaveGameData(StageID stageID, int checkPointID, int playerHealth,
-        Vector3 playerPosition, Vector3 playerRotation,
-        Vector3 camRotation)
+        Vector3 playerPosition, Vector3 playerRotation, Vector3 camRotation, 
+        bool isSkill1Unlocked, bool isSkill2Unlocked, bool isSkill3Unlocked)
     {
         GameData.StageID = stageID;
         GameData.CheckPointID = checkPointID;
@@ -119,6 +122,9 @@ public class GameDataManager : MonoBehaviour
         GameData.PlayerPosition = playerPosition;
         GameData.PlayerRotation = playerRotation;
         GameData.camRotation = camRotation;
+        GameData.IsSkill1_StarHuntUnlocked = isSkill1Unlocked;
+        GameData.IsSkill2_StarFusionUnlocked = isSkill2Unlocked;
+        GameData.IsSkill3_StarFrozenUnlocked = isSkill3Unlocked;
 
         SaveGameData(GameData);
     }
@@ -132,12 +138,17 @@ public class GameDataManager : MonoBehaviour
         GameData.PlayerPosition = Vector3.zero;
         GameData.PlayerRotation = Vector3.zero;
         GameData.camRotation = Vector3.right * 180f;
+        GameData.IsSkill1_StarHuntUnlocked = false;
+        GameData.IsSkill2_StarFusionUnlocked = false;
+        GameData.IsSkill3_StarFrozenUnlocked = false;
 
         SaveGameData(GameData);
     }
 
     public void DeleteGameData()
     {
+        GameData.StageID = StageID.Stage1;
+
 #if UNITY_EDITOR
         SerializeManager.Instance.DeleteDataFile(FileName);
 #else

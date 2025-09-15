@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class AchieveUI : MonoSingleton<AchieveUI>
@@ -30,10 +31,11 @@ public class AchieveUI : MonoSingleton<AchieveUI>
 
     public bool ShowUI(AchieveData data, Action _callback = null)
     {
-        return ShowUI(data.duration, data.image, data.type, data.title, data.Desc, _callback);
+        data.callback.AddListener(() => _callback?.Invoke());
+        return ShowUI(data.duration, data.image, data.type, data.title, data.Desc, data.callback);
     }
 
-    public bool ShowUI(float showStayTime, Sprite sprite, string type, string title, string desc, Action _callback = null)
+    public bool ShowUI(float showStayTime, Sprite sprite, string type, string title, string desc, UnityEvent _callback = null)
     {
         if (isShowing == true)
             return false;
@@ -44,7 +46,7 @@ public class AchieveUI : MonoSingleton<AchieveUI>
         return true;
     }
 
-    private IEnumerator CoPreWait(float showStayTime, Sprite sprite, string type, string title, string desc, Action _callback = null)
+    private IEnumerator CoPreWait(float showStayTime, Sprite sprite, string type, string title, string desc, UnityEvent _callback = null)
     {
         yield return wfPre;
 

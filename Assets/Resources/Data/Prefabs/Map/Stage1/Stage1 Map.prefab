@@ -44,13 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3496e7babf53940b2d0773d155ccc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 3
-  image: {fileID: 21300000, guid: 81a1ffa2a1784544cba0d5ae8e224513, type: 3}
-  type: "\uC870\uAC01 \uD68D\uB4DD"
-  title: "\uC131\uC6B4 \uC870\uAC01 \uD68D\uB4DD"
+  <duration>k__BackingField: 3
+  <image>k__BackingField: {fileID: 21300000, guid: 81a1ffa2a1784544cba0d5ae8e224513,
+    type: 3}
+  <type>k__BackingField: "\uC870\uAC01 \uD68D\uB4DD"
+  <title>k__BackingField: "\uBCA0\uD154\uAE30\uC6B0\uC2A4\uC758 \uC131\uC6B4 \uC870\uAC01"
   desc: "\uC2DC\uB828\uC744 \uD1B5\uACFC\uD558\uC5EC \uC131\uC6B4 \uC870\uAC01\uC744
-    \uD68D\uB4DD\uD558\uC600\uC2B5\uB2C8\uB2E4.\\n\uC791\uC740 \uC870\uAC01\uC784\uC5D0\uB3C4
-    \uAC70\uB300\uD55C \uD798\uC774 \uB290\uAEF4\uC9D1\uB2C8\uB2E4."
+    \uD68D\uB4DD\uD558\uC600\uC2B5\uB2C8\uB2E4.\\n\uBCA0\uD154\uAE30\uC6B0\uC2A4\uB97C
+    \uB2EE\uC544 \uD638\uD0D5\uD558\uACE0 \uCF8C\uD65C\uD55C \uAE30\uC6B4\uC774 \uB290\uAEF4\uC9D1\uB2C8\uB2E4.\\n\uC791\uC740
+    \uC870\uAC01\uC784\uC5D0\uB3C4 \uAC70\uB300\uD55C \uD798\uC774 \uB290\uAEF4\uC9D1\uB2C8\uB2E4."
+  <callback>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &369336528819594733
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,12 +325,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d3496e7babf53940b2d0773d155ccc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 3
-  image: {fileID: 0}
-  type: "\uD29C\uD1A0\uB9AC\uC5BC"
-  title: "\uAE30\uBCF8 \uC870\uC791"
+  <duration>k__BackingField: 3
+  <image>k__BackingField: {fileID: 0}
+  <type>k__BackingField: "\uD29C\uD1A0\uB9AC\uC5BC"
+  <title>k__BackingField: "\uAE30\uBCF8 \uC774\uB3D9"
   desc: "[W], [A], [S], [D]\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.\\n[Left Shift]\uB85C
     \uC9E7\uAC8C \uB300\uC26C\uD569\uB2C8\uB2E4."
+  <callback>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SkillSwap, Assembly-CSharp
+        m_MethodName: UnlockSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1985444520435070836
 GameObject:
   m_ObjectHideFlags: 0

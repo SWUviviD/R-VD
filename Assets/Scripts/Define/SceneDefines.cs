@@ -3,9 +3,10 @@ public class SceneDefines
 {
     public enum Scene
     {
-        Title = 0,
-        Credit = 1,
-        Stage1 = 2,
+        IntroScene = 0,
+        Title = 1,
+        Credit = 2,
+        Stage1 = 3,
         //Stage2,
         //Stage3,
         MAX

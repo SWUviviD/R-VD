@@ -77,7 +77,7 @@ public class GameManager : MonoSingleton<GameManager>
             }
         }
 
-        Camera = FindFirstObjectByType<OrbitCamera>().gameObject;
+        Camera = FindFirstObjectByType<OrbitCamera>()?.gameObject;
         if (Camera != null)
         {
             CameraController.Instance.OnLoadCameraSetting(Camera.transform);
@@ -225,15 +225,17 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void ResetStageGameData()
     {
+        StageID stage = SceneLoadManager.Instance.GetActiveStage();
         GameDataManager.SaveGameData(
-            SceneLoadManager.Instance.GetActiveStage(),
-            (int)SceneLoadManager.Instance.GetActiveStage() * 100,
-            10, Vector3.zero, Vector3.zero, Vector3.right * 180f);
+            stage, (int)stage * 100, 10,
+            Vector3.zero, Vector3.zero, Vector3.right * 180f,
+            (int)stage > 1, (int)stage > 2, (int)stage > 3);
     }
 
     public void SaveData()
     {
         PlayerHp playerHp = Player.GetComponent<PlayerHp>();
+        SkillSwap skillSwap = Player.GetComponent<SkillSwap>();
 
         // 스테이지, 체크포인트, 현재 체력 저장
         // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
@@ -245,8 +247,10 @@ public class GameManager : MonoSingleton<GameManager>
             Player ? playerHp.RespawnRotation : Vector3.zero,
             CheckpointGimmick.CheckpointList.ContainsKey(CheckpointGimmick.CurrentCheckpointIndex) == true ?
                 CheckpointGimmick.CheckpointList[CheckpointGimmick.CurrentCheckpointIndex].GimmickData.CamRotation :
-                Vector3.right * 180f
-            );
+                Vector3.right * 180f,
+            skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarHunt],
+            skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarFusion],
+            skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.WaterVase]);
     }
 
     public void LoadData()
@@ -279,17 +283,19 @@ public class GameManager : MonoSingleton<GameManager>
         SetMovementInput(false);
 
         PlayerHp playerHp = Player?.GetComponent<PlayerHp>();
+
+        StageID stage = SceneLoadManager.Instance.GetActiveStage();
         GameDataManager.SaveGameData(
             SceneLoadManager.Instance.GetActiveStage() + 1,
             (int) SceneLoadManager.Instance.GetActiveStage() * 100,
             playerHp ? playerHp.CurrentHp : 10,
             Vector3.zero,
             Vector3.zero,
-            Vector3.right * 180f
-            );
+            Vector3.right * 180f,
+            (int)stage > 1, (int)stage > 2, (int)stage > 3);
 
         // Todo. 엔딩일 경우 처리 필요
-        if(IsLastScene)
+        if (IsLastScene)
         {
             //CutSceneManager.Instance.PlayCutScene(
             //    CutSceneDefines.CutSceneNumber.End,
@@ -298,7 +304,7 @@ public class GameManager : MonoSingleton<GameManager>
 
             // 게임 끝까지 완료한 경우 게임 데이터 완전 초기화(삭제) 필요
             GameDataManager.DeleteGameData();
-            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
+            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title );
             ShowCursor(true);
             return;
         }

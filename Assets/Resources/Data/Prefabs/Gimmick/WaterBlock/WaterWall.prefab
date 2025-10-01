@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7340897022129654457}
   - component: {fileID: 6311376729906686543}
   - component: {fileID: 2826629239880869803}
+  - component: {fileID: 2746533048502627975}
   m_Layer: 9
   m_Name: WaterWall
   m_TagString: Untagged
@@ -102,7 +103,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -123,18 +124,16 @@ MonoBehaviour:
   gimmickData: {fileID: 6311376729906686543}
   prefabName: 
   player: {fileID: 0}
-  vase: {fileID: 8306037152624306996, guid: f7c8b5406bbb6e046b1bb117764e8cec, type: 3}
+  vase: {fileID: 0}
   waterwallData: {fileID: 6311376729906686543}
   interactionDistance: 2
   makeIceEffect: {fileID: 3716275016998676315, guid: 6b37cd66c053f5c438d7a6854a9ee401,
     type: 3}
-  breakeIceEffect: {fileID: 8255215019295333937, guid: 139c09de669d89546999f577551dd885,
+  breakIceEffect: {fileID: 2994049833057877991, guid: bdafa105848a31d4b8915a64b96d5c98,
     type: 3}
   audioSource: {fileID: 2826629239880869803}
-  makeIceAuido: {fileID: 8300000, guid: 7b852cf4ff760454bb58d836c1877720, type: 3}
-  breakeIceAuido: {fileID: 8300000, guid: 16e054524610dc742a9a812856b97c31, type: 3}
-  isice: 0
-  isbreak: 0
+  makeIceAudio: {fileID: 8300000, guid: 7b852cf4ff760454bb58d836c1877720, type: 3}
+  breakIceAudio: {fileID: 8300000, guid: 16e054524610dc742a9a812856b97c31, type: 3}
 --- !u!114 &6311376729906686543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,3 +247,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &2746533048502627975
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2732836501551192909}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

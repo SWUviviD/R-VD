@@ -130,7 +130,7 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         }
         else if (remainingUsage == 0)
         {
-            LogManager.Log("블록 빔");
+            LogManager.Log("블록에 물이 없습니다.");
         }
     }
 

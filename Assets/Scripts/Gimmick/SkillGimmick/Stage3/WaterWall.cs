@@ -1,108 +1,180 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Defines;
+using static Defines.InputDefines;
 
 public class WaterWall : GimmickBase<WaterWallData>
 {
     [Header("References")]
-    [SerializeField] public Transform player; // 플레이어 Transform
-    [SerializeField] public WaterVaseControll vase;
+    [SerializeField] private Transform player; // 플레이어 Transform
+    [SerializeField] private WaterVaseControll vase;
     [SerializeField] private WaterWallData waterwallData;
     [SerializeField] private float interactionDistance = 2f; // 상호작용 거리
 
-    [Header("Source")]
+    [Header("Effects & Audio")]
     [SerializeField] private GameObject makeIceEffect;
-    [SerializeField] private GameObject breakeIceEffect;
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] private AudioClip makeIceAuido;
-    [SerializeField] private AudioClip breakeIceAuido;
-
-    public bool isice;
-    public bool isbreak;
+    [SerializeField] private GameObject breakIceEffect;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip makeIceAudio;
+    [SerializeField] private AudioClip breakIceAudio;
 
     private Renderer wallRenderer;
+    private bool isIce = false;
+    private bool isBreak = false;
+
+    private bool rKeyPressed = false;
+    private bool eKeyPressed = false;
+    private bool qKeyPressed = false;
 
     protected override void Init()
     {
-        // 초기화
         wallRenderer = GetComponent<MeshRenderer>();
         wallRenderer.material = waterwallData.blockMaterials[0];
+        isIce = false;
+        isBreak = false;
 
-        isice = false;
-        isbreak = false;
-    }
-
-    public override void SetGimmick()
-    {
-
-    }
-
-    protected override string GetAddress()
-    {
-        return "Data/Prefabs/Gimmick/WaterWall";
-    }
-
-    void Update()
-    {
-        // 플레이어와의 거리 계산
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        // 거리 내에서 R 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.R))
+        if (GetComponent<Rigidbody>() == null)
         {
-            isice = true;
-
-            PlaySound(makeIceAuido);
-            GameObject makeice = Instantiate(makeIceEffect, transform.position, Quaternion.identity);
-            Destroy(makeice, 2f);
-
-            UpdateBlockMaterial();
+            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
         }
 
-        // 거리 내에서 E 키 입력으로 상호작용
-        if (distanceToPlayer <= interactionDistance && Input.GetKeyDown(KeyCode.E) && isice)
+        if (GetComponent<Collider>() == null)
         {
-            isbreak = true;
+            BoxCollider col = gameObject.AddComponent<BoxCollider>();
+            col.isTrigger = true;
+        }
+    }
 
-            PlaySound(breakeIceAuido);
-            GameObject breakice = Instantiate(breakeIceEffect, transform.position, Quaternion.identity);
-            Destroy(breakice, 2f);
+    public override void SetGimmick() { }
 
+    protected override string GetAddress() => "Data/Prefabs/Gimmick/WaterWall";
+
+    private void OnEnable()
+    {
+        if (InputManager.Instance == null) return;
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "StarHunt"),
+            ActionPoint.IsStarted, ctx => { qKeyPressed = true; rKeyPressed = false; eKeyPressed = false; });
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "WaterVase"),
+            ActionPoint.IsStarted, ctx => { rKeyPressed = true; qKeyPressed = false; eKeyPressed = false; });
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "StarFusion"),
+            ActionPoint.IsStarted, ctx => { eKeyPressed = true; qKeyPressed = false; rKeyPressed = false; });
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "Magic"),
+            ActionPoint.IsStarted, OnRightClick);
+    }
+
+    private void OnDisable()
+    {
+        if (InputManager.Instance == null) return;
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "StarHunt"),
+            ActionPoint.IsStarted, ctx => { qKeyPressed = true; rKeyPressed = false; eKeyPressed = false; });
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "WaterVase"),
+            ActionPoint.IsStarted, ctx => { rKeyPressed = true; qKeyPressed = false; eKeyPressed = false; });
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "StarFusion"),
+            ActionPoint.IsStarted, ctx => { eKeyPressed = true; qKeyPressed = false; rKeyPressed = false; });
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "Magic"),
+            ActionPoint.IsStarted, OnRightClick);
+    }
+
+
+
+    private void OnQPressed(InputAction.CallbackContext ctx)
+    {
+        qKeyPressed = true;
+        rKeyPressed = false;
+        eKeyPressed = false;
+        Debug.Log("Q Key Pressed!");
+    }
+
+    private void OnRPressed(InputAction.CallbackContext ctx)
+    {
+        rKeyPressed = true;
+        qKeyPressed = false;
+        eKeyPressed = false;
+        Debug.Log("R Key Pressed!");
+    }
+
+    private void OnEPressed(InputAction.CallbackContext ctx)
+    {
+        eKeyPressed = true;
+        qKeyPressed = false;
+        rKeyPressed = false;
+        Debug.Log("E Key Pressed!");
+    }
+
+
+    private void OnRightClick(InputAction.CallbackContext ctx)
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        Debug.Log($"RightClick! Distance:{distanceToPlayer}, R:{rKeyPressed}, E:{eKeyPressed}, Q:{qKeyPressed}");
+
+        if (distanceToPlayer > interactionDistance) return;
+
+        if (rKeyPressed && !isIce)
+        {
+            isIce = true;
+            PlayEffect(makeIceEffect, makeIceAudio);
             UpdateBlockMaterial();
+            vase.watermove();
+        }
+        else if (eKeyPressed && isIce && !isBreak)
+        {
+            isBreak = true;
+            PlayEffect(breakIceEffect, breakIceAudio);
+            UpdateBlockMaterial();
+            vase.watermove();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isice && other.GetComponentInParent<StarHuntArrow>())
+        if (isIce && !isBreak && other.GetComponentInParent<StarHuntArrow>())
         {
-            isbreak = true;
-
-            PlaySound(breakeIceAuido);
-            GameObject breakice = Instantiate(breakeIceEffect, transform.position, Quaternion.identity);
-            Destroy(breakice, 2f);
-
+            isBreak = true;
+            PlayEffect(breakIceEffect, breakIceAudio);
             UpdateBlockMaterial();
         }
     }
 
-    void UpdateBlockMaterial()
+    private void UpdateBlockMaterial()
     {
-        // 상태에 따라 Material 변경
-        if (isice)
-        {
-            wallRenderer.material = waterwallData.blockMaterials[1];
-        }
-        if (isbreak)
+        if (isIce) wallRenderer.material = waterwallData.blockMaterials[1];
+        if (isBreak)
         {
             wallRenderer.material = waterwallData.blockMaterials[2];
-            Destroy(gameObject, 2.0f);
+            Destroy(gameObject, 2f);
         }
     }
 
-    private void PlaySound(AudioClip audioClip)
+    private void PlayEffect(GameObject effect, AudioClip audioClip)
     {
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        if (effect != null)
+        {
+            GameObject go = Instantiate(effect, transform.position, Quaternion.identity);
+            Destroy(go, 2f);
+        }
+        if (audioClip != null && audioSource != null)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+        }
     }
 }

@@ -1,29 +1,25 @@
 using LocalData;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterWallData : GimmickDataBase
 {
-    [GimmickData("블록 메테리얼")]
+    [GimmickData("프리팹 배열")]
     [field: SerializeField]
-    public Material[] blockMaterials;
+    public GameObject[] WaterWallPrefabs { get; private set; }
+
+    [GimmickData("회전 보정값")]
+    [field: SerializeField]
+    public Vector3 RotationOffset { get; private set; } = Vector3.zero;
 
     public override void SaveGimmickData(in LDMapData _mapData)
     {
         var sdWaterWallData = new LDWaterWallData();
 
-        sdWaterWallData.blockMaterials = blockMaterials;
-
-        foreach (var kvPoint in DictPoint)
-        {
-            sdWaterWallData.DictPoint.Add(kvPoint.Key, kvPoint.Value.position);
-        }
-
         sdWaterWallData.Position = trGimmick.position;
         sdWaterWallData.Rotation = trGimmick.rotation.eulerAngles;
         sdWaterWallData.Scale = trGimmick.localScale;
         sdWaterWallData.Address = address;
+        sdWaterWallData.RotationOffset = RotationOffset;
 
         _mapData.WaterWallDataList.Add(sdWaterWallData);
     }
@@ -37,7 +33,6 @@ public class WaterWallData : GimmickDataBase
         trGimmick.position = sdWaterWallData.Position;
         trGimmick.rotation = Quaternion.Euler(sdWaterWallData.Rotation);
         trGimmick.localScale = sdWaterWallData.Scale;
-
-        blockMaterials = sdWaterWallData.blockMaterials;
+        RotationOffset = sdWaterWallData.RotationOffset;
     }
 }

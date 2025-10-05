@@ -13,10 +13,24 @@ public class Water_Door : MonoBehaviour
     [SerializeField] private float moveDistance = 2.6f;
     [SerializeField] private float moveDuration = 5f;
 
+    private BoxCollider doorCollider;
+
+    private void Awake()
+    {
+        doorCollider = GetComponent<BoxCollider>();
+        if (doorCollider == null)
+        {
+            doorCollider = gameObject.AddComponent<BoxCollider>();
+            doorCollider.isTrigger = false; 
+        }
+    }
+
     public void OpenDoor()
     {
-
         PlaySound(openDoorAudio);
+
+        if (doorCollider != null)
+            doorCollider.enabled = false;
 
         if (doorParts.Count == 0)
         {
@@ -25,11 +39,9 @@ public class Water_Door : MonoBehaviour
         }
 
         if (doorParts.Count > 0)
-            StartCoroutine(MoveOverTime(doorParts[0], Vector3.right * moveDistance, moveDuration));
-
+            StartCoroutine(MoveOverTime(doorParts[0], Vector3.right * moveDistance, moveDuration)); 
         if (doorParts.Count > 1)
-            StartCoroutine(MoveOverTime(doorParts[1], Vector3.left * moveDistance, moveDuration));
-
+            StartCoroutine(MoveOverTime(doorParts[1], Vector3.left * moveDistance, moveDuration)); 
         if (doorParts.Count > 2)
             StartCoroutine(MoveOverTime(doorParts[2], Vector3.up * moveDistance, moveDuration));
     }

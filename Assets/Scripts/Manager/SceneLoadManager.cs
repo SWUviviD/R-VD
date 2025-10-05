@@ -15,8 +15,11 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
     private bool isSceneLoading = false;
 
     private UnityEvent<Scene, LoadSceneMode> onSceneLoaded;
+    private UnityEvent<Scene, LoadSceneMode> onSceneLoaded_permanent;
     private UnityEvent<Scene, Scene> onActiveSceneChanged;
+    private UnityEvent<Scene, Scene> onActiveSceneChanged_permanent;
     private UnityEvent<Scene> onSceneUnloaded;
+    private UnityEvent<Scene> onSceneUnloaded_permanent;
 
     protected override void Init()
     {
@@ -26,14 +29,17 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
         // 새 씬이 "로드되어 활성화"된 직후
         SceneManager.sceneLoaded += OnSceneLoaded;
         onSceneLoaded = new UnityEvent<Scene, LoadSceneMode>();
+        onSceneLoaded_permanent = new UnityEvent<Scene, LoadSceneMode>();
 
         // 활성 씬이 바뀔 때 (로딩과 별개로 ActiveScene 전환 시점)
         SceneManager.activeSceneChanged += OnActiveSceneChanged;
         onActiveSceneChanged = new UnityEvent<Scene, Scene>();
+        onActiveSceneChanged_permanent = new UnityEvent<Scene, Scene>();
 
         // 씬이 언로드된 직후
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         onSceneUnloaded = new UnityEvent<Scene>();
+        onSceneUnloaded_permanent = new UnityEvent<Scene>();
     }
 
     public SceneDefines.Scene GetActiveScene()
@@ -122,12 +128,14 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        onSceneLoaded_permanent?.Invoke(scene, mode);
         onSceneLoaded?.Invoke(scene, mode);
         onSceneLoaded?.RemoveAllListeners();
     }
 
     private void OnActiveSceneChanged(Scene oldScene, Scene newScene)
     {
+        onActiveSceneChanged_permanent?.Invoke(oldScene, newScene);
         onActiveSceneChanged?.Invoke(oldScene, newScene);
         onActiveSceneChanged?.RemoveAllListeners();
 
@@ -138,7 +146,26 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
 
     private void OnSceneUnloaded(Scene scene)
     {
+        onSceneUnloaded_permanent?.Invoke(scene);
         onSceneUnloaded?.Invoke(scene);
         onSceneUnloaded?.RemoveAllListeners();
+    }
+
+    public void PermanentOnSceneLoadedAction(UnityAction<Scene, LoadSceneMode> action)
+    {
+        onSceneLoaded_permanent.RemoveListener(action);
+        onSceneLoaded_permanent.AddListener(action);
+    }
+
+    public void PermanentOnActiveSceneChanged(UnityAction<Scene, Scene> action)
+    {
+        onActiveSceneChanged_permanent.RemoveListener(action);
+        onActiveSceneChanged_permanent.AddListener(action);
+    }
+
+    public void PermanentOnSceneUnoadedAction(UnityAction<Scene> action)
+    {
+        onSceneUnloaded_permanent.RemoveListener(action);
+        onSceneUnloaded_permanent.AddListener(action);
     }
 }

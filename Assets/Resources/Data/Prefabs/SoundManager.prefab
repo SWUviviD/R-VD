@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3027731959853884680
+--- !u!1 &1358404635219589018
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 29436678270602820}
-  - component: {fileID: 3491783254815159613}
+  - component: {fileID: 1107620788351912554}
+  - component: {fileID: 5889495857577243085}
+  - component: {fileID: 6460767347112848655}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &29436678270602820
+--- !u!4 &1107620788351912554
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3027731959853884680}
+  m_GameObject: {fileID: 1358404635219589018}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.7529883, y: 1.6851956, z: 61.887363}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3491783254815159613
+--- !u!114 &5889495857577243085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3027731959853884680}
+  m_GameObject: {fileID: 1358404635219589018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c9ef593d4be4f23a8a0bee135ade35, type: 3}
+  m_Script: {fileID: 11500000, guid: c25596380bd299742a659876d428d42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Camera>k__BackingField: {fileID: 0}
-  <Player>k__BackingField: {fileID: 0}
-  clearEffectPrefab1: {fileID: 874244544889619525, guid: 1a342873e6909904399e576bb3ec5a5c,
-    type: 3}
-  clearEffectPrefab2: {fileID: 3576924614362489592, guid: 542a72078a5688544abeddc64e00c68c,
-    type: 3}
+  bgm: {fileID: 8300000, guid: 08f4c3ac1fa4fe9449a775dc7b36a2e9, type: 3}
+--- !u!81 &6460767347112848655
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358404635219589018}
+  m_Enabled: 1

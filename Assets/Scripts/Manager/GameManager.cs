@@ -17,7 +17,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] public GameObject clearEffectPrefab1;
     [SerializeField] public GameObject clearEffectPrefab2;
-    [SerializeField] private AudioSource backgroundSFX;
 
     public GameDataManager GameDataManager { get; private set; }
 
@@ -181,10 +180,8 @@ public class GameManager : MonoSingleton<GameManager>
 
         IsPaused = true;
         Time.timeScale = 0f;
-        if (backgroundSFX != null)
-        {
-            backgroundSFX.Pause();
-        }
+
+        SoundManager.Instance.PauseBGM();
     }
 
     public void ResumeGame()
@@ -198,10 +195,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         IsPaused = false;
         Time.timeScale = 1f;
-        if (backgroundSFX != null)
-        {
-            backgroundSFX.Play();
-        }
+        SoundManager.Instance.PlayBGM();
     }
 
     public void NewGameStart()

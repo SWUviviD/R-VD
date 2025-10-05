@@ -4,37 +4,58 @@ using UnityEngine;
 
 public class Water_Door : MonoBehaviour
 {
-    [Header("Source")]
-    [SerializeField] AudioSource audioSource;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openDoorAudio;
 
-    // Update is called once per frame
+    [Header("Door Parts")]
+    [SerializeField] private List<Transform> doorParts = new List<Transform>();
+    [SerializeField] private float moveDistance = 2.6f;
+    [SerializeField] private float moveDuration = 5f;
+
     public void OpenDoor()
     {
+
         PlaySound(openDoorAudio);
-        StartCoroutine(MoveOverTime(-2.6f, 5f));
+
+        if (doorParts.Count == 0)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+                doorParts.Add(transform.GetChild(i));
+        }
+
+        if (doorParts.Count > 0)
+            StartCoroutine(MoveOverTime(doorParts[0], Vector3.right * moveDistance, moveDuration));
+
+        if (doorParts.Count > 1)
+            StartCoroutine(MoveOverTime(doorParts[1], Vector3.left * moveDistance, moveDuration));
+
+        if (doorParts.Count > 2)
+            StartCoroutine(MoveOverTime(doorParts[2], Vector3.up * moveDistance, moveDuration));
     }
 
-    IEnumerator MoveOverTime(float yDistance, float duration)
+    private IEnumerator MoveOverTime(Transform target, Vector3 offset, float duration)
     {
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + new Vector3(0, yDistance, 0);
+        Vector3 startPosition = target.position;
+        Vector3 endPosition = startPosition + offset;
 
-        float elapsedTime = 0;
+        float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
+            target.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = endPosition;
+        target.position = endPosition;
     }
 
-    private void PlaySound(AudioClip audioClip)
+    private void PlaySound(AudioClip clip)
     {
-        audioSource.clip = audioClip;
+        if (audioSource == null || clip == null) return;
+
+        audioSource.clip = clip;
         audioSource.Play();
     }
 }

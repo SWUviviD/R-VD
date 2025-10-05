@@ -9,6 +9,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private KeyCode settingKey = KeyCode.Escape;
     [SerializeField] private Button RestartBtn;
     [SerializeField] private Button ExitBtn;
+    [SerializeField] private Button ReturnToMainBtn;
     [SerializeField] private Button ResumeBtn;
     [SerializeField] private GameObject background;
     [SerializeField] private GameObject settingPanel;
@@ -20,6 +21,7 @@ public class SettingUI : MonoBehaviour
     {
         UIHelper.OnClick(RestartBtn, GameManager.Instance.GameRestart);
         UIHelper.OnClick(ExitBtn, Exit);
+        UIHelper.OnClick(ReturnToMainBtn, GameManager.Instance.LoadTitle);
         UIHelper.OnClick(ResumeBtn, CloseUI);
 
         background.SetActive(isActive);

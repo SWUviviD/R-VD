@@ -24,7 +24,7 @@ public partial class GameData
     [MemoryPackInclude] public Vector3 camRotation { get; set; }
     [MemoryPackInclude] public bool IsSkill1_StarHuntUnlocked {  get; set; }
     [MemoryPackInclude] public bool IsSkill2_StarFusionUnlocked {  get; set; }
-    [MemoryPackInclude] public bool IsSkill3_StarFrozenUnlocked {  get; set; }
+    [MemoryPackInclude] public bool IsSkill3_WaterVaseUnlocked {  get; set; }
 }
 
 public class GameDataManager : MonoBehaviour
@@ -124,7 +124,7 @@ public class GameDataManager : MonoBehaviour
         GameData.camRotation = camRotation;
         GameData.IsSkill1_StarHuntUnlocked = isSkill1Unlocked;
         GameData.IsSkill2_StarFusionUnlocked = isSkill2Unlocked;
-        GameData.IsSkill3_StarFrozenUnlocked = isSkill3Unlocked;
+        GameData.IsSkill3_WaterVaseUnlocked = isSkill3Unlocked;
 
         SaveGameData(GameData);
     }
@@ -140,7 +140,7 @@ public class GameDataManager : MonoBehaviour
         GameData.camRotation = Vector3.right * 180f;
         GameData.IsSkill1_StarHuntUnlocked = false;
         GameData.IsSkill2_StarFusionUnlocked = false;
-        GameData.IsSkill3_StarFrozenUnlocked = false;
+        GameData.IsSkill3_WaterVaseUnlocked = false;
 
         SaveGameData(GameData);
     }

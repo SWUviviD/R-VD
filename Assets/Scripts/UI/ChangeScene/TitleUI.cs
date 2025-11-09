@@ -39,7 +39,11 @@ public class TitleUI : MonoBehaviour
         bgPlayer.isLooping = true;
         bgPlayer.playOnAwake = true;
 
+#if UNITY_EDITOR
+        wfIntroVideo = new WaitForSeconds(0.5f);
+#else
         wfIntroVideo = new WaitForSeconds(introTime);
+#endif
 
         UIHelper.OnClick(StartBtn, NewGameStart);
         UIHelper.OnClick(ExitBtn, GameExit);

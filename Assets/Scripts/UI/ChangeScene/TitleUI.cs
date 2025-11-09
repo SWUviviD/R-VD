@@ -25,7 +25,11 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private Button StartBtn;
     [SerializeField] private Button ContinueBtn;
     [SerializeField] private Button CreditBtn;
+    [SerializeField] private Button SettingBtn;
     [SerializeField] private Button ExitBtn;
+
+    [Header("Setting")]
+    [SerializeField] private TitleSettingUI settingUI;
 
     private void Start()
     {
@@ -43,12 +47,13 @@ public class TitleUI : MonoBehaviour
 
         if (GameManager.Instance.GameDataManager.LoadGameData() == true)
         {
-            ContinueBtn.GetComponent<Image>().raycastTarget = true;
-            ContinueBtn.GetComponent<Image>().color = Color.white;
+            ContinueBtn.GetComponentInChildren<Text>().raycastTarget = true;
             ContinueBtn.GetComponentInChildren<Text>().color = Color.white;
+            ContinueBtn.GetComponent<SettingButtonHoverEffect>().enabled = true;
+            UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
         }
 
-        UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
+        UIHelper.OnClick(SettingBtn, () => settingUI.ShowPanel(true));
     }
 
     private void NewGameStart()

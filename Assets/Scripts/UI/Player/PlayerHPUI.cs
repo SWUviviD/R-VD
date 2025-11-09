@@ -29,6 +29,15 @@ public class PlayerHPUI : MonoBehaviour
 
     private void Awake()
     {
+    }
+
+    private void Start()
+    {
+        if (player == null)
+        {
+            player = GameManager.Instance.Player.transform;
+        }
+
         playerHP = player.GetComponent<PlayerHp>();
         playerMove = player.GetComponent<PlayerMove>();
         starHunt = player.GetComponent<StarHunt>();
@@ -61,10 +70,7 @@ public class PlayerHPUI : MonoBehaviour
         line.localScale = starHideScale;
         isStarShown = false;
         isStarShowing = false;
-    }
 
-    private void Start()
-    {
         ShowStar();
     }
 

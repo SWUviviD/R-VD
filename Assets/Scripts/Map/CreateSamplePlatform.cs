@@ -6,7 +6,7 @@ public class CreateSamplePlatform : MonoBehaviour
 {
     [Header("Blocks")]
     [SerializeField] private GameObject plainBlock;
-    [SerializeField] private GameObject pointBlock;
+    [SerializeField] private GameObject[] pointBlocks;
     [SerializeField] private GameObject savePointBlock;
     [SerializeField] private GameObject plain;
     [SerializeField][Range(0f, 1f)] private float pointBlockRate = 0.2f;
@@ -33,7 +33,8 @@ public class CreateSamplePlatform : MonoBehaviour
                 GameObject block;
                 if(Random.Range(0, 10) / 10f <= pointBlockRate)
                 {
-                    block = Instantiate(pointBlock, parent.transform);
+                    int index = Random.Range(0, pointBlocks.Length);
+                    block = Instantiate(pointBlocks[index], parent.transform);
                 }
                 else
                 {
@@ -85,7 +86,8 @@ public class CreateSamplePlatform : MonoBehaviour
                 GameObject block;
                 if (Random.Range(0, 10) / 10f <= pointBlockRate)
                 {
-                    block = Instantiate(pointBlock, parent.transform);
+                    int index = Random.Range(0, pointBlocks.Length);
+                    block = Instantiate(pointBlocks[index], parent.transform);
                 }
                 else
                 {

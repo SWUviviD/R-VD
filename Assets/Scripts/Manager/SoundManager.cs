@@ -70,7 +70,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         BgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY);
         SfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY);
 
-        print($"{MasterVolume} {BgmVolume} {SfxVolume}");
     }
 
     public void SaveSoundSetting()
@@ -94,7 +93,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         if (resetAllVolume == false) return;
 
         bgmSource.volume = GetBGMVolume();
-        print($"Change Volume: bgm {GetBGMVolume()} {GetSFXVolume()}");
 
         if (sfxSources == null || sfxSources.Count == 0)
             return;
@@ -110,8 +108,6 @@ public class SoundManager : MonoSingleton<SoundManager>
 
         if (resetAllVolume == false) return;
 
-        print($"Change Volume: bgm {GetBGMVolume()} {GetSFXVolume()}");
-
         bgmSource.volume = GetBGMVolume();
     }
 
@@ -120,7 +116,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         SfxVolume = value;
 
         if (resetAllVolume == false) return;
-        print($"Change Volume: bgm {GetBGMVolume()} {GetSFXVolume()}");
 
         if (sfxSources == null || sfxSources.Count == 0)
             return;

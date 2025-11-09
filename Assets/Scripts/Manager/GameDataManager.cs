@@ -2,6 +2,7 @@ using MemoryPack;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public enum StageID
@@ -39,6 +40,14 @@ public class GameDataManager : MonoBehaviour
         => Path.Combine(BuildSavePath, "GameData.bytes");
 
     public GameData GameData { get; private set; }
+
+#if UNITY_EDITOR
+    [MenuItem("Data/DeleteData")]
+    public static void DeleteData()
+    {
+        SerializeManager.Instance.DeleteDataFile(FileName);
+    }
+#endif
 
     public bool LoadGameData()
     {

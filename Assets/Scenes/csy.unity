@@ -1844,7 +1844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &521711055
 Transform:
   m_ObjectHideFlags: 0
@@ -2944,7 +2944,7 @@ PrefabInstance:
     - target: {fileID: 3253907758725678331, guid: e18e37533099cfd46afd9fd947c16910,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6588839961914245444, guid: e18e37533099cfd46afd9fd947c16910,
         type: 3}
@@ -3988,7 +3988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1102792008
 Transform:
   m_ObjectHideFlags: 0
@@ -5426,9 +5426,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f948bf6db045b47449cf8ab0b50fae8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cam: {fileID: 0}
+  currentCamera: {fileID: 0}
+  <MainCamera>k__BackingField: {fileID: 0}
+  <DialogueCamera>k__BackingField: {fileID: 0}
   _orbitCam: {fileID: 0}
-  _effectCam: {fileID: 0}
 --- !u!4 &1306028034
 Transform:
   m_ObjectHideFlags: 0
@@ -5876,6 +5877,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Map 3 by 5with Save
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963662728752626188, guid: dfd0fb0b901e24f47bddc2bcf22a99fa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7182,7 +7188,7 @@ PrefabInstance:
     - target: {fileID: 3199303814918612080, guid: bf6968c32a390154d8a0741dda61ca20,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6502710825008095695, guid: bf6968c32a390154d8a0741dda61ca20,
         type: 3}
@@ -7814,6 +7820,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
+    - target: {fileID: 5311495193728648467, guid: 8c3339853eb7c844ab4d3ba0889cd69e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5745662561196997073, guid: 8c3339853eb7c844ab4d3ba0889cd69e,
         type: 3}
       propertyPath: attached.Array.size
@@ -7916,6 +7927,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CutSceneCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 82236389539513369, guid: 0ba967ced471f9d418830a305d4e9c8f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3797851436143098425, guid: 0ba967ced471f9d418830a305d4e9c8f,
         type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Cristal : MonoBehaviour 
 {
@@ -39,6 +40,8 @@ public class Cristal : MonoBehaviour
     protected Vector3 moveCristal_startPoint;
     protected Vector3 moveCristal_endPoint;
     protected Rigidbody moveCristal_rigidBody;
+
+    [SerializeField] private UnityEvent onCristalBroken = null;
 
     public virtual void Init()
     {
@@ -141,5 +144,7 @@ public class Cristal : MonoBehaviour
     {
         cristalModel.gameObject.SetActive(false);
         cristalBreakEffect.SetActive(true);
+
+        onCristalBroken?.Invoke();
     }
 }

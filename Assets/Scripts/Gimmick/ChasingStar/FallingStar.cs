@@ -54,11 +54,20 @@ public class FallingStar : MonoBehaviour
     [ContextMenu("SetPosition")]
     public void StartFalling(Vector3 _targetPosition, Bounds bound)
     {
-        //Init();
+        //_targetPosition = isPointInBound(bound, _targetPosition) ? 
+        //    _targetPosition : GetClosestPoint(bound, _targetPosition);
 
-        //Vector3 _targetPosition = Vector3.zero;
+        //int maxTry = 5;
+        //int curTry = 0;
+        //do
+        //{
+        //    targetPos = GetRandomCirclePoint(_targetPosition);
+        //    ++curTry;
+        //} while(isPointInBound(bound, targetPos) || curTry >= maxTry);
 
-        targetPos = _targetPosition + transform.forward * posOffset;
+        //if(isPointInBound(bound, targetPos) == false)
+        //    targetPos = _targetPosition;
+        targetPos = GetRandomCirclePoint(_targetPosition);
 
         startPos.x = 0f;
         startPos.y = Mathf.Sin(startPositionDegree * Mathf.Deg2Rad) * startPositionRadius;
@@ -78,6 +87,25 @@ public class FallingStar : MonoBehaviour
         starHitEffect.position = targetPos;
         StartCoroutine(CoStarFall());
         shadow.StartFilling();
+    }
+
+    private Vector3 GetRandomCirclePoint(Vector3 center)
+    {
+        float t = Random.value;
+        float r = Mathf.Sqrt(Mathf.Lerp(0f, posOffset * posOffset, t));
+        float a = Random.Range(0f, 2f * Mathf.PI);
+        return new Vector3(center.x + Mathf.Cos(a) * r, center.y, center.z + Mathf.Sin(a) * r);
+    }
+
+    private bool isPointInBound(Bounds bound, Vector3 point) => 
+        (point.x >= bound.min.x && point.x <= bound.max.x) &&
+        (point.z >= bound.min.z &&  point.z <= bound.max.z);
+
+    private Vector3 GetClosestPoint(Bounds bounds, Vector3 point)
+    {
+        float x = Mathf.Clamp(point.x, bounds.min.x, bounds.max.x);
+        float z = Mathf.Clamp(point.z, bounds.min.z, bounds.max.z);
+        return new Vector3(x, point.y, z);
     }
 
     private IEnumerator CoStarFall()

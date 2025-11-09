@@ -88,7 +88,7 @@ public class PlayerDash : MonoBehaviour
         float t = 0f;
         while(t < status.DashTime)
         {
-            t += Time.deltaTime;
+            t += Time.fixedDeltaTime;
             yield return waitForFixedUpate;
         }
 
@@ -98,6 +98,7 @@ public class PlayerDash : MonoBehaviour
 
         var v = rigid.velocity;
         v.y = cachedY;
+        v.z = 0f;
         rigid.velocity = v;
     }
 }

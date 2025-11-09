@@ -134,6 +134,24 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UISelectRight"",
+                    ""type"": ""Value"",
+                    ""id"": ""8c0299f9-483e-470d-9f32-26d4c0705273"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""UISelectLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""6421eb0d-a483-41cf-aef1-ce329b9d734b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -334,6 +352,28 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""UINext"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94b2780c-6416-4b75-b45e-d0364dcaba3f"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UISelectRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b102d7b-39ed-45c9-870f-53dee2fb50a0"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UISelectLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -399,6 +439,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_PlayerActions_CameraZoom = m_PlayerActions.FindAction("CameraZoom", throwIfNotFound: true);
         m_PlayerActions_UIChat = m_PlayerActions.FindAction("UIChat", throwIfNotFound: true);
         m_PlayerActions_UINext = m_PlayerActions.FindAction("UINext", throwIfNotFound: true);
+        m_PlayerActions_UISelectRight = m_PlayerActions.FindAction("UISelectRight", throwIfNotFound: true);
+        m_PlayerActions_UISelectLeft = m_PlayerActions.FindAction("UISelectLeft", throwIfNotFound: true);
         // UIActions
         m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
         m_UIActions_Newaction = m_UIActions.FindAction("New action", throwIfNotFound: true);
@@ -475,6 +517,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_CameraZoom;
     private readonly InputAction m_PlayerActions_UIChat;
     private readonly InputAction m_PlayerActions_UINext;
+    private readonly InputAction m_PlayerActions_UISelectRight;
+    private readonly InputAction m_PlayerActions_UISelectLeft;
     public struct PlayerActionsActions
     {
         private @Actions m_Wrapper;
@@ -491,6 +535,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @CameraZoom => m_Wrapper.m_PlayerActions_CameraZoom;
         public InputAction @UIChat => m_Wrapper.m_PlayerActions_UIChat;
         public InputAction @UINext => m_Wrapper.m_PlayerActions_UINext;
+        public InputAction @UISelectRight => m_Wrapper.m_PlayerActions_UISelectRight;
+        public InputAction @UISelectLeft => m_Wrapper.m_PlayerActions_UISelectLeft;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -536,6 +582,12 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @UINext.started += instance.OnUINext;
             @UINext.performed += instance.OnUINext;
             @UINext.canceled += instance.OnUINext;
+            @UISelectRight.started += instance.OnUISelectRight;
+            @UISelectRight.performed += instance.OnUISelectRight;
+            @UISelectRight.canceled += instance.OnUISelectRight;
+            @UISelectLeft.started += instance.OnUISelectLeft;
+            @UISelectLeft.performed += instance.OnUISelectLeft;
+            @UISelectLeft.canceled += instance.OnUISelectLeft;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -576,6 +628,12 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @UINext.started -= instance.OnUINext;
             @UINext.performed -= instance.OnUINext;
             @UINext.canceled -= instance.OnUINext;
+            @UISelectRight.started -= instance.OnUISelectRight;
+            @UISelectRight.performed -= instance.OnUISelectRight;
+            @UISelectRight.canceled -= instance.OnUISelectRight;
+            @UISelectLeft.started -= instance.OnUISelectLeft;
+            @UISelectLeft.performed -= instance.OnUISelectLeft;
+            @UISelectLeft.canceled -= instance.OnUISelectLeft;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -662,6 +720,8 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnCameraZoom(InputAction.CallbackContext context);
         void OnUIChat(InputAction.CallbackContext context);
         void OnUINext(InputAction.CallbackContext context);
+        void OnUISelectRight(InputAction.CallbackContext context);
+        void OnUISelectLeft(InputAction.CallbackContext context);
     }
     public interface IUIActionsActions
     {

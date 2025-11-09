@@ -25,8 +25,10 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     [SerializeField] private GameObject optionsPanel;         // 선택지 패널
     [SerializeField] private Button option1Button;            // 선택지1 버튼
     [SerializeField] private Text op1Text;                    // 선택지1 텍스트
+    [SerializeField] private Image op1BtnBg;
     [SerializeField] private Button option2Button;            // 선택지2 버튼
     [SerializeField] private Text op2Text;                    // 선택지2 텍스트
+    [SerializeField] private Image op2BtnBg;
 
     [Header("Settings")]
     [SerializeField] private float readSpeed = 0.05f;
@@ -45,6 +47,10 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private int currentDialogNumber;
     private int currentLineNumber;
     private Action callback = null;
+
+    private int currentSelectOption = -1;
+    private int op1NextTextNum = -1;
+    private int op2NextTextNum = -1;
 
     private bool isDialogueActive = false;
     private bool isOptionShowing = false;
@@ -296,12 +302,14 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             op1Text.text = info.Op1Txt;
             option1Button.onClick.RemoveAllListeners();
             option1Button.onClick.AddListener(() => ShowText(info.Op1Num));
+            op1NextTextNum = info.Op1Num;
         }
         if (info.Op2Txt.Length > 0)
         {
             op2Text.text = info.Op2Txt;
             option2Button.onClick.RemoveAllListeners();
             option2Button.onClick.AddListener(() => ShowText(info.Op2Num));
+            op2NextTextNum = info.Op2Num;
         }
     }
 
@@ -336,6 +344,38 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         else option2Button.gameObject.SetActive(false);
 
         optionsPanel.gameObject.SetActive(true);
+
+        currentSelectOption = -1;
+
+        SetInput("UISelectLeft", true, OnSelectOption);
+        SetInput("UISelectRight", true, OnSelectOption);
+
+        SetInput("UINext", false, OnConfirmOption);
+    }
+
+    private void OnSelectOption(InputAction.CallbackContext context)
+    {
+        if(currentSelectOption == -1)
+        {
+            currentSelectOption = 0;
+            op1BtnBg.gameObject.SetActive(true);
+
+            SetInput("UINext", true, OnConfirmOption);
+            return;
+        }
+
+        currentSelectOption = currentSelectOption == 0 ? 1 : 0;
+        op1BtnBg.gameObject.SetActive(currentSelectOption == 0);
+        op2BtnBg.gameObject.SetActive(currentSelectOption == 1);
+    }
+
+    private void OnConfirmOption(InputAction.CallbackContext context)
+    {
+        if (currentSelectOption < 0)
+            return;
+
+        ShowText(currentSelectOption == 0 ? op1NextTextNum : op2NextTextNum);
+        SetInput("UINext", false, OnConfirmOption);
     }
 
     private void ShowNextBtn()

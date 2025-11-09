@@ -112,6 +112,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "UISelectRight",
+                    "type": "Value",
+                    "id": "8c0299f9-483e-470d-9f32-26d4c0705273",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "UISelectLeft",
+                    "type": "Button",
+                    "id": "6421eb0d-a483-41cf-aef1-ce329b9d734b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -310,6 +328,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "UINext",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94b2780c-6416-4b75-b45e-d0364dcaba3f",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UISelectRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b102d7b-39ed-45c9-870f-53dee2fb50a0",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UISelectLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

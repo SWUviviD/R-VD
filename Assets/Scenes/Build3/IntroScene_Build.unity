@@ -288,10 +288,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1580712703462114043, guid: 821c6e35fc747a84ca0ae3223ca46043,
+    - target: {fileID: 1580724844990863562, guid: 821c6e35fc747a84ca0ae3223ca46043,
         type: 3}
-      propertyPath: far clip plane
-      value: 200
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1815743431381756391, guid: 821c6e35fc747a84ca0ae3223ca46043,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1913785505948397178, guid: 821c6e35fc747a84ca0ae3223ca46043,
         type: 3}
@@ -343,10 +348,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2242066501020861347, guid: 821c6e35fc747a84ca0ae3223ca46043,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2293188476179442293, guid: 821c6e35fc747a84ca0ae3223ca46043,
         type: 3}
       propertyPath: m_Name
       value: DialogueSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 3789931716198594160, guid: 821c6e35fc747a84ca0ae3223ca46043,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

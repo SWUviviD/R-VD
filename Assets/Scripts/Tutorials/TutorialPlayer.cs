@@ -160,11 +160,16 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
             yield return null;
         }
 
+        panel.alpha = 0f;
+
         callback?.Invoke();
     }
 
     private void ShowNextText(int lineNum)
     {
+        if (currentInfo == null)
+            return;
+
         if(lineNum == currentInfo.talkLines.Length)
         {
             StartCoroutine(CoLoadOut(SiroTalk, siroTalkUIEndPos, StartTutorialPanding));

@@ -41,6 +41,8 @@ public class GameDataManager : MonoBehaviour
 
     public GameData GameData { get; private set; }
 
+    private bool isGameOvered = false;
+
 #if UNITY_EDITOR
     [MenuItem("Data/DeleteData")]
     public static void DeleteData()
@@ -56,7 +58,8 @@ public class GameDataManager : MonoBehaviour
         if (!SerializeManager.Instance.LoadDataFile(out list, FileName)
             || list == null
             || list.Count == 0
-            || list[0] == null)
+            || list[0] == null
+            || isGameOvered == true)
         {
             Debug.LogWarning("[SaveSystem] LoadGameData: No valid data found. Creating new GameData.");
             GameData = new GameData();
@@ -157,6 +160,7 @@ public class GameDataManager : MonoBehaviour
     public void DeleteGameData()
     {
         GameData.StageID = StageID.Stage1;
+        isGameOvered = true;
 
 #if UNITY_EDITOR
         SerializeManager.Instance.DeleteDataFile(FileName);

@@ -722,10 +722,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingKey: 27
   RestartBtn: {fileID: 1404401784}
-  ExitBtn: {fileID: 298091443}
+  SettingBtn: {fileID: 0}
+  ReturnToMainBtn: {fileID: 0}
+  ResumeBtn: {fileID: 0}
   background: {fileID: 1152784973}
   settingPanel: {fileID: 1901733426}
   panelSFX: {fileID: 223778704}
+  btnPanel: {fileID: 0}
+  soundPanel: {fileID: 0}
+  masterVolume: {fileID: 0}
+  bgmVolume: {fileID: 0}
+  sfxVolume: {fileID: 0}
+  settingExitBtn: {fileID: 0}
 --- !u!222 &223778706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1251,7 +1259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackOverlay: {fileID: 298008784}
   stageText: {fileID: 1077604955}
-  gameOverText: {fileID: 1750023119}
+  gameOverText: {fileID: 0}
   restartButton: {fileID: 397269789}
   exitButton: {fileID: 2017229669}
   fadeSpeed: 1
@@ -3332,12 +3340,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343340715}
   m_CullTransparentMesh: 1
---- !u!4 &1388897562 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3186561058415996965, guid: 821c6e35fc747a84ca0ae3223ca46043,
-    type: 3}
-  m_PrefabInstance: {fileID: 6734367550936286167}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1404401780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,15 +3960,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f948bf6db045b47449cf8ab0b50fae8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachineBrainTR: {fileID: 756663399}
-  playerFollowCameraTR: {fileID: 803553097}
-  dialogueCameraTR: {fileID: 1388897562}
-  target: {fileID: 593668119}
-  minDistance: 3
-  maxDistance: 30
-  wheelSpeed: 500
-  xMoveSpeed: 500
-  yMoveSpeed: 250
+  currentCamera: {fileID: 0}
+  <MainCamera>k__BackingField: {fileID: 0}
+  <DialogueCamera>k__BackingField: {fileID: 0}
+  _orbitCam: {fileID: 0}
 --- !u!1 &1543062038
 GameObject:
   m_ObjectHideFlags: 0
@@ -5387,8 +5384,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteOverlay: {fileID: 1982971295}
   stageText: {fileID: 2056241132}
-  stageClearText: {fileID: 1872600492}
+  stageClearText: {fileID: 0}
   nextButton: {fileID: 1832383036}
+  quitButton: {fileID: 0}
   fadeSpeed: 1
   backgroundAlpha: 0.7
 --- !u!1 &1977100424

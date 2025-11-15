@@ -1268,11 +1268,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c9ef593d4be4f23a8a0bee135ade35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Camera>k__BackingField: {fileID: 0}
+  <Player>k__BackingField: {fileID: 0}
   clearEffectPrefab1: {fileID: 874244544889619525, guid: 1a342873e6909904399e576bb3ec5a5c,
     type: 3}
   clearEffectPrefab2: {fileID: 3576924614362489592, guid: 542a72078a5688544abeddc64e00c68c,
     type: 3}
-  backgroundSFX: {fileID: 1066023787}
 --- !u!4 &1066023786
 Transform:
   m_ObjectHideFlags: 0
@@ -1594,7 +1595,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 50

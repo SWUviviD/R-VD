@@ -1953,18 +1953,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1720660971}
+  focusOffset: {x: 0, y: 1.6, z: 0}
   distance: 6
   maxDistance: 20
   minDistance: 4
   height: 2
   yawSensitivity: 0.15
-  zoomSensitivity: 0.5
+  pitchSensitivity: 0.12
   invertX: 0
+  invertY: 0
+  minPitch: -30
+  maxPitch: 70
+  zoomSensitivity: 0.5
   collisionMask:
     serializedVersion: 2
     m_Bits: 536871040
   collisionBuffer: 0.1
   minCollisionDistance: 1
+  useMinimalDamping: 1
   positionDamping: 25.7
   rotationDamping: 20
 --- !u!81 &1185377811

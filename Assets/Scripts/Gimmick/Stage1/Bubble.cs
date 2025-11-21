@@ -10,6 +10,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     [SerializeField] private Transform deco;
     [SerializeField] private float decoRotateSpeed = 180f;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject crackEffect;
 
     private WaitForSeconds resetSeconds;
 
@@ -46,6 +47,7 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
     {
         // 여기에 터지는 애니메이션 세팅
         audioSource.Play();
+        GameObject watermove = Instantiate(crackEffect, transform.position, Quaternion.identity);
         bubbleObject.SetActive(false);
         bubbleCollider.enabled = false;
 

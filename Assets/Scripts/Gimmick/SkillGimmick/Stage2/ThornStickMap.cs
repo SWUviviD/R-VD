@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class ThornStickMap : MonoBehaviour
 {
+    [Header("ThornCastle")]
+    [SerializeField] private GameObject thronCastlePrefab;
+
     [Header("Stick")]
     [SerializeField] private GameObject stickPrefab;
     [SerializeField] private Transform stickParent;
     [SerializeField] private int initialStickCount = 24;
     private Queue<ThornStick> sticks = new Queue<ThornStick>();
-    private List<bool> stickPos;
+    private bool[] stickPos;
 
     [Header("Status")]
     [SerializeField] private float stickLifeTime = 17.0f;
@@ -21,8 +25,10 @@ public class ThornStickMap : MonoBehaviour
     [Header("StartPos")]
     [SerializeField] private float stickPosOffset = 8f;
     [SerializeField] private Transform stickDropStartPos;
+    private Transform[] dropPositions;
 
     private PlayerMove playerMove;
+    private bool isThrowing = false;
 
     private void Awake()
     {
@@ -32,10 +38,17 @@ public class ThornStickMap : MonoBehaviour
     private void Init()
     {
         WFdropOffset = new WaitForSeconds(dropStickOffset);
-        stickPos = new List<bool>(stickRow);
+        stickPos = new bool[stickRow];
+        dropPositions = new Transform[stickRow];
+
         for(int i = 0; i < stickRow; ++i)
         {
-            stickPos.Add(false);
+            stickPos[i] = false;
+            dropPositions[i] = Instantiate(thronCastlePrefab, transform).transform;
+            dropPositions[i].position = stickDropStartPos.position +
+                    stickDropStartPos.transform.right * stickPosOffset * i;
+
+            
         }
 
         for(int i = 0; i < initialStickCount; ++i )
@@ -65,8 +78,7 @@ public class ThornStickMap : MonoBehaviour
                     pos = Random.Range(0, stickRow);
                 } while (stickPos[pos] == true);
 
-                s.transform.position = stickDropStartPos.position + 
-                    stickDropStartPos.transform.right * stickPosOffset * pos;
+                s.transform.position = dropPositions[pos].position;
 
                 s.Drop();
             }
@@ -77,33 +89,19 @@ public class ThornStickMap : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Transform parent = other.transform.parent;
-        if (parent == null)
-            return;
-
-        if (parent.TryGetComponent<PlayerMove>(out var move) == true)
+        if (other.TryGetComponent<PlayerMove>(out var move) == true
+            && isThrowing == false)
         {
             playerMove = move;
             StartCoroutine(CoStartDropping());
         }
     }
-
-
     private void OnTriggerExit(Collider other)
     {
-        if (playerMove == null)
-            return;
-
-        Transform parent = other.transform.parent;
-        if (parent == null) return;
-
-        if (parent.TryGetComponent<PlayerMove>(out var move) == true)
+        if(other.TryGetComponent<PlayerMove> (out var move) == true)
         {
-            if (playerMove == move)
-            {
-                playerMove = null;
-                StopAllCoroutines();
-            }
+            isThrowing = false;
+            StopAllCoroutines();
         }
     }
 

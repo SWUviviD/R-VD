@@ -29,14 +29,15 @@ public class ElectronicSwitchB : ElectronicSwitch
         currentUnShockedCount = 0;
         currentState = State.Generating;
         StartCoroutine(CoGenerating());
+
+        ellectricEffect.SetActive(true);
     }
 
     public override void ShockFailed(ShockableObj obj = null)
     {
         base.ShockFailed();
 
-        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
-        Destroy(ellectric, 1f);
+        ellectricEffect.SetActive(false);
 
         ++currentUnShockedCount;
         Debug.Log(currentUnShockedCount);

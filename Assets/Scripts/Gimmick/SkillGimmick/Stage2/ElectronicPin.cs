@@ -88,8 +88,6 @@ public class ElectronicPin : ShockableObj, IFusionable
         if(CurrentState == State.Inactive)
         {
             prevState = State.Inactive;
-            GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
-            Destroy(ellectric, 1f);
             StartCoroutine(CoTurnPipe());
             return true;
         }
@@ -198,6 +196,7 @@ public class ElectronicPin : ShockableObj, IFusionable
 
         GiveShockObj = obj;
 
+        ellectricEffect.SetActive(true);
         CurrentState = State.Active;
         StartCoroutine(CoActivate());
     }
@@ -224,8 +223,7 @@ public class ElectronicPin : ShockableObj, IFusionable
         CurrentState = State.Inactive;
         StartCoroutine(CoInactivate());
 
-        GameObject ellectric = Instantiate(ellectricEffect, transform.position, Quaternion.identity);
-        Destroy(ellectric, 1f);
+        ellectricEffect.SetActive(false);
     }
 
     private void ShockFailToOther()

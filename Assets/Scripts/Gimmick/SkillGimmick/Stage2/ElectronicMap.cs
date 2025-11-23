@@ -81,24 +81,39 @@ public class ElectronicMap : MonoBehaviour
 
         List<LDPinMapData> mapDatas = MapDatas[mapIndex];
 
-        int x = -1;
+        int maxX = -1;
+        int maxY = -1;
+        foreach (var data in mapDatas)
+        {
+            if (data.X > maxX) maxX = data.X;
+            if (data.Y > maxY) maxY = data.Y;
+        }
+
+        pinList.Clear();
+        for(int x = 0; x <= maxX; ++x)
+        {
+            var l = new List<ElectronicPin>();
+            for(int y = 0; y <= maxY; ++y)
+            {
+                l.Add(null);
+            }
+            pinList.Add(l);
+        }
+
         foreach (var mapData in mapDatas)
         {
-            if(x != mapData.X)
-            {
-                pinList.Add(new List<ElectronicPin>());
-                x = mapData.X;
-            }
-
             GameObject pin = Instantiate(pinPrefab, pinParent);
             ElectronicPin pinScript = pin.GetComponent<ElectronicPin>();
-            
-            pinList[x].Add(pinScript);
+
             pinScript.Init(this, mapData);
 
             pin.transform.localPosition = 
                 Vector3.right * PosOffset * mapData.X + 
                 Vector3.forward * PosOffset * mapData.Y;
+
+            pin.name = $"Pin({mapData.X}/{mapData.Y})";
+
+            pinList[mapData.X][mapData.Y] = pinScript;
         }
 
         for(int i = 0; i < attached.Length; ++i)
@@ -115,22 +130,21 @@ public class ElectronicMap : MonoBehaviour
         int x = pin.Data.X;
         int y = pin.Data.Y;
 
-        int type = pin.Data.Type;
-        int dir = (int)pin.CurrentDir;
-
         for(int i = 0; i < 4; ++i)
         {
-            if (PIN_DIR[type, (dir + i) % 4] == false)
+            int nx = x = PIN_POS[i, 0];
+            int ny = y = PIN_POS[i, 1];
+
+            if (nx < 0 || nx >= pinList.Count ||
+                ny < 0 || ny >= pinList[0].Count)
                 continue;
 
-            if(x + PIN_POS[i, 0] >= 0 && x + PIN_POS[i, 0] < pinList.Count
-                && y + PIN_POS[i, 1] >= 0 && y + PIN_POS[i, 1] < pinList[0].Count)
+            ElectronicPin nextPin = pinList[nx][ny];
+
+            if ((nextPin.CurrentState == ElectronicPin.State.Active) &&
+                IsConnectedBetween(pin,nextPin, i))
             {
-                ElectronicPin nextPin = pinList[x + PIN_POS[i, 0]][y + PIN_POS[i, 1]];
-                if (pin.GiveShockObj != nextPin && (nextPin.CurrentState == ElectronicPin.State.Active))
-                {
-                    return true;
-                }
+                return true;
             }
         }
 
@@ -139,13 +153,8 @@ public class ElectronicMap : MonoBehaviour
 
     public bool CheckIfValid(ElectronicPin pin, int fromDir)
     {
-        int x = pin.Data.X;
-        int y = pin.Data.Y;
-
-        int type = pin.Data.Type;
-        int dir = (int)pin.CurrentDir;
-
-        return PIN_DIR[type, (dir + (fromDir + 2)) % 4];
+        int opp = (fromDir + 2) % 4;
+        return HasConnection(pin, opp);
     }
 
     public void ShockPin(int index)
@@ -174,23 +183,25 @@ public class ElectronicMap : MonoBehaviour
         int y = pin.Data.Y;
 
         int type = pin.Data.Type;
-        int dir = (int)pin.CurrentDir;
 
         bool connected = false;
+
         for (int i = 0; i < 4; ++i)
         {
-            if (PIN_DIR[type, (dir + i) % 4] == false)
+            int nx = x + PIN_POS[i, 0];
+            int ny = y + PIN_POS[i, 1];
+
+            if (nx < 0 || nx >= pinList.Count ||
+                ny < 0 || ny >= pinList[0].Count)
                 continue;
 
-            if (x + PIN_POS[i, 0] >= 0 && x + PIN_POS[i, 0] < pinList.Count
-                && y + PIN_POS[i, 1] >= 0 && y + PIN_POS[i, 1] < pinList[0].Count)
+            ElectronicPin nextPin = pinList[nx][ny];
+
+            if(nextPin.CurrentState == ElectronicPin.State.Inactive &&
+                IsConnectedBetween(pin, nextPin, i))
             {
-                ElectronicPin nextPin = pinList[x + PIN_POS[i, 0]][y + PIN_POS[i, 1]];
-                if(nextPin.CurrentState == ElectronicPin.State.Inactive && CheckIfValid(nextPin, i))
-                {
-                    connected = true;
-                    nextPin.OnShocked(pin);
-                }
+                connected = true;
+                nextPin.OnShocked(pin);
             }
         }
 
@@ -219,22 +230,21 @@ public class ElectronicMap : MonoBehaviour
         int x = pin.Data.X;
         int y = pin.Data.Y;
 
-        int type = pin.Data.Type;
-        int dir = (int)pin.CurrentDir;
-
         for (int i = 0; i < 4; ++i)
         {
-            if (PIN_DIR[type, (dir + i) % 4] == false)
+            int nx = x + PIN_POS[i, 0];
+            int ny = y + PIN_POS[i, 1];
+
+            if (nx < 0 || nx >= pinList.Count ||
+                ny < 0 || ny >= pinList[0].Count)
                 continue;
 
-            if (x + PIN_POS[i, 0] >= 0 && x + PIN_POS[i, 0] < pinList.Count
-                && y + PIN_POS[i, 1] >= 0 && y + PIN_POS[i, 1] < pinList[0].Count)
+            ElectronicPin nextPin = pinList[nx][ny];
+
+            if (nextPin.CurrentState == ElectronicPin.State.Active &&
+                IsConnectedBetween(pin, nextPin, i))
             {
-                ElectronicPin nextPin = pinList[x + PIN_POS[i, 0]][y + PIN_POS[i, 1]];
-                if (nextPin.CurrentState == ElectronicPin.State.Active && CheckIfValid(nextPin, i))
-                {
-                    nextPin.ShockFailed(pin);
-                }
+                nextPin.ShockFailed(pin);
             }
         }
 
@@ -246,5 +256,21 @@ public class ElectronicMap : MonoBehaviour
                 obj.obj.ShockFailed(pin);
             }
         }
+    }
+
+    private bool HasConnection(ElectronicPin pin, int worldDir)
+    {
+        int type = pin.Data.Type;
+        int rot = (int)pin.CurrentDir;
+
+        int localSide = (worldDir - rot + 4) % 4;
+
+        return PIN_DIR[type, localSide];
+    }
+
+    private bool IsConnectedBetween(ElectronicPin fromPin, ElectronicPin toPin, int dirIndex)
+    {
+        int opp = (dirIndex + 2) % 4;
+        return HasConnection(fromPin, dirIndex) && HasConnection(toPin, opp);
     }
 }

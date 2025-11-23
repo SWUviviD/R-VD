@@ -405,6 +405,9 @@ MonoBehaviour:
   cristalTrs: {fileID: 2236257023435662195}
   cristalModel: {fileID: 940857137641716660}
   cristalBreakEffect: {fileID: 7519000725662813060}
+  onCristalBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3901451036758786374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +497,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2236257023435662195}
     m_Modifications:
+    - target: {fileID: 8255215018771944235, guid: 139c09de669d89546999f577551dd885,
+        type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255215018802756252, guid: 139c09de669d89546999f577551dd885,
+        type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8255215019295333937, guid: 139c09de669d89546999f577551dd885,
         type: 3}
       propertyPath: m_Name
@@ -573,6 +586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255215019295333939, guid: 139c09de669d89546999f577551dd885,
+        type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

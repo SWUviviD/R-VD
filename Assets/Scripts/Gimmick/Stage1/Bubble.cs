@@ -73,7 +73,8 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
             dir.y = 0f;
         }
 
-        jump.Jump(dir, gimmickData.JumpForce, gimmickData.JumpForce);
+        jump.Jump(gimmickData.JumpForce);
+        //jump.Jump(dir, gimmickData.JumpForce, gimmickData.JumpForce);
         StartCoroutine(BubblePop());
     }
 

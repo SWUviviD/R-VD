@@ -132,6 +132,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         panel.alpha = 1.0f;
         Vector3 startPos = AnimationStartPoint.transform.position;
         Vector3 curPos = startPos;
+        panel.gameObject.SetActive(true);
 
         while (elapsedTime < loadInTime)
         {

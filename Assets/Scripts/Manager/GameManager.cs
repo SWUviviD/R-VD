@@ -295,15 +295,11 @@ public class GameManager : MonoSingleton<GameManager>
         // Todo. 엔딩일 경우 처리 필요
         if (IsLastScene)
         {
-            //CutSceneManager.Instance.PlayCutScene(
-            //    CutSceneDefines.CutSceneNumber.End,
-            //    () => SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title));
             SetMovementInput(false);
 
             // 게임 끝까지 완료한 경우 게임 데이터 완전 초기화(삭제) 필요
             GameDataManager.DeleteGameData();
-            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title );
-            ShowCursor(true);
+            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Ending );
             return;
         }
 
@@ -315,6 +311,7 @@ public class GameManager : MonoSingleton<GameManager>
     public void LoadTitle()
     {
         SetMovementInput(false);
+        ShowCursor(true);
         SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
     }
 }

@@ -22,7 +22,9 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     /// <summary> 배치된 영역 오브젝트 </summary>
     [SerializeField] private GameObject placedArea;
 
-
+    [Header("FallTime")]
+    [SerializeField] private float fallLimitTime = 5f;
+    private float fallTimer = 0f;
 
     [Header("Player Data")]
     /// <summary> 플레이어 레이어마스크 </summary>
@@ -38,6 +40,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     private int myIndex = -1;
     private bool isActive = false;
     private bool isVisited = false;
+    private bool isWaitingToRespawn = false;
 
     protected override void Init()
     {
@@ -59,6 +62,11 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         }
 
         SetGimmick();
+    }
+
+    private void Start()
+    {
+        move = GameManager.Instance.Player.GetComponent<PlayerMove>();
     }
 
     public override void SetGimmick()
@@ -84,7 +92,6 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
             if (playerHp == null)
             {
                 playerHp = hp;
-                move = other.GetComponentInParent <PlayerMove>();
             }
 
             CheckpointGimmick.SetCheckpoint(myIndex);
@@ -108,12 +115,26 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         if (isActive == false)
         {
             return;
-        }    
+        }
 
-        // 플레이어 추락 시 데미지 및 리스폰 이동
-        if (playerHp.transform.position.y < gimmickData.DropRespawnHeight)
+        bool grounded = move != null && move.IsGrounded;
+
+        if(grounded == false)
         {
-            playerHp.Fall(gimmickData.DropDamage);
+            fallTimer += Time.deltaTime;
+
+            if(fallTimer >= fallLimitTime && isWaitingToRespawn == false)
+            {
+                Debug.Log($"{gameObject.name} {isWaitingToRespawn} {fallTimer}");
+                playerHp.Fall(gimmickData.DropDamage);
+                isWaitingToRespawn = true;
+                fallTimer = 0f;
+            }
+        }
+        else
+        {
+            isWaitingToRespawn = false;
+            fallTimer = 0f;
         }
     }
 
@@ -150,7 +171,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         if (CurrentCheckpointIndex == _index)
             return;
 
-        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex < CheckpointList.Count)
+        if (CurrentCheckpointIndex >= 0 && CurrentCheckpointIndex % 100 < CheckpointList.Count)
         {
             CheckpointList[CurrentCheckpointIndex].CheckPointDisable();
         }

@@ -17,6 +17,7 @@ public class HPBarUI : MonoBehaviour
     [Header("Hp")]
     [SerializeField] private float fadeTime = 0.5f;
     [SerializeField] private RectTransform[] hpStars = new RectTransform[10];
+    [SerializeField] private float starScale = 0.2f;
     private int currentShowingHP;
     private int maxHP = 10;
     private PlayerHp hp;
@@ -76,8 +77,8 @@ public class HPBarUI : MonoBehaviour
 
     private IEnumerator CoSetStar(RectTransform t, bool isShow)
     {
-        float startScale = isShow ? 0f : 1f;
-        float endScale = isShow ? 1f : 0f;
+        float startScale = isShow ? 0f : starScale;
+        float endScale = isShow ? starScale : 0f;
         float elapsedTime = 0f;
 
         t.gameObject.SetActive(true);

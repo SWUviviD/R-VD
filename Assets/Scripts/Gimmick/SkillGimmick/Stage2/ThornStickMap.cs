@@ -26,6 +26,7 @@ public class ThornStickMap : MonoBehaviour
     [SerializeField] private float stickPosOffset = 8f;
     [SerializeField] private Transform stickDropStartPos;
     private Transform[] dropPositions;
+    private Quaternion thornOriginRotation;
 
     private PlayerMove playerMove;
     private bool isThrowing = false;
@@ -48,8 +49,6 @@ public class ThornStickMap : MonoBehaviour
             dropPositions[i] = Instantiate(thronCastlePrefab, transform).transform;
             dropPositions[i].position = stickDropStartPos.position +
                     stickDropStartPos.transform.right * stickPosOffset * i;
-
-            
         }
 
         for(int i = 0; i < initialStickCount; ++i )
@@ -79,7 +78,10 @@ public class ThornStickMap : MonoBehaviour
                     pos = Random.Range(0, stickRow);
                 } while (stickPos[pos] == true);
 
+                stickPos[pos] = true;
+
                 s.transform.position = dropPositions[pos].position;
+                s.transform.rotation = thornOriginRotation;
 
                 s.Drop();
             }
@@ -94,6 +96,7 @@ public class ThornStickMap : MonoBehaviour
             && isThrowing == false)
         {
             playerMove = move;
+            isThrowing = true;
             StartCoroutine(CoStartDropping());
         }
     }
@@ -117,6 +120,7 @@ public class ThornStickMap : MonoBehaviour
     private ThornStick CreateStick()
     {
         GameObject s = Instantiate(stickPrefab, stickParent);
+        thornOriginRotation = s.transform.rotation;
         ThornStick sScript = s.GetComponent<ThornStick>();
         sScript.Init(this);
         return sScript;

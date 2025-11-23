@@ -79,8 +79,8 @@ public class ThornStick : MonoBehaviour
     {
         if(isDroppingStop)
         {
-            rb.velocity = floor.forward * -1f * movingSpeed;
-            rb.angularVelocity = transform.right * -1f * rotateSpeed;
+            rb.velocity = -transform.forward * movingSpeed;
+            rb.angularVelocity = transform.right * rotateSpeed;
         }
         else
         {

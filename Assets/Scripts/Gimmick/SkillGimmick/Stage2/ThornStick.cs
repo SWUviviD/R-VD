@@ -42,7 +42,7 @@ public class ThornStick : MonoBehaviour
     {
         if (isDroppingStop)
         {
-            if(collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody")
+            if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody")
                 || collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody"))
             {
                 Transform parent = collision.transform.parent;
@@ -77,10 +77,10 @@ public class ThornStick : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDroppingStop)
+        if (isDroppingStop)
         {
-            rb.velocity = -transform.forward * movingSpeed;
-            rb.angularVelocity = transform.right * rotateSpeed;
+            rb.velocity = floor.forward * -1f * movingSpeed;
+            rb.angularVelocity = transform.right * -1f * rotateSpeed;
         }
         else
         {

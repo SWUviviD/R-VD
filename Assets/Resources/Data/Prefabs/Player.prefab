@@ -1801,6 +1801,9 @@ MonoBehaviour:
   rigid: {fileID: 4350681127592723824}
   status: {fileID: 3010588022041336495}
   dashCoolTime: 1.5
+  onDashGauge:
+    m_PersistentCalls:
+      m_Calls: []
   OnDashEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2025,6 +2028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fusionPos: {fileID: 6881359659938398974}
   radius: 1
+  anim: {fileID: 2062211234468059524}
 --- !u!114 &5330819885286989951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2064,6 +2068,9 @@ MonoBehaviour:
   - skillBase: {fileID: 5330819885286989951}
     model: {fileID: 5115855206579081196}
     animator: {fileID: 363087976228707313}
+  onSkillChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5232081074019824594
 GameObject:
   m_ObjectHideFlags: 0

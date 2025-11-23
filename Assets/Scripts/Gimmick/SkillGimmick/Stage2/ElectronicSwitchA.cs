@@ -12,6 +12,7 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
 
     public override void ShockFailed(ShockableObj obj = null)
     {
+        base.ShockFailed(obj);
         ellectricEffect.SetActive(false);
     }
 

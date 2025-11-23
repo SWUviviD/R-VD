@@ -6,13 +6,27 @@ public class ElectronicSwitchB : ElectronicSwitch
 {
     [SerializeField] private int connectCount;
 
-    private int currentUnShockedCount;
+    [Header("Effect")]
+    [SerializeField] private Renderer[] renderList;
+    private List<Material> SwitchPipeMaterial = new List<Material>(2);
+    [SerializeField] private Material[] InactiveColor;
+    [SerializeField] private Material[] ActiveColor;
+    [SerializeField] private float fadeTime = 0.2f;
+
+    private int currentConnectedCount;
+    private HashSet<ShockableObj> connectedSources = new HashSet<ShockableObj>();
 
     public GameObject ellectricEffect;
 
     public void Awake()
     {
-        currentUnShockedCount = connectCount;
+        currentConnectedCount = 0;
+
+        for (int i = 0; i < renderList.Length; ++i)
+        {
+            SwitchPipeMaterial.Add(renderList[i].material);
+            SwitchPipeMaterial[i].color = InactiveColor[i].color;
+        }
     }
 
     public override void OnShocked(ShockableObj obj)
@@ -21,25 +35,54 @@ public class ElectronicSwitchB : ElectronicSwitch
 
         GiveShockObj = obj;
 
-        --currentUnShockedCount;
-        Debug.Log(currentUnShockedCount);
-        if (currentUnShockedCount > 0)
+        ++currentConnectedCount;
+
+        if (currentState == State.Generating)
             return;
 
-        currentUnShockedCount = 0;
-        currentState = State.Generating;
-        StartCoroutine(CoGenerating());
+        if(currentConnectedCount >= connectCount)
+        {
+            currentConnectedCount = Mathf.Min(currentConnectedCount, connectCount);
 
-        ellectricEffect.SetActive(true);
+            currentState = State.Generating;
+            StartCoroutine(CoGenerating());
+
+            ellectricEffect.SetActive(true);
+        }
+    }
+
+    private IEnumerator CoActivate()
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            for (int i = 0; i < renderList.Length; ++i)
+            {
+                SwitchPipeMaterial[i].color =
+                    Color.Lerp(InactiveColor[i].color, ActiveColor[i].color,
+                    elapsedTime / fadeTime);
+            }
+            yield return null;
+        }
+
+
+        for (int i = 0; i < renderList.Length; ++i)
+        {
+            SwitchPipeMaterial[i].color = ActiveColor[i].color;
+        }
     }
 
     public override void ShockFailed(ShockableObj obj = null)
     {
-        base.ShockFailed();
+        --currentConnectedCount;
 
-        ellectricEffect.SetActive(false);
-
-        ++currentUnShockedCount;
-        Debug.Log(currentUnShockedCount);
+        if(currentState == State.Generating && 
+            currentConnectedCount < connectCount)
+        {
+            ellectricEffect.SetActive(false);
+            base.ShockFailed();
+        }
     }
 }

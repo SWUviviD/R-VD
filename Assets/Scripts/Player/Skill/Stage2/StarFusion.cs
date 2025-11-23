@@ -7,11 +7,13 @@ public class StarFusion : SkillBase
 {
     [SerializeField] private Transform fusionPos;
     [SerializeField] private float radius = 1.0f;
+    [SerializeField] private PlayerAnimation anim;
 
     public override void OnSkillStart(InputAction.CallbackContext _playerStatus)
     {
 
         // Play Animation & Sound
+        anim.OnFusion();
 
         Collider[] hits = Physics.OverlapSphere(fusionPos.position, radius, 1 << 23);
 

@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class ThornStickMap : MonoBehaviour
 {
     [Header("ThornCastle")]
     [SerializeField] private GameObject thronCastlePrefab;
+    [SerializeField] private Renderer plain; 
 
     [Header("Stick")]
     [SerializeField] private GameObject stickPrefab;
@@ -37,6 +37,7 @@ public class ThornStickMap : MonoBehaviour
 
     private void Init()
     {
+        plain.enabled = false;
         WFdropOffset = new WaitForSeconds(dropStickOffset);
         stickPos = new bool[stickRow];
         dropPositions = new Transform[stickRow];

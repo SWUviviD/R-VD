@@ -151,8 +151,9 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         float alpha = 0.0f;
 
         panel.transform.position = panelOriginPos;
+        panel.gameObject.SetActive(true);
 
-        while(elapsedTime < loadOutTime)
+        while (elapsedTime < loadOutTime)
         {
             alpha = Mathf.Lerp(1.0f, 0.0f, elapsedTime / loadOutTime);
             panel.alpha = alpha;
@@ -161,6 +162,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         }
 
         panel.alpha = 0f;
+        panel.gameObject.SetActive(false);
 
         callback?.Invoke();
     }

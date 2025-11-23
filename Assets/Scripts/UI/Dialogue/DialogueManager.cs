@@ -62,6 +62,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private float dialogueTime = 0f;
     private float timer = 0f;
 
+
     private void Start()
     {
         CameraController.Instance.SetDialogueCamera(dialogueCamera);
@@ -124,6 +125,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         StopAllCoroutines();
 
         // UI 세팅
+        GameManager.Instance.HpUI?.SetVisable(false);
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
 
@@ -160,6 +162,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         StopAllCoroutines();
 
         // UI 세팅
+        GameManager.Instance.HpUI?.SetVisable(false);
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
 
@@ -390,6 +393,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         SetInput("UINext", false, OnSkip);
 
         isDialogueActive = false;
+        GameManager.Instance.HpUI?.SetVisable(true);
         toChat.SetActive(false);
         dialoguePanel.SetActive(false);
         optionsPanel.SetActive(false);

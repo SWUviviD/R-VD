@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Defines.InputDefines;
 using System.Collections;
+using UnityEngine.Events;
 
 public class SkillSwap : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class SkillSwap : MonoBehaviour
     [SerializeField] private SkillInfo[] skillInfos = new SkillInfo[(int)SkillType.MAX];
 
     private SkillType currentSkill = SkillType.MAX;
+
+    [Header("Event")]
+    [SerializeField] private UnityEvent<SkillType> onSkillChanged = new UnityEvent<SkillType>();
 
     private void Start()
     {
@@ -152,6 +156,8 @@ public class SkillSwap : MonoBehaviour
         }
 
         currentSkill = _newSkill;
+        onSkillChanged?.Invoke(currentSkill);
+        GameManager.Instance.HpUI?.SwichSkill(_newSkill);
         SkillInfo infoSkill = skillInfos[(int)currentSkill];
 
         if (infoSkill == null) return;

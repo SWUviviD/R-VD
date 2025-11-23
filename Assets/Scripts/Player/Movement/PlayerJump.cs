@@ -214,4 +214,35 @@ public class PlayerJump : MonoBehaviour
         playerAnimation.JumpStart();
         playerAnimation.SetFalling(false);
     }
+
+    public void Jump(Vector3 forwardDir, float upForce, float forwardSpeed)
+    {
+        forwardDir.y = 0f;
+        if (forwardDir.sqrMagnitude > 0.0001f)
+        {
+            forwardDir.Normalize();
+        }
+        else
+        {
+            forwardDir = Vector3.zero;
+        }
+
+        Vector3 vel = rigid.velocity;
+        if (vel.y < 0f) vel.y = 0f;
+
+        if (forwardDir != Vector3.zero)
+        {
+            vel.x = forwardDir.x * forwardSpeed;
+            vel.z = forwardDir.z * forwardSpeed;
+        }
+
+        rigid.velocity = vel;
+
+        rigid.AddForce(Vector3.up * upForce, ForceMode.Impulse);
+
+        IsJumping = true;
+        isFalling = false;
+        playerAnimation.JumpStart();
+        playerAnimation.SetFalling(false);
+    }
 }

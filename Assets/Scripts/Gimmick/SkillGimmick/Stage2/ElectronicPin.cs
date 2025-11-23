@@ -67,7 +67,7 @@ public class ElectronicPin : ShockableObj, IFusionable
             Pipes[i].SetActive(i == data.Type);
         }
 
-        for(int i = 0; i < 2; ++i)
+        for(int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial.Add( SwitchPipeRender[i].material);
             SwitchPipeMaterial[i].color = InactiveColor[i].color;
@@ -143,7 +143,7 @@ public class ElectronicPin : ShockableObj, IFusionable
                 break;
             }
 
-            for(int i = 0; i < 2; ++i)
+            for(int i = 0; i < SwitchPipeRender.Length; ++i)
             {
                 SwitchPipeMaterial[i].color = 
                     Color.Lerp(InactiveColor[i].color, ActiveColor[i].color, 
@@ -151,7 +151,7 @@ public class ElectronicPin : ShockableObj, IFusionable
             }
         }
 
-        for (int i = 0; i < 2; ++i)
+        for (int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial[i].color = ActiveColor[i].color;
         }
@@ -171,7 +171,7 @@ public class ElectronicPin : ShockableObj, IFusionable
                 break;
             }
 
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < SwitchPipeRender.Length; ++i)
             {
                 SwitchPipeMaterial[i].color =
                     Color.Lerp(ActiveColor[i].color, InactiveColor[i].color,
@@ -179,7 +179,7 @@ public class ElectronicPin : ShockableObj, IFusionable
             }
         }
 
-        for (int i = 0; i < 2; ++i)
+        for (int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial[i].color = InactiveColor[i].color;
         }

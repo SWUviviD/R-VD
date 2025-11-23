@@ -126,10 +126,18 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
 
     private void SetCamState(CameraState state)
     {
-        cam.transform.localPosition = state.LocalPosition;
-        cam.transform.localRotation = Quaternion.Euler(state.LocalRotation);
+        if(state.BasePosition == null)
+        {
+            cam.transform.localPosition = state.LocalPosition;
+            cam.transform.localRotation = Quaternion.Euler(state.LocalRotation);
+        }
+        else
+        {
+            cam.transform.localPosition = state.BasePosition.position;
+            cam.transform.localRotation = state.BasePosition.rotation;
+        }
 
-        effector?.SetFOV(state.Zoom);
+            effector?.SetFOV(state.Zoom);
     }
 
     private void PlayEffect(Step step, int index, Action OnAnimOver = null)

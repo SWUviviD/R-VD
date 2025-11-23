@@ -22,6 +22,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     private bool isInit = false;
 
+    public HPBarUI HpUI { get; private set; }
+
     protected override void Init()
     {
         GameDataManager = new GameDataManager();
@@ -64,6 +66,8 @@ public class GameManager : MonoSingleton<GameManager>
             move.SetPosition(GameDataManager.GameData.PlayerPosition);
             move.SetRotation(GameDataManager.GameData.PlayerRotation);
         }
+
+        HpUI = GameObject.FindAnyObjectByType<HPBarUI>();
 
         // todo 밖으로 빼기
         LevitateAroundPlayer siro = GameObject.FindAnyObjectByType<LevitateAroundPlayer>();

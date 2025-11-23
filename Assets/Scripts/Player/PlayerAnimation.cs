@@ -30,6 +30,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private readonly int OnDeathID = Animator.StringToHash("OnDeath");
     private readonly int OnShotStartID = Animator.StringToHash("OnShotStart");
+    private readonly int OnFusionID = Animator.StringToHash("OnFusion");
     private readonly int IsDashingID = Animator.StringToHash("IsDashing");
     private readonly int IsShotingID = Animator.StringToHash("IsShoting");
     private readonly int IsJumpingID = Animator.StringToHash("IsJumping");
@@ -131,6 +132,11 @@ public class PlayerAnimation : MonoBehaviour
     public void SetFalling(bool isFalling)
     {
         animator.SetBool(IsFallingID, isFalling);
+    }
+
+    public void OnFusion()
+    {
+        animator.SetTrigger(OnFusionID);
     }
 
     private void PlaySound(AudioClip audioClip, bool isLoop)

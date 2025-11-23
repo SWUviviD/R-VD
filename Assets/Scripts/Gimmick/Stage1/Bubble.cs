@@ -58,20 +58,22 @@ public class Bubble : GimmickBase<BubbleData>, IFloorInteractive
         bubbleCollider.enabled = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //PlayerJump jump;
-        //if (collision.gameObject.TryGetComponent<PlayerJump>(out jump) == true)
-        //{
-        //    jump.Jump(gimmickData.JumpForce);
-        //    StartCoroutine(BubblePop());
-        //}
-    }
-
     public void InteractStart(GameObject player)
     {
-        PlayerJump jump = player.GetComponent<PlayerJump>();
-        jump.Jump(gimmickData.JumpForce);
+        PlayerJump jump = player?.GetComponent<PlayerJump>();
+        if (jump == null)
+            return;
+
+        Vector3 dir = player.transform.position - transform.position;
+        dir.y = 0f;
+
+        if(dir.sqrMagnitude < 0.00001f)
+        {
+            dir = player.transform.forward;
+            dir.y = 0f;
+        }
+
+        jump.Jump(dir, gimmickData.JumpForce, gimmickData.JumpForce);
         StartCoroutine(BubblePop());
     }
 

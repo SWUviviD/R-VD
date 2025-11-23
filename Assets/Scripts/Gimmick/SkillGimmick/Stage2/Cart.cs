@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem.XR.Haptics;
 
-public class Cart : MonoBehaviour
+public class Cart : MonoBehaviour, IFloorInteractive
 {
     [SerializeField] private Transform cartTrans;
     [SerializeField] private CartRail[] Rails;
@@ -46,6 +46,8 @@ public class Cart : MonoBehaviour
         if (isMoving == false)
             return;
 
+        Vector3 before = cartTrans.position;
+
         if (Vector3.Dot(dir, (Rails[nextIndex].CenterPos.position - cartTrans.position).normalized) < 0)
         {
             cartTrans.position = Rails[nextIndex].CenterPos.position;
@@ -57,6 +59,10 @@ public class Cart : MonoBehaviour
         cartTrans.position +=
             dir *
             Time.fixedDeltaTime * movingSpeed;
+
+        Vector3 delta = cartTrans.position - before;
+        if (ridingPlayer != null)
+            ridingPlayer.position += delta;
     }
 
     private int GetNextIndex(int preIndex)
@@ -72,5 +78,23 @@ public class Cart : MonoBehaviour
             newIndex = isMovingForward ? preIndex + 1 : preIndex - 1;
         }
         return newIndex;
+    }
+
+    private Transform ridingPlayer;
+
+    public void InteractStart(GameObject player)
+    {
+        if(player.TryGetComponent<PlayerMove>(out var playerMove))
+        {
+            ridingPlayer = playerMove.transform;
+        }
+    }
+
+    public void InteractEnd(GameObject player)
+    {
+        if (player.TryGetComponent<PlayerMove>(out var playerMove))
+        {
+            ridingPlayer = null;
+        }
     }
 }

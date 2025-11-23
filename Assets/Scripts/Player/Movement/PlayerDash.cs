@@ -18,6 +18,8 @@ public class PlayerDash : MonoBehaviour
     private bool canDash = true;
     private float cachedY;
 
+    [Header("Events")]
+    [SerializeField] private UnityEvent<float> onDashGauge = new UnityEvent<float>();
     public UnityEvent<bool> OnDashEvent = new UnityEvent<bool>();
 
     private void Start()
@@ -44,7 +46,10 @@ public class PlayerDash : MonoBehaviour
 
         if (canDash == false)
         {
+            Debug.Log("DashLoading");
             elaspedTime += Time.deltaTime;
+            onDashGauge?.Invoke(Mathf.Clamp01(elaspedTime / dashCoolTime));
+            GameManager.Instance.HpUI?.SetDashGauge(Mathf.Clamp01(elaspedTime / dashCoolTime));
             if (elaspedTime >= dashCoolTime)
             {
                 elaspedTime -= dashCoolTime;

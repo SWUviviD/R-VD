@@ -20,6 +20,7 @@ namespace CamAnim
     [Serializable]
     public partial class CameraState
     {
+        [MemoryPackIgnore][field: SerializeField] public Transform BasePosition { get; set; }
         [MemoryPackInclude][field: SerializeField] public Vector3 LocalPosition { get; set; }
         [MemoryPackInclude][field: SerializeField] public Vector3 LocalRotation { get; set; }
         [MemoryPackInclude][field: SerializeField] public float Zoom { get; set; }

@@ -137,5 +137,6 @@ public class PlayerHp : MonoBehaviour
     {
         CurrentHp = amount;
         OnDamaged?.Invoke(CurrentHp);
+        GameManager.Instance.HpUI?.SetHP(CurrentHp);
     }
 }

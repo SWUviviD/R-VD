@@ -23,6 +23,15 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         mapObjIndex = index;
     }
 
+    public void Activate()
+    {
+        StopGenerating();
+        OnShocked(null);
+
+        ellectricEffect.SetActive(true);
+        OnActivated?.Invoke();
+    }
+
     [ContextMenu("Activate")]
     public bool Activate(Transform player)
     {
@@ -32,6 +41,7 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
             StopGenerating();
 
         ellectricEffect.SetActive(true);
+        OnActivated?.Invoke();
 
         return true;
     }
@@ -43,7 +53,7 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         render.material.color = Color.blue;
         if (isConnectToMap)
         {
-            map.ShockPin(mapObjIndex);
+            map.ShockPinFromOutside(mapObjIndex);
         }
 
         foreach (var obj in shockObj)
@@ -60,7 +70,7 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         render.material.color = Color.white;
         if (isConnectToMap)
         {
-            map.ShockFail(mapObjIndex);
+            map.ShockFailFromOutside(mapObjIndex);
         }
 
         foreach (var item in shockObj)

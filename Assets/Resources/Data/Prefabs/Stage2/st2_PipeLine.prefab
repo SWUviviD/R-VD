@@ -45,10 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed65dfd4e52d3a4baf3280ddf6a12f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shockSpeed: 0.02
+  shockSpeed: 0.5
   attached: []
   ellectricEffect: {fileID: 7834434380170384362, guid: 68101499d07aced4aa0ded4acb624942,
     type: 3}
+  PipeRender:
+  - {fileID: 2059801872182419780}
+  InactiveColor:
+  - {fileID: 2100000, guid: 3653783758a0cfa42bef8eb89506a42e, type: 2}
+  ActiveColor:
+  - {fileID: 2100000, guid: 310d8d39090eac74881971242cdc45d0, type: 2}
 --- !u!1001 &8019257825079289742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,6 +124,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5f8e1ad827bf6f4fadc90befff3babd, type: 3}
+--- !u!23 &2059801872182419780 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8349605963434641098, guid: d5f8e1ad827bf6f4fadc90befff3babd,
+    type: 3}
+  m_PrefabInstance: {fileID: 8019257825079289742}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7548202285040533605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5f8e1ad827bf6f4fadc90befff3babd,

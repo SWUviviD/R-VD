@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1007807688053930724}
   - component: {fileID: 7565722331733011406}
   - component: {fileID: 6531271660362643154}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8285035037996394273}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 7518729583054469335}
   - component: {fileID: 6162757074454147251}
   - component: {fileID: 6308369392994179475}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: WaterBlock clear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,11 +185,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 7518729583054469335}
   prefabName: 
-  player: {fileID: 0}
-  vase: {fileID: 0}
+  isWallToOpen: 0
   door: {fileID: 0}
-  interactionDistance: 2
   waterBlockData: {fileID: 7518729583054469335}
+  isUsageDone: 0
+  waterLevel: {fileID: 8285035037996394273}
+  toOpenWaterCount: 2
+  maxWaterCount: 4
+  currentWaterCount: 0
   waterMoveEffect: {fileID: 100672, guid: 7dc0b63f67faaf9479803bcfdff7f71e, type: 3}
   audioSource: {fileID: 6308369392994179475}
   addWaterAudio: {fileID: 8300000, guid: eea36985cf6717b4287cfee45bf78ead, type: 3}
@@ -355,10 +358,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: st3_well
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 110f436734e08134e8495e9495e6b45d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 4129356788942975847, guid: 110f436734e08134e8495e9495e6b45d,
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5049823086242842778, guid: 110f436734e08134e8495e9495e6b45d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

@@ -122,34 +122,40 @@ public class PlayerJump : MonoBehaviour
     {
         Vector3 v = rigid.velocity;
 
-        // 기본 Unity 중력에 '공중 기본 배수' 적용 (지상에서는 1배)
-        float baseMul = move.IsGrounded ? 1f : airGravityBase;
+        if (move.IsGrounded && v.y <= 0f)
+        {
+            if (v.y < 0f)
+            {
+                v.y = 0f;
+                rigid.velocity = v;
+            }
 
-        if (v.y < 0f)
-        {
-            // 낙하 가속
-            float mul = baseMul * fallMultiplier;
-            v += Vector3.up * Physics.gravity.y * (mul - 1f) * Time.fixedDeltaTime;
-            isFalling = true;
-            playerAnimation.SetFalling(true);
+            isFalling = false;
+            playerAnimation.SetFalling(false);
+            return;
         }
-        else if (v.y > 0f)
+
+        if (v.y > 0f)
         {
-            // 상승 중: 키를 뗐으면 빠르게 꺾고, 누르고 있어도 약간 더 무겁게
-            float mul = !jumpHeld ? baseMul * lowJumpMultiplier : baseMul * riseHoldMultiplier;
-            v += Vector3.up * Physics.gravity.y * (mul - 1f) * Time.fixedDeltaTime;
+            float mul = riseHoldMultiplier;
+            v += Physics.gravity * (mul - 1f) * Time.fixedDeltaTime;
         }
         else
         {
-            // 수직속도 거의 0 근방에서도 공중이면 기본 중력 배수 적용
-            if (!move.IsGrounded)
-                v += Vector3.up * Physics.gravity.y * (baseMul - 1f) * Time.fixedDeltaTime;
+            float mul = fallMultiplier;    
+            v += Physics.gravity * (mul - 1f) * Time.fixedDeltaTime;
+
+            isFalling = true;
+            playerAnimation.SetFalling(true);
         }
 
-        if (maxFallSpeed > 0f && v.y < -maxFallSpeed) v.y = -maxFallSpeed;
+        if (clampFallSpeed && maxFallSpeed > 0f && v.y < -maxFallSpeed)
+            v.y = -maxFallSpeed;
 
         rigid.velocity = v;
     }
+
+
 
 
     // ===== 입력 핸들러 =====
@@ -187,7 +193,7 @@ public class PlayerJump : MonoBehaviour
 
         // JumpHeight는 '임펄스 세기'로 사용
         rigid.AddForce(Vector3.up * status.JumpHeight, ForceMode.Impulse);
-
+        
         IsJumping = true;
         isFalling = false;
         playerAnimation.JumpStart();
@@ -214,6 +220,23 @@ public class PlayerJump : MonoBehaviour
         playerAnimation.JumpStart();
         playerAnimation.SetFalling(false);
     }
+
+    public void PerformJumpFromGimmick(float force)
+    {
+        Vector3 vel = rigid.velocity;
+        if (vel.y < 0f) vel.y = 0f;
+        rigid.velocity = vel;
+
+        rigid.AddForce(Vector3.up * force, ForceMode.Impulse);
+
+        IsJumping = true;
+        isFalling = false;
+        jumpHeld = true; 
+
+        playerAnimation.JumpStart();
+        playerAnimation.SetFalling(false);
+    }
+
 
     public void Jump(Vector3 forwardDir, float upForce, float forwardSpeed)
     {

@@ -15,10 +15,10 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     public enum Dir
     {
-        Forward = 0,
-        Left = 1,
-        Backward = 2,
-        Right = 3
+        Left = 0,
+        Forward = 1,
+        Right = 2,
+        Backward = 3
     }
 
     public enum Type
@@ -34,7 +34,8 @@ public class ElectronicPin : ShockableObj, IFusionable
     public State CurrentState { get; private set; }
     private State prevState;
 
-    public Dir CurrentDir { get; private set; }
+    private Dir dir;
+    public Dir CurrentDir { get => dir; private set { dir = value; } }
 
     private ElectronicMap map;
 
@@ -47,9 +48,14 @@ public class ElectronicPin : ShockableObj, IFusionable
     [SerializeField] private Material[] InactiveColor;
     [SerializeField] private Material[] ActiveColor;
 
+    private readonly string EmissionStr = "_EmissionColor";
+    private Color[] inactivateEmission;
+    private Color[] activateEmission;
+
     [Header("Pipe")]
     [SerializeField] private Transform PipePos;
     [SerializeField] private GameObject[] Pipes;
+    [SerializeField] private Renderer[] way;
 
     [SerializeField] private float PipeTurnSpeed = 0.5f;
 
@@ -67,10 +73,18 @@ public class ElectronicPin : ShockableObj, IFusionable
             Pipes[i].SetActive(i == data.Type);
         }
 
+        inactivateEmission = new Color[SwitchPipeRender.Length];
+        activateEmission = new Color[SwitchPipeRender.Length];
+
         for(int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial.Add( SwitchPipeRender[i].material);
             SwitchPipeMaterial[i].color = InactiveColor[i].color;
+
+            inactivateEmission[i] = InactiveColor[i].GetColor(EmissionStr);
+            activateEmission[i] = ActiveColor[i].GetColor(EmissionStr);
+
+            SwitchPipeMaterial[i].SetColor(EmissionStr, inactivateEmission[i]);
         }
 
         PipePos.rotation = Quaternion.Euler(Vector3.up * (int)data.Dir * 90f);
@@ -81,6 +95,14 @@ public class ElectronicPin : ShockableObj, IFusionable
         CurrentDir = (Dir)data.Dir;
 
         this.map = map;
+
+
+        for (int i = 0; i < 4; ++i)
+        {
+            bool isConnected = map.HasConnection(this, i);
+            way[i].material.color = isConnected ? Color.green : Color.red;
+            way[i].gameObject.SetActive(isConnected);
+        }
     }
 
     public bool Activate(Transform player)
@@ -100,9 +122,9 @@ public class ElectronicPin : ShockableObj, IFusionable
         CurrentState = State.Turning;
 
         Vector3 startRot = PipePos.rotation.eulerAngles;
-        Vector3 targetEulerRot = startRot + Vector3.down * 90f ;
+        Vector3 targetEulerRot = startRot + Vector3.up * 90f ;
 
-        PipePos.Rotate(Vector3.down);
+        PipePos.Rotate(Vector3.up);
 
         float elapsedTime = 0.0f;
         while(true)
@@ -114,15 +136,19 @@ public class ElectronicPin : ShockableObj, IFusionable
                 break;
             }
 
-            //PipePos.Rotate(Vector3.down * Time.deltaTime * PipeTurnSpeed * 90f);
-
-
             PipePos.rotation = Quaternion.Euler(Vector3.Lerp(
                     startRot, targetEulerRot, elapsedTime / PipeTurnSpeed));
         }
 
         CurrentDir = (Dir)(((int)CurrentDir + 1) % 4);
-        PipePos.rotation = Quaternion.Euler(Vector3.down * (int)CurrentDir * 90f);
+        PipePos.rotation = Quaternion.Euler(Vector3.up * (int)CurrentDir * 90f);
+
+        for(int i = 0; i< 4; ++i)
+        {
+            bool isConnected = map.HasConnection(this, i);
+            way[i].material.color = isConnected ? Color.green : Color.red;
+            way[i].gameObject.SetActive(isConnected);
+        }
 
         CurrentState = prevState;
         if(CurrentState == State.Active)
@@ -148,12 +174,16 @@ public class ElectronicPin : ShockableObj, IFusionable
                 SwitchPipeMaterial[i].color = 
                     Color.Lerp(InactiveColor[i].color, ActiveColor[i].color, 
                     elapsedTime / activateOffsetTime);
+                SwitchPipeMaterial[i].SetColor(EmissionStr,
+                    Color.Lerp(inactivateEmission[i], activateEmission[i],
+                    elapsedTime / activateOffsetTime));
             }
         }
 
         for (int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial[i].color = ActiveColor[i].color;
+            SwitchPipeMaterial[i].SetColor(EmissionStr, activateEmission[i]);
         }
 
         ShockNext();
@@ -176,12 +206,16 @@ public class ElectronicPin : ShockableObj, IFusionable
                 SwitchPipeMaterial[i].color =
                     Color.Lerp(ActiveColor[i].color, InactiveColor[i].color,
                     elapsedTime / activateOffsetTime);
+                SwitchPipeMaterial[i].SetColor(EmissionStr,
+                    Color.Lerp(activateEmission[i], inactivateEmission[i],
+                    elapsedTime / activateOffsetTime));
             }
         }
 
         for (int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial[i].color = InactiveColor[i].color;
+            SwitchPipeMaterial[i].SetColor(EmissionStr, inactivateEmission[i]);
         }
 
         ShockFailToOther();
@@ -189,12 +223,18 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     public override void OnShocked(ShockableObj obj)
     {
+        if (CurrentState == State.Active)
+        {
+            return;
+        }
+
+
         if(CurrentState == State.Turning)
         {
             prevState = State.Active;
         }
 
-        GiveShockObj = obj;
+        PowerSourceObj = obj;
 
         ellectricEffect.SetActive(true);
         CurrentState = State.Active;
@@ -213,12 +253,12 @@ public class ElectronicPin : ShockableObj, IFusionable
             return;
         }
 
-        if (map.CheckIfStillActive(this, obj))
+        if (map.CheckIfStillActiveAfterThisShockFail(this, obj))
         {
             return;
         }
 
-        GiveShockObj = null;
+        PowerSourceObj = null;
         prevState = State.Inactive;
         CurrentState = State.Inactive;
         StartCoroutine(CoInactivate());

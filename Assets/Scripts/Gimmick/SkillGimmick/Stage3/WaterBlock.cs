@@ -4,15 +4,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Defines;
 using static Defines.InputDefines;
+using UnityEngine.Events;
 
-public class WaterBlock : GimmickBase<WaterBlockData>
+public class WaterBlock : GimmickBase<WaterBlockData>, IWaterable
 {
     [Header("References")]
-    [SerializeField] public Transform player;
-    [SerializeField] public WaterVaseControll vase;
+    [SerializeField] private bool isWallToOpen;
     [SerializeField] public Water_Door door;
-    [SerializeField] private float interactionDistance = 2f;
     [SerializeField] private WaterBlockData waterBlockData;
+    [SerializeField] private bool isUsageDone = false;
+    [SerializeField] private Transform waterLevel;
+
+    [Header("Door")]
+    [SerializeField] private int toOpenWaterCount = 2;
+    [SerializeField] private UnityEvent OnDoorOpen;
+
+    [Header("Well")]
+    [SerializeField] private int maxWaterCount = 4;
+    [SerializeField] private UnityEvent OnWaterGain;
+
+    [SerializeField] private int currentWaterCount = 0;
 
     [Header("Source")]
     [SerializeField] private GameObject waterMoveEffect;
@@ -27,9 +38,14 @@ public class WaterBlock : GimmickBase<WaterBlockData>
 
     protected override void Init()
     {
+        gameObject.layer = LayerMask.NameToLayer("WaterGimmick");
+
         blockRenderer = GetComponent<MeshRenderer>();
         remainingUsage = waterBlockData.WaterUsage;
         UpdateBlockMaterial();
+
+        currentWaterCount = isWallToOpen ? 0 : maxWaterCount;
+        SetWaterLevel(isWallToOpen ? 0f : 1f);
     }
 
     public override void SetGimmick()
@@ -41,65 +57,81 @@ public class WaterBlock : GimmickBase<WaterBlockData>
         return "Data/Prefabs/Gimmick/WaterBlock";
     }
 
-    private void OnEnable()
+    private void SetWaterLevel(float level)
     {
-        if (InputManager.Instance == null)
-        {
-            LogManager.Log("InputManager.Instance is NULL");
+        level = Mathf.Max(0.01f, level);
+        waterLevel.localScale = Vector3.forward + Vector3.up * level + Vector3.right;
+    }
+
+
+    void InteractWithBlock(WaterVaseControll vase)
+    {
+        if (isUsageDone == true)
             return;
-        }
 
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsStarted, OnSkillStarted);
-    }
-
-    private void OnDisable()
-    {
-        if (InputManager.Instance == null) return;
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsStarted, OnSkillStarted);
-    }
-
-
-    private void OnSkillStarted(InputAction.CallbackContext context)
-    {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        if (distanceToPlayer <= interactionDistance)
+        float waterLevel = 0f;
+        if(isWallToOpen == true)
         {
-            InteractWithBlock();
-            LogManager.Log($"{remainingUsage}");
-        }
-    }
+            if (vase.remainingUsage == false)
+                return;
 
-
-    void InteractWithBlock()
-    {
-        if (remainingUsage < waterBlockData.maxWaterCapacity)
-        {
+            ++currentWaterCount;
             PlaySound(addWaterAudio);
-            AddWater();            
-            vase.watermove();   
-        }
-        else if (remainingUsage > 0)
-        {
-            PlaySound(scoupWaterAudio);
-            ScoupWater();       
-            vase.watermove();   
+            AddWater();
+            vase.watermove();
+
+            if (currentWaterCount >= toOpenWaterCount)
+            {
+                door.OpenDoor();
+                isUsageDone = true;
+                OnDoorOpen?.Invoke();
+            }
+
+            waterLevel = currentWaterCount / (float)toOpenWaterCount;
         }
         else
         {
-            LogManager.Log("더 이상 물을 담거나 사용할 수 없습니다.");
+            if (currentWaterCount <= 0)
+                return;
+
+            --currentWaterCount;
+            PlaySound(scoupWaterAudio);
+            ScoupWater();
+            vase.watermove();
+            OnWaterGain?.Invoke();
+
+            if (currentWaterCount <= 0)
+            {
+                isUsageDone = true;
+            }
+
+            waterLevel = currentWaterCount / (float)maxWaterCount;
         }
 
-        if (remainingUsage >= 3)
-        {
-            isClear = true;
-            door.OpenDoor();
-        }
+        SetWaterLevel(waterLevel);
+
+        //if (remainingUsage < waterBlockData.maxWaterCapacity)
+        //{
+        //    PlaySound(addWaterAudio);
+        //    AddWater();
+        //    vase.watermove();
+        //}
+        //else if (remainingUsage > 0)
+        //{
+        //    PlaySound(scoupWaterAudio);
+        //    ScoupWater();
+        //    vase.watermove();
+        //}
+        //else
+        //{
+        //    LogManager.Log("더 이상 물을 담거나 사용할 수 없습니다.");
+        //}
+
+        //if (remainingUsage >= 3)
+        //{
+        //    isClear = true;
+        //    door.OpenDoor();
+        //}
     }
 
     void AddWater()
@@ -136,6 +168,8 @@ public class WaterBlock : GimmickBase<WaterBlockData>
 
     void UpdateBlockMaterial()
     {
+        return;
+
         if (waterBlockData.blockMaterials.Length > remainingUsage)
         {
             blockRenderer.material = waterBlockData.blockMaterials[remainingUsage];
@@ -150,5 +184,15 @@ public class WaterBlock : GimmickBase<WaterBlockData>
     {
         audioSource.clip = audioClip;
         audioSource.Play();
+    }
+
+    public void OnWater(Transform player)
+    {
+        var vase = player.GetComponent<WaterVaseControll>();
+        if (vase == null)
+            return;
+
+        InteractWithBlock(vase);
+        LogManager.Log($"{remainingUsage}");
     }
 }

@@ -22,6 +22,9 @@ public class HPBarUI : MonoBehaviour
     private int maxHP = 10;
     private PlayerHp hp;
 
+    private bool ShowHp = false;
+    private int NeedShowHp = 0;
+
     private void Awake()
     {
         skillImage.gameObject.SetActive(false);
@@ -30,6 +33,14 @@ public class HPBarUI : MonoBehaviour
         hp = GameObject.FindAnyObjectByType<PlayerHp>();
         hp.OnDamaged.RemoveListener(SetHP);
         hp.OnDamaged.AddListener(SetHP);
+    }
+
+    private void Start()
+    {
+        if(ShowHp)
+        {
+            SetHP(NeedShowHp);
+        }
     }
 
     private void OnDestroy()
@@ -57,6 +68,13 @@ public class HPBarUI : MonoBehaviour
 
     public void SetHP(int hp)
     {
+        if(gameObject.activeSelf == false)
+        {
+            ShowHp = true;
+            NeedShowHp = hp;
+            return;
+        }
+
         for(int i = 0; i < maxHP; ++i)
         {
             bool shouldShow = i < hp;

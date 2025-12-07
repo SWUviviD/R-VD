@@ -58,6 +58,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -5166433095742702639, guid: 4b3a075f6b130a442a21068c152bc026,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1082f1e54d67f3f4897312720a2d33c6, type: 2}
     - target: {fileID: 919132149155446097, guid: 4b3a075f6b130a442a21068c152bc026,
         type: 3}
       propertyPath: m_Name
@@ -69,6 +74,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b3a075f6b130a442a21068c152bc026, type: 3}
+--- !u!23 &1081720877486307438 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5166433095742702639, guid: 4b3a075f6b130a442a21068c152bc026,
+    type: 3}
+  m_PrefabInstance: {fileID: 3985174469338383295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3514099007278523476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4b3a075f6b130a442a21068c152bc026,
@@ -138,6 +149,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7959074160398574286, guid: d658f782ee2c77a4091a2e63ecf56d16,
+        type: 3}
+      propertyPath: shockSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7959074160398574286, guid: d658f782ee2c77a4091a2e63ecf56d16,
+        type: 3}
+      propertyPath: PipeRender.Array.data[0]
+      value: 
+      objectReference: {fileID: 1081720877486307438}
+    - target: {fileID: 7959074160398574286, guid: d658f782ee2c77a4091a2e63ecf56d16,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c07b53e865150e54aa7f18f51971690f, type: 2}
+    - target: {fileID: 7959074160398574286, guid: d658f782ee2c77a4091a2e63ecf56d16,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1082f1e54d67f3f4897312720a2d33c6, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3147461539977188280, guid: d658f782ee2c77a4091a2e63ecf56d16, type: 3}

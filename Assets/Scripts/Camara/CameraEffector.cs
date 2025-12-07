@@ -61,12 +61,14 @@ public class CameraEffector : MonoBehaviour
 
     public void Move(Vector3 _originalPos, Vector3 _endPos, float _changeTime = 0f, Action _callback = null)
     {
+        if (gameObject.activeSelf == false)
+            return;
         StartCoroutine(CoMove(_originalPos, _endPos, _changeTime, _callback));
     }
 
     private IEnumerator CoMove(Vector3 _originalPos, Vector3 _endPos, float _changeTime = 0f, Action _callback = null)
     {
-        transform.localPosition = _originalPos;
+        transform.position = _originalPos;
         Vector3 pos = _originalPos;
 
         float elapsedTime = 0f;
@@ -75,23 +77,25 @@ public class CameraEffector : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             pos = Vector3.Lerp(_originalPos, _endPos, elapsedTime / _changeTime);
-            transform.localPosition = pos;
+            transform.position = pos;
             yield return null;
         }
 
-        transform.localPosition = _endPos;
+        transform.position = _endPos;
         _callback?.Invoke();
     }
 
     public void Rotate(Vector3 _originalRot, Vector3 _endRot, float _changeTime = 0f, Action _callback = null)
     {
+        if (gameObject.activeSelf == false)
+            return;
         StartCoroutine(CoRotate(Quaternion.Euler(_originalRot), 
             Quaternion.Euler(_endRot), _changeTime, _callback));
     }
 
     private IEnumerator CoRotate(Quaternion _originalRot, Quaternion _endRot, float _changeTime = 0f, Action _callback = null)
     {
-        transform.localRotation = _originalRot;
+        transform.rotation = _originalRot;
         Quaternion rot = _originalRot;
 
         float elapsedTime = 0f;
@@ -100,16 +104,18 @@ public class CameraEffector : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             rot = Quaternion.Lerp(_originalRot, _endRot, elapsedTime / _changeTime);
-            transform.localRotation = rot;
+            transform.rotation = rot;
             yield return null;
         }
 
-        transform.localRotation = _endRot;
+        transform.rotation = _endRot;
         _callback?.Invoke();
     }
 
     public void Zoom(float _originalScale, float _newScale, float _changeTime = 0f, Action _callback = null)
     {
+        if (gameObject.activeSelf == false)
+            return;
         StartCoroutine(CoZoom(_originalScale, _newScale, _changeTime, _callback));
     }
 

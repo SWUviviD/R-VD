@@ -18,7 +18,7 @@ public class KeyPressAchieveTrigger : TutorialTargetAchieveTrigger
     protected override void DisableTrigger()
     {
         InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, SkillType.StarHunt.ToString()),
+            new InputActionName(ActionMapType.PlayerActions, KeyName),
             ActionPoint.IsStarted, (InputAction.CallbackContext _ctx) => Achieved());
     }
 }

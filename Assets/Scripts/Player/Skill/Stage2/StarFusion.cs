@@ -11,7 +11,6 @@ public class StarFusion : SkillBase
 
     public override void OnSkillStart(InputAction.CallbackContext _playerStatus)
     {
-
         // Play Animation & Sound
         anim.OnFusion();
 
@@ -24,14 +23,7 @@ public class StarFusion : SkillBase
             IFusionable f = GetFusionable(hit);
             if (f == null) continue;
 
-            if (f.Activate(transform) == true)
-            {
-                // do something
-            }
-            else
-            {
-                // do something
-            }
+            f.Activate(transform);
         }
     }
 

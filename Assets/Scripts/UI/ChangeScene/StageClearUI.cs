@@ -19,6 +19,7 @@ public class StageClearUI : MonoBehaviour
         // TODO: 다음 스테이지 연결
         UIHelper.OnClick(nextButton, ResetUI);//GameManager.Instance.NextStage);
         UIHelper.OnClick(quitButton, GameManager.Instance.LoadTitle);
+        isCleared = false;
     }
 
     private void Start()
@@ -26,7 +27,7 @@ public class StageClearUI : MonoBehaviour
         ResetUI();
     }
 
-    private void ResetUI()
+    public void ResetUI()
     {
         whiteOverlay.color = new Color(whiteOverlay.color.r, whiteOverlay.color.g, whiteOverlay.color.b, 0f);
 

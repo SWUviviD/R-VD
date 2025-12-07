@@ -33,7 +33,7 @@ public class ElectronicSwitchB : ElectronicSwitch
     {
         if (currentState != State.Stopped) return;
 
-        GiveShockObj = obj;
+        PowerSourceObj = obj;
 
         ++currentConnectedCount;
 
@@ -48,6 +48,7 @@ public class ElectronicSwitchB : ElectronicSwitch
             StartCoroutine(CoGenerating());
 
             ellectricEffect.SetActive(true);
+            OnActivated?.Invoke();
         }
     }
 

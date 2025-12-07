@@ -8,8 +8,8 @@ using UnityEngine;
 public enum StageID
 {
     Stage1 = 1,
-    //Stage2,
-    //Stage3,
+    Stage2 = 2,
+    Stage3 = 3,
     MAX
 }
 
@@ -26,9 +26,11 @@ public partial class GameData
     [MemoryPackInclude] public bool IsSkill1_StarHuntUnlocked {  get; set; }
     [MemoryPackInclude] public bool IsSkill2_StarFusionUnlocked {  get; set; }
     [MemoryPackInclude] public bool IsSkill3_WaterVaseUnlocked {  get; set; }
+    [MemoryPackInclude] public int TryTimes { get; set; }
+    [MemoryPackInclude] public int LastTryCheckPointID { get; set; }
 }
 
-public class GameDataManager : MonoBehaviour
+public class GameDataManager
 {
     private static readonly string SavedDataPath = 
         Application.persistentDataPath + "/save";
@@ -39,7 +41,13 @@ public class GameDataManager : MonoBehaviour
     private static string BuildSaveFilePath
         => Path.Combine(BuildSavePath, "GameData.bytes");
 
-    public GameData GameData { get; private set; }
+    private static GameData gameData;
+    public static GameData GameData { get => gameData; private set => gameData = value; }
+
+    public GameData GetGameData()
+    {
+        return GameData;
+    }
 
     private bool isGameOvered = false;
 
@@ -126,7 +134,8 @@ public class GameDataManager : MonoBehaviour
 
     public void SaveGameData(StageID stageID, int checkPointID, int playerHealth,
         Vector3 playerPosition, Vector3 playerRotation, Vector3 camRotation, 
-        bool isSkill1Unlocked, bool isSkill2Unlocked, bool isSkill3Unlocked)
+        bool isSkill1Unlocked, bool isSkill2Unlocked, bool isSkill3Unlocked, 
+        int tryTimes, int lastTryCheckPoint)
     {
         GameData.StageID = stageID;
         GameData.CheckPointID = checkPointID;
@@ -137,6 +146,8 @@ public class GameDataManager : MonoBehaviour
         GameData.IsSkill1_StarHuntUnlocked = isSkill1Unlocked;
         GameData.IsSkill2_StarFusionUnlocked = isSkill2Unlocked;
         GameData.IsSkill3_WaterVaseUnlocked = isSkill3Unlocked;
+        GameData.TryTimes = tryTimes;
+        GameData.LastTryCheckPointID = lastTryCheckPoint;
 
         SaveGameData(GameData);
     }
@@ -153,6 +164,7 @@ public class GameDataManager : MonoBehaviour
         GameData.IsSkill1_StarHuntUnlocked = false;
         GameData.IsSkill2_StarFusionUnlocked = false;
         GameData.IsSkill3_WaterVaseUnlocked = false;
+        GameData.TryTimes = 0;
 
         SaveGameData(GameData);
     }

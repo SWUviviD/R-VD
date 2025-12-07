@@ -42,6 +42,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
     private TutorialState state;
 
+    private TutorialStartTrigger currentTrigger;
     private TutorialInfo currentInfo;
     private int currentTalkLine = 0;
     private int currentTargetCount = 0;
@@ -62,20 +63,24 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         wfTutorialMaxShow = new WaitForSeconds(waitForTutorialMaxShowTime);
     }
 
-    public void PlayTutorialTxt(TutorialInfo info)
+    public void PlayTutorialTxt(TutorialInfo info, TutorialStartTrigger trigger)
     {
         StopAllCoroutines();
         ResetUI();
 
+        currentTrigger = trigger;
         SetInfo(info);
         StartCoroutine(CoLoadIn(SiroTalk, siroTalkUIEndPos, () => ShowNextText(0)));
 
         state = TutorialState.SiroTalking;
     }
 
-    public void TargetAchieved()
+    public void TargetAchieved(TutorialStartTrigger trigger)
     {
         if (currentInfo == null)
+            return;
+
+        if (currentTrigger != trigger)
             return;
 
         currentTargetCount += 1;

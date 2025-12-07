@@ -53,6 +53,8 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
         switch (scene)
         {
             case SceneDefines.Scene.Stage1: return StageID.Stage1;
+            case SceneDefines.Scene.Stage2: return StageID.Stage2;
+            case SceneDefines.Scene.Stage3: return StageID.Stage3;
             default: return StageID.MAX;
         }
     }
@@ -62,6 +64,8 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
         switch (stageID)
         {
             case StageID.Stage1: return SceneDefines.Scene.Stage1;
+            case StageID.Stage2: return SceneDefines.Scene.Stage2;
+            case StageID.Stage3: return SceneDefines.Scene.Stage3;
             default: return SceneDefines.Scene.Title;
         }
     }

@@ -39,11 +39,11 @@ public class Water_Door : MonoBehaviour
         }
 
         if (doorParts.Count > 0)
-            StartCoroutine(MoveOverTime(doorParts[0], Vector3.right * moveDistance, moveDuration)); 
+            StartCoroutine(MoveOverTime(doorParts[0], -transform.forward * moveDistance, moveDuration)); 
         if (doorParts.Count > 1)
-            StartCoroutine(MoveOverTime(doorParts[1], Vector3.left * moveDistance, moveDuration)); 
+            StartCoroutine(MoveOverTime(doorParts[1], transform.forward* moveDistance, moveDuration)); 
         if (doorParts.Count > 2)
-            StartCoroutine(MoveOverTime(doorParts[2], Vector3.up * moveDistance, moveDuration));
+            StartCoroutine(MoveOverTime(doorParts[2], transform.up * moveDistance, moveDuration));
     }
 
     private IEnumerator MoveOverTime(Transform target, Vector3 offset, float duration)

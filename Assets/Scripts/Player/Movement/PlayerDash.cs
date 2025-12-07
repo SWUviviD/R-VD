@@ -46,7 +46,6 @@ public class PlayerDash : MonoBehaviour
 
         if (canDash == false)
         {
-            Debug.Log("DashLoading");
             elaspedTime += Time.deltaTime;
             onDashGauge?.Invoke(Mathf.Clamp01(elaspedTime / dashCoolTime));
             GameManager.Instance.HpUI?.SetDashGauge(Mathf.Clamp01(elaspedTime / dashCoolTime));

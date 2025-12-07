@@ -21,6 +21,7 @@ public class DialogueCallback
 
     // set pos & rot
     [field: SerializeField] public Transform PosTarget { get; set; }
+    [field: SerializeField] public Transform TartgetPos { get; set; }
     [field: SerializeField] public Vector3 WorldPos { get; set; }
     [field: SerializeField] public Vector3 WorldRot { get; set; }
 
@@ -30,6 +31,7 @@ public class DialogueCallback
 
 public class DialogueGimmick : GimmickBase<DialogueData>
 {
+    [SerializeField] private CheckpointGimmick bindCheckPoint;
 
     [SerializeField] private string CamAnimName = "DialogueCam1";
     [SerializeField] private bool isOnButtonPlay = false;
@@ -43,11 +45,26 @@ public class DialogueGimmick : GimmickBase<DialogueData>
     private bool isTherePlayer = false;
     private GameObject player = null;
 
-    private CameraAnimationData data;
+    [SerializeField] private CameraAnimationData data;
 
     private void Start()
     {
         data = GetComponent<CameraAnimationData>();
+        if (GameManager.Instance.TryTimes > 0)
+        {
+            if (bindCheckPoint != null &&
+                bindCheckPoint.checkPointNumber < GameManager.Instance.LastTryCheckPoint)
+            {
+                foreach (var d in data.Steps)
+                {
+                    if (d.AchieveData != null)
+                        AchieveUI.Instance.ShowUI(d.AchieveData);
+                }
+                Invoke(OnDialogEnd);
+
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     private void OnChatStart(InputAction.CallbackContext context)
@@ -114,15 +131,22 @@ public class DialogueGimmick : GimmickBase<DialogueData>
         }
     }
 
-    public void MoveAndRotateTarget(Transform target, Vector3 worldPos, Vector3 worldRotate)
+    public void MoveAndRotateTarget(Transform target, Transform posTarget, Vector3 worldPos, Vector3 worldRotate)
     {
         if (target == null)
         {
             return;
         }
 
+        if ((posTarget))
+        {
+            worldPos = posTarget.position;
+            worldRotate = posTarget.rotation.eulerAngles;
+        }
+
         if (target.TryGetComponent<PlayerMove>(out var move) == true)
         {
+
             move.SetPosition(worldPos);
             move.SetRotation(worldRotate);
             return;
@@ -157,7 +181,7 @@ public class DialogueGimmick : GimmickBase<DialogueData>
             {
                 case DialogueCallback.Mode.MovePosAndRotation:
                     {
-                        MoveAndRotateTarget(callback.PosTarget, callback.WorldPos, callback.WorldRot);
+                        MoveAndRotateTarget(callback.PosTarget, callback.TartgetPos, callback.WorldPos, callback.WorldRot);
                         break;
                     }
 

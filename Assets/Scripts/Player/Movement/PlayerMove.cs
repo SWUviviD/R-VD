@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     public Vector3 MoveDirection { get; private set; }
     public Vector3 CurrentFeetPosition { get; private set; }
 
-    public bool IsGrounded { get; private set; }
+    [field: SerializeField] public bool IsGrounded { get; private set; }
 
     private GameObject currentFloor;
     private IFloorInteractive currentFloorInteractive;
@@ -51,19 +51,30 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        RaycastHit hit;
+        RaycastHit hit = default;
         bool isSlope = false;
-        IsGrounded = ShootRay(out hit);
-        if(IsGrounded)
+
+        bool hitGround = ShootRay(out hit);
+        float vy = rigid.velocity.y;
+
+        if(hitGround && vy <= 0.05f)
         {
+            if(IsGrounded == false)
+            {
+                playerAnimation.JumpEnd();
+            }
+
+            IsGrounded = true;
+
             Rebound(ref hit);
             FloorInteract(ref hit);
             isSlope = AddSpeed(in hit);
-            playerAnimation.JumpEnd();
         }
         else
         {
-            ResetCurrentFloor();
+            if (IsGrounded)
+                ResetCurrentFloor();
+            IsGrounded = false;
         }
 
         if (status.IsDashing == false)
@@ -94,7 +105,6 @@ public class PlayerMove : MonoBehaviour
         if(isSlope && jump.IsJumping == false)
         {
             move = Vector3.ProjectOnPlane(move, hit.normal).normalized;
-            //gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
         }
 
         Vector3 v = rigid.velocity;
@@ -128,8 +138,6 @@ public class PlayerMove : MonoBehaviour
                 Quaternion step = Quaternion.RotateTowards(rigid.rotation, targetRot, degPerSec * Time.fixedDeltaTime);
                 rigid.MoveRotation(step);
             }
-            //// 정확하게 위로 올라가고 있는 도중이라면 y가 0이되면 magnitude가 0으로 바뀜. 이럴땐 이동방향을 바라보면 안됨.
-            //if (realMovement.magnitude > float.Epsilon) transform.rotation = Quaternion.LookRotation(realMovement);
             OnMove?.Invoke(true);
         }
         else
@@ -151,18 +159,38 @@ public class PlayerMove : MonoBehaviour
         v.y = rigid.velocity.y;
         rigid.velocity = v;
 
-        CurrentFeetPosition = hit.point;
+        if(IsGrounded)
+            CurrentFeetPosition = hit.point;
     }
 
     private bool ShootRay(out RaycastHit hit)
     {
-        Debug.DrawRay(transform.position, Vector3.down, Color.green);
-        return Physics.Raycast(transform.position, Vector3.down, out hit, rayLength, groundLayerMask);
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+        float radius = 0.3f;
+        float casDist = rayLength + 0.2f;
+
+        Debug.DrawRay(origin, Vector3.down * casDist, Color.green);
+        return Physics.SphereCast(
+            origin,
+            radius,
+            Vector3.down,
+            out hit,
+            casDist,
+            groundLayerMask,
+            QueryTriggerInteraction.Ignore
+            );
     }
     
     private void Rebound(ref RaycastHit _hit)
     {
         float deep = _hit.distance - heightLength;
+
+        if (Mathf.Abs(deep) < 0.001f)
+        {
+            return;
+        }
+
         rigid.MovePosition(rigid.transform.position - new Vector3(0f, deep, 0f));
     }
 
@@ -210,9 +238,9 @@ public class PlayerMove : MonoBehaviour
 
     private bool AddSpeed(in RaycastHit hit)
     {
-        var myAngle = Vector3.Angle(transform.forward, hit.normal) - 90;
+        var myAngle = Vector3.Angle(hit.normal, Vector3.up);
 
-        if(myAngle > maxinumAngle) // 올라가는 중
+        if (myAngle > maxinumAngle) // 올라가는 중
         {
             status.AdditionalMoveSpeed = status.MoveSpeed * addMinRadio;
             return true;
@@ -282,5 +310,12 @@ public class PlayerMove : MonoBehaviour
     {
         rigid.velocity = Vector3.up * rigid.velocity.y;
         OnMove?.Invoke(false);
+    }
+
+    public void MoveTo(Transform target)
+    {
+        rigid.velocity = Vector3.up * rigid.velocity.y;
+        transform.position = target.position;
+        transform.rotation = target.rotation;
     }
 }

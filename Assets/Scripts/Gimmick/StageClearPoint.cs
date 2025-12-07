@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StageClearPoint : GimmickBase<StageClearPointData>
 {
     [SerializeField] private Transform clearArea;
     [SerializeField] private Collider[] stageBoundarys;
+    [SerializeField] private UnityEvent onStageCleared = new UnityEvent();
 
     protected override void Init()
     {
@@ -37,6 +39,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
             c.isTrigger = false;
         }
 
+        onStageCleared?.Invoke();
         GameManager.Instance.GameClear();
     }
 

@@ -30,7 +30,7 @@ public class TutorialStartTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        TutorialPlayer.Instance.PlayTutorialTxt(info);
+        TutorialPlayer.Instance.PlayTutorialTxt(info, this);
         StartTrigger.enabled = false;
 
         foreach(var trigger in triggers)
@@ -41,6 +41,6 @@ public class TutorialStartTrigger : MonoBehaviour
 
     public void TargetAchieved()
     {
-        TutorialPlayer.Instance.TargetAchieved();
+        TutorialPlayer.Instance.TargetAchieved(this);
     }
 }

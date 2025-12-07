@@ -12,17 +12,22 @@ public class GameManager : MonoSingleton<GameManager>
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
     public bool IsStageClear { get; private set; }
-    public bool IsLastScene => SceneLoadManager.Instance.GetActiveScene()
+    public bool IsLastScene => SceneLoadManager.Instance.GetActiveScene() + 1
         == SceneDefines.Scene.MAX - 1;
 
-    [SerializeField] public GameObject clearEffectPrefab1;
-    [SerializeField] public GameObject clearEffectPrefab2;
+    [SerializeField] public GameObject[] clearEffectPrefab1 = new GameObject[3];
+    [SerializeField] public GameObject[] clearEffectPrefab2 = new GameObject[3];
 
     public GameDataManager GameDataManager { get; private set; }
+
+    public int TryTimes { get; private set; }
+    public int LastTryCheckPoint { get; private set; }
 
     private bool isInit = false;
 
     public HPBarUI HpUI { get; private set; }
+
+    private bool isGoingNextStage = false;
 
     protected override void Init()
     {
@@ -54,6 +59,13 @@ public class GameManager : MonoSingleton<GameManager>
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        isGoingNextStage = false;
+        IsStageClear = false;
+        IsGameOver = false;
+        IsPaused = false;
+
+        HpUI = GameObject.FindAnyObjectByType<HPBarUI>();
+
         Player = GameObject.FindWithTag("Player");
         if (Player != null)
         {
@@ -66,8 +78,6 @@ public class GameManager : MonoSingleton<GameManager>
             move.SetPosition(GameDataManager.GameData.PlayerPosition);
             move.SetRotation(GameDataManager.GameData.PlayerRotation);
         }
-
-        HpUI = GameObject.FindAnyObjectByType<HPBarUI>();
 
         // todo 밖으로 빼기
         LevitateAroundPlayer siro = GameObject.FindAnyObjectByType<LevitateAroundPlayer>();
@@ -88,10 +98,12 @@ public class GameManager : MonoSingleton<GameManager>
             CameraController.Instance.SetCameraPositionAndRotation(GameDataManager.GameData.camRotation, Vector3.zero);
         }
 
+        TryTimes = GameDataManager.GameData.TryTimes;
+        LastTryCheckPoint = GameDataManager.GameData.LastTryCheckPointID;
+
         SetMovementInput(true);
         ResumeGame();
         SetCameraInput(true);
-
     }
 
     public void OnGameStart()
@@ -142,6 +154,30 @@ public class GameManager : MonoSingleton<GameManager>
             active);
     }
 
+    public void SetSkillInput(bool active)
+    {
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                InputDefines.SkillType.StarHunt.ToString()),
+            active);
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                InputDefines.SkillType.StarFusion.ToString()),
+            active);
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                InputDefines.SkillType.WaterVase.ToString()),
+            active);
+        InputManager.Instance.EnableAction(
+            new Defines.InputDefines.InputActionName(
+                InputDefines.ActionMapType.PlayerActions,
+                "Magic"),
+            active);
+    }
+
     public void SetCameraInput(bool active)
     {
         InputManager.Instance.EnableAction(
@@ -153,6 +189,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void GameClear()
     {
+        Debug.Log("StageCleard");
+
         // 추가 동작 필요시 구현
         StageClear();
 
@@ -162,8 +200,9 @@ public class GameManager : MonoSingleton<GameManager>
         // 이펙트 출력
         if (clearEffectPrefab1 != null && clearEffectPrefab2 != null)
         {
-            GameObject clearEffect1 = Instantiate(clearEffectPrefab1, Player.transform.position, Quaternion.identity);
-            GameObject clearEffect2 = Instantiate(clearEffectPrefab1, Player.transform.position, Quaternion.identity);
+            int stage = ((int)SceneLoadManager.Instance.GetActiveStage()) - 1;
+            GameObject clearEffect1 = Instantiate(clearEffectPrefab1[stage], Player.transform.position, Quaternion.identity);
+            GameObject clearEffect2 = Instantiate(clearEffectPrefab2[stage], Player.transform.position, Quaternion.identity);
 
             clearEffect1.transform.SetParent(Player.transform);
             clearEffect2.transform.SetParent(Player.transform);
@@ -227,32 +266,47 @@ public class GameManager : MonoSingleton<GameManager>
         GameDataManager.SaveGameData(
             stage, (int)stage * 100, 10,
             Vector3.zero, Vector3.zero, Vector3.right * 180f,
-            (int)stage > 1, (int)stage > 2, (int)stage > 3);
+            (int)stage > 1, (int)stage > 2, (int)stage > 3,
+            TryTimes, LastTryCheckPoint);
     }
 
     public void SaveData()
     {
+        if (isGoingNextStage == true)
+            return;
+
         PlayerHp playerHp = Player.GetComponent<PlayerHp>();
         SkillSwap skillSwap = Player.GetComponent<SkillSwap>();
+
+        int currentIndex = CheckpointGimmick.CurrentCheckpointIndex;
+        bool isGoodIndex = CheckpointGimmick.CheckpointList.ContainsKey(currentIndex);
+
+        Debug.Log($"{currentIndex} {isGoodIndex} is CheckPoint Saved");
 
         // 스테이지, 체크포인트, 현재 체력 저장
         // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
         GameDataManager.SaveGameData(
             SceneLoadManager.Instance.GetActiveStage(),
-            CheckpointGimmick.CurrentCheckpointIndex,
+            currentIndex,
             Player ? playerHp.CurrentHp : 10,
-            Player ? playerHp.RespawnPoint : Vector3.zero,
-            Player ? playerHp.RespawnRotation : Vector3.zero,
-            CheckpointGimmick.CheckpointList.ContainsKey(CheckpointGimmick.CurrentCheckpointIndex) == true ?
-                CheckpointGimmick.CheckpointList[CheckpointGimmick.CurrentCheckpointIndex].GimmickData.CamRotation :
+             isGoodIndex == true ?
+                CheckpointGimmick.CheckpointList[currentIndex].RespawanPosition :
+                Vector3.zero,
+             isGoodIndex == true ?
+                CheckpointGimmick.CheckpointList[currentIndex].RespawnRotation:
+                Vector3.zero,
+            isGoodIndex == true ?
+                CheckpointGimmick.CheckpointList[currentIndex].GimmickData.CamRotation :
                 Vector3.right * 180f,
             skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarHunt],
             skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarFusion],
-            skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.WaterVase]);
+            skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.WaterVase],
+            TryTimes, LastTryCheckPoint);
     }
 
     public void LoadData()
     {
+        isGoingNextStage = true;
         SceneLoadManager.Instance.LoadScene(GameDataManager.GameData.StageID, true, OnSceneLoaded);
     }
 
@@ -268,6 +322,9 @@ public class GameManager : MonoSingleton<GameManager>
     public void GameOver()
     {
         IsGameOver = true;
+        
+        ++TryTimes;
+        LastTryCheckPoint = GameDataManager.GameData.CheckPointID;
     }
 
     public void StageClear()
@@ -278,19 +335,23 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void NextStage()
     {
+        isGoingNextStage = true;
+
         SetMovementInput(false);
 
         PlayerHp playerHp = Player?.GetComponent<PlayerHp>();
 
         StageID stage = SceneLoadManager.Instance.GetActiveStage();
+        int nextStageNum = (int)stage + 1;
         GameDataManager.SaveGameData(
-            SceneLoadManager.Instance.GetActiveStage() + 1,
-            (int) SceneLoadManager.Instance.GetActiveStage() * 100,
+            stage + 1,
+            nextStageNum * 100,
             playerHp ? playerHp.CurrentHp : 10,
             Vector3.zero,
             Vector3.zero,
             Vector3.right * 180f,
-            (int)stage > 1, (int)stage > 2, (int)stage > 3);
+            nextStageNum > 1, nextStageNum > 2, nextStageNum > 3,
+            0, -1);
 
         // Todo. 엔딩일 경우 처리 필요
         if (IsLastScene)
@@ -313,5 +374,10 @@ public class GameManager : MonoSingleton<GameManager>
         SetMovementInput(false);
         ShowCursor(true);
         SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
+    }
+
+    private void OnDisable()
+    {
+        SaveData();
     }
 }

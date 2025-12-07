@@ -32098,17 +32098,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 6979867154809260007}
   prefabName: CheckpointArea
-  checkPointNumber: 0
+  <checkPointNumber>k__BackingField: 0
   checkpointArea: {fileID: 7092715833608660237}
   boxCollider: {fileID: 5874839490814010464}
   cubeArea: {fileID: 2115967043312766460}
   respawnPoint: {fileID: 8369038978150038276}
   prevRespawnPoint: {fileID: 6405126397015284551}
   placedArea: {fileID: 5301223625924007117}
+  fallLimitTime: 5
   playerMask:
     serializedVersion: 2
     m_Bits: 1024
   audioSource: {fileID: 3881429230497840493}
+  ConnectedDialogue: []
+  ConnectedTutorial: []
+  OnCheckPointLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6979867154809260007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65562,17 +65568,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 1386703859908644194}
   prefabName: CheckpointArea
-  checkPointNumber: 0
+  <checkPointNumber>k__BackingField: 0
   checkpointArea: {fileID: 1333386378907733587}
   boxCollider: {fileID: 808642891651223037}
   cubeArea: {fileID: 7223054028961274619}
   respawnPoint: {fileID: 8136267558634227294}
   prevRespawnPoint: {fileID: 6705176128192380485}
   placedArea: {fileID: 1271465988221467930}
+  fallLimitTime: 5
   playerMask:
     serializedVersion: 2
     m_Bits: 1024
   audioSource: {fileID: 4493916782211698771}
+  ConnectedDialogue: []
+  ConnectedTutorial: []
+  OnCheckPointLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1386703859908644194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67020,7 +67032,7 @@ PrefabInstance:
     - target: {fileID: 6746623405529648006, guid: a9883dc81c0684f439bded63a7d6410c,
         type: 3}
       propertyPath: m_Name
-      value: Rail_Curve (2)
+      value: Rail_Curve (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -77036,6 +77048,11 @@ PrefabInstance:
       objectReference: {fileID: 1069286574006393226}
     - target: {fileID: 2323578314890827075, guid: 3f9d6cb8a91e11348addb4db0b9397b2,
         type: 3}
+      propertyPath: m_Name
+      value: Rail_Line (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2323578314890827075, guid: 3f9d6cb8a91e11348addb4db0b9397b2,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -77197,6 +77214,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000,
         type: 0}
+    - target: {fileID: 8294695232240078941, guid: 3f9d6cb8a91e11348addb4db0b9397b2,
+        type: 3}
+      propertyPath: m_Name
+      value: Rail_Curve (2)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -78702,7 +78724,7 @@ PrefabInstance:
     - target: {fileID: 6746623405529648006, guid: a9883dc81c0684f439bded63a7d6410c,
         type: 3}
       propertyPath: m_Name
-      value: Rail_Curve (1)
+      value: Rail_Curve (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -81470,6 +81492,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6736158901771216210}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e40583ac6cdba56488532ec4058f42d6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2893678982256453647}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e40583ac6cdba56488532ec4058f42d6,
         type: 3}
       insertIndex: -1
@@ -85074,10 +85100,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2465061254167574231}
-    - targetCorrespondingSourceObject: {fileID: 71682239757177218, guid: c7d43970cb3f8a54c8b1df3a26085f83,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2893678982256453647}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7d43970cb3f8a54c8b1df3a26085f83, type: 3}
 --- !u!4 &6736158901771216210 stripped
@@ -88787,7 +88809,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 6736158901771216210}
+    m_TransformParent: {fileID: 5356205566176831268}
     m_Modifications:
     - target: {fileID: 1444179790449273039, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
@@ -89272,37 +89294,37 @@ PrefabInstance:
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 4
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.08669505
+      value: -0.70695055
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7467613
+      value: 84.812386
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.1886544
+      value: 25.33345
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
@@ -89312,7 +89334,7 @@ PrefabInstance:
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5809193458476862856, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
@@ -89931,7 +89953,7 @@ PrefabInstance:
     - target: {fileID: 6746623405529648006, guid: a9883dc81c0684f439bded63a7d6410c,
         type: 3}
       propertyPath: m_Name
-      value: Rail_Curve (3)
+      value: Rail_Curve (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

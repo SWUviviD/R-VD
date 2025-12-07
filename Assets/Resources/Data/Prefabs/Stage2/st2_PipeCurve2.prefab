@@ -45,10 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed65dfd4e52d3a4baf3280ddf6a12f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shockSpeed: 0.02
+  shockSpeed: 0.5
   attached: []
   ellectricEffect: {fileID: 7834434380170384362, guid: 68101499d07aced4aa0ded4acb624942,
     type: 3}
+  PipeRender:
+  - {fileID: 7941359242251242685}
+  InactiveColor:
+  - {fileID: 2100000, guid: 3653783758a0cfa42bef8eb89506a42e, type: 2}
+  ActiveColor:
+  - {fileID: 2100000, guid: 310d8d39090eac74881971242cdc45d0, type: 2}
 --- !u!1001 &1726340136450222080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,6 +127,12 @@ PrefabInstance:
 --- !u!4 &1188818671013728235 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 127c0d815110c674d9abc0eea300570a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1726340136450222080}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7941359242251242685 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8773101216142714045, guid: 127c0d815110c674d9abc0eea300570a,
     type: 3}
   m_PrefabInstance: {fileID: 1726340136450222080}
   m_PrefabAsset: {fileID: 0}

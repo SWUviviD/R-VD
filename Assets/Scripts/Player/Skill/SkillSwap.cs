@@ -73,7 +73,7 @@ public class SkillSwap : MonoBehaviour
             ActionPoint.IsCanceled, OnSkillStop);
 
 
-        GameData data = GameManager.Instance.GameDataManager.GameData;
+        GameData data = GameManager.Instance.GameDataManager.GetGameData();
         SkillUnlocked[(int)SkillType.StarHunt] = data.IsSkill1_StarHuntUnlocked;
         SkillUnlocked[(int)SkillType.StarFusion] = data.IsSkill2_StarFusionUnlocked;
         SkillUnlocked[(int)SkillType.WaterVase] = data.IsSkill3_WaterVaseUnlocked;
@@ -162,6 +162,7 @@ public class SkillSwap : MonoBehaviour
 
         if (infoSkill == null) return;
 
+        StopAllCoroutines();
         StartCoroutine(PlayAnimationThenEquip(infoSkill));
     }
 
@@ -176,7 +177,7 @@ public class SkillSwap : MonoBehaviour
 
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.3f);
 
         if (info.model != null)
             info.model.SetActive(true);

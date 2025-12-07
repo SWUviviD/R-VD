@@ -4,13 +4,11 @@ using UnityEngine.InputSystem;
 using Defines;
 using static Defines.InputDefines;
 
-public class WaterWall : GimmickBase<WaterWallData>
+public class WaterWall : GimmickBase<WaterWallData>, IWaterable
 {
     [Header("References")]
-    [SerializeField] private Transform player;
-    [SerializeField] private WaterVaseControll vase;
     [SerializeField] private WaterWallData waterwallData;
-    [SerializeField] private float interactionDistance = 2f;
+    [SerializeField] private Collider wallCheckCollider;
 
     [Header("Effects & Audio")]
     [SerializeField] private GameObject makeIceEffect;
@@ -22,14 +20,12 @@ public class WaterWall : GimmickBase<WaterWallData>
     private bool isIce = false;
     private bool isBreak = false;
 
-    private bool rKeyPressed = false;
-    private bool eKeyPressed = false;
-    private bool qKeyPressed = false;
-
     private GameObject currentPrefab;
 
     protected override void Init()
     {
+        gameObject.layer = LayerMask.NameToLayer("WaterGimmick");
+
         isIce = false;
         isBreak = false;
 
@@ -45,94 +41,12 @@ public class WaterWall : GimmickBase<WaterWallData>
             col.isTrigger = false;
         }
 
-        foreach (var r in GetComponentsInChildren<Renderer>())
-        {
-            r.enabled = false;
-        }
-
         UpdateBlockPrefab();
     }
 
     public override void SetGimmick() { }
 
     protected override string GetAddress() => "Data/Prefabs/Gimmick/WaterWall";
-
-    private void OnEnable()
-    {
-        if (InputManager.Instance == null) return;
-
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "StarHunt"),
-            ActionPoint.IsStarted, OnQPressed);
-
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "WaterVase"),
-            ActionPoint.IsStarted, OnRPressed);
-
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "StarFusion"),
-            ActionPoint.IsStarted, OnEPressed);
-
-        InputManager.Instance.AddInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsStarted, OnRightClick);
-    }
-
-    private void OnDisable()
-    {
-        if (InputManager.Instance == null) return;
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "StarHunt"),
-            ActionPoint.IsStarted, OnQPressed);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "WaterVase"),
-            ActionPoint.IsStarted, OnRPressed);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "StarFusion"),
-            ActionPoint.IsStarted, OnEPressed);
-
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputActionName(ActionMapType.PlayerActions, "Magic"),
-            ActionPoint.IsStarted, OnRightClick);
-    }
-
-    private void OnQPressed(InputAction.CallbackContext ctx)
-    {
-        qKeyPressed = true; rKeyPressed = false; eKeyPressed = false;
-    }
-
-    private void OnRPressed(InputAction.CallbackContext ctx)
-    {
-        rKeyPressed = true; qKeyPressed = false; eKeyPressed = false;
-    }
-
-    private void OnEPressed(InputAction.CallbackContext ctx)
-    {
-        eKeyPressed = true; qKeyPressed = false; rKeyPressed = false;
-    }
-
-    private void OnRightClick(InputAction.CallbackContext ctx)
-    {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer > interactionDistance) return;
-
-        if (rKeyPressed && !isIce)
-        {
-            isIce = true;
-            PlayEffect(makeIceEffect, makeIceAudio);
-            UpdateBlockPrefab();
-            vase.watermove();
-        }
-        else if (eKeyPressed && isIce && !isBreak)
-        {
-            isBreak = true;
-            HandleBreakWall();
-            vase.watermove();
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -145,25 +59,18 @@ public class WaterWall : GimmickBase<WaterWallData>
 
     private void UpdateBlockPrefab()
     {
-        GameObject prefabToSpawn = null;
-
-        if (isIce && !isBreak)
-            prefabToSpawn = waterwallData.WaterWallPrefabs[1];
-        else if (!isIce)
-            prefabToSpawn = waterwallData.WaterWallPrefabs[0];
-
-        if (prefabToSpawn == null) return;
-
-        Vector3 pos = transform.position;
-        Quaternion rot = Quaternion.Euler(0f, 90f, 0f);
-        Transform parent = transform.parent;
-
-        if (currentPrefab != null)
+        if (isIce && isBreak == false)
         {
-            Destroy(currentPrefab);
+            waterwallData.WaterWallPrefabs[0].SetActive(true);
+            waterwallData.WaterWallPrefabs[1].SetActive(false);
+            wallCheckCollider.gameObject.SetActive(false);
         }
-
-        currentPrefab = Instantiate(prefabToSpawn, pos, rot, parent);
+        else if (!isIce)
+        {
+            waterwallData.WaterWallPrefabs[0].SetActive(false);
+            waterwallData.WaterWallPrefabs[1].SetActive(true);
+            wallCheckCollider.gameObject.SetActive(true);
+        }
     }
 
     private void HandleBreakWall()
@@ -179,6 +86,10 @@ public class WaterWall : GimmickBase<WaterWallData>
         {
             Destroy(currentPrefab);
         }
+
+        waterwallData.WaterWallPrefabs[0].SetActive(false);
+        waterwallData.WaterWallPrefabs[1].SetActive(false);
+        wallCheckCollider.gameObject.SetActive(false);
 
         float waitTime = (audioSource != null && breakIceAudio != null) ? breakIceAudio.length : 1f;
         yield return new WaitForSeconds(waitTime);
@@ -199,6 +110,26 @@ public class WaterWall : GimmickBase<WaterWallData>
         {
             audioSource.clip = audioClip;
             audioSource.Play();
+        }
+    }
+
+    public void OnWater(Transform player)
+    {
+        WaterVaseControll vase = player.GetComponent<WaterVaseControll>();
+        if (vase == null)
+            return;
+
+        if (isIce == false && vase.remainingUsage == true)
+        {
+            isIce = true;
+            PlayEffect(makeIceEffect, makeIceAudio);
+            UpdateBlockPrefab();
+            vase.watermove();
+        }
+        else if (isIce && !isBreak)
+        {
+            isBreak = true;
+            HandleBreakWall();
         }
     }
 }

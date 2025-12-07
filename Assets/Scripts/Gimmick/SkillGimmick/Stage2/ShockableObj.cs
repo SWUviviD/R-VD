@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ShockableObj : MonoBehaviour 
 {
-    public ShockableObj GiveShockObj { get; protected set; }
+    public ShockableObj PowerSourceObj { get; protected set; }
 
     public virtual void SetForMap(ElectronicMap map, int index) { }
 

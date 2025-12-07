@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ElectronicSwitch : ShockableObj
 {
@@ -16,6 +17,8 @@ public class ElectronicSwitch : ShockableObj
 
     // temp Effect
     [SerializeField] protected Renderer render;
+
+    [SerializeField] protected UnityEvent OnActivated = new UnityEvent();
 
     protected void Start()
     {

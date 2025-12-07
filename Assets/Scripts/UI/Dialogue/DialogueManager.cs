@@ -135,6 +135,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         // 인풋 세팅
         GameManager.Instance.SetMovementInput(false);
+        GameManager.Instance.SetSkillInput(false);
         GameManager.Instance.SetCameraInput(false);
         GameManager.Instance.ShowCursor(true);
 
@@ -175,6 +176,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         // 인풋 세팅
         GameManager.Instance.SetMovementInput(false);
+        GameManager.Instance.SetSkillInput(false);
         GameManager.Instance.SetCameraInput(false);
         GameManager.Instance.ShowCursor(true);
 
@@ -223,7 +225,9 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             OnDialogEnd();
         }
 
-        ShowText(dialogues[currentDialogNumber][currentLineNumber].NextTextNumber);
+        int nextNum = dialogues[currentDialogNumber][currentLineNumber].NextTextNumber;
+        Debug.Log($"Show {currentDialogNumber}'s {nextNum}");
+        ShowText(nextNum);
     }
 
     private void StartDialog(int dialogIndex)
@@ -402,6 +406,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         CameraController.Instance.SetCameraMode(CameraController.CameraMode.Orbit);
         GameManager.Instance.SetMovementInput(true);
+        GameManager.Instance.SetSkillInput(true);
         GameManager.Instance.SetCameraInput(true);
         GameManager.Instance.ShowCursor(false);
 

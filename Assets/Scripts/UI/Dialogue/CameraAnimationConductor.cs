@@ -126,15 +126,15 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
 
     private void SetCamState(CameraState state)
     {
-        if(state.BasePosition == null)
+        //if(state.BasePosition == null)
+        //{
+        //    cam.transform.localPosition = state.LocalPosition;
+        //    cam.transform.localRotation = Quaternion.Euler(state.LocalRotation);
+        //}
+        //else
         {
-            cam.transform.localPosition = state.LocalPosition;
-            cam.transform.localRotation = Quaternion.Euler(state.LocalRotation);
-        }
-        else
-        {
-            cam.transform.localPosition = state.BasePosition.position;
-            cam.transform.localRotation = state.BasePosition.rotation;
+            cam.transform.position = state.BasePosition.position;
+            cam.transform.rotation = state.BasePosition.rotation;
         }
 
             effector?.SetFOV(state.Zoom);
@@ -165,15 +165,15 @@ public class CameraAnimationConductor : MonoSingleton<CameraAnimationConductor>
         float moveTime = step.MoveTime / segments;
 
         // 콜백은 Move에서만 처리(중복 방지)
-        effector.Move(curState.LocalPosition,
-            nextState.LocalPosition,
+        effector.Move(curState.BasePosition.position,
+            nextState.BasePosition.position,
             moveTime, () =>
             {
                 PlayEffect(step, index + 1, OnAnimOver);
             });
 
-        effector.Rotate(curState.LocalRotation,
-            nextState.LocalRotation,
+        effector.Rotate(curState.BasePosition.rotation.eulerAngles, 
+            nextState.BasePosition.rotation.eulerAngles,
             moveTime);
 
         effector.Zoom(curState.Zoom,

@@ -17,7 +17,7 @@ public class ThornStick : MonoBehaviour
     private WaitForSeconds lifeTime;
     private bool isDroppingStop = false;
 
-    private Transform floor;
+    private Vector3 rollDir = Vector3.zero;
 
     public void Init(ThornStickMap map)
     {
@@ -60,7 +60,7 @@ public class ThornStick : MonoBehaviour
         {
             isDroppingStop = true;
 
-            floor = collision.transform;
+            rollDir = collision.transform.forward;
         }
     }
 
@@ -79,7 +79,7 @@ public class ThornStick : MonoBehaviour
     {
         if (isDroppingStop)
         {
-            rb.velocity = floor.forward * -1f * movingSpeed;
+            rb.velocity = rollDir * -1f * movingSpeed;
             rb.angularVelocity = transform.right * -1f * rotateSpeed;
         }
         else

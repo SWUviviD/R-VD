@@ -37,7 +37,7 @@ public class PlayerHp : MonoBehaviour
 
         // 플레이어 체력 회복 (임시 추가)
         //FullHeal();
-
+        
         OnDeath?.Invoke();
     }
 
@@ -138,5 +138,10 @@ public class PlayerHp : MonoBehaviour
         CurrentHp = amount;
         OnDamaged?.Invoke(CurrentHp);
         GameManager.Instance.HpUI?.SetHP(CurrentHp);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.SaveData();
     }
 }

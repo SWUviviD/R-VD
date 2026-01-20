@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class AchieveUI : MonoSingleton<AchieveUI>
 {
     [SerializeField] private float preWait = 1.5f;
+    [SerializeField] private float duringWait = 1.5f;
     [SerializeField] private float moveTime = 0.5f;
     private WaitForSeconds wfPre;
 
@@ -23,30 +24,50 @@ public class AchieveUI : MonoSingleton<AchieveUI>
 
     private bool isShowing = false;
 
+    private AchieveData data = null;
+
     private void Start()
     {
         wfPre = new WaitForSeconds(preWait);
         bg.gameObject.SetActive(false);
     }
 
-    public bool ShowUI(AchieveData data, Action _callback = null)
+    public void Achieve(AchieveData data)
     {
-        data.callback.AddListener(() => _callback?.Invoke());
-        return ShowUI(data.duration, data.image, data.type, data.title, data.Desc, data.callback);
+        data?.callback?.Invoke();
     }
 
-    public bool ShowUI(float showStayTime, Sprite sprite, string type, string title, string desc, UnityEvent _callback = null)
+    public bool ShowUI(AchieveData data)
+    {
+        this.data = data;
+        return ShowUI(duringWait, data.image, data.type, data.title, data.Desc);
+    }
+
+    public void StopUI(Action _callback = null)
+    {
+        if (data == null) return;
+
+        StartCoroutine(CoMoveAndChangeAlpha(false, group,
+            () => {
+                isShowing = false;
+                bg.gameObject.SetActive(false);
+                data.callback.Invoke();
+                _callback?.Invoke();
+            }));
+    }
+
+    public bool ShowUI(float showStayTime, Sprite sprite, string type, string title, string desc)
     {
         if (isShowing == true)
             return false;
 
         isShowing = true;
-        StartCoroutine(CoPreWait(showStayTime, sprite, type, title, desc, _callback));
+        StartCoroutine(CoPreWait(showStayTime, sprite, type, title, desc));
 
         return true;
     }
 
-    private IEnumerator CoPreWait(float showStayTime, Sprite sprite, string type, string title, string desc, UnityEvent _callback = null)
+    private IEnumerator CoPreWait(float showStayTime, Sprite sprite, string type, string title, string desc)
     {
         yield return wfPre;
 
@@ -57,14 +78,7 @@ public class AchieveUI : MonoSingleton<AchieveUI>
             () =>
             {
                 StartCoroutine(CoMoveAndChangeAlpha(true, group,
-                    () => StartCoroutine(CoWaitForFadeOut(showStayTime,
-                    () => StartCoroutine(CoMoveAndChangeAlpha(false, group,
-                    () =>
-                    {
-                        isShowing = false;
-                        bg.gameObject.SetActive(false);
-                        _callback?.Invoke();
-                    }))))));
+                    () => StartCoroutine(CoWaitForFadeOut(showStayTime))));
             }));
     }
 
@@ -129,9 +143,9 @@ public class AchieveUI : MonoSingleton<AchieveUI>
         _callback?.Invoke();
     }
 
-    private IEnumerator CoWaitForFadeOut(float time, Action callback)
+    private IEnumerator CoWaitForFadeOut(float time, Action callback = null)
     {
         yield return new WaitForSeconds(time);
-        callback.Invoke();
+        callback?.Invoke();
     }
 }

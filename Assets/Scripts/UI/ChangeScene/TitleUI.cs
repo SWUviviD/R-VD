@@ -40,7 +40,7 @@ public class TitleUI : MonoBehaviour
         bgPlayer.playOnAwake = true;
 
 #if UNITY_EDITOR
-        wfIntroVideo = new WaitForSeconds(0.5f);
+        wfIntroVideo = new WaitForSeconds(5f);
 #else
         wfIntroVideo = new WaitForSeconds(introTime);
 #endif

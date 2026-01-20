@@ -58,7 +58,7 @@ public class DialogueGimmick : GimmickBase<DialogueData>
                 foreach (var d in data.Steps)
                 {
                     if (d.AchieveData != null)
-                        AchieveUI.Instance.ShowUI(d.AchieveData);
+                        AchieveUI.Instance.Achieve(d.AchieveData);
                 }
                 Invoke(OnDialogEnd);
 

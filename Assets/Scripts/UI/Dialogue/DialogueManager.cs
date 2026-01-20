@@ -56,6 +56,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private bool isOptionShowing = false;
     private bool isTextShowing = false;
     private bool isCamReady;
+    private bool isAchievementShowing = false;
 
     // 기존 변수들 (애니메이션, 효과 관련)
     private Vector3 originPosition;
@@ -209,6 +210,13 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         if (isOptionShowing == true)
             return;
 
+        if(isAchievementShowing == true)
+        {
+            AchieveUI.Instance.StopUI();
+            isAchievementShowing = false;
+            return;
+        }
+
         if(isTextShowing == true)
         {
             SkipText();
@@ -333,8 +341,8 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         if(data != null)
         {
-            SetInput("UINext", false, OnSkip);
-            AchieveUI.Instance.ShowUI(data, () => SetInput("UINext", true, OnSkip));
+            AchieveUI.Instance.ShowUI(data);
+            isAchievementShowing = true;
         }
     }
 

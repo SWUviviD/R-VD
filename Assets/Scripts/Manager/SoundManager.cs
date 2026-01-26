@@ -1,7 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class StageBGM
+{
+    public StageID stageID;
+    public AudioClip bgm;
+}
 
 public class SoundManager : MonoSingleton<SoundManager>
 {
@@ -9,7 +16,8 @@ public class SoundManager : MonoSingleton<SoundManager>
     private readonly string BGM_VOLUME_KEY = "BGM Volume";
     private readonly string SFX_VOLUME_KEY = "SFX Volume";
 
-    [SerializeField] private AudioClip bgm;
+    [Header("Stage BGM Settings")]
+    [SerializeField] private StageBGM[] stageBGMs;
 
     private AudioSource bgmSource;
     private List<AudioSource> sfxSources;
@@ -26,9 +34,9 @@ public class SoundManager : MonoSingleton<SoundManager>
         var bgmObj = new GameObject("BGM");
         bgmObj.transform.parent = transform;
         bgmSource = bgmObj.AddComponent<AudioSource>();
+        bgmSource.loop = true;
 
         SetMaterVolume(MasterVolume);
-        PlayBGM(bgm);
 
         base.Init();
     }
@@ -36,23 +44,54 @@ public class SoundManager : MonoSingleton<SoundManager>
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        SceneLoadManager.Instance.PermanentOnSceneLoadedAction((Scene, LoadSceneMode) =>GetAllAudioSource());
+
+        SceneLoadManager.Instance.PermanentOnSceneLoadedAction(
+            (scene, mode) =>
+            {
+                GetAllAudioSource();
+
+                StageID stage = SceneLoadManager.Instance.GetActiveStage();
+                PlayBGMByStage(stage);
+            }
+        );
     }
 
     private void GetAllAudioSource()
     {
-        var sources = FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+        var sources = FindObjectsByType<AudioSource>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.InstanceID
+        );
+
         sfxSources = sources.Where(_ => _ != bgmSource).ToList();
         SetSFXVolume(SfxVolume);
     }
 
+    #region Stage BGM
+    public void PlayBGMByStage(StageID stageID)
+    {
+        if (stageBGMs == null || stageBGMs.Length == 0)
+            return;
+
+        StageBGM data = stageBGMs.FirstOrDefault(x => x.stageID == stageID);
+
+        if (data == null || data.bgm == null)
+            return;
+
+        if (bgmSource.clip == data.bgm)
+            return; // 같은 BGM이면 재시작 안 함
+
+        PlayBGM(data.bgm);
+    }
+    #endregion
+
     #region SoundSettings
     private void InitializeSoundSetting(bool initializeCompletely = false)
     {
-        if (initializeCompletely == false &&
-            PlayerPrefs.HasKey(MASTER_VOLUME_KEY) == true &&
-            PlayerPrefs.HasKey(BGM_VOLUME_KEY) == true &&
-            PlayerPrefs.HasKey(SFX_VOLUME_KEY) == true)
+        if (!initializeCompletely &&
+            PlayerPrefs.HasKey(MASTER_VOLUME_KEY) &&
+            PlayerPrefs.HasKey(BGM_VOLUME_KEY) &&
+            PlayerPrefs.HasKey(SFX_VOLUME_KEY))
         {
             return;
         }
@@ -60,8 +99,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, 1f);
         PlayerPrefs.SetFloat(BGM_VOLUME_KEY, 1f);
         PlayerPrefs.SetFloat(SFX_VOLUME_KEY, 1f);
-
-        return;
     }
 
     private void GetSoundSetting()
@@ -69,7 +106,6 @@ public class SoundManager : MonoSingleton<SoundManager>
         MasterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
         BgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY);
         SfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY);
-
     }
 
     public void SaveSoundSetting()
@@ -90,23 +126,24 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         MasterVolume = value;
 
-        if (resetAllVolume == false) return;
+        if (!resetAllVolume) return;
 
         bgmSource.volume = GetBGMVolume();
 
         if (sfxSources == null || sfxSources.Count == 0)
             return;
 
-        foreach(AudioSource audio in sfxSources)
+        foreach (AudioSource audio in sfxSources)
         {
             audio.volume = GetSFXVolume();
         }
     }
+
     public void SetBGMVolume(float value, bool resetAllVolume = true)
     {
         BgmVolume = value;
 
-        if (resetAllVolume == false) return;
+        if (!resetAllVolume) return;
 
         bgmSource.volume = GetBGMVolume();
     }
@@ -115,7 +152,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         SfxVolume = value;
 
-        if (resetAllVolume == false) return;
+        if (!resetAllVolume) return;
 
         if (sfxSources == null || sfxSources.Count == 0)
             return;
@@ -131,12 +168,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     public void PlayBGM(AudioClip clip)
     {
         bgmSource.clip = clip;
-        bgmSource.loop = true;
-        bgmSource.Play();
-    }
-
-    public void PlayBGM()
-    {
+        bgmSource.volume = GetBGMVolume();
         bgmSource.Play();
     }
 
@@ -151,9 +183,8 @@ public class SoundManager : MonoSingleton<SoundManager>
     }
     #endregion
 
-
     private void OnDestroy()
     {
-        SaveSoundSetting();   
+        SaveSoundSetting();
     }
 }

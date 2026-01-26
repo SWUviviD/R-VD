@@ -458,6 +458,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 2293188476179442293, guid: 821c6e35fc747a84ca0ae3223ca46043,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5736340851523024752, guid: 821c6e35fc747a84ca0ae3223ca46043,
         type: 3}
       propertyPath: m_Text
@@ -1555,10 +1560,40 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1358404635219589018, guid: dc4443800b9ed2540b3b503c2c678ee5,
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: stageBGMs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[0].bgm
+      value: 
+      objectReference: {fileID: 8300000, guid: 2963eb0cd4e715849ae8ac9dfb3f04df, type: 3}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[1].bgm
+      value: 
+      objectReference: {fileID: 8300000, guid: de84f0caa15b1c649bae2be821d0dceb, type: 3}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[2].bgm
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c4b32bdf2dcec34ab0d8f5b4c7e9ea5, type: 3}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[0].stageID
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[1].stageID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5786062286351258560, guid: dc4443800b9ed2540b3b503c2c678ee5,
+        type: 3}
+      propertyPath: stageBGMs.Array.data[2].stageID
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

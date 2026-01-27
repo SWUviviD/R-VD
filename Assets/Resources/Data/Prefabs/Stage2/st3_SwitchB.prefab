@@ -8,6 +8,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: renderList.Array.data[0]
+      value: 
+      objectReference: {fileID: 4711991469407742474}
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: renderList.Array.data[1]
+      value: 
+      objectReference: {fileID: 727179486425926152}
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666af2b5088b37e41a987f2b563e6fff, type: 2}
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666af2b5088b37e41a987f2b563e6fff, type: 2}
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d57bb9f6dcecf234590d9684ded44baa, type: 2}
+    - target: {fileID: 1961115714943815275, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d57bb9f6dcecf234590d9684ded44baa, type: 2}
+    - target: {fileID: 2133849997495252672, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556916984682370769, guid: 3ec2847b3559d734d923fea5938afbaa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6842842766688111384, guid: 3ec2847b3559d734d923fea5938afbaa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -61,10 +101,22 @@ PrefabInstance:
     - target: {fileID: 6985243720300119737, guid: 3ec2847b3559d734d923fea5938afbaa,
         type: 3}
       propertyPath: m_Name
-      value: st2_SwitchB
+      value: st3_SwitchB
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec2847b3559d734d923fea5938afbaa, type: 3}
+--- !u!23 &727179486425926152 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6788709122121978105, guid: 3ec2847b3559d734d923fea5938afbaa,
+    type: 3}
+  m_PrefabInstance: {fileID: 6062165166313085681}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4711991469407742474 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1532763598368977147, guid: 3ec2847b3559d734d923fea5938afbaa,
+    type: 3}
+  m_PrefabInstance: {fileID: 6062165166313085681}
+  m_PrefabAsset: {fileID: 0}

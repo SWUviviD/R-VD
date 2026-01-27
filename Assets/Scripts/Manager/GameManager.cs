@@ -238,10 +238,8 @@ public class GameManager : MonoSingleton<GameManager>
 
         IsPaused = false;
         Time.timeScale = 1f;
-        SoundManager.Instance.PlayBGMByStage(
-            SceneLoadManager.Instance.GetActiveStage()
-);
 
+        SoundManager.Instance.ResumeBGM();  
     }
 
     public void NewGameStart()

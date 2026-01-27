@@ -23,6 +23,9 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     /// <summary> 배치된 영역 오브젝트 </summary>
     [SerializeField] private GameObject placedArea;
 
+    [Header("Respawn Y pos compare to local y")]
+    [SerializeField] private float respawnPos = 30f;
+
     [Header("FallTime")]
     [SerializeField] private float fallLimitTime = 5f;
     private float fallTimer = 0f;
@@ -150,6 +153,16 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         {
             return;
         }
+
+        if (move.transform.position.y >= transform.position.y - respawnPos)
+        {
+            isWaitingToRespawn = false;
+            return;
+        }
+
+        playerHp.Fall(gimmickData.DropDamage);
+        isWaitingToRespawn = true;
+        return;
 
         bool grounded = move != null && move.IsGrounded;
 

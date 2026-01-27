@@ -61,10 +61,73 @@ PrefabInstance:
     - target: {fileID: 8857565973386122633, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
         type: 3}
       propertyPath: m_Name
-      value: st2_SwitchA
+      value: st3_SwitchA
       objectReference: {fileID: 0}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: renderList.Array.data[0]
+      value: 
+      objectReference: {fileID: 7673228232821066976}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: renderList.Array.data[1]
+      value: 
+      objectReference: {fileID: 1209736342434075293}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: renderList.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300030132998074887}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666af2b5088b37e41a987f2b563e6fff, type: 2}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666af2b5088b37e41a987f2b563e6fff, type: 2}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: ActiveColor.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 666af2b5088b37e41a987f2b563e6fff, type: 2}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d57bb9f6dcecf234590d9684ded44baa, type: 2}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d57bb9f6dcecf234590d9684ded44baa, type: 2}
+    - target: {fileID: 8910776662461482678, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+        type: 3}
+      propertyPath: InactiveColor.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: d57bb9f6dcecf234590d9684ded44baa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c, type: 3}
+--- !u!23 &1209736342434075293 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3889141327116835288, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2679881081896749893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7673228232821066976 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5713961584082192293, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2679881081896749893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8300030132998074887 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6205811624828057922, guid: 5ea0fe4ab37d57e4cabc01ed71e6661c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2679881081896749893}
+  m_PrefabAsset: {fileID: 0}

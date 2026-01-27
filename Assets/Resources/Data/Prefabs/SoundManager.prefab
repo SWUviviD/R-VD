@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1107620788351912554}
-  - component: {fileID: 6460767347112848655}
   - component: {fileID: 5786062286351258560}
   m_Layer: 0
   m_Name: SoundManager
@@ -33,14 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &6460767347112848655
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358404635219589018}
-  m_Enabled: 1
 --- !u!114 &5786062286351258560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53,4 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c25596380bd299742a659876d428d42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgm: {fileID: 0}
+  stageBGMs:
+  - stageID: 1
+    bgm: {fileID: 8300000, guid: 2963eb0cd4e715849ae8ac9dfb3f04df, type: 3}
+  - stageID: 2
+    bgm: {fileID: 8300000, guid: de84f0caa15b1c649bae2be821d0dceb, type: 3}
+  - stageID: 3
+    bgm: {fileID: 8300000, guid: 6c4b32bdf2dcec34ab0d8f5b4c7e9ea5, type: 3}

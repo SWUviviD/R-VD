@@ -27,6 +27,7 @@ public class PlayerAnimation : MonoBehaviour
     private StarHunt skill;
 
     private bool isShooting;
+    private bool isFalling;
 
     private readonly int OnDeathID = Animator.StringToHash("OnDeath");
     private readonly int OnShotStartID = Animator.StringToHash("OnShotStart");
@@ -61,6 +62,7 @@ public class PlayerAnimation : MonoBehaviour
         skill.OnStarHuntKeyUp.AddListener(OnShotEnd);
 
         isShooting = false;
+        isFalling = false;
     }
 
 
@@ -132,6 +134,10 @@ public class PlayerAnimation : MonoBehaviour
 
     public void SetFalling(bool isFalling)
     {
+        if (this.isFalling == isFalling)
+            return;
+
+        this.isFalling = isFalling;
         animator.SetBool(IsFallingID, isFalling);
     }
 

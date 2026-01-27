@@ -32,6 +32,7 @@ public class SoundManager : MonoSingleton<SoundManager>
         GetSoundSetting();
 
         var bgmObj = new GameObject("BGM");
+        DontDestroyOnLoad(bgmObj);
         bgmObj.transform.parent = transform;
         bgmSource = bgmObj.AddComponent<AudioSource>();
         bgmSource.loop = true;
@@ -175,6 +176,11 @@ public class SoundManager : MonoSingleton<SoundManager>
     public void PauseBGM()
     {
         bgmSource.Pause();
+    }
+
+    public void ResumeBGM()
+    {
+        bgmSource.UnPause();
     }
 
     public void StopBGM()

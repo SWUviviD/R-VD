@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,15 +14,11 @@ public class ElectronicSwitch : ShockableObj
     protected State currentState = State.Stopped;
     [SerializeField] protected ShockableObj[] shockObj;
 
-    // temp Effect
-    [SerializeField] protected Renderer render;
-
     [SerializeField] protected UnityEvent OnActivated = new UnityEvent();
 
     protected void Start()
     {
         currentState = State.Stopped;
-        render.material.color = Color.white;
     }
 
     public override void OnShocked(ShockableObj obj)
@@ -42,7 +37,6 @@ public class ElectronicSwitch : ShockableObj
         // temp effect
         yield return new WaitForSeconds(0.5f);
 
-        render.material.color = Color.blue;
         foreach(var shockObj in shockObj)
         {
             shockObj?.OnShocked(this);
@@ -64,7 +58,6 @@ public class ElectronicSwitch : ShockableObj
         // temp effect
         yield return new WaitForSeconds(0.2f);
 
-        render.material.color = Color.white;
         foreach (var shockObj in shockObj)
         {
             shockObj?.ShockFailed(this);

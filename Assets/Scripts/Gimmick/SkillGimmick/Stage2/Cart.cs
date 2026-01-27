@@ -9,6 +9,9 @@ public class Cart : MonoBehaviour, IFloorInteractive
     [SerializeField] private Transform cartTrans;
     [SerializeField] private CartRail[] Rails;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip movingSound;
+
     [SerializeField] private bool loop = false;
     [SerializeField] private int startIndex = 0;
     [SerializeField] private bool startMovingForward = true;
@@ -20,6 +23,9 @@ public class Cart : MonoBehaviour, IFloorInteractive
 
     private void Awake()
     {
+        audioSource.clip = movingSound;
+        audioSource.loop = true;
+
         isMovingForward = startMovingForward;
         nextIndex = GetNextIndex(startIndex);
 
@@ -31,6 +37,8 @@ public class Cart : MonoBehaviour, IFloorInteractive
 
     public void StartMoving()
     {
+        audioSource.Play();
+
         isMoving = true;
         dir = (Rails[nextIndex].CenterPos.position - cartTrans.position).normalized;
     }
@@ -38,6 +46,7 @@ public class Cart : MonoBehaviour, IFloorInteractive
     public void StopMoving()
     {
         isMoving = false;
+        audioSource.Stop();
     }
 
     private Vector3 dir = Vector3.zero;

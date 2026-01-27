@@ -253,17 +253,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gimmickData: {fileID: 4066203611918533238}
   prefabName: CheckpointArea
-  checkPointNumber: 0
+  <checkPointNumber>k__BackingField: 0
   checkpointArea: {fileID: 6147512504692176325}
   boxCollider: {fileID: 6614099210484188703}
   cubeArea: {fileID: 7082300981058434848}
   respawnPoint: {fileID: 8273239160218160176}
   prevRespawnPoint: {fileID: 1094553672947125815}
   placedArea: {fileID: 7904485109157142532}
+  respawnPos: 30
+  fallLimitTime: 5
   playerMask:
     serializedVersion: 2
     m_Bits: 1024
   audioSource: {fileID: 6323121573676757785}
+  ConnectedDialogue: []
+  ConnectedTutorial: []
+  OnCheckPointLoad:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4066203611918533238
 MonoBehaviour:
   m_ObjectHideFlags: 0

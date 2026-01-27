@@ -131,13 +131,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 9
-  teleportDistance: 10
+  moveSpeed: 10
+  teleportDistance: 12
   closeEnough: 0.5
   baseCenterPos: {x: 1.2, y: 1.2, z: -0.2}
   rotateOffset: {x: 0, y: 0, z: 0}
   floatingTime: 3
   floatOffset: {x: 0, y: 0.5, z: 0}
+  rotLerpSpeed: 10
 --- !u!1001 &5028266085045738508
 PrefabInstance:
   m_ObjectHideFlags: 0

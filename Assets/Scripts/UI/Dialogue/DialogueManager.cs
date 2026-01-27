@@ -442,6 +442,25 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             yield return null;
         }
     }
+
+    private void OnDisable()
+    {
+        SetInput("UINext", false, OnSkip);
+
+        isDialogueActive = false;
+        GameManager.Instance.HpUI?.SetVisable(true);
+        toChat.SetActive(false);
+        dialoguePanel.SetActive(false);
+        optionsPanel.SetActive(false);
+
+        dialogueCamera.transform.SetParent(gameObject.transform);
+
+        CameraController.Instance.SetCameraMode(CameraController.CameraMode.Orbit);
+        GameManager.Instance.SetMovementInput(true);
+        GameManager.Instance.SetSkillInput(true);
+        GameManager.Instance.SetCameraInput(true);
+        GameManager.Instance.ShowCursor(false);
+    }
 }
 
 // CSV 한 줄의 데이터를 저장하는 클래스

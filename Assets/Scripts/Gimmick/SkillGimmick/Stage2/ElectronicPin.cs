@@ -59,6 +59,12 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     [SerializeField] private float PipeTurnSpeed = 0.5f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip trunSound;
+    [SerializeField] private AudioClip startSound;
+    [SerializeField] private AudioClip StopSound;
+
     public Vector2Int PinPos { get; set; }
 
     public GameObject ellectricEffect;
@@ -67,6 +73,11 @@ public class ElectronicPin : ShockableObj, IFusionable
     public void Init(ElectronicMap map, LDPinMapData data)
     {
         Data = data;
+
+        if(audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
 
         for (int i = 0; i < Pipes.Length; i++)
         {
@@ -79,6 +90,7 @@ public class ElectronicPin : ShockableObj, IFusionable
         for(int i = 0; i < SwitchPipeRender.Length; ++i)
         {
             SwitchPipeMaterial.Add( SwitchPipeRender[i].material);
+            SwitchPipeMaterial[i].DisableKeyword("_EMISSION");
             SwitchPipeMaterial[i].color = InactiveColor[i].color;
 
             inactivateEmission[i] = InactiveColor[i].GetColor(EmissionStr);
@@ -119,6 +131,8 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     private IEnumerator CoTurnPipe()
     {
+        audioSource.Stop();
+        audioSource.PlayOneShot(trunSound);
         CurrentState = State.Turning;
 
         Vector3 startRot = PipePos.rotation.eulerAngles;
@@ -159,6 +173,15 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     private IEnumerator CoActivate()
     {
+        audioSource.Stop();
+        audioSource.clip = startSound;
+        audioSource.Play();
+
+        foreach(var r in SwitchPipeMaterial)
+        {
+            r.EnableKeyword("_EMISSION");
+        }
+
         float elapsedTime = 0.0f;
         while(true)
         {
@@ -191,6 +214,16 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     private IEnumerator CoInactivate()
     {
+        audioSource.Stop();
+        audioSource.clip = StopSound;
+        audioSource.Play();
+
+
+        foreach (var r in SwitchPipeMaterial)
+        {
+            r.DisableKeyword("_EMISSION");
+        }
+
         float elapsedTime = 0.0f;
         while (true)
         {

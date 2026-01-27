@@ -14,6 +14,11 @@ public class StarFusion : SkillBase
         // Play Animation & Sound
         anim.OnFusion();
 
+        Invoke(nameof(DoSkill), 0.3f);
+    }
+
+    public void DoSkill()
+    {
         Collider[] hits = Physics.OverlapSphere(fusionPos.position, radius, 1 << 23);
 
         if (hits.Length <= 0) return;

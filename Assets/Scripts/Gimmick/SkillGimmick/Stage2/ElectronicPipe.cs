@@ -11,32 +11,40 @@ public class ElectronicPipe : ShockableObj
 
     public GameObject ellectricEffect;
 
-    [SerializeField] private Renderer[] PipeRender;
-    private List<Material> PipeMaterial;
+    [Header("Effect")]
+    [SerializeField] private float fadeTime = 0.2f;
+    [SerializeField] private Renderer[] renderList;
+    private List<Material> SwitchPipeMaterial = new List<Material>(2);
+
     [SerializeField] private Material[] InactiveColor;
     [SerializeField] private Material[] ActiveColor;
 
-    private readonly string EmissionStr = "_EmissionColor";
     private Color[] inactivateEmission;
     private Color[] activateEmission;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip activatedSound;
+    [SerializeField] private AudioClip inactivatedSound;
+
+    private readonly string EmissionColorStr = "_EmissionColor";
+    private readonly string EmissionStr = "_EMISSION";
+
     private void Start()
     {
-        inactivateEmission = new Color[InactiveColor.Length];
-        activateEmission = new Color[ActiveColor.Length];
+        audioSource = GetComponent<AudioSource>();
+        inactivateEmission = new Color[renderList.Length];
+        activateEmission = new Color[renderList.Length];
 
-        PipeMaterial = new List<Material>();
-        for (int i = 0; i < PipeRender.Length; ++i)
+        for (int i = 0; i < renderList.Length; ++i)
         {
-            PipeMaterial.Add(PipeRender[i].material);
-            PipeMaterial[i].color = InactiveColor[i].color;
+            SwitchPipeMaterial.Add(renderList[i].material);
+            SwitchPipeMaterial[i].color = InactiveColor[i].color;
+            SwitchPipeMaterial[i].DisableKeyword(EmissionStr);
 
-            inactivateEmission[i] = InactiveColor[i].GetColor(EmissionStr);
-            activateEmission[i] = ActiveColor[i].GetColor(EmissionStr);
-
-            PipeMaterial[i].SetColor(EmissionStr, inactivateEmission[i]);
+            inactivateEmission[i] = Color.black;
+            activateEmission[i] = ActiveColor[i].GetColor(EmissionColorStr);
         }
-
     }
 
     public override void OnShocked(ShockableObj obj)
@@ -50,33 +58,39 @@ public class ElectronicPipe : ShockableObj
 
     private IEnumerator CoSendShock()
     {
+        //audioSource.Stop();
+        //.clip = activatedSound;
+        //audioSource.Play();
+
         isSending = true;
 
-        float elapsedTime = 0.0f;
-        while(true)
+        foreach (var r in SwitchPipeMaterial)
         {
-            yield return null;
-            elapsedTime += Time.deltaTime;
-            if(elapsedTime >= shockSpeed)
-            {
-                break;
-            }
-
-            for(int i = 0; i< PipeMaterial.Count; ++i)
-            {
-                PipeMaterial[i].color =
-                    Color.Lerp(InactiveColor[i].color, ActiveColor[i].color,
-                    elapsedTime / shockSpeed);
-                PipeMaterial[i].SetColor(EmissionStr,
-                    Color.Lerp(inactivateEmission[i], activateEmission[i],
-                    elapsedTime / shockSpeed));
-            }
+            r.EnableKeyword(EmissionStr);
         }
 
-        for (int i = 0; i < PipeMaterial.Count; ++i)
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeTime)
         {
-            PipeMaterial[i].color = ActiveColor[i].color;
-            PipeMaterial[i].SetColor(EmissionStr, activateEmission[i]);
+            elapsedTime += Time.deltaTime;
+
+            for (int i = 0; i < renderList.Length; ++i)
+            {
+                SwitchPipeMaterial[i].color =
+                    Color.Lerp(InactiveColor[i].color, ActiveColor[i].color,
+                    elapsedTime / fadeTime);
+                SwitchPipeMaterial[i].SetColor(EmissionColorStr,
+                    Color.Lerp(inactivateEmission[i], activateEmission[i],
+                    elapsedTime / fadeTime));
+            }
+            yield return null;
+        }
+
+
+        for (int i = 0; i < renderList.Length; ++i)
+        {
+            SwitchPipeMaterial[i].color = ActiveColor[i].color;
+            SwitchPipeMaterial[i].SetColor(EmissionColorStr, activateEmission[i]);
         }
 
         foreach (var shock in attached)
@@ -105,34 +119,35 @@ public class ElectronicPipe : ShockableObj
 
     private IEnumerator CoSendFail(ShockableObj shockFailObj)
     {
+        //audioSource.Stop();
+        //audioSource.clip = inactivatedSound;
+        //audioSource.Play();
+
         isSending = true;
 
-        float elapsedTime = 0.0f;
-
-        while (true)
+        foreach (var r in SwitchPipeMaterial)
         {
-            yield return null;
-            elapsedTime += Time.deltaTime;
-            if (elapsedTime >= shockSpeed)
-            {
-                break;
-            }
-
-            for (int i = 0; i < PipeMaterial.Count; ++i)
-            {
-                PipeMaterial[i].color =
-                    Color.Lerp(ActiveColor[i].color, InactiveColor[i].color,
-                    elapsedTime / shockSpeed);
-                PipeMaterial[i].SetColor(EmissionStr,
-                    Color.Lerp(activateEmission[i], inactivateEmission[i],
-                    elapsedTime / shockSpeed));
-            }
+            r.DisableKeyword(EmissionStr);
         }
 
-        for (int i = 0; i < PipeMaterial.Count; ++i)
+        float elapsedTime = 0f;
+        while (elapsedTime < fadeTime)
         {
-            PipeMaterial[i].color = InactiveColor[i].color;
-            PipeMaterial[i].SetColor(EmissionStr, inactivateEmission[i]);
+            elapsedTime += Time.deltaTime;
+
+            for (int i = 0; i < renderList.Length; ++i)
+            {
+                SwitchPipeMaterial[i].color =
+                    Color.Lerp(ActiveColor[i].color, InactiveColor[i].color,
+                    elapsedTime / fadeTime);
+            }
+            yield return null;
+        }
+
+
+        for (int i = 0; i < renderList.Length; ++i)
+        {
+            SwitchPipeMaterial[i].color = InactiveColor[i].color;
         }
 
         foreach (var shock in attached)

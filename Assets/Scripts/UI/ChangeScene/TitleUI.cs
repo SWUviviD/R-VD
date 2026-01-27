@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using static Defines.InputDefines;
 
 public class TitleUI : MonoBehaviour
 {
@@ -30,6 +32,9 @@ public class TitleUI : MonoBehaviour
 
     [Header("Setting")]
     [SerializeField] private TitleSettingUI settingUI;
+    [SerializeField] private Image skipRoll;
+    [SerializeField] private Image skipRollbg;
+    [SerializeField] private float skipTime = 2f;
 
     private void Start()
     {
@@ -58,6 +63,48 @@ public class TitleUI : MonoBehaviour
         }
 
         UIHelper.OnClick(SettingBtn, () => settingUI.ShowPanel(true));
+
+        skipRollbg.gameObject.SetActive(false);
+    }
+
+    private float elapsedTime = 0f;
+    private bool isPressing = false;
+    private void OnKeyPressed(InputAction.CallbackContext context)
+    {
+        elapsedTime = 0f;
+        skipRoll.fillAmount = 0f;
+        skipRollbg.gameObject.SetActive(true);
+        isPressing = true;
+    }
+
+    private void OnKeyCanceled(InputAction.CallbackContext context)
+    {
+        elapsedTime = 0f;
+        skipRollbg.gameObject.SetActive(false);
+        isPressing = false;
+    }
+
+    private void Update()
+    {
+        if(isPressing == true)
+        {
+            elapsedTime += Time.deltaTime;
+            skipRoll.fillAmount = elapsedTime / skipTime;
+            if(elapsedTime > skipTime)
+            {
+                StopAllCoroutines();
+
+                InputManager.Instance.RemoveInputEventFunction(
+                    new InputActionName(ActionMapType.PlayerActions, "UINext"),
+                    ActionPoint.IsStarted, OnKeyPressed);
+
+                InputManager.Instance.RemoveInputEventFunction(
+                    new InputActionName(ActionMapType.PlayerActions, "UINext"),
+                    ActionPoint.IsCanceled, OnKeyCanceled);
+                
+                GameManager.Instance.NewGameStart();
+            }
+        }
     }
 
     private void NewGameStart()
@@ -69,6 +116,14 @@ public class TitleUI : MonoBehaviour
         // 컷씬 말고 영상으로 대체
         bgPlayer.clip = IntroVideo;
         bgPlayer.isLooping = false;
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsStarted, OnKeyPressed);
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsCanceled, OnKeyCanceled);
 
         StartCoroutine(CoPlayIntro());
         StartCoroutine(CoOnVideoEnd());
@@ -118,6 +173,15 @@ public class TitleUI : MonoBehaviour
     private IEnumerator CoOnVideoEnd()
     {
         yield return wfIntroVideo;
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsStarted, OnKeyPressed);
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsCanceled, OnKeyCanceled);
+
         GameManager.Instance.NewGameStart();
     }
 }

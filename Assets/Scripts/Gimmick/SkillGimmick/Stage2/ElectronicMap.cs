@@ -281,7 +281,8 @@ public class ElectronicMap : MonoBehaviour
                 continue;
 
             if ((obj.X + PIN_POS[obj.Dir, 0]) == x &&
-                (obj.Y + PIN_POS[obj.Dir, 1]) == y)
+                (obj.Y + PIN_POS[obj.Dir, 1]) == y &&
+                IsConnectedBetween(pin, obj))
             {
                 connected = true;
                 obj.obj.OnShocked(pin);
@@ -325,8 +326,9 @@ public class ElectronicMap : MonoBehaviour
 
         foreach (var obj in attached)
         {
-            if ((obj.X + PIN_POS[obj.Dir, 0]) == x && 
-                (obj.Y + PIN_POS[obj.Dir, 1]) == y)
+            if ((obj.X + PIN_POS[obj.Dir, 0]) == x &&
+                (obj.Y + PIN_POS[obj.Dir, 1]) == y &&
+                IsConnectedBetween(pin, obj))
             {
                 obj.obj.ShockFailed(pin);
             }
@@ -345,5 +347,10 @@ public class ElectronicMap : MonoBehaviour
     {
         int opp = (worldDir + 2) % 4;
         return HasConnection(fromPin, worldDir) && HasConnection(toPin, opp);
+    }
+    private bool IsConnectedBetween(ElectronicPin fromPin, AttachedElectronicObj toPin)
+    {
+        int opp = (toPin.Dir + 2) % 4;
+        return HasConnection(fromPin, opp);
     }
 }

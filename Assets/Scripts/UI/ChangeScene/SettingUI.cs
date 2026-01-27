@@ -45,7 +45,12 @@ public class SettingUI : MonoBehaviour
         masterVolume.onValueChanged.AddListener((value) => SoundManager.Instance.SetMaterVolume(value));
 
         bgmVolume.value = SoundManager.Instance.BgmVolume;
-        bgmVolume.onValueChanged.AddListener((value) => SoundManager.Instance.SetBGMVolume(value));
+        bgmVolume.onValueChanged.AddListener((value) =>
+        {
+            Debug.Log("BGMChanged");
+            SoundManager.Instance.SetBGMVolume(value);
+        });
+
 
         sfxVolume.value = SoundManager.Instance.SfxVolume;
         sfxVolume.onValueChanged.AddListener((value) => SoundManager.Instance.SetSFXVolume(value));

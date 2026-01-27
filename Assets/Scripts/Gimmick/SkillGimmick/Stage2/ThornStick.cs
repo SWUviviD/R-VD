@@ -19,11 +19,22 @@ public class ThornStick : MonoBehaviour
 
     private Vector3 rollDir = Vector3.zero;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip rollingClip;
+    
+
     public void Init(ThornStickMap map)
     {
         this.map = map;
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = rollingClip;
+        audioSource.loop = true;
+
         lifeTime = new WaitForSeconds(map.StickLifeTime);
     }
+
 
     public void Drop()
     {
@@ -58,7 +69,13 @@ public class ThornStick : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
+            if (isDroppingStop == true)
+                return;
+
             isDroppingStop = true;
+
+            Debug.Log("Thorn Sound Play");
+            audioSource.Play();
 
             rollDir = collision.transform.forward;
         }
@@ -93,5 +110,6 @@ public class ThornStick : MonoBehaviour
     {
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        audioSource.Stop();
     }
 }

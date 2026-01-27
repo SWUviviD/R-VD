@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6317037609522509768}
   - component: {fileID: 1961115714943815275}
   - component: {fileID: 6827058079142990056}
+  - component: {fileID: 4371969301530159732}
   m_Layer: 0
   m_Name: st2_SwitchB
   m_TagString: Untagged
@@ -73,7 +74,23 @@ MonoBehaviour:
   shockObj:
   - {fileID: 0}
   render: {fileID: 6976460434081788136}
+  OnActivated:
+    m_PersistentCalls:
+      m_Calls: []
   connectCount: 1
+  renderList:
+  - {fileID: 3144202380873388266}
+  - {fileID: 6976460434081788136}
+  InactiveColor:
+  - {fileID: 2100000, guid: a58affdb33a30c34fb0cfa82ac3c765c, type: 2}
+  - {fileID: 2100000, guid: a58affdb33a30c34fb0cfa82ac3c765c, type: 2}
+  ActiveColor:
+  - {fileID: 2100000, guid: 03280408884e5834287cd283e6260d5a, type: 2}
+  - {fileID: 2100000, guid: 03280408884e5834287cd283e6260d5a, type: 2}
+  fadeTime: 0.2
+  audioSource: {fileID: 4371969301530159732}
+  activatedSound: {fileID: 8300000, guid: 76e1367e486934f49a85f210a4f869dd, type: 3}
+  inactivatedSound: {fileID: 8300000, guid: 9d556e5dff2c7ce4e9ff0b6ed82b5c12, type: 3}
   ellectricEffect: {fileID: 5848759284451554577}
 --- !u!114 &6827058079142990056
 MonoBehaviour:
@@ -94,6 +111,102 @@ MonoBehaviour:
   - models:
     - {fileID: 2556916984682370769}
   - models: []
+--- !u!82 &4371969301530159732
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6985243720300119737}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1251328437468072849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,6 +308,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1251328437468072849}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &3144202380873388266 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4251380445738195835, guid: c3332b0a33e7c0441ba0579c9e20b4f8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1251328437468072849}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &6976460434081788136 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8182127210210147193, guid: c3332b0a33e7c0441ba0579c9e20b4f8,
@@ -287,7 +406,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b18bcd5b6561c744ca231925d8b3b487,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

@@ -52,11 +52,11 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     private int op1NextTextNum = -1;
     private int op2NextTextNum = -1;
 
+    public bool IsDialogueActive => isDialogueActive;
     private bool isDialogueActive = false;
     private bool isOptionShowing = false;
     private bool isTextShowing = false;
     private bool isCamReady;
-    private bool isAchievementShowing = false;
 
     // 기존 변수들 (애니메이션, 효과 관련)
     private Vector3 originPosition;
@@ -121,6 +121,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
             return;
         }
 
+        isDialogueActive = true;
         callback?.Invoke();
         callback = OnDialogEndFuc;
         StopAllCoroutines();
@@ -209,13 +210,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     {
         if (isOptionShowing == true)
             return;
-
-        if(isAchievementShowing == true)
-        {
-            AchieveUI.Instance.StopUI();
-            isAchievementShowing = false;
-            return;
-        }
 
         if(isTextShowing == true)
         {
@@ -341,8 +335,19 @@ public class DialogueManager : MonoSingleton<DialogueManager>
 
         if(data != null)
         {
-            AchieveUI.Instance.ShowUI(data);
-            isAchievementShowing = true;
+            SetInput("UINext", false, OnSkip);
+            AchieveUI.Instance.ShowUI(data, () => {
+                SetInput("UINext", true, OnSkip);
+
+                if ((currentLineNumber + 1) == dialogues[currentDialogNumber].Count)
+                {
+                    OnDialogEnd();
+                }
+
+                int nextNum = dialogues[currentDialogNumber][currentLineNumber].NextTextNumber;
+                Debug.Log($"Show {currentDialogNumber}'s {nextNum}");
+                ShowText(nextNum);
+            });
         }
     }
 

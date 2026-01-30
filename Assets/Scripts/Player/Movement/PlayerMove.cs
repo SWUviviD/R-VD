@@ -62,6 +62,7 @@ public class PlayerMove : MonoBehaviour
             if(IsGrounded == false)
             {
                 playerAnimation.JumpEnd();
+                playerAnimation.SetFalling(false);
             }
 
             IsGrounded = true;

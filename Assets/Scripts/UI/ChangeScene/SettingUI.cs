@@ -73,7 +73,9 @@ public class SettingUI : MonoBehaviour
     {
         if (Input.GetKeyDown(settingKey))
         {
-            if (GameManager.Instance.IsGameOver || GameManager.Instance.IsStageClear) return;
+            if (GameManager.Instance.IsGameOver || 
+                GameManager.Instance.IsStageClear ||
+                DialogueManager.Instance.IsDialogueActive) return;
 
             CloseUI();
         }

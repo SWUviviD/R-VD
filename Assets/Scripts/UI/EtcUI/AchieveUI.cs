@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static Defines.InputDefines;
 
 public class AchieveUI : MonoSingleton<AchieveUI>
 {
@@ -22,24 +24,113 @@ public class AchieveUI : MonoSingleton<AchieveUI>
     [SerializeField] private TextMeshProUGUI titleTxt;
     [SerializeField] private Text descTxt;
 
+    public bool IsShowing => isShowing;
     private bool isShowing = false;
 
     private AchieveData data = null;
+    private Action endCallback = null;
+
+    private bool canSkip = false;
+
+    [Header("Setting")]
+    [SerializeField] private TitleSettingUI settingUI;
+    [SerializeField] private Image skipRoll;
+    [SerializeField] private Image skipRollbg;
+    [SerializeField] private float skipTime = 1f;
+    private float elapsedTime = 0f;
+    private bool isPressing = false;
 
     private void Start()
     {
         wfPre = new WaitForSeconds(preWait);
         bg.gameObject.SetActive(false);
+        skipRollbg.gameObject.SetActive(false);
     }
 
-    public void Achieve(AchieveData data)
+    private void AddInputEvent()
     {
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsStarted, OnKeyPressed);
+
+        InputManager.Instance.AddInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsCanceled, OnKeyCanceled);
+    }
+
+    private void RemoveInputEvent()
+    {
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsStarted, OnKeyPressed);
+
+        InputManager.Instance.RemoveInputEventFunction(
+            new InputActionName(ActionMapType.PlayerActions, "UINext"),
+            ActionPoint.IsCanceled, OnKeyCanceled);
+    }
+
+
+    private void OnKeyPressed(InputAction.CallbackContext context)
+    {
+        if (canSkip == false) return;
+
+        elapsedTime = 0f;
+        skipRoll.fillAmount = 0f;
+        skipRollbg.gameObject.SetActive(true);
+        isPressing = true;
+    }
+
+    private void OnKeyCanceled(InputAction.CallbackContext context)
+    {
+        if (canSkip == false) return;
+
+        elapsedTime = 0f;
+        skipRollbg.gameObject.SetActive(false);
+        isPressing = false;
+    }
+
+    private void Update()
+    {
+        if (isPressing == true)
+        {
+            elapsedTime += Time.deltaTime;
+            skipRoll.fillAmount = elapsedTime / skipTime;
+            if (elapsedTime > skipTime)
+            {
+                isPressing = false;
+                canSkip = false;
+
+                StopAllCoroutines();
+                RemoveInputEvent();
+
+                StartCoroutine(CoMoveAndChangeAlpha(false, group,
+                    () =>
+                    {
+                        StartCoroutine(CoMoveAndChangeAlpha(false, bg,
+                            () =>
+                            {
+                                isShowing = false;
+                                bg.gameObject.SetActive(false);
+                                data?.callback?.Invoke();
+                                endCallback?.Invoke();
+                            }));
+                    }));
+            }
+        }
+    }
+
+    public void Achieve(AchieveData data, Action callBack = null)
+    {
+        callBack?.Invoke();
         data?.callback?.Invoke();
     }
 
-    public bool ShowUI(AchieveData data)
+    public bool ShowUI(AchieveData data, Action callBack = null)
     {
         this.data = data;
+        endCallback = callBack;
+        canSkip = false;
+        AddInputEvent();
         return ShowUI(duringWait, data.image, data.type, data.title, data.Desc);
     }
 
@@ -51,7 +142,8 @@ public class AchieveUI : MonoSingleton<AchieveUI>
             () => {
                 isShowing = false;
                 bg.gameObject.SetActive(false);
-                data.callback.Invoke();
+                data?.callback?.Invoke();
+                endCallback?.Invoke();
                 _callback?.Invoke();
             }));
     }
@@ -75,10 +167,13 @@ public class AchieveUI : MonoSingleton<AchieveUI>
         SetUI(sprite, type, title, desc);
 
         StartCoroutine(CoMoveAndChangeAlpha(true, bg,
-            () =>
-            {
+            () => {
                 StartCoroutine(CoMoveAndChangeAlpha(true, group,
-                    () => StartCoroutine(CoWaitForFadeOut(showStayTime))));
+                    () =>
+                    {
+                        canSkip = true;
+                        StartCoroutine(CoWaitForFadeOut(showStayTime));
+                    }));
             }));
     }
 

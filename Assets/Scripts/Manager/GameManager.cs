@@ -121,6 +121,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void ShowCursor(bool isShow = true)
     {
+        Debug.Log($"Cursor {isShow}");
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isShow;
     }
@@ -196,6 +197,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Debug.Log($"Cursor {true}");
 
         // 이펙트 출력
         if (clearEffectPrefab1 != null && clearEffectPrefab2 != null)
@@ -214,6 +216,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void StopGame()
     {
+        Debug.Log($"Cursor {true}");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -233,6 +236,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         GameManager.Instance.SetCameraInput(true);
 
+        Debug.Log($"Cursor {true}");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Locked;
 

@@ -100,11 +100,6 @@ public class PlayerJump : MonoBehaviour
         {
             lastGroundedTime = Time.time;
             IsJumping = false;
-            if (isFalling)
-            {
-                isFalling = false;
-                playerAnimation.SetFalling(false);
-            }
         }
 
         // 점프 버퍼 + 코요테 타임 체크
@@ -129,9 +124,6 @@ public class PlayerJump : MonoBehaviour
                 v.y = 0f;
                 rigid.velocity = v;
             }
-
-            isFalling = false;
-            playerAnimation.SetFalling(false);
             return;
         }
 
@@ -145,8 +137,11 @@ public class PlayerJump : MonoBehaviour
             float mul = fallMultiplier;    
             v += Physics.gravity * (mul - 1f) * Time.fixedDeltaTime;
 
-            isFalling = true;
-            playerAnimation.SetFalling(true);
+            if(isFalling == false)
+            {
+                isFalling = true;
+                playerAnimation.SetFalling(true);
+            }
         }
 
         if (clampFallSpeed && maxFallSpeed > 0f && v.y < -maxFallSpeed)
@@ -203,7 +198,6 @@ public class PlayerJump : MonoBehaviour
         IsJumping = true;
         isFalling = false;
         playerAnimation.JumpStart();
-        playerAnimation.SetFalling(false);
     }
 
     // 기존 공개 API 유지 (외부에서 강제 점프하고 싶을 때 사용)
@@ -224,7 +218,6 @@ public class PlayerJump : MonoBehaviour
         IsJumping = true;
         isFalling = false;
         playerAnimation.JumpStart();
-        playerAnimation.SetFalling(false);
     }
 
     public void PerformJumpFromGimmick(float force)
@@ -240,7 +233,6 @@ public class PlayerJump : MonoBehaviour
         jumpHeld = true; 
 
         playerAnimation.JumpStart();
-        playerAnimation.SetFalling(false);
     }
 
 
@@ -272,6 +264,5 @@ public class PlayerJump : MonoBehaviour
         IsJumping = true;
         isFalling = false;
         playerAnimation.JumpStart();
-        playerAnimation.SetFalling(false);
     }
 }

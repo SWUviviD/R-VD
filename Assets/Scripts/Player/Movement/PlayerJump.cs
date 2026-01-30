@@ -137,7 +137,7 @@ public class PlayerJump : MonoBehaviour
 
         if (v.y > 0f)
         {
-            float mul = riseHoldMultiplier;
+            float mul = jumpHeld ? riseHoldMultiplier : lowJumpMultiplier;
             v += Physics.gravity * (mul - 1f) * Time.fixedDeltaTime;
         }
         else
@@ -176,7 +176,13 @@ public class PlayerJump : MonoBehaviour
     private void OnJumpReleased(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
     {
         jumpHeld = false;
-        // 실제 "짧은 점프" 처리는 FixedUpdate에서 velocity.y>0 && !jumpHeld 조건으로 수행
+
+        if (rigid.velocity.y > 0)
+        {
+            Vector3 v = rigid.velocity;
+            v.y *= 0.5f;
+            rigid.velocity = v;
+        }
     }
 
     // ===== 실제 점프 =====

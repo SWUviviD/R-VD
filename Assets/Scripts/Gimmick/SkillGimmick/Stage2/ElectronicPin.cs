@@ -252,6 +252,9 @@ public class ElectronicPin : ShockableObj, IFusionable
         }
 
         ShockFailToOther();
+
+        prevState = State.Inactive;
+        CurrentState = State.Inactive;
     }
 
     public override void OnShocked(ShockableObj obj)
@@ -292,8 +295,6 @@ public class ElectronicPin : ShockableObj, IFusionable
         }
 
         PowerSourceObj = null;
-        prevState = State.Inactive;
-        CurrentState = State.Inactive;
         StartCoroutine(CoInactivate());
 
         ellectricEffect.SetActive(false);
@@ -301,9 +302,6 @@ public class ElectronicPin : ShockableObj, IFusionable
 
     private void ShockFailToOther()
     {
-        if (CurrentState != State.Inactive)
-            return;
-
         map.ShockFailNextPin(this);
     }
 }

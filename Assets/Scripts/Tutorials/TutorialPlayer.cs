@@ -87,7 +87,9 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         countText.text = $"({currentTargetCount}/{currentInfo.MaxCount})";
         if (currentTargetCount >= currentInfo.MaxCount)
         {
-            TutorialEnd();
+            StopAllCoroutines();
+
+            StartCoroutine(CoWaitAndEndTutorial());
         }
     }
 
@@ -196,7 +198,9 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
         if(currentTargetCount >= currentInfo.MaxCount)
         {
-            TutorialEnd();
+            StopAllCoroutines();
+
+            StartCoroutine(CoWaitAndEndTutorial());
             return;
         }
 
@@ -232,4 +236,27 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
             restTime += Time.unscaledDeltaTime;
         }
     }
+
+    private IEnumerator CoWaitAndEndTutorial()
+    {
+        SiroTalk.gameObject.SetActive(false);
+
+        TutorialUI.gameObject.SetActive(true);
+        TutorialUI.transform.position = tutorialUIEndPos;
+        TutorialUI.alpha = 1f;
+
+        countText.text = $"({currentTargetCount}/{currentInfo.MaxCount})";
+
+        state = TutorialState.TutorialCounting;
+
+        if (state == TutorialState.TutorialCountEnd)
+            yield break;
+
+        state = TutorialState.TutorialCounting;
+
+        yield return wfTutorialMaxShow;
+
+        TutorialEnd();
+    }
+
 }

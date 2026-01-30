@@ -130,6 +130,7 @@ public class AchieveUI : MonoSingleton<AchieveUI>
         this.data = data;
         endCallback = callBack;
         canSkip = false;
+        skipRollbg.gameObject.SetActive(false);
         AddInputEvent();
         return ShowUI(duringWait, data.image, data.type, data.title, data.Desc);
     }

@@ -289,7 +289,7 @@ public class PlayerMove : MonoBehaviour
 
     public void SetPosition(Vector3 _newPos)
     {
-        transform.position = _newPos + Vector3.up * rayLength;
+        transform.position = _newPos + Vector3.up * (rayLength - heightLength + 0.05f);
     }
 
     public Vector3 GetPosition()

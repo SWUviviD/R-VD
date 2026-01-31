@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.PostProcessing;
 using static Defines.InputDefines;
 
 [Serializable]
@@ -15,6 +16,7 @@ public class DialogueCallback
     {
         MovePosAndRotation,
         ConductFunction,
+        ResetRigidConstraints,
     }
 
     [field: SerializeField] public Mode mode { get; set; }
@@ -146,14 +148,20 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
         if (target.TryGetComponent<PlayerMove>(out var move) == true)
         {
-
             move.SetPosition(worldPos);
             move.SetRotation(worldRotate);
+            Rigidbody rb = move.GetComponent<Rigidbody>();
+            rb.constraints = RigidbodyConstraints.FreezeAll;
             return;
         }
 
         target.position = worldPos;
         target.rotation = Quaternion.Euler(worldRotate);
+    }
+
+    public void ResetRigidConstraints(Rigidbody rd)
+    {
+        rd.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     public override void SetGimmick()
@@ -188,6 +196,15 @@ public class DialogueGimmick : GimmickBase<DialogueData>
                 case DialogueCallback.Mode.ConductFunction:
                     {
                         callback.Event?.Invoke();
+                        break;
+                    }
+
+                case DialogueCallback.Mode.ResetRigidConstraints:
+                    {
+                        if(callback.PosTarget != null && callback.PosTarget?.TryGetComponent<Rigidbody>(out var rb) == true)
+                        {
+                            ResetRigidConstraints(rb);
+                        }
                         break;
                     }
 

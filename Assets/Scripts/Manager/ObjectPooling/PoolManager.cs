@@ -18,9 +18,9 @@ public class PoolManager : MonoSingleton<PoolManager>
 
     public bool CreatePool(PoolDefines.PoolType poolType, Poolable poolObject, int capacity = 10)
     {
-        // 이미 풀이 있음
-        if (poolOrigin.ContainsKey(poolType))
-            return true;
+        //// 이미 풀이 있음
+        //if (poolOrigin.ContainsKey(poolType))
+        //    return true;
 
         // 풀 만들기
         poolOrigin[poolType] = poolObject;

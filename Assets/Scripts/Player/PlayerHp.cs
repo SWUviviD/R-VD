@@ -21,6 +21,8 @@ public class PlayerHp : MonoBehaviour
     public bool IsAlive { get => CurrentHp > 0; }
 
     public UnityEvent<int> OnDamaged { get; set; } = new UnityEvent<int>();
+    public UnityEvent<int> OnHealed { get; set; } = new UnityEvent<int>();
+    public UnityEvent<int> OnSetHP { get; set; } = new UnityEvent<int>();
     public UnityEvent OnDeath { get; set; } = new UnityEvent();
 
     private void OnEnable()
@@ -103,7 +105,7 @@ public class PlayerHp : MonoBehaviour
     public void FullHeal()
     {
         CurrentHp = status.HP;
-        OnDamaged?.Invoke(CurrentHp);
+        OnHealed?.Invoke(CurrentHp);
         LogManager.Log(CurrentHp.ToString());
 
         // 이펙트 출력
@@ -136,8 +138,7 @@ public class PlayerHp : MonoBehaviour
     public void SetHealth(int amount)
     {
         CurrentHp = amount;
-        OnDamaged?.Invoke(CurrentHp);
-        GameManager.Instance.HpUI?.SetHP(CurrentHp);
+        OnSetHP?.Invoke(CurrentHp);
     }
 
     private void OnDisable()

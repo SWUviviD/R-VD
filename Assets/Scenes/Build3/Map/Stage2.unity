@@ -3716,7 +3716,7 @@ PrefabInstance:
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogEnd.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
@@ -3732,6 +3732,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnDialogEnd.Array.data[1].<mode>k__BackingField
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<mode>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
@@ -3753,6 +3758,11 @@ PrefabInstance:
       propertyPath: OnDialogStart.Array.data[3].<mode>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<PosTarget>k__BackingField
+      value: 
+      objectReference: {fileID: 793498250}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogStart.Array.data[0].<PosTarget>k__BackingField
@@ -3790,6 +3800,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
       propertyPath: OnDialogStart.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -3815,12 +3830,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 395943947}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 488245937}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 488245937}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
@@ -3865,12 +3890,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GameClearedAndMoveToNextStage
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: GameClearedAndMoveToNextStage
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
@@ -3911,6 +3946,11 @@ PrefabInstance:
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: StageClearPoint, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: StageClearPoint, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
@@ -3971,6 +4011,11 @@ PrefabInstance:
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[2].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5642862888219648112, guid: 48f635d3cba2b644ba8028510998d993,
@@ -8569,13 +8614,23 @@ PrefabInstance:
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
       propertyPath: OnDialogEnd.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<mode>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<mode>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<PosTarget>k__BackingField
+      value: 
+      objectReference: {fileID: 793498250}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
       propertyPath: OnDialogStart.Array.data[1].<PosTarget>k__BackingField
@@ -8588,12 +8643,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1268338679}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1268338679}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
@@ -8613,7 +8683,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetTargetPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetTargetPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
@@ -8628,6 +8708,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevitateAroundPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
       propertyPath: OnDialogStart.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: PlayerMove, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -8638,12 +8723,22 @@ PrefabInstance:
       objectReference: {fileID: 793498250}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 793498250}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
       propertyPath: OnDialogStart.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 1680288764}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
         type: 3}
       propertyPath: OnDialogEnd.Array.data[0].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Transform, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,
+        type: 3}
+      propertyPath: OnDialogEnd.Array.data[1].<Event>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Transform, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3961328161952663031, guid: cffb05761b91dd544b7294896e19601e,

@@ -37,7 +37,7 @@ public class PlayerDash : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if ((status.IsDashing) == true)
+        if (DialogueManager.Instance.IsDialogueActive == false && (status.IsDashing) == true)
         {
             Vector3 v = dashDirection * status.DashSpeed;
             v.y = cachedY;
@@ -99,6 +99,9 @@ public class PlayerDash : MonoBehaviour
         rigid.useGravity = prevGravity;
         status.IsDashing = false;
         OnDashEvent?.Invoke(false);
+
+        if(DialogueManager.Instance.IsDialogueActive == true)
+            yield break;
 
         var v = rigid.velocity;
         v.y = cachedY;

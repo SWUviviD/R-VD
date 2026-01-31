@@ -10,14 +10,18 @@ public class HPBarUI : MonoBehaviour
     [SerializeField] private Image skillImage;
     [SerializeField] private Sprite[] skillPng = new Sprite[(int)InputDefines.SkillType.MAX];
 
+
     [Header("Dash")]
     [SerializeField] private Image dashGauge;
     [SerializeField] private Image dashFull;
+    [SerializeField] private AudioClip gaugeChargingClip;
+    [SerializeField] private AudioClip gaugeFullClip;
 
     [Header("Hp")]
     [SerializeField] private float fadeTime = 0.5f;
     [SerializeField] private RectTransform[] hpStars = new RectTransform[10];
     [SerializeField] private float starScale = 0.2f;
+    [SerializeField] private AudioClip attactedClip;
     private int currentShowingHP;
     private int maxHP = 10;
     private PlayerHp hp;
@@ -25,14 +29,19 @@ public class HPBarUI : MonoBehaviour
     private bool ShowHp = false;
     private int NeedShowHp = 0;
 
+    private AudioSource audioSource;
+
     private void Awake()
     {
         skillImage.gameObject.SetActive(false);
         currentShowingHP = maxHP;
 
+        audioSource = GetComponent<AudioSource>();
+
         hp = GameObject.FindAnyObjectByType<PlayerHp>();
-        hp.OnDamaged.RemoveListener(SetHP);
-        hp.OnDamaged.AddListener(SetHP);
+        hp.OnDamaged.AddListener(OnDamaged);
+        hp.OnHealed.AddListener(OnHealed);
+        hp.OnSetHP.AddListener(OnSetHp);
     }
 
     private void Start()
@@ -61,12 +70,41 @@ public class HPBarUI : MonoBehaviour
 
     public void SetDashGauge(float gauge)
     {
+        if (gauge == 0)
+        {
+            audioSource.loop = true;
+            audioSource.clip = gaugeChargingClip;
+            audioSource.Play();
+        }
+        else if (gauge >= 1f)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+            audioSource.PlayOneShot(gaugeFullClip);
+        }
+
         dashFull.gameObject.SetActive(gauge >= 1f);
         dashGauge.gameObject.SetActive(gauge < 1f);
         dashGauge.fillAmount = gauge;
     }
 
-    public void SetHP(int hp)
+    private void OnDamaged(int hp)
+    {
+        audioSource.PlayOneShot(attactedClip);
+        SetHP(hp);
+    }
+
+    private void OnHealed(int hp)
+    {
+        SetHP(hp);
+    }
+
+    private void OnSetHp(int hp)
+    {
+        SetHP(hp);
+    }
+
+    private void SetHP(int hp)
     {
         if(gameObject.activeSelf == false)
         {

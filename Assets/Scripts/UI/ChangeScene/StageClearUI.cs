@@ -18,19 +18,20 @@ public class StageClearUI : MonoBehaviour
 
     [SerializeField] private Button NextBtn;
 
-    private bool isPlaying = false;
+    private bool isPlayed = false;
 
     private void Awake()
     {
         ResetUI();
         UIHelper.OnClick(NextBtn, ResetUI);
+        isPlayed = false;
     }
 
     private void Update()
     {
-        if (!isPlaying && GameManager.Instance.IsStageClear)
+        if (isPlayed == false && GameManager.Instance.IsStageClear)
         {
-            isPlaying = true;
+            isPlayed = true;
             StartCoroutine(CoStageClear());
         }
     }
@@ -52,7 +53,6 @@ public class StageClearUI : MonoBehaviour
             0f);
 
         NextBtn.gameObject.SetActive(false);
-        isPlaying = false;
     }
 
     private IEnumerator CoStageClear()
@@ -108,88 +108,4 @@ public class StageClearUI : MonoBehaviour
         c.a = alpha;
         img.color = c;
     }
-
-    //private void Awake()
-    //{
-    //    // TODO: 다음 스테이지 연결//GameManager.Instance.NextStage);
-    //    UIHelper.OnClick(quitButton, GameManager.Instance.LoadTitle);
-    //    isCleared = false;
-    //}
-
-    //private void Start()
-    //{
-    //    ResetUI();
-    //}
-
-    //public void ResetUI()
-    //{
-    //    whiteOverlay.color = new Color(whiteOverlay.color.r, whiteOverlay.color.g, whiteOverlay.color.b, 0f);
-    //    bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, 0f);
-
-    //    // 텍스트를 처음엔 투명하게 설정
-    //    Color textColor2 = stageText.color;
-    //    textColor2.a = 0;
-    //    stageText.color = textColor2;
-
-    //    Color textColor1 = stageClearText.color;
-    //    textColor1.a = 0;
-    //    stageClearText.color = textColor1;
-
-    //    // 버튼 초기 비활성화
-    //    nextButton.gameObject.SetActive(false);
-    //}
-
-    //private void Update()
-    //{
-    //    if (isCleared)
-    //        return;
-
-    //    if (GameManager.Instance.IsStageClear)
-    //    {
-    //        HandleBlackOverlayFade();
-    //    }
-    //    else if (whiteOverlay.color.a != 0)
-    //    {
-    //        Color overlayColor = whiteOverlay.color;
-    //        overlayColor.a = 0;
-    //        whiteOverlay.color = overlayColor;
-
-    //        nextButton.gameObject.SetActive(false);
-    //        Color textColor1 = stageClearText.color;
-    //        textColor1.a = 0;
-    //        stageClearText.color = textColor1;
-    //        Color textColor2 = stageText.color;
-    //        textColor2.a = 0;
-    //        stageText.color = textColor2;
-    //    }
-    //}
-
-    //private void HandleBlackOverlayFade()
-    //{
-    //    Color overlayColor = whiteOverlay.color;
-
-    //    if (overlayColor.a < backgroundAlpha)
-    //    {
-    //        overlayColor.a += Time.deltaTime * fadeSpeed;
-    //        whiteOverlay.color = overlayColor;
-
-    //        if (overlayColor.a >= backgroundAlpha - 0.2f && !nextButton.gameObject.activeSelf)
-    //        {
-    //            //if (!GameManager.Instance.IsLastScene)
-    //            //    nextButton.gameObject.SetActive(true);
-    //            //else
-    //            //    quitButton.gameObject.SetActive(true);
-
-    //            isCleared = true;
-    //            nextButton.gameObject.SetActive(true);
-
-    //            Color textColor1 = stageClearText.color;
-    //            textColor1.a = 1;
-    //            stageClearText.color = textColor1;
-    //            Color textColor2 = stageText.color;
-    //            textColor2.a = 1;
-    //            stageText.color = textColor2;
-    //        }
-    //    }
-    //}
 }

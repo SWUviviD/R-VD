@@ -9,8 +9,11 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
     [SerializeField] private Collider[] stageBoundarys;
     [SerializeField] private UnityEvent onStageCleared = new UnityEvent();
 
+    private bool isCleared = false;
+
     protected override void Init()
     {
+        isCleared = false;
         SetGimmick();
     }
 
@@ -32,8 +35,13 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
         }
     }
 
-    private void OnGameClear()
+    public void OnGameClear()
     {
+        if (isCleared == true)
+            return;
+
+        isCleared = true;
+
         foreach(Collider c in stageBoundarys)
         {
             c.isTrigger = false;

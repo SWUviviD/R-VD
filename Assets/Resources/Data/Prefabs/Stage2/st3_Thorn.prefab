@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: st3_thorn stick
       objectReference: {fileID: 0}
+    - target: {fileID: 1690916913529789079, guid: cfa69600ef9673849b50310faf4e95f0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -2845779275431937956, guid: cfa69600ef9673849b50310faf4e95f0, type: 3}
@@ -105,7 +110,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.010000001
-  m_Height: 0.03
+  m_Height: 0.033
   m_Direction: 2
   m_Center: {x: -0.000000059604645, y: 0.000000014901161, z: 0.0000000037252903}
 --- !u!1001 &7553235387503938376
@@ -120,6 +125,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: st3_Thorn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886646714814630267, guid: 820fdc4d08288aa4dbc7f35bbe0f97c9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886646714814630267, guid: 820fdc4d08288aa4dbc7f35bbe0f97c9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886646714814630267, guid: 820fdc4d08288aa4dbc7f35bbe0f97c9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 4886646714814630267, guid: 820fdc4d08288aa4dbc7f35bbe0f97c9,
         type: 3}

@@ -29,6 +29,7 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private Button CreditBtn;
     [SerializeField] private Button SettingBtn;
     [SerializeField] private Button ExitBtn;
+    [SerializeField] private Color btnEnableColor;
 
     [Header("Setting")]
     [SerializeField] private TitleSettingUI settingUI;
@@ -40,15 +41,11 @@ public class TitleUI : MonoBehaviour
     {
         btnGroup.enabled = false;
 
-        bgPlayer.clip = TitleVideo;
-        bgPlayer.isLooping = true;
-        bgPlayer.playOnAwake = true;
+        //bgPlayer.gameObject.SetActive(false);
+        //bgPlayer.isLooping = true;
+        //bgPlayer.playOnAwake = false;
 
-#if UNITY_EDITOR
-        wfIntroVideo = new WaitForSeconds(5f);
-#else
         wfIntroVideo = new WaitForSeconds(introTime);
-#endif
 
         UIHelper.OnClick(StartBtn, NewGameStart);
         UIHelper.OnClick(ExitBtn, GameExit);
@@ -57,7 +54,7 @@ public class TitleUI : MonoBehaviour
         if (GameManager.Instance.GameDataManager.LoadGameData() == true)
         {
             ContinueBtn.GetComponentInChildren<Text>().raycastTarget = true;
-            ContinueBtn.GetComponentInChildren<Text>().color = Color.white;
+            ContinueBtn.GetComponentInChildren<Text>().color = btnEnableColor;
             ContinueBtn.GetComponent<SettingButtonHoverEffect>().enabled = true;
             UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
         }
@@ -114,8 +111,10 @@ public class TitleUI : MonoBehaviour
         //    GameManager.Instance.NewGameStart);
 
         // 컷씬 말고 영상으로 대체
-        bgPlayer.clip = IntroVideo;
-        bgPlayer.isLooping = false;
+        bgPlayer.gameObject.SetActive(true);
+        //bgPlayer.clip = IntroVideo;
+        //bgPlayer.isLooping = false;
+        //bgPlayer.Play();
 
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "UINext"),

@@ -19,6 +19,8 @@ public class ThornStick : MonoBehaviour
 
     private Vector3 rollDir = Vector3.zero;
 
+    [SerializeField] private LayerMask floorLayer;
+
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rollingClip;
@@ -33,6 +35,11 @@ public class ThornStick : MonoBehaviour
         audioSource.loop = true;
 
         lifeTime = new WaitForSeconds(map.StickLifeTime);
+    }
+
+    private void OnEnable()
+    {
+        rb.constraints = RigidbodyConstraints.None;
     }
 
 
@@ -53,8 +60,7 @@ public class ThornStick : MonoBehaviour
     {
         if (isDroppingStop)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody")
-                || collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody"))
+            if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerBody"))
             {
                 Transform parent = collision.transform.parent;
                 PlayerHp hp = parent.GetComponent<PlayerHp>();
@@ -67,7 +73,7 @@ public class ThornStick : MonoBehaviour
             return;
         }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        if ((floorLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
             if (isDroppingStop == true)
                 return;
@@ -86,7 +92,7 @@ public class ThornStick : MonoBehaviour
         if (isDroppingStop == false)
             return;
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        if ((floorLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
             isDroppingStop = false;
         }
@@ -108,6 +114,7 @@ public class ThornStick : MonoBehaviour
 
     private void OnDisable()
     {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         audioSource.Stop();

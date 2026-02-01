@@ -134,8 +134,6 @@ public class PlayerAnimation : MonoBehaviour
 
     public void SetFalling(bool isFalling)
     {
-        Debug.Log($"{this.isFalling} / {isFalling}");
-
         if (this.isFalling == isFalling)
             return;
 

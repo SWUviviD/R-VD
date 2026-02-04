@@ -126,7 +126,7 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
 
     private void  SetProgress(float progress)
     {
-        progressText.text = $"{progress * 100f}%";
+        progressText.text = $"{Math.Truncate(progress * 100f)}%";
         progressBar.fillAmount = progress;
     }
 

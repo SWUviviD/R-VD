@@ -52,6 +52,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         base.Init();
 
         state = TutorialState.NONE;
+        currentTargetCount = 0;
 
         siroTalkUIEndPos = SiroTalk.transform.position;
         tutorialUIEndPos = TutorialUI.transform.position;
@@ -73,6 +74,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         StartCoroutine(CoLoadIn(SiroTalk, siroTalkUIEndPos, () => ShowNextText(0)));
 
         state = TutorialState.SiroTalking;
+        currentTargetCount = 0;
     }
 
     public void TargetAchieved(TutorialStartTrigger trigger)

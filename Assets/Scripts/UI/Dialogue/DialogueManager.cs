@@ -169,6 +169,10 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         toChat.SetActive(false);
         dialoguePanel.SetActive(true);
 
+        currentSelectOption = -1;
+        op1BtnBg.gameObject.SetActive(false);
+        op2BtnBg.gameObject.SetActive(false);
+
         // 카메라 세팅
         CameraController.Instance.SetCameraMode(CameraController.CameraMode.Dialog);
         if(camAnimName.Length > 0)

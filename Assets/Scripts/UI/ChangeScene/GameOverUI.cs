@@ -6,16 +6,29 @@ using System.Collections;
 
 public class GameOverUI : MonoBehaviour
 {
-    public Image blackOverlay; // 검은 화면
-    public Image stageText;
-    public TextMeshProUGUI gameOverText;  // "Game Over" 텍스트
-    public Button restartButton, exitButton; // 버튼
-    public float fadeSpeed = 1.0f; // 페이드 속도
+    [SerializeField] private float fadeInOutTime = 0.5f;
+
+    [SerializeField] private Image blackBg;
+    [SerializeField] private float endAlpha;
+
+    [SerializeField] private Image frontBg;
+    [SerializeField] private Color frontBgEndColor;
+
+    [SerializeField] private Image clearText;
+    [SerializeField] private Color clearTextEndColor;
+
+    [SerializeField] private Button restartBtn;
+    [SerializeField] private Button exitBtn;
+
+    private bool isPlayed = false;
 
     private void Awake()
     {
-        UIHelper.OnClick(restartButton, GameManager.Instance.GameRestart);
-        UIHelper.OnClick(exitButton, Exit);
+        ResetUI();
+        UIHelper.OnClick(restartBtn, GameManager.Instance.GameRestart);
+        UIHelper.OnClick(exitBtn, Exit);
+        UIHelper.OnClick(restartBtn, ResetUI);
+        isPlayed = false;
     }
 
     private void Exit()
@@ -25,67 +38,87 @@ public class GameOverUI : MonoBehaviour
     }
 
 
-    private void Start()
-    {
-        // 텍스트를 처음엔 투명하게 설정
-        Color textColor2 = stageText.color;
-        textColor2.a = 0;
-        stageText.color = textColor2;
-
-        Color textColor1 = gameOverText.color;
-        textColor1.a = 0;
-        gameOverText.color = textColor1;
-
-        // 버튼 초기 비활성화
-        restartButton.gameObject.SetActive(false);
-        exitButton.gameObject.SetActive(false);
-    }
-
     private void Update()
     {
-        if (GameManager.Instance.IsGameOver)
+        if (isPlayed == false && GameManager.Instance.IsGameOver)
         {
-            HandleBlackOverlayFade();
-        }
-        else if (blackOverlay.color.a != 0)
-        {
-            Color overlayColor = blackOverlay.color;
-            overlayColor.a = 0;
-            blackOverlay.color = overlayColor;
-
-            restartButton.gameObject.SetActive(false);
-            exitButton.gameObject.SetActive(false);
-
-            Color textColor1 = gameOverText.color;
-            textColor1.a = 0;
-            gameOverText.color = textColor1;
-            Color textColor2 = stageText.color;
-            textColor2.a = 0;
-            stageText.color = textColor2;
+            isPlayed = true;
+            StartCoroutine(CoStageClear());
         }
     }
 
-    private void HandleBlackOverlayFade()
+    public void ResetUI()
     {
-        Color overlayColor = blackOverlay.color;
+        SetAlpha(blackBg, 0f);
 
-        if (overlayColor.a < 0.9f)
+        frontBg.color = new Color(
+            frontBgEndColor.r,
+            frontBgEndColor.g,
+            frontBgEndColor.b,
+            0f);
+
+        clearText.color = new Color(
+            clearTextEndColor.r,
+            clearTextEndColor.g,
+            clearTextEndColor.b,
+            0f);
+
+        restartBtn.gameObject.SetActive(false);
+        exitBtn.gameObject.SetActive(false);
+    }
+
+    private IEnumerator CoStageClear()
+    {
+        yield return FadeAlpha(blackBg, endAlpha);
+
+        yield return FadeColor(frontBg, frontBgEndColor);
+
+        yield return FadeColor(clearText, clearTextEndColor);
+
+        restartBtn.gameObject.SetActive(true);
+        exitBtn.gameObject.SetActive(true);
+    }
+
+    // ===== Utils =====
+
+    private IEnumerator FadeAlpha(Image img, float targetAlpha)
+    {
+        float startAlpha = img.color.a;
+        float time = 0f;
+
+        Color c = img.color;
+
+        while (time < fadeInOutTime)
         {
-            overlayColor.a += Time.deltaTime * fadeSpeed;
-            blackOverlay.color = overlayColor;
-
-            if (overlayColor.a >= 0.7f && !restartButton.gameObject.activeSelf)
-            {
-                restartButton.gameObject.SetActive(true);
-                exitButton.gameObject.SetActive(true);
-
-                Color textColor1 = gameOverText.color;
-                textColor1.a = 1;
-                gameOverText.color = textColor1;
-                Color textColor2 = stageText.color;
-                textColor2.a = 1;
-                stageText.color = textColor2;
-            }
+            time += Time.deltaTime;
+            c.a = Mathf.Lerp(startAlpha, targetAlpha, time / fadeInOutTime);
+            img.color = c;
+            yield return null;
         }
+
+        c.a = targetAlpha;
+        img.color = c;
+    }
+
+    private IEnumerator FadeColor(Image img, Color target)
+    {
+        Color start = img.color;
+        float time = 0f;
+
+        while (time < fadeInOutTime)
+        {
+            time += Time.deltaTime;
+            img.color = Color.Lerp(start, target, time / fadeInOutTime);
+            yield return null;
+        }
+
+        img.color = target;
+    }
+
+    private void SetAlpha(Image img, float alpha)
+    {
+        Color c = img.color;
+        c.a = alpha;
+        img.color = c;
     }
 }

@@ -70,7 +70,7 @@ public class EndingUI : MonoBehaviour
                     new InputActionName(ActionMapType.PlayerActions, "UINext"),
                     ActionPoint.IsCanceled, OnKeyCanceled);
 
-                GameManager.Instance.LoadTitle();
+                SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Credit);
             }
         }
     }
@@ -87,6 +87,6 @@ public class EndingUI : MonoBehaviour
             new InputActionName(ActionMapType.PlayerActions, "UINext"),
             ActionPoint.IsCanceled, OnKeyCanceled);
 
-        GameManager.Instance.LoadTitle();
+        SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Credit);
     }
 }

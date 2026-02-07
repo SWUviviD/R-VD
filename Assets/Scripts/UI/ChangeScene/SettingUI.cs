@@ -20,8 +20,11 @@ public class SettingUI : MonoBehaviour
     [Header("SoundSetting")]
     [SerializeField] private GameObject soundPanel;
     [SerializeField] private Slider masterVolume;
+    [SerializeField] private Image masterVolumeImage;
     [SerializeField] private Slider bgmVolume;
+    [SerializeField] private Image bgmVolumeImage;
     [SerializeField] private Slider sfxVolume;
+    [SerializeField] private Image sfxVolumeImage;
     [SerializeField] private Button settingExitBtn;
 
     private bool isActive = false;
@@ -42,21 +45,38 @@ public class SettingUI : MonoBehaviour
     private void ShowSetting()
     {
         masterVolume.value = SoundManager.Instance.MasterVolume;
-        masterVolume.onValueChanged.AddListener((value) => SoundManager.Instance.SetMaterVolume(value));
+        masterVolumeImage.fillAmount = SoundManager.Instance.MasterVolume;
+        masterVolume.onValueChanged.AddListener(SetMasterVolume);
 
         bgmVolume.value = SoundManager.Instance.BgmVolume;
-        bgmVolume.onValueChanged.AddListener((value) =>
-        {
-            Debug.Log("BGMChanged");
-            SoundManager.Instance.SetBGMVolume(value);
-        });
+        bgmVolumeImage.fillAmount = SoundManager.Instance.BgmVolume;
+        bgmVolume.onValueChanged.AddListener(SetBGMrVolume);
 
 
         sfxVolume.value = SoundManager.Instance.SfxVolume;
-        sfxVolume.onValueChanged.AddListener((value) => SoundManager.Instance.SetSFXVolume(value));
+        sfxVolumeImage.fillAmount = SoundManager.Instance.SfxVolume;
+        sfxVolume.onValueChanged.AddListener(SetSFXVolume);
 
         btnPanel.SetActive(false);
         soundPanel.SetActive(true);
+    }
+
+    private void SetMasterVolume(float volume)
+    {
+        masterVolumeImage.fillAmount = volume;
+        SoundManager.Instance.SetMaterVolume(volume);
+    }
+
+    private void SetBGMrVolume(float volume)
+    {
+        bgmVolumeImage.fillAmount = volume;
+        SoundManager.Instance.SetBGMVolume(volume);
+    }
+
+    private void SetSFXVolume(float volume)
+    {
+        sfxVolumeImage.fillAmount = volume;
+        SoundManager.Instance.SetSFXVolume(volume);
     }
 
     private void CloseSetting()
@@ -64,6 +84,8 @@ public class SettingUI : MonoBehaviour
         masterVolume.onValueChanged.RemoveAllListeners();
         bgmVolume.onValueChanged.RemoveAllListeners();
         sfxVolume.onValueChanged.RemoveAllListeners();
+
+        SoundManager.Instance.SaveSoundSetting();
 
         btnPanel.SetActive(true);
         soundPanel.SetActive(false);

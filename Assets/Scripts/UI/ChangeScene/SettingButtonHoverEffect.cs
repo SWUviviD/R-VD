@@ -4,27 +4,46 @@ using UnityEngine.UI;
 
 public class SettingButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private float hoverScale = 1.2f;
-    [SerializeField] private Image btnImage;
-    [SerializeField] private Sprite defaultSprite;
-    [SerializeField] private Sprite hoveredSprite;
+    [SerializeField] protected float hoverScale = 1.2f;
+    [SerializeField] protected Image btnImage;
+    [SerializeField] protected Sprite defaultSprite;
+    [SerializeField] protected Sprite hoveredSprite;
 
     private Vector3 originalScale;
+    private Color originalColor;
+    private Color curColor;
 
-    private void Start()
+    private void Awake()
     {
+        if (btnImage == null)
+        {
+            this.enabled = false;
+            return;
+        }
+
         originalScale = transform.localScale;
+        originalColor = btnImage.color;
+        curColor = originalColor;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    protected virtual void OnEnable()
+    {
+        OnPointerExit(null);
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = originalScale * hoverScale;
         if (btnImage) btnImage.sprite = hoveredSprite;
+        curColor.a = hoveredSprite == null ? 0f : originalColor.a;
+        btnImage.color = curColor;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = originalScale;
         if (btnImage) btnImage.sprite = defaultSprite;
+        curColor.a = defaultSprite == null ? 0f : originalColor.a;
+        btnImage.color = curColor;
     }
 }

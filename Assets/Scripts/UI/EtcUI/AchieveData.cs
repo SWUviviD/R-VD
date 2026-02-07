@@ -8,6 +8,7 @@ using UnityEngine.Events;
 public class AchieveData : MonoBehaviour
 {
     [field: SerializeField] public float duration { get; set; }
+    [field: SerializeField] public Sprite bgImage { get; set; }
     [field: SerializeField] public Sprite image { get; set; }
     [field: SerializeField] public string type { get ; set; }
     [field: SerializeField] public string title {  get; set; }

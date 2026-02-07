@@ -132,7 +132,7 @@ public class AchieveUI : MonoSingleton<AchieveUI>
         canSkip = false;
         skipRollbg.gameObject.SetActive(false);
         AddInputEvent();
-        return ShowUI(duringWait, data.image, data.type, data.title, data.Desc);
+        return ShowUI(duringWait, data.bgImage, data.image, data.type, data.title, data.Desc);
     }
 
     public void StopUI(Action _callback = null)
@@ -149,23 +149,23 @@ public class AchieveUI : MonoSingleton<AchieveUI>
             }));
     }
 
-    public bool ShowUI(float showStayTime, Sprite sprite, string type, string title, string desc)
+    public bool ShowUI(float showStayTime, Sprite bgSprite, Sprite sprite, string type, string title, string desc)
     {
         if (isShowing == true)
             return false;
 
         isShowing = true;
-        StartCoroutine(CoPreWait(showStayTime, sprite, type, title, desc));
+        StartCoroutine(CoPreWait(showStayTime, bgSprite, sprite, type, title, desc));
 
         return true;
     }
 
-    private IEnumerator CoPreWait(float showStayTime, Sprite sprite, string type, string title, string desc)
+    private IEnumerator CoPreWait(float showStayTime, Sprite bgSprite, Sprite sprite, string type, string title, string desc)
     {
         yield return wfPre;
 
         bg.gameObject.SetActive(true);
-        SetUI(sprite, type, title, desc);
+        SetUI(bgSprite, sprite, type, title, desc);
 
         StartCoroutine(CoMoveAndChangeAlpha(true, bg,
             () => {
@@ -178,8 +178,10 @@ public class AchieveUI : MonoSingleton<AchieveUI>
             }));
     }
 
-    private void SetUI(Sprite sprite, string type, string title, string desc)
+    private void SetUI(Sprite bgSprite, Sprite sprite, string type, string title, string desc)
     {
+        bg.sprite = bgSprite;
+
         if (sprite != null)
         {
             image.sprite = sprite;

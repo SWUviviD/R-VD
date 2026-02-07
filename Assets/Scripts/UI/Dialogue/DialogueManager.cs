@@ -370,11 +370,34 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         optionsPanel.gameObject.SetActive(true);
 
         currentSelectOption = -1;
+        op1BtnBg.gameObject.SetActive(false);
+        op2BtnBg.gameObject.SetActive(false);
 
         SetInput("UISelectLeft", true, OnSelectOption);
         SetInput("UISelectRight", true, OnSelectOption);
 
         SetInput("UINext", false, OnConfirmOption);
+    }
+
+    public void OnHoverOptionFromMouse(int num)
+    {
+        if (currentSelectOption == num)
+            return;
+
+        currentSelectOption = num;
+        op1BtnBg.gameObject.SetActive(currentSelectOption == 0);
+        op2BtnBg.gameObject.SetActive(currentSelectOption == 1);
+    }
+
+    public void OnExitOptionFromMouse(int num)
+    {
+        currentSelectOption = -1;
+        op1BtnBg.gameObject.SetActive(false);
+        op2BtnBg.gameObject.SetActive(false);
+
+        Color temp = op1BtnBg.color; temp.a = 1f;
+        op1BtnBg.color = temp;
+        op2BtnBg.color = temp;
     }
 
     private void OnSelectOption(InputAction.CallbackContext context)
@@ -383,6 +406,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         {
             currentSelectOption = 0;
             op1BtnBg.gameObject.SetActive(true);
+            op2BtnBg.gameObject.SetActive(false);
 
             SetInput("UINext", true, OnConfirmOption);
             return;

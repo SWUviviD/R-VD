@@ -11,6 +11,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Button SettingBtn;
     [SerializeField] private Button ReturnToMainBtn;
     [SerializeField] private Button ResumeBtn;
+    [SerializeField] private Button HowToBtn;
     [SerializeField] private GameObject background;
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private AudioSource panelSFX;
@@ -38,8 +39,11 @@ public class SettingUI : MonoBehaviour
 
         UIHelper.OnClick(settingExitBtn, CloseSetting);
 
+        UIHelper.OnClick(HowToBtn, HowToUI.Instance.ShowHowToUI);
+
         background.SetActive(isActive);
         settingPanel.SetActive(isActive);
+
     }
 
     private void ShowSetting()
@@ -109,6 +113,7 @@ public class SettingUI : MonoBehaviour
         background.SetActive(isActive);
         settingPanel.SetActive(isActive);
         panelSFX.Play();
+        GameManager.Instance.SetSkillInput(isActive == false);
         if (isActive)
         {
             GameManager.Instance.StopGame();

@@ -62,6 +62,8 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         wfShowNextTextPanding = new WaitForSeconds(showNextTextPandingTime);
         wfLoadOut = new WaitForSeconds(loadOutTime);
         wfTutorialMaxShow = new WaitForSeconds(waitForTutorialMaxShowTime);
+
+        SceneLoadManager.Instance.onSceneUnloaded_permanent.AddListener((Scene) => StopShowTutorial());
     }
 
     public void PlayTutorialTxt(TutorialInfo info, TutorialStartTrigger trigger)
@@ -99,6 +101,24 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
     {
         StartCoroutine(CoLoadOut(TutorialUI, tutorialUIEndPos, ResetUI));
         state = TutorialState.TutorialCountEnd;
+    }
+
+    public void StopShowTutorial()
+    {
+        currentInfo = null;
+        currentTalkLine = -1;
+        currentTargetCount = 0;
+
+        state = TutorialState.NONE;
+
+        SiroTalk.transform.position = AnimationStartPoint.transform.position;
+        SiroTalk.alpha = 0f;
+        talkText.text = string.Empty;
+
+        TutorialUI.transform.position = AnimationStartPoint.transform.position;
+        TutorialUI.alpha = 0f;
+        targetText.text = string.Empty;
+        countText.text = string.Empty;
     }
 
     private void ResetUI()
@@ -151,6 +171,8 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
             yield return null;
         }
+
+        panel.transform.position = endPos;
 
         callback?.Invoke();
     }
@@ -222,20 +244,20 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         {
             builder.Append(text[i]);
             talkText.text = builder.ToString();
-            yield return CoWaitForUnscaledSeconds(textPandingTime);
+            yield return CoWaitForScaledSeconds(textPandingTime);
         }
 
-        yield return CoWaitForUnscaledSeconds(showNextTextPandingTime);
+        yield return CoWaitForScaledSeconds(showNextTextPandingTime);
         _callback?.Invoke();
     }
 
-    private IEnumerator CoWaitForUnscaledSeconds(float time)
+    private IEnumerator CoWaitForScaledSeconds(float time)
     {
         float restTime = 0f;
         while (restTime < time)
         {
             yield return null;
-            restTime += Time.unscaledDeltaTime;
+            restTime += Time.deltaTime;
         }
     }
 

@@ -83,12 +83,12 @@ public class OrbitCamera : MonoBehaviour
             new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.Camera),
             InputDefines.ActionPoint.IsPerformed, OnLookInput);
 
-        InputManager.Instance.RemoveInputEventFunction(
-            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
-            InputDefines.ActionPoint.IsPerformed, OnZoomInput);
-        InputManager.Instance.AddInputEventFunction(
-            new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
-            InputDefines.ActionPoint.IsPerformed, OnZoomInput);
+        //InputManager.Instance.RemoveInputEventFunction(
+        //    new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
+        //    InputDefines.ActionPoint.IsPerformed, OnZoomInput);
+        //InputManager.Instance.AddInputEventFunction(
+        //    new InputDefines.InputActionName(InputDefines.ActionMapType.PlayerActions, InputDefines.CameraZoom),
+        //    InputDefines.ActionPoint.IsPerformed, OnZoomInput);
     }
 
     private void OnLookInput(InputAction.CallbackContext ctx)

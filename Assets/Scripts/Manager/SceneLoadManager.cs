@@ -15,11 +15,11 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
     private bool isSceneLoading = false;
 
     private UnityEvent<Scene, LoadSceneMode> onSceneLoaded;
-    private UnityEvent<Scene, LoadSceneMode> onSceneLoaded_permanent;
+    public UnityEvent<Scene, LoadSceneMode> onSceneLoaded_permanent;
     private UnityEvent<Scene, Scene> onActiveSceneChanged;
-    private UnityEvent<Scene, Scene> onActiveSceneChanged_permanent;
+    public UnityEvent<Scene, Scene> onActiveSceneChanged_permanent;
     private UnityEvent<Scene> onSceneUnloaded;
-    private UnityEvent<Scene> onSceneUnloaded_permanent;
+    public UnityEvent<Scene> onSceneUnloaded_permanent;
 
     protected override void Init()
     {

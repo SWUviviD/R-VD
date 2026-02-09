@@ -29,7 +29,11 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private Button CreditBtn;
     [SerializeField] private Button SettingBtn;
     [SerializeField] private Button ExitBtn;
-    [SerializeField] private Color btnEnableColor;
+    [SerializeField] private Button HowToBtn;
+    [SerializeField] private Image HowToBtnImage;
+    [SerializeField] private Color btnEnableTextColor;
+    [SerializeField] private Color btnEnableImageColor;
+    [SerializeField] private GameObject disableBtnClick;
 
     [Header("Setting")]
     [SerializeField] private TitleSettingUI settingUI;
@@ -45,6 +49,8 @@ public class TitleUI : MonoBehaviour
         //bgPlayer.isLooping = true;
         //bgPlayer.playOnAwake = false;
 
+        GameManager.Instance.ShowCursor();
+
         wfIntroVideo = new WaitForSeconds(introTime);
 
         UIHelper.OnClick(StartBtn, NewGameStart);
@@ -54,12 +60,15 @@ public class TitleUI : MonoBehaviour
         if (GameManager.Instance.GameDataManager.LoadGameData() == true)
         {
             ContinueBtn.GetComponentInChildren<Text>().raycastTarget = true;
-            ContinueBtn.GetComponentInChildren<Text>().color = btnEnableColor;
+            ContinueBtn.GetComponentInChildren<Text>().color = btnEnableTextColor;
+            ContinueBtn.GetComponent<Image>().color = btnEnableImageColor;
             ContinueBtn.GetComponent<SettingButtonHoverEffect>().enabled = true;
             UIHelper.OnClick(ContinueBtn, GameManager.Instance.LoadData);
         }
 
         UIHelper.OnClick(SettingBtn, () => settingUI.ShowPanel(true));
+
+        UIHelper.OnClick(HowToBtn, HowToUI.Instance.ShowHowToUI);
 
         skipRollbg.gameObject.SetActive(false);
     }
@@ -124,6 +133,8 @@ public class TitleUI : MonoBehaviour
             new InputActionName(ActionMapType.PlayerActions, "UINext"),
             ActionPoint.IsCanceled, OnKeyCanceled);
 
+        disableBtnClick.gameObject.SetActive(true);
+
         StartCoroutine(CoPlayIntro());
         StartCoroutine(CoOnVideoEnd());
     }
@@ -155,6 +166,7 @@ public class TitleUI : MonoBehaviour
             alpha = Mathf.Lerp(1f, 0f, elapsedTime / BtnFadeTime);
             btnGroup.alpha = alpha;
             logoImage.color = new Color(logoImage.color.r, logoImage.color.g, logoImage.color.b, alpha);
+            HowToBtnImage.color = new Color(HowToBtnImage.color.r, HowToBtnImage.color.g, HowToBtnImage.color.b, alpha);
 
             logoImage.rectTransform.anchoredPosition =
                 logoImage.rectTransform.anchoredPosition.x * Vector2.right +

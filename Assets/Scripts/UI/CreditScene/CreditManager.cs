@@ -12,6 +12,7 @@ public class CreditManager : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private float scrollSpeed = 50f;    // 올라가는 속도
     [SerializeField] private float waitAfterScroll = 2f; // 스크롤 끝난 뒤 대기 시간
+    [SerializeField] private float endPos = 1350f;
 
     [Header("Fade Settings")]
     [SerializeField] private CanvasGroup fadeCanvas;    
@@ -36,6 +37,7 @@ public class CreditManager : MonoBehaviour
             return;
         }
 
+        GameManager.Instance.ShowCursor();
         StartCoroutine(FadeInAndStartScroll());
     }
 
@@ -45,7 +47,7 @@ public class CreditManager : MonoBehaviour
 
         creditPanel.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
 
-        if (creditPanel.anchoredPosition.y - creditPanel.rect.height > screenHeight)
+        if (creditPanel.anchoredPosition.y >= endPos)
         {
             StartCoroutine(WaitAndLoadScene());
         }

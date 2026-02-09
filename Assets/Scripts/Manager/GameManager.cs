@@ -365,7 +365,7 @@ public class GameManager : MonoSingleton<GameManager>
 
             // 게임 끝까지 완료한 경우 게임 데이터 완전 초기화(삭제) 필요
             GameDataManager.DeleteGameData();
-            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Ending );
+            SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Ending, true);
             return;
         }
 

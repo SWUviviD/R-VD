@@ -53,6 +53,7 @@ public class StageClearUI : MonoBehaviour
             0f);
 
         NextBtn.gameObject.SetActive(false);
+        GameManager.Instance.ShowCursor(false);
     }
 
     private IEnumerator CoStageClear()

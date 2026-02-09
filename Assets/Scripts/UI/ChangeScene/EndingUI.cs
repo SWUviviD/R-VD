@@ -33,6 +33,8 @@ public class EndingUI : MonoBehaviour
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "UINext"),
             ActionPoint.IsCanceled, OnKeyCanceled);
+
+        SoundManager.Instance.StopBGM();
     }
 
     private float elapsedTime = 0f;

@@ -35,6 +35,8 @@ public class EndingUI : MonoBehaviour
             ActionPoint.IsCanceled, OnKeyCanceled);
 
         SoundManager.Instance.StopBGM();
+
+        GameManager.Instance.DeleteGameData();
     }
 
     private float elapsedTime = 0f;

@@ -14,12 +14,12 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
 
     private bool isSceneLoading = false;
 
-    private UnityEvent<Scene, LoadSceneMode> onSceneLoaded;
-    public UnityEvent<Scene, LoadSceneMode> onSceneLoaded_permanent;
-    private UnityEvent<Scene, Scene> onActiveSceneChanged;
-    public UnityEvent<Scene, Scene> onActiveSceneChanged_permanent;
-    private UnityEvent<Scene> onSceneUnloaded;
-    public UnityEvent<Scene> onSceneUnloaded_permanent;
+    private UnityEvent<Scene, LoadSceneMode> onSceneLoaded = new UnityEvent<Scene, LoadSceneMode>();
+    public UnityEvent<Scene, LoadSceneMode> onSceneLoaded_permanent = new UnityEvent<Scene, LoadSceneMode>();
+    private UnityEvent<Scene, Scene> onActiveSceneChanged = new UnityEvent<Scene, Scene>();
+    public UnityEvent<Scene, Scene> onActiveSceneChanged_permanent = new UnityEvent<Scene, Scene>();
+    private UnityEvent<Scene> onSceneUnloaded = new UnityEvent<Scene>();
+    public UnityEvent<Scene> onSceneUnloaded_permanent = new UnityEvent<Scene>();
 
     protected override void Init()
     {
@@ -28,18 +28,12 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
         Panel.SetActive(false);
         // 새 씬이 "로드되어 활성화"된 직후
         SceneManager.sceneLoaded += OnSceneLoaded;
-        onSceneLoaded = new UnityEvent<Scene, LoadSceneMode>();
-        onSceneLoaded_permanent = new UnityEvent<Scene, LoadSceneMode>();
 
         // 활성 씬이 바뀔 때 (로딩과 별개로 ActiveScene 전환 시점)
         SceneManager.activeSceneChanged += OnActiveSceneChanged;
-        onActiveSceneChanged = new UnityEvent<Scene, Scene>();
-        onActiveSceneChanged_permanent = new UnityEvent<Scene, Scene>();
 
         // 씬이 언로드된 직후
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        onSceneUnloaded = new UnityEvent<Scene>();
-        onSceneUnloaded_permanent = new UnityEvent<Scene>();
     }
 
     public SceneDefines.Scene GetActiveScene()

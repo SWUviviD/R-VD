@@ -21,7 +21,9 @@ public class CameraEffector : MonoBehaviour
         camScript = transform.GetComponent<Camera>();
         if(camScript == null)
         {
+#if UNITY_EDITOR
             Debug.LogError("Cam is Not Valide");
+#endif
         }
 
         originalFOV = camScript.fieldOfView;

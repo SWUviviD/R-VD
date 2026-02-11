@@ -28,9 +28,20 @@ public class TutorialStartTrigger : MonoBehaviour
 
     [SerializeField] private TutorialTargetAchieveTrigger[] triggers;
 
+    private int currentAchievedCount;
+
+    public bool isDone { get; set; } = false;
+
+    private void Awake()
+    {
+        currentAchievedCount = 0;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        TutorialPlayer.Instance.PlayTutorialTxt(info, this);
+        if(currentAchievedCount <= info.MaxCount)
+            TutorialPlayer.Instance.PlayTutorialTxt(info, this, currentAchievedCount);
+
         StartTrigger.enabled = false;
 
         foreach(var trigger in triggers)
@@ -41,6 +52,10 @@ public class TutorialStartTrigger : MonoBehaviour
 
     public void TargetAchieved()
     {
+        if (isDone == true)
+            return;
+
+        ++currentAchievedCount;
         TutorialPlayer.Instance.TargetAchieved(this);
     }
 }

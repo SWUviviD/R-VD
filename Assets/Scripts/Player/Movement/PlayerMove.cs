@@ -38,6 +38,8 @@ public class PlayerMove : MonoBehaviour
 
     public UnityEvent<bool> OnMove { get; private set; } = new UnityEvent<bool>();
 
+    public bool IsSlippery { get; set; }
+
     private void OnEnable()
     {
         currentFloor = null;
@@ -143,16 +145,21 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
+
             if(IsGrounded && !jump.IsJumping)
             {
-                const float groundDecel = 30f;
-                v.x = Mathf.MoveTowards(v.x, 0f, groundDecel * Time.fixedDeltaTime);
-                v.z = Mathf.MoveTowards(v.z, 0f, groundDecel * Time.fixedDeltaTime);
-
-                if(new Vector2(v.x, v.z).sqrMagnitude < 0.0004f)
+                if (IsSlippery == false)
                 {
-                    v.x = 0f; v.z = 0f;
+                    const float groundDecel = 30f;
+                    v.x = Mathf.MoveTowards(v.x, 0f, groundDecel * Time.fixedDeltaTime);
+                    v.z = Mathf.MoveTowards(v.z, 0f, groundDecel * Time.fixedDeltaTime);
+
+                    if (new Vector2(v.x, v.z).sqrMagnitude < 0.0004f)
+                    {
+                        v.x = 0f; v.z = 0f;
+                    }
                 }
+                
             }
             OnMove?.Invoke(false);
         }
@@ -185,14 +192,31 @@ public class PlayerMove : MonoBehaviour
     
     private void Rebound(ref RaycastHit _hit)
     {
-        float deep = _hit.distance - heightLength;
-
-        if (Mathf.Abs(deep) < 0.001f)
+        Vector3 v = rigid.velocity;
+        if(v.y < 0f)
         {
-            return;
+            v.y = 0f;
+            rigid.velocity = v;
         }
 
-        rigid.MovePosition(rigid.transform.position - new Vector3(0f, deep, 0f));
+        return;
+
+        //float currentDist = _hit.distance;
+        //float targetDist = heightLength;
+        //float deep = currentDist - targetDist;
+
+        //if (Mathf.Abs(deep) < 0.01f) return;
+
+        //Vector3 targetPosition = rigid.position - new Vector3(0f, deep, 0f);
+
+        //rigid.MovePosition(targetPosition);
+
+        //Vector3 v = rigid.velocity;
+        //if (v.y < 0)
+        //{
+        //    v.y = 0;
+        //    rigid.velocity = v;
+        //}
     }
 
     private void FloorInteract(ref RaycastHit _hit)
@@ -287,7 +311,12 @@ public class PlayerMove : MonoBehaviour
         MoveDirection = obj.ReadValue<Vector2>();
     }
 
-    public void SetPosition(Vector3 _newPos)
+    public void  SetPosition(Vector3 _newPos)
+    {
+        rigid.position = _newPos + Vector3.up * (rayLength - heightLength + 0.05f);
+    }
+
+    public void SetPositionByTransform(Vector3 _newPos)
     {
         transform.position = _newPos + Vector3.up * (rayLength - heightLength + 0.05f);
     }

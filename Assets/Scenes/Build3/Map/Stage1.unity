@@ -864,7 +864,7 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1448847836}
+      objectReference: {fileID: 588703171}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1038,6 +1038,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1562756004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &588703171 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1268342787278687671, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1065684266753564459}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &593552311
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,6 +2522,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1562756004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1368068747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4079973282740157706, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1065684266753564459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 891c41f981e3d4c4391915422d72d77a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1426661987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4257,6 +4275,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheckpointArea
       objectReference: {fileID: 0}
+    - target: {fileID: 3176894108765983070, guid: e75a939310d16b64584c21f00d479e7d,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066203611918533238, guid: e75a939310d16b64584c21f00d479e7d,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4590779748675300834, guid: e75a939310d16b64584c21f00d479e7d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5712,6 +5740,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 301725395071677972, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 301725395071677972, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: ConnectedTutorial.Array.data[0]
       value: 
       objectReference: {fileID: 1426661989}
@@ -5979,6 +6012,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 423951342150544248, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 423951342150544248, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -6987,6 +7025,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 853300419513486462, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 853300419513486462, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: ConnectedTutorial.Array.data[0]
       value: 
       objectReference: {fileID: 1068096031}
@@ -7400,6 +7443,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 1057872423110438515, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1062117891325629855, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7690,6 +7738,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 1177523480638367036, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1177600412111581465, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7894,6 +7947,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268532436845295696, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1268952728367738402, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -9946,6 +10004,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 2136532691920740971, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2137034867507668138, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -10240,6 +10303,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2283077406163771222, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2283669000661154350, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -11298,6 +11366,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2838097186487839370, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838097186487839370, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
@@ -11640,6 +11713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3001030563432778549, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3001030563432778549, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -12528,6 +12606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3447863615469467095, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3447863615469467095, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: ConnectedTutorial.Array.data[0]
       value: 
       objectReference: {fileID: 1830248180}
@@ -12755,6 +12838,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3572634974732640163, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3575969736202919417, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -14301,6 +14389,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 4296947829049042687, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4299846610957544920, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -14600,6 +14693,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4457819938976421917, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4458559842868164196, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -16885,6 +16983,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 5482600463459184586, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5482913080719696710, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -18737,6 +18840,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6372183264013581538, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6372183264013581538, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: <checkPointNumber>k__BackingField
       value: 9
       objectReference: {fileID: 0}
@@ -19148,11 +19256,16 @@ PrefabInstance:
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
@@ -19162,7 +19275,17 @@ PrefabInstance:
       objectReference: {fileID: 1904371028}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1368068747}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
@@ -19172,12 +19295,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: TargetAchieved
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: TutorialStartTrigger, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TutorialStartTrigger, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585984228036095863, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: onCristalBroken.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6586604055950460110, guid: 2025c17f7a7acbe4487642caf49bb6b0,
@@ -19519,6 +19657,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749303979791885569, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6755706011972338681, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -20055,6 +20198,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 6963052333690114163, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6964206652029117245, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20109,6 +20257,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7001239735086526900, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7001239735086526900, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -20397,6 +20550,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7139752976972225571, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139752976972225571, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: <checkPointNumber>k__BackingField
       value: 12
       objectReference: {fileID: 0}
@@ -20534,6 +20692,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7199530661624986664, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7202831126505947297, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -20754,6 +20917,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7340803666159319645, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7344447498992524564, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -20984,6 +21152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7481682313425270567, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7482236040077661427, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -21684,6 +21857,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788674207234726089, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7788674207234726089, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -23193,6 +23371,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8070241004652202451, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8070241004652202451, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: ConnectedDialogue.Array.data[0]
       value: 
       objectReference: {fileID: 858890341}
@@ -23431,6 +23614,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 8171267305485163518, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8171987616610117576, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -23460,6 +23648,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8189603450352839029, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8189603450352839029, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -24013,6 +24206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8419811335710851931, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8419811335710851931, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
       propertyPath: <checkPointNumber>k__BackingField
       value: 13
       objectReference: {fileID: 0}
@@ -24065,6 +24263,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8453802451046834844, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8454531302306918700, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -24516,6 +24719,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 8605791169724550923, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8606775597696373096, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -24540,6 +24748,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ConnectedTutorial.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8615746752364359424, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <checkPointID>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8615746752364359424, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -24675,6 +24888,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678008862041607137, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8679104495197482830, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -25180,6 +25398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901320234556824315, guid: 2025c17f7a7acbe4487642caf49bb6b0,
+        type: 3}
+      propertyPath: <DropDamage>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8917960065684022582, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -25810,6 +26033,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6231682565302368085, guid: 2025c17f7a7acbe4487642caf49bb6b0, type: 3}
     - {fileID: 9153884998765223571, guid: 2025c17f7a7acbe4487642caf49bb6b0, type: 3}
+    - {fileID: 1057872423110438515, guid: 2025c17f7a7acbe4487642caf49bb6b0, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6158556464493437755, guid: 2025c17f7a7acbe4487642caf49bb6b0,
         type: 3}
@@ -26013,6 +26237,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1737384325111240301, guid: f83254a06bf592642940897aff46db8d,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1983535088258191776}
+    - target: {fileID: 1737384325111240301, guid: f83254a06bf592642940897aff46db8d,
+        type: 3}
+      propertyPath: m_PlaneDistance
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 1959527462484008861, guid: f83254a06bf592642940897aff46db8d,
         type: 3}
@@ -26334,6 +26568,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8803bf106c43f5043b485ff0fda0a87d, type: 3}
+--- !u!20 &1983535088258191776 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5310636140104070269, guid: 8803bf106c43f5043b485ff0fda0a87d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1983535088258191775}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2939723795793415148
 PrefabInstance:
   m_ObjectHideFlags: 0

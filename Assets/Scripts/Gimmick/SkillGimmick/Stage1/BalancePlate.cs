@@ -84,11 +84,13 @@ public class BalancePlate : GimmickBase<BalancePlateData>, IFloorInteractive
     {
         player = _player.transform;
         playerMove = player.GetComponent<PlayerMove>();
+        playerMove.IsSlippery = true;
         isPlayerOn = true;
     }
 
     public void InteractEnd(GameObject _player)
     {
+        playerMove.IsSlippery = false;
         isPlayerOn = false;
     }
 }

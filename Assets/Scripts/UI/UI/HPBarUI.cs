@@ -59,7 +59,7 @@ public class HPBarUI : MonoBehaviour
 
     public void SetVisable(bool visable)
     {
-        gameObject.SetActive(visable);
+        gameObject?.SetActive(visable);
     }
 
     public void SwichSkill(InputDefines.SkillType skillType)

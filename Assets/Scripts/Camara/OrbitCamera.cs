@@ -51,7 +51,9 @@ public class OrbitCamera : MonoBehaviour
     {
         if (!target)
         {
+#if UNITY_EDITOR
             Debug.LogError("[OrbitCamera] Target이 비어 있습니다.");
+#endif
             enabled = false;
             return;
         }

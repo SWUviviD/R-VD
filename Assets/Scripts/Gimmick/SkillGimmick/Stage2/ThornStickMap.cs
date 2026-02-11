@@ -62,7 +62,10 @@ public class ThornStickMap : MonoBehaviour
         while(true)
         {
             int stickCount = Random.Range(1, stickRow);
+
+#if UNITY_EDITOR
             Debug.Log("SCount: " + stickCount);
+#endif
 
             for(int i = 0; i < stickRow; ++i )
             {

@@ -85,6 +85,8 @@ public class PlayerHp : MonoBehaviour
         {
             OnDamaged?.Invoke(CurrentHp);
         }
+
+        GameManager.Instance.HP = CurrentHp;
     }
 
     public void Fall(int amount)
@@ -104,6 +106,9 @@ public class PlayerHp : MonoBehaviour
     /// </summary>
     public void FullHeal()
     {
+#if UNITY_EDITOR
+        Debug.LogError("fullheal {}");
+#endif
         CurrentHp = status.HP;
         OnHealed?.Invoke(CurrentHp);
         LogManager.Log(CurrentHp.ToString());
@@ -115,6 +120,8 @@ public class PlayerHp : MonoBehaviour
             healEffect.transform.SetParent(transform);
             Destroy(healEffect, 5f);
         }
+
+        GameManager.Instance.HP = CurrentHp;
     }
 
     public void Heal(int amount)
@@ -133,16 +140,18 @@ public class PlayerHp : MonoBehaviour
             healEffect.transform.SetParent(transform);
             Destroy(healEffect, 5f);
         }
+
+        GameManager.Instance.HP = CurrentHp;
     }
 
     public void SetHealth(int amount)
     {
+#if UNITY_EDITOR
+        Debug.LogError($"set hp {amount}");
+#endif
         CurrentHp = amount;
         OnSetHP?.Invoke(CurrentHp);
-    }
 
-    private void OnDisable()
-    {
-        GameManager.Instance.SaveData();
+        GameManager.Instance.HP = CurrentHp;
     }
 }

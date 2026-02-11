@@ -130,7 +130,9 @@ public class CSVToJson
             var data = JsonUtility.ToJson(list, true);
             File.WriteAllText(basePath + "/Json/" + fileName + ".json", data);
 
+#if UNITY_EDITOR
             Debug.Log("CSV File Change Complete");
+#endif
         }
 
 

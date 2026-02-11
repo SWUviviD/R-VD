@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 {
@@ -21,13 +22,13 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
     [SerializeField] private CanvasGroup SiroTalk;
     [SerializeField] private TextMeshProUGUI talkText;
     [SerializeField] private int maxTextCount = 34;
-    private Vector3 siroTalkUIEndPos = Vector3.zero;
+    [SerializeField] private Transform siroTalkUIEndPos;
 
     [Header("TutorialUI")]
     [SerializeField] private CanvasGroup TutorialUI;
     [SerializeField] private TextMeshProUGUI targetText;
     [SerializeField] private TextMeshProUGUI countText;
-    private Vector3 tutorialUIEndPos = Vector3.zero;
+    [SerializeField] private Transform tutorialUIEndPos;
 
     [Header("Timing")]
     [SerializeField] private float loadInTime = 0.3f;
@@ -54,9 +55,6 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         state = TutorialState.NONE;
         currentTargetCount = 0;
 
-        siroTalkUIEndPos = SiroTalk.transform.position;
-        tutorialUIEndPos = TutorialUI.transform.position;
-
         textPandingTime = maxTextTime / maxTextCount;
 
         wfShowNextTextPanding = new WaitForSeconds(showNextTextPandingTime);
@@ -66,17 +64,28 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         SceneLoadManager.Instance.onSceneUnloaded_permanent.AddListener((Scene) => StopShowTutorial());
     }
 
-    public void PlayTutorialTxt(TutorialInfo info, TutorialStartTrigger trigger)
+    public void PlayTutorialTxt(TutorialInfo info, TutorialStartTrigger trigger, int curCount)
     {
         StopAllCoroutines();
         ResetUI();
 
         currentTrigger = trigger;
-        SetInfo(info);
-        StartCoroutine(CoLoadIn(SiroTalk, siroTalkUIEndPos, () => ShowNextText(0)));
+        SetInfo(info, curCount);
+        if(currentTargetCount >= info.MaxCount)
+        {
+            currentTrigger.isDone = true;
+
+            StopAllCoroutines();
+
+            state = TutorialState.TutorialCountEnd;
+            StartCoroutine(CoWaitAndEndTutorial());
+
+            return;
+        }
+
+        StartCoroutine(CoLoadIn(SiroTalk, siroTalkUIEndPos.localPosition, () => ShowNextText(0)));
 
         state = TutorialState.SiroTalking;
-        currentTargetCount = 0;
     }
 
     public void TargetAchieved(TutorialStartTrigger trigger)
@@ -91,6 +100,8 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         countText.text = $"({currentTargetCount}/{currentInfo.MaxCount})";
         if (currentTargetCount >= currentInfo.MaxCount)
         {
+            currentTrigger.isDone = true;
+
             StopAllCoroutines();
 
             StartCoroutine(CoWaitAndEndTutorial());
@@ -99,7 +110,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
     private void TutorialEnd()
     {
-        StartCoroutine(CoLoadOut(TutorialUI, tutorialUIEndPos, ResetUI));
+        StartCoroutine(CoLoadOut(TutorialUI, tutorialUIEndPos.localPosition, ResetUI));
         state = TutorialState.TutorialCountEnd;
     }
 
@@ -111,11 +122,11 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
         state = TutorialState.NONE;
 
-        SiroTalk.transform.position = AnimationStartPoint.transform.position;
+        SiroTalk.transform.localPosition = AnimationStartPoint.localPosition;
         SiroTalk.alpha = 0f;
         talkText.text = string.Empty;
 
-        TutorialUI.transform.position = AnimationStartPoint.transform.position;
+        TutorialUI.transform.localPosition = AnimationStartPoint.localPosition;
         TutorialUI.alpha = 0f;
         targetText.text = string.Empty;
         countText.text = string.Empty;
@@ -129,21 +140,21 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
         state = TutorialState.NONE;
 
-        SiroTalk.transform.position = AnimationStartPoint.transform.position;
+        SiroTalk.transform.localPosition = AnimationStartPoint.localPosition;
         SiroTalk.alpha = 1.0f;
         talkText.text = string.Empty;
 
-        TutorialUI.transform.position = AnimationStartPoint.transform.position;
+        TutorialUI.transform.localPosition = AnimationStartPoint.localPosition;
         TutorialUI.alpha = 1.0f;
         targetText.text = string.Empty;
         countText.text = string.Empty;
     }
 
-    private void SetInfo(TutorialInfo info)
+    private void SetInfo(TutorialInfo info, int count)
     {
         currentInfo = info;
         currentTalkLine = 0;
-        currentTargetCount = 0;
+        currentTargetCount = count;
 
         // Siro
 
@@ -151,7 +162,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         TutorialUI.gameObject.SetActive(false);
         TutorialUI.gameObject.SetActive(true);
         targetText.text = info.TutorialTargetTxt;
-        countText.text = $"(0/{info.MaxCount})";
+        countText.text = $"({currentTargetCount}/{info.MaxCount})";
     }
 
     private IEnumerator CoLoadIn(CanvasGroup panel, Vector3 endPos, Action callback = null)
@@ -159,20 +170,20 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         float elapsedTime = 0f;
 
         panel.alpha = 1.0f;
-        Vector3 startPos = AnimationStartPoint.transform.position;
+        Vector3 startPos = AnimationStartPoint.localPosition;
         Vector3 curPos = startPos;
         panel.gameObject.SetActive(true);
 
         while (elapsedTime < loadInTime)
         {
             curPos = Vector3.Lerp(startPos, endPos, elapsedTime / loadInTime);
-            panel.transform.position = curPos;
+            panel.transform.localPosition = curPos;
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
 
-        panel.transform.position = endPos;
+        panel.transform.localPosition = endPos;
 
         callback?.Invoke();
     }
@@ -182,7 +193,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         float elapsedTime = 0f;
         float alpha = 0.0f;
 
-        panel.transform.position = panelOriginPos;
+        panel.transform.localPosition = panelOriginPos;
         panel.gameObject.SetActive(true);
 
         while (elapsedTime < loadOutTime)
@@ -206,7 +217,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
 
         if(lineNum == currentInfo.talkLines.Length)
         {
-            StartCoroutine(CoLoadOut(SiroTalk, siroTalkUIEndPos, StartTutorialPanding));
+            StartCoroutine(CoLoadOut(SiroTalk, siroTalkUIEndPos.localPosition, StartTutorialPanding));
             state = TutorialState.SiroTalkEnding;
             return;
         }
@@ -228,7 +239,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
             return;
         }
 
-        StartCoroutine(CoLoadIn(TutorialUI, tutorialUIEndPos));
+        StartCoroutine(CoLoadIn(TutorialUI, tutorialUIEndPos.localPosition));
     }
 
     private void StartTextShowing(string text, Action _callback = null)
@@ -266,7 +277,7 @@ public class TutorialPlayer : MonoSingleton<TutorialPlayer>
         SiroTalk.gameObject.SetActive(false);
 
         TutorialUI.gameObject.SetActive(true);
-        TutorialUI.transform.position = tutorialUIEndPos;
+        TutorialUI.transform.localPosition = tutorialUIEndPos.localPosition;
         TutorialUI.alpha = 1f;
 
         countText.text = $"({currentTargetCount}/{currentInfo.MaxCount})";

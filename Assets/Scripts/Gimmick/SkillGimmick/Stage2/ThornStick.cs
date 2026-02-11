@@ -80,7 +80,9 @@ public class ThornStick : MonoBehaviour
 
             isDroppingStop = true;
 
+#if UNITY_EDITOR
             Debug.Log("Thorn Sound Play");
+#endif
             audioSource.Play();
 
             rollDir = collision.transform.forward;

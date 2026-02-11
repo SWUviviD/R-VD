@@ -21,6 +21,7 @@ public class TitleUI : MonoBehaviour
 
     [Header("Logo")]
     [SerializeField] private Image logoImage;
+    [SerializeField] private Image bgImage;
 
     [Header("Btn")]
     [SerializeField] private CanvasGroup btnGroup;
@@ -41,8 +42,12 @@ public class TitleUI : MonoBehaviour
     [SerializeField] private Image skipRollbg;
     [SerializeField] private float skipTime = 2f;
 
+    private bool isShowingIntro = false;
+
     private void Start()
     {
+        SoundManager.Instance.StopBGM();
+
         btnGroup.enabled = false;
 
         //bgPlayer.gameObject.SetActive(false);
@@ -92,7 +97,7 @@ public class TitleUI : MonoBehaviour
 
     private void Update()
     {
-        if(isPressing == true)
+        if(isShowingIntro == true && isPressing == true)
         {
             elapsedTime += Time.deltaTime;
             skipRoll.fillAmount = elapsedTime / skipTime;
@@ -124,6 +129,8 @@ public class TitleUI : MonoBehaviour
         //bgPlayer.clip = IntroVideo;
         //bgPlayer.isLooping = false;
         //bgPlayer.Play();
+
+        isShowingIntro = true;
 
         InputManager.Instance.AddInputEventFunction(
             new InputActionName(ActionMapType.PlayerActions, "UINext"),
@@ -167,6 +174,7 @@ public class TitleUI : MonoBehaviour
             btnGroup.alpha = alpha;
             logoImage.color = new Color(logoImage.color.r, logoImage.color.g, logoImage.color.b, alpha);
             HowToBtnImage.color = new Color(HowToBtnImage.color.r, HowToBtnImage.color.g, HowToBtnImage.color.b, alpha);
+            bgImage.color = new Color(bgImage.color.r, bgImage.color.g, bgImage.color.b, alpha);
 
             logoImage.rectTransform.anchoredPosition =
                 logoImage.rectTransform.anchoredPosition.x * Vector2.right +

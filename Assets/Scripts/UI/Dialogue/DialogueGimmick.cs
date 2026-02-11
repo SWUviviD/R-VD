@@ -42,6 +42,7 @@ public class DialogueGimmick : GimmickBase<DialogueData>
     [field: SerializeField] public List<DialogueCallback> OnDialogStart = new List<DialogueCallback>();
     [field: SerializeField] public List<DialogueCallback> OnDialogEnd = new List<DialogueCallback>();
 
+
     private int dialogueID;
 
     private bool isTherePlayer = false;
@@ -49,22 +50,23 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
     [SerializeField] private CameraAnimationData data;
 
+
     private void Start()
     {
-        data = GetComponent<CameraAnimationData>();
+        col.enabled = true;
+
+        if(data == null)
+            data = GetComponent<CameraAnimationData>();
+        //if (bindCheckPoint != null && bindCheckPoint.checkPointID < GameManager.Instance.GetCurrentCheckPointNumber())
+        //{
+        //    Achieve();
+        //}
+
         if (GameManager.Instance.TryTimes > 0)
         {
-            if (bindCheckPoint != null &&
-                bindCheckPoint.checkPointNumber < GameManager.Instance.LastTryCheckPoint)
+            if (bindCheckPoint != null && bindCheckPoint.checkPointID < GameManager.Instance.LastTryCheckPoint)
             {
-                foreach (var d in data.Steps)
-                {
-                    if (d.AchieveData != null)
-                        AchieveUI.Instance.Achieve(d.AchieveData);
-                }
-                Invoke(OnDialogEnd);
-
-                gameObject.SetActive(false);
+                Achieve();
             }
         }
     }
@@ -87,10 +89,30 @@ public class DialogueGimmick : GimmickBase<DialogueData>
         }
     }
 
+    public void Achieve()
+    {
+        if(data == null)
+        {
+            data = GetComponent<CameraAnimationData>();
+        }
+
+        foreach (var d in data.Steps)
+        {
+            if (d.AchieveData != null)
+                AchieveUI.Instance.Achieve(d.AchieveData);
+        }
+        Invoke(OnDialogEnd);
+
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent<PlayerHp>(out _) == true)
         {
+#if UNITY_EDITOR
+            Debug.LogError($"Dialogue Start {gameObject.name} {dialogueID}");
+#endif
             isTherePlayer = true;
 
             col.enabled = false;
@@ -148,9 +170,10 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
         if (target.TryGetComponent<PlayerMove>(out var move) == true)
         {
-            move.SetPosition(worldPos);
+            move.SetPositionByTransform(worldPos);
             move.SetRotation(worldRotate);
             Rigidbody rb = move.GetComponent<Rigidbody>();
+            rb.interpolation = RigidbodyInterpolation.None;
             rb.constraints = RigidbodyConstraints.FreezeAll;
             return;
         }
@@ -161,6 +184,7 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
     public void ResetRigidConstraints(Rigidbody rd)
     {
+        rd.interpolation = RigidbodyInterpolation.Interpolate;
         rd.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
@@ -173,6 +197,7 @@ public class DialogueGimmick : GimmickBase<DialogueData>
 
     protected override void Init()
     {
+        col.enabled = false;
         dialogueID = gimmickData.DialogueID;
         //cameraPosition = gimmickData.CameraPosition;
         //cameraRotation = gimmickData.CameraRotation;

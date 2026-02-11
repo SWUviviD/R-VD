@@ -9,6 +9,9 @@ public class GameManager : MonoSingleton<GameManager>
 {
     [field:SerializeField] public GameObject Camera { get; private set; }
     [field: SerializeField] public GameObject Player { get; private set; }
+
+    [SerializeField] private Canvas[] InGameConnectCanvas;
+
     public bool IsPaused { get; private set; }
     public bool IsGameOver { get; private set; }
     public bool IsStageClear { get; private set; }
@@ -29,9 +32,26 @@ public class GameManager : MonoSingleton<GameManager>
 
     private bool isGoingNextStage = false;
 
+    private int _hp = 10;
+    public int HP
+    {
+        get => _hp;
+        set
+        {
+#if UNITY_EDITOR
+            Debug.LogError($"SetHP {value}");
+#endif
+            _hp = value;
+        }
+    }
+
+
     protected override void Init()
     {
         GameDataManager = new GameDataManager();
+
+        SceneLoadManager.Instance.onSceneLoaded_permanent.AddListener(
+            (Scene, LoadSceneMode) => ConnectCanvas());
     }
 
     private void OnEnable()
@@ -59,12 +79,14 @@ public class GameManager : MonoSingleton<GameManager>
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+
         isGoingNextStage = false;
         IsStageClear = false;
         IsGameOver = false;
         IsPaused = false;
 
         HpUI = GameObject.FindAnyObjectByType<HPBarUI>();
+
 
         Player = GameObject.FindWithTag("Player");
         if (Player != null)
@@ -79,12 +101,16 @@ public class GameManager : MonoSingleton<GameManager>
             move.SetRotation(GameDataManager.GameData.PlayerRotation);
         }
 
+        CheckpointGimmick.LoadCheckpoint(GameDataManager.GameData.CheckPointID);
+
+        SetSkillInput(true);
+
         // todo 밖으로 빼기
         LevitateAroundPlayer siro = GameObject.FindAnyObjectByType<LevitateAroundPlayer>();
         if (siro != null)
         {
             int id = GameDataManager.GameData.CheckPointID;
-            if (id/ 100 == 1 && id % 100 > 0)
+            if (id % 100 > 0)
             {
                 siro.SetTargetPlayer(Player.transform);
             }
@@ -96,14 +122,48 @@ public class GameManager : MonoSingleton<GameManager>
             CameraController.Instance.OnLoadCameraSetting(Camera.transform);
             CameraController.Instance.SetCameraMode(CameraController.CameraMode.Orbit);
             CameraController.Instance.SetCameraPositionAndRotation(GameDataManager.GameData.camRotation, Vector3.zero);
-        }
 
+            Camera cam = Camera.GetComponent<Camera>();
+            foreach (var c in InGameConnectCanvas)
+            {
+                c.worldCamera = cam;
+                c.planeDistance = 0.31f;
+            }
+        }
+        else
+        {
+            ConnectCanvas();
+        }
+        
         TryTimes = GameDataManager.GameData.TryTimes;
         LastTryCheckPoint = GameDataManager.GameData.LastTryCheckPointID;
+
+        StageID stage = SceneLoadManager.Instance.GetActiveStage();
+        SoundManager.Instance.PlayBGMByStage(stage);
 
         SetMovementInput(true);
         ResumeGame();
         SetCameraInput(true);
+    }
+
+    public void ConnectCanvas()
+    {
+        Camera cam = null;
+
+        var cams = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+        foreach (var c in cams)
+        {
+            if (c.gameObject.activeSelf) cam = c;
+        }
+
+        if (cam == null)
+            cam = cams[0];
+
+        foreach (var c in InGameConnectCanvas)
+        {
+            c.worldCamera = cam;
+            c.planeDistance = 0.31f;
+        }
     }
 
     public void OnGameStart()
@@ -119,9 +179,31 @@ public class GameManager : MonoSingleton<GameManager>
         StopGame();
     }
 
+    public void SetFlag(int pos, bool isTrue)
+    {
+        if (pos >= 32)
+            return;
+
+        if (isTrue)
+        {
+            GameDataManager.GameData.Flags |= 1u << pos;
+        }
+        else
+        {
+            GameDataManager.GameData.Flags &= ~(1u << pos);
+        }
+    }
+
+    public bool GetFlag(int pos)
+    {
+        if (pos < 0 || pos > 31)
+            return false;
+
+        return (GameDataManager.GameData.Flags & (1u << (int)pos)) != 0;
+    }
+
     public void ShowCursor(bool isShow = true)
     {
-        Debug.Log($"Cursor {isShow}");
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isShow;
     }
@@ -190,14 +272,15 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void GameClear()
     {
+#if UNITY_EDITOR
         Debug.Log("StageCleard");
+#endif
 
         // 추가 동작 필요시 구현
         StageClear();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Debug.Log($"Cursor {true}");
 
         // 이펙트 출력
         if (clearEffectPrefab1 != null && clearEffectPrefab2 != null)
@@ -216,7 +299,6 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void StopGame()
     {
-        Debug.Log($"Cursor {true}");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -236,7 +318,6 @@ public class GameManager : MonoSingleton<GameManager>
 
         GameManager.Instance.SetCameraInput(true);
 
-        Debug.Log($"Cursor {true}");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -272,12 +353,15 @@ public class GameManager : MonoSingleton<GameManager>
             stage, (int)stage * 100, 10,
             Vector3.zero, Vector3.zero, Vector3.right * 180f,
             (int)stage > 1, (int)stage > 2, (int)stage > 3,
-            TryTimes, LastTryCheckPoint);
+            TryTimes, LastTryCheckPoint, 0);
     }
 
     public void SaveData()
     {
         if (isGoingNextStage == true)
+            return;
+
+        if (Player == null)
             return;
 
         PlayerHp playerHp = Player.GetComponent<PlayerHp>();
@@ -286,10 +370,6 @@ public class GameManager : MonoSingleton<GameManager>
         int currentIndex = CheckpointGimmick.CurrentCheckpointIndex;
         bool isGoodIndex = CheckpointGimmick.CheckpointList.ContainsKey(currentIndex);
 
-        Debug.Log($"{currentIndex} {isGoodIndex} is CheckPoint Saved");
-
-        // 스테이지, 체크포인트, 현재 체력 저장
-        // TODO: 스테이지, 체크포인트, 현재 체력 검사 필요
         GameDataManager.SaveGameData(
             SceneLoadManager.Instance.GetActiveStage(),
             currentIndex,
@@ -306,7 +386,7 @@ public class GameManager : MonoSingleton<GameManager>
             skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarHunt],
             skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.StarFusion],
             skillSwap.SkillUnlocked[(int)Defines.InputDefines.SkillType.WaterVase],
-            TryTimes, LastTryCheckPoint);
+            TryTimes, LastTryCheckPoint, GameDataManager.GameData.Flags);
     }
 
     public void LoadData()
@@ -356,7 +436,9 @@ public class GameManager : MonoSingleton<GameManager>
             Vector3.zero,
             Vector3.right * 180f,
             nextStageNum > 1, nextStageNum > 2, nextStageNum > 3,
-            0, -1);
+            0, -1, 0);
+
+        CheckpointGimmick.ResetCheckpointList();
 
         // Todo. 엔딩일 경우 처리 필요
         if (IsLastScene)
@@ -374,15 +456,33 @@ public class GameManager : MonoSingleton<GameManager>
             true, OnSceneLoaded);
     }
 
+    public void DeleteGameData()
+    {
+        GameDataManager.DeleteGameData();
+    }
+
     public void LoadTitle()
     {
         SetMovementInput(false);
         ShowCursor(true);
+        SaveData();
         SceneLoadManager.Instance.LoadScene(SceneDefines.Scene.Title);
     }
 
     private void OnDisable()
     {
-        SaveData();
+        GameDataManager.SaveGameData(
+            GameDataManager.GameData.StageID,
+            GameDataManager.GameData.CheckPointID,
+            HP,
+            GameDataManager.GameData.PlayerPosition,
+            GameDataManager.GameData.PlayerRotation,
+            GameDataManager.GameData.camRotation,
+            GameDataManager.GameData.IsSkill1_StarHuntUnlocked,
+            GameDataManager.GameData.IsSkill2_StarFusionUnlocked,
+            GameDataManager.GameData.IsSkill3_WaterVaseUnlocked,
+            GameDataManager.GameData.TryTimes,
+            GameDataManager.GameData.LastTryCheckPointID,
+            GameDataManager.GameData.Flags);
     }
 }

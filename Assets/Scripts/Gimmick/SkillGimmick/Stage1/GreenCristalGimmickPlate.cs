@@ -28,7 +28,7 @@ public class GreenCristalGimmickPlate : MonoBehaviour
 
     public void SetGimmick(GreenCristalGimmick _mother, Vector3 _position, Vector3 _scale)
     {
-        col.enabled = true;
+        col.enabled = false;
 
         gimmickMother = _mother;
         transform.position = _position;

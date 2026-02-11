@@ -46,7 +46,7 @@ public class SoundManager : MonoSingleton<SoundManager>
     {
         DontDestroyOnLoad(gameObject);
 
-        SceneLoadManager.Instance.PermanentOnSceneLoadedAction(
+        SceneLoadManager.Instance.onSceneLoaded_permanent.AddListener(
             (scene, mode) =>
             {
                 GetAllAudioSource();
@@ -78,9 +78,6 @@ public class SoundManager : MonoSingleton<SoundManager>
 
         if (data == null || data.bgm == null)
             return;
-
-        if (bgmSource.clip == data.bgm)
-            return; // 같은 BGM이면 재시작 안 함
 
         PlayBGM(data.bgm);
     }

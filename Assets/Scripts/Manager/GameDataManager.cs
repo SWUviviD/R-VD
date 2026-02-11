@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public enum StageID
 {
@@ -28,6 +29,7 @@ public partial class GameData
     [MemoryPackInclude] public bool IsSkill3_WaterVaseUnlocked {  get; set; }
     [MemoryPackInclude] public int TryTimes { get; set; }
     [MemoryPackInclude] public int LastTryCheckPointID { get; set; }
+    [MemoryPackInclude] public uint Flags { get; set; }
 }
 
 public class GameDataManager
@@ -63,12 +65,13 @@ public class GameDataManager
     {
 #if UNITY_EDITOR
         List<GameData> list;
-        if (!SerializeManager.Instance.LoadDataFile(out list, FileName)
+        if (isGameOvered == true
+            || !SerializeManager.Instance.LoadDataFile(out list, FileName)
             || list == null
             || list.Count == 0
-            || list[0] == null
-            || isGameOvered == true)
+            || list[0] == null)
         {
+
             Debug.LogWarning("[SaveSystem] LoadGameData: No valid data found. Creating new GameData.");
             GameData = new GameData();
             return false; // 새로 생성했음을 알림
@@ -76,6 +79,14 @@ public class GameDataManager
         else
         {
             GameData = list[0];
+
+            if (GameManager.Instance.GetFlag(10) == true)
+            {
+                GameData = new GameData();
+                return false;
+            }
+
+            Debug.LogError($"{gameData.CheckPointID} {gameData.PlayerPosition} {gameData.PlayerRotation}");
             return true;
         }
 
@@ -101,6 +112,13 @@ public class GameDataManager
         }
 
         GameData = list[0];
+        
+        if (GameManager.Instance.GetFlag(10) == true)
+        {
+            GameData = new GameData();
+            return false;
+        }
+
         return true;
 
 #endif
@@ -135,7 +153,7 @@ public class GameDataManager
     public void SaveGameData(StageID stageID, int checkPointID, int playerHealth,
         Vector3 playerPosition, Vector3 playerRotation, Vector3 camRotation, 
         bool isSkill1Unlocked, bool isSkill2Unlocked, bool isSkill3Unlocked, 
-        int tryTimes, int lastTryCheckPoint)
+        int tryTimes, int lastTryCheckPoint, uint Flag)
     {
         GameData.StageID = stageID;
         GameData.CheckPointID = checkPointID;
@@ -148,6 +166,7 @@ public class GameDataManager
         GameData.IsSkill3_WaterVaseUnlocked = isSkill3Unlocked;
         GameData.TryTimes = tryTimes;
         GameData.LastTryCheckPointID = lastTryCheckPoint;
+        GameData.Flags = Flag;
 
         SaveGameData(GameData);
     }
@@ -165,12 +184,15 @@ public class GameDataManager
         GameData.IsSkill2_StarFusionUnlocked = false;
         GameData.IsSkill3_WaterVaseUnlocked = false;
         GameData.TryTimes = 0;
+        GameData.Flags = 0;
 
         SaveGameData(GameData);
     }
 
     public void DeleteGameData()
     {
+        GameManager.Instance.SetFlag(10, true);
+        
         GameData.StageID = StageID.Stage1;
         isGameOvered = true;
 
@@ -179,15 +201,17 @@ public class GameDataManager
 #else
         try
         {
-            if (File.Exists(BuildSavePath) == true)
+            // BuildSavePath는 파일 이름까지 포함된 전체 경로여야 합니다.
+            if (File.Exists(BuildSaveFilePath))
             {
-                Directory.CreateDirectory(BuildSavePath);
-                File.Delete(BuildSavePath);
+                File.Delete(BuildSaveFilePath);
+                
+                Debug.Log($"File Deleted Successfully: {BuildSaveFilePath}");
             }
         }
         catch (Exception e)
         {
-            Debug.LogError("Delete File Fail" + e);
+            Debug.LogError("Delete File Fail: " + e.Message);
         }
 #endif
     }

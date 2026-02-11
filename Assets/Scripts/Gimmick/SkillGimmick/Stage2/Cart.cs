@@ -6,7 +6,8 @@ using UnityEngine.InputSystem.XR.Haptics;
 
 public class Cart : MonoBehaviour, IFloorInteractive
 {
-    [SerializeField] private Transform cartTrans;
+    [SerializeField] private Rigidbody cartTrans;
+    [SerializeField] private Transform siroPos;
     [SerializeField] private CartRail[] Rails;
 
     [SerializeField] private AudioSource audioSource;
@@ -21,6 +22,10 @@ public class Cart : MonoBehaviour, IFloorInteractive
 
     private bool isMoving = false;
 
+    private PlayerMove playerMove;
+    private Rigidbody ridingPlayer;
+    private LevitateAroundPlayer pet;
+
     private void Awake()
     {
         audioSource.clip = movingSound;
@@ -33,6 +38,8 @@ public class Cart : MonoBehaviour, IFloorInteractive
         isMoving = false;
 
         dir = (Rails[nextIndex].CenterPos.position - cartTrans.position).normalized;
+
+        pet = FindObjectOfType<LevitateAroundPlayer>();
     }
 
     public void StartMoving()
@@ -50,28 +57,30 @@ public class Cart : MonoBehaviour, IFloorInteractive
     }
 
     private Vector3 dir = Vector3.zero;
+
+    private Vector3 delta = Vector3.zero;
     private void FixedUpdate()
     {
-        if (isMoving == false)
-            return;
+        if (isMoving == false) return;
 
         Vector3 before = cartTrans.position;
 
         if (Vector3.Dot(dir, (Rails[nextIndex].CenterPos.position - cartTrans.position).normalized) < 0)
         {
-            cartTrans.position = Rails[nextIndex].CenterPos.position;
-            
+            cartTrans.MovePosition(Rails[nextIndex].CenterPos.position);
             nextIndex = GetNextIndex(nextIndex);
             dir = (Rails[nextIndex].CenterPos.position - cartTrans.position).normalized;
         }
 
-        cartTrans.position +=
-            dir *
-            Time.fixedDeltaTime * movingSpeed;
+        Vector3 nextPos = cartTrans.position + (dir * Time.fixedDeltaTime * movingSpeed);
+        cartTrans.MovePosition(nextPos);
 
-        Vector3 delta = cartTrans.position - before;
+        delta = nextPos - before;
+
         if (ridingPlayer != null)
-            ridingPlayer.position += delta;
+        {
+            ridingPlayer.MovePosition(ridingPlayer.position + delta);
+        }
     }
 
     private int GetNextIndex(int preIndex)
@@ -89,13 +98,13 @@ public class Cart : MonoBehaviour, IFloorInteractive
         return newIndex;
     }
 
-    private Transform ridingPlayer;
-
     public void InteractStart(GameObject player)
     {
         if(player.TryGetComponent<PlayerMove>(out var playerMove))
         {
-            ridingPlayer = playerMove.transform;
+            ridingPlayer = playerMove.GetComponent<Rigidbody>();
+            this.playerMove = playerMove.GetComponent<PlayerMove>();
+            if (pet != null) pet.SitDown(siroPos);
         }
     }
 
@@ -103,7 +112,9 @@ public class Cart : MonoBehaviour, IFloorInteractive
     {
         if (player.TryGetComponent<PlayerMove>(out var playerMove))
         {
+            this.playerMove = null;
             ridingPlayer = null;
+            if(pet != null) pet.SetTargetPlayer(playerMove.transform);
         }
     }
 }

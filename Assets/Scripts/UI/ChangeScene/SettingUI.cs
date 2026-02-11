@@ -33,8 +33,17 @@ public class SettingUI : MonoBehaviour
     private void Start()
     {
         UIHelper.OnClick(SettingBtn, ShowSetting);
-        UIHelper.OnClick(RestartBtn, GameManager.Instance.GameRestart);
-        UIHelper.OnClick(ReturnToMainBtn, GameManager.Instance.LoadTitle);
+        UIHelper.OnClick(RestartBtn,
+            () =>
+            {
+                GameManager.Instance.ResumeGame();
+                GameManager.Instance.GameRestart();
+            });
+        UIHelper.OnClick(ReturnToMainBtn, () =>
+        {
+            GameManager.Instance.ResumeGame();
+            GameManager.Instance.LoadTitle();
+        });
         UIHelper.OnClick(ResumeBtn, CloseUI);
 
         UIHelper.OnClick(settingExitBtn, CloseSetting);

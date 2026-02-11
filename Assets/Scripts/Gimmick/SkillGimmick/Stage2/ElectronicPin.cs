@@ -167,16 +167,16 @@ public class ElectronicPin : ShockableObj, IFusionable
         CurrentState = prevState;
         if(CurrentState == State.Active)
         {
+            audioSource.Stop();
+            audioSource.clip = startSound;
+            audioSource.Play();
+
             StartCoroutine(CoActivate());
         }
     }
 
     private IEnumerator CoActivate()
     {
-        audioSource.Stop();
-        audioSource.clip = startSound;
-        audioSource.Play();
-
         foreach(var r in SwitchPipeMaterial)
         {
             r.EnableKeyword("_EMISSION");
@@ -274,6 +274,11 @@ public class ElectronicPin : ShockableObj, IFusionable
 
         ellectricEffect.SetActive(true);
         CurrentState = State.Active;
+
+        audioSource.Stop();
+        audioSource.clip = startSound;
+        audioSource.Play();
+
         StartCoroutine(CoActivate());
     }
 

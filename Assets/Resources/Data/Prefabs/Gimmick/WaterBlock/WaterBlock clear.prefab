@@ -191,7 +191,13 @@ MonoBehaviour:
   isUsageDone: 0
   waterLevel: {fileID: 8285035037996394273}
   toOpenWaterCount: 2
+  OnDoorOpen:
+    m_PersistentCalls:
+      m_Calls: []
   maxWaterCount: 4
+  OnWaterGain:
+    m_PersistentCalls:
+      m_Calls: []
   currentWaterCount: 0
   waterMoveEffect: {fileID: 100672, guid: 7dc0b63f67faaf9479803bcfdff7f71e, type: 3}
   audioSource: {fileID: 6308369392994179475}
@@ -368,6 +374,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4129356788942975847, guid: 110f436734e08134e8495e9495e6b45d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9628809dfd906e84c9a71dfe6abc2339, type: 2}
     - target: {fileID: 5049823086242842778, guid: 110f436734e08134e8495e9495e6b45d,
         type: 3}
       propertyPath: m_Layer

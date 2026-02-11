@@ -13,7 +13,9 @@ public class TestSerializeManager : MonoBehaviour
 
         foreach (var item in samples)
         {
+#if UNITY_EDITOR
             Debug.Log(item);
+#endif
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
 
-    [field: SerializeField, Range(0, 100)] public int checkPointNumber { get; set; } = 0;
+    [field: SerializeField, Range(0, 100)] public int checkPointID { get; set; } = 0;
     [Header("Checkpoint Area")]
     /// <summary> 체크 포인트 영역 </summary>
     [SerializeField] private Transform checkpointArea;
@@ -55,7 +55,9 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
     protected override void Init()
     {
-        myIndex = CheckpointGimmick.AddCheckpoint(this, checkPointNumber);
+        isActive = false;
+
+        myIndex = CheckpointGimmick.AddCheckpoint(this, checkPointID);
 
         boxCollider.center = new Vector3(0f, gimmickData.AreaSize.y / 2f, 0f);
         boxCollider.size = gimmickData.AreaSize;
@@ -67,21 +69,22 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         prevRespawnPoint.SetActive(true);
 #endif
 
-        if (GameManager.Instance.GetCurrentCheckPointNumber() == myIndex)
-        {
-            Debug.Log($"{GameManager.Instance.GetCurrentCheckPointNumber()} CheckPointSet");
-            CheckPointLoad();
-        }
+        //if (GameManager.Instance.GetCurrentCheckPointNumber() == myIndex)
+        //{
+        //    Debug.Log($"{GameManager.Instance.GetCurrentCheckPointNumber()} CheckPointSet");
+        //    CheckPointLoad();
+        //}
 
         SetGimmick();
     }
 
-    private void CheckPointLoad()
+    public void CheckPointLoad()
     {
         if (ConnectedDialogue != null)
         {
             foreach (var checkDialogue in ConnectedDialogue)
             {
+                checkDialogue.Achieve();
                 checkDialogue.gameObject.SetActive(false);
             }
         }
@@ -147,7 +150,7 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isActive == false)
         {
@@ -162,27 +165,6 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 
         playerHp.Fall(gimmickData.DropDamage);
         isWaitingToRespawn = true;
-        return;
-
-        bool grounded = move != null && move.IsGrounded;
-
-        if(grounded == false)
-        {
-            fallTimer += Time.deltaTime;
-
-            if(fallTimer >= fallLimitTime && isWaitingToRespawn == false)
-            {
-                Debug.Log($"{myIndex} {isWaitingToRespawn} {fallTimer}");
-                playerHp.Fall(gimmickData.DropDamage);
-                isWaitingToRespawn = true;
-                fallTimer = 0f;
-            }
-        }
-        else
-        {
-            isWaitingToRespawn = false;
-            fallTimer = 0f;
-        }
     }
 
     private void CheckPointDisable()
@@ -193,12 +175,19 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
     protected void LoadCheckpoint()
     {
         SetCheckpoint(myIndex);
-        isVisited = true;
 
-        playerHp = GameManager.Instance.Player.GetComponent<PlayerHp>();
-        playerHp.RespawnPoint = respawnPoint.position;
-        playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
-        playerHp.Respawn();
+#if UNITY_EDITOR
+        Debug.LogError($"CheckPoint Load {checkPointID}");
+#endif
+        isActive = true;
+
+        CheckPointLoad();
+        //isVisited = true;
+
+        //playerHp = GameManager.Instance.Player.GetComponent<PlayerHp>();
+        //playerHp.RespawnPoint = respawnPoint.position;
+        //playerHp.RespawnRotation = respawnPoint.rotation.eulerAngles;
+        //playerHp.Respawn();
     }
 }
 
@@ -206,6 +195,11 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
 {
     public static Dictionary<int, CheckpointGimmick> CheckpointList { get; private set; } = new Dictionary<int, CheckpointGimmick>();
     public static int CurrentCheckpointIndex { get; private set; } = -1;
+
+    public static void ResetCheckpointList()
+    {
+        CheckpointList.Clear();
+    }
 
     private static int AddCheckpoint(CheckpointGimmick _checkPoint, int number)
     {
@@ -226,9 +220,17 @@ public partial class CheckpointGimmick : GimmickBase<CheckpointData>
         CurrentCheckpointIndex = _index;
     }
 
-    public static void LoadCheckpoint(int _index)
+    public static void LoadCheckpoint(int _id)
     {
-        CurrentCheckpointIndex = _index;
+        foreach (var p in CheckpointList)
+        {
+            if (p.Value.checkPointID != _id % 100)
+                continue;
+
+            CurrentCheckpointIndex = p.Key;
+            break;
+        }
+
         CheckpointList[CurrentCheckpointIndex].LoadCheckpoint();
     }
 }

@@ -16,14 +16,14 @@ public class ElectronicSwitch : ShockableObj
 
     [SerializeField] protected UnityEvent OnActivated = new UnityEvent();
 
-    protected void Start()
+    protected virtual void Start()
     {
         currentState = State.Stopped;
     }
 
     public override void OnShocked(ShockableObj obj)
     {
-        if (currentState != State.Stopped) return;
+        if (currentState == State.Generating) return;
 
         currentState = State.Generating;
 

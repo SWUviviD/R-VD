@@ -25,6 +25,8 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
     private readonly string EmissionColorStr = "_EmissionColor";
     private readonly string EmissionStr = "_EMISSION";
 
+    private bool isActivateFromStart = false;
+
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip activatedSound;
@@ -48,6 +50,16 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         }
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        if (isActivateFromStart)
+        {
+            OnShocked(null);
+        }
+    }
+
     public override void ShockFailed(ShockableObj obj = null)
     {
         base.ShockFailed(obj);
@@ -61,17 +73,9 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         mapObjIndex = index;
     }
 
-    public void Activate()
+    public void ActivateFromCheckPoint()
     {
-        StopGenerating();
-        OnShocked(null);
-
-        audioSource.Stop();
-        audioSource.clip = activatedSound;
-        audioSource.Play();
-
-        ellectricEffect.SetActive(true);
-        OnActivated?.Invoke();
+        isActivateFromStart = true;
     }
 
     [ContextMenu("Activate")]
@@ -82,6 +86,10 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
         else if(currentState == State.Generating)
             StopGenerating();
 
+        audioSource.Stop();
+        audioSource.clip = activatedSound;
+        audioSource.Play();
+
         ellectricEffect.SetActive(true);
         OnActivated?.Invoke();
 
@@ -90,6 +98,10 @@ public class ElectronicSwitchA : ElectronicSwitch, IFusionable
 
     protected override IEnumerator CoGenerating()
     {
+        audioSource.Stop();
+        audioSource.clip = activatedSound;
+        audioSource.Play();
+
         foreach (var r in SwitchPipeMaterial)
         {
             r.EnableKeyword(EmissionStr);

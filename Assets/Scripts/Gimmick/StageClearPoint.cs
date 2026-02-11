@@ -44,7 +44,7 @@ public class StageClearPoint : GimmickBase<StageClearPointData>
 
         foreach(Collider c in stageBoundarys)
         {
-            c.isTrigger = false;
+            c.isTrigger = true;
         }
 
         onStageCleared?.Invoke();

@@ -117,7 +117,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     {
         if (dialogues.Count <= dialogueID)
         {
-            Debug.LogError("대화 번호가 CSV에 없습니다: " + dialogueID);
             return;
         }
 
@@ -156,7 +155,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
     {
         if (dialogues.Count <= dialogueID)
         {
-            Debug.LogError("대화 번호가 CSV에 없습니다: " + dialogueID);
             return;
         }
 
@@ -232,7 +230,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         }
 
         int nextNum = dialogues[currentDialogNumber][currentLineNumber].NextTextNumber;
-        Debug.Log($"Show {currentDialogNumber}'s {nextNum}");
         ShowText(nextNum);
     }
 
@@ -349,7 +346,6 @@ public class DialogueManager : MonoSingleton<DialogueManager>
                 }
 
                 int nextNum = dialogues[currentDialogNumber][currentLineNumber].NextTextNumber;
-                Debug.Log($"Show {currentDialogNumber}'s {nextNum}");
                 ShowText(nextNum);
             });
         }
@@ -486,7 +482,7 @@ public class DialogueManager : MonoSingleton<DialogueManager>
         dialoguePanel.SetActive(false);
         optionsPanel.SetActive(false);
 
-        dialogueCamera.transform.SetParent(gameObject.transform);
+        dialogueCamera?.transform.SetParent(gameObject.transform);
 
         CameraController.Instance.SetCameraMode(CameraController.CameraMode.Orbit);
         GameManager.Instance.SetMovementInput(true);

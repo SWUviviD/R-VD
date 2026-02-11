@@ -62,8 +62,6 @@ namespace CamAnim
 
             var byteArray = MemoryPackSerializer.Serialize(Steps);
             SerializeManager.Instance.SaveDataFile(animationName, byteArray, "Data/RawData/DialogCamAnimation");
-
-            Debug.Log($"{animationName} is made");
         }
     }
 }
